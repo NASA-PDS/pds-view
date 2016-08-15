@@ -1,0 +1,56 @@
+PDS_VERSION_ID                     = PDS3                                     
+                                                                              
+RECORD_TYPE                        = "FIXED_LENGTH"                           
+RECORD_BYTES                       = 89                                       
+FILE_RECORDS                       = 75      
+
+^BAD_POINTER                       = "badName.txt"   
+^STRUCTURE                       = "BAD.lbl"   
+CHANGE_DATE = 2000-003         
+
+VOYAGER:FILE_RECORDS                = { RED, GREEN, BLUE }            
+                                                                              
+OBJECT                             = SPECTRUM   
+	OBJECT                         = BIT_ELEMENT  
+	END_OBJECT                     = BIT_ELEMENT	
+	INTERCHANGE_FORMAT               = "ASCII"                                  
+  ROWS                             = 77                                       
+  ROW_BYTES                        = 308                                      
+  INDEX_TYPE                       = "SINGLE"                                 
+  /*COLUMNS                          = 12     */
+END_OBJECT                         = TABLE																			  
+																			  
+																			  
+DATA_SET_ID                        = non_existant_value		
+METEORITE_TYPE                     =																	  
+badkey                             = asdfasdf
+
+PUBLICATION_DATE                 = 2008-07-99
+
+A_AXIS_RADIUS = "should be real not text"
+UNCOMPRESSED_FILE_NAME =  a /* should be 3 chars at min */
+
+IDENT = 
+	value /*comment*/
+= value
+IDENT = va l ue
+IDENT = 
+IDENT = value
+IDENT = "a multi
+	line value" /*comment*/
+IDENT = 123123 extraToken
+IDENT = comment without start */
+IDENT = 3, 4, 5 }
+IDENT = { 3, 4 5
+^ident = foo.html
+^ ident = "foo.bar"
+
+VAR_DATA_TYPE = asdf
+LABEL_REVISION_NOTE                = "NULL" 
+MISSING_PACKET_FLAG = yes
+EXPOSURE_DURATION = 10 <seconds> /* invalid but have alias for plural? */
+MINIMUM_LENGTH = 43.3
+DECLINATION = 91
+IDENT = %
+IDENT = "TEST"
+

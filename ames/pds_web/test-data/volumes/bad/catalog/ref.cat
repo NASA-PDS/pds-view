@@ -1,0 +1,28 @@
+PDS_VERSION_ID                     = PDS3                                     
+RECORD_TYPE                        = "STREAM"                                 
+                                                                              
+OBJECT                             = REFERENCE                                
+  REFERENCE_KEY_ID                 = "FORNASIERETAL2004"                      
+  REFERENCE_DESC                   = "Fornasier, S., E. Dotto, F. Marzari,    
+        M.A. Barucci, H. Boehnhardt, O. Hainaut, and C. de Bergh, Visible     
+        spectroscopic and photometric survey of L5 Trojans:  Investigation of 
+        dynamical families, Icarus 172, 221-232, 2004."                       
+END_OBJECT                         = REFERENCE                                
+                                                                              
+OBJECT                             = REFERENCE                                
+  REFERENCE_KEY_ID                 = "FORNASIERETAL2007"                      
+  REFERENCE_DESC                   = "Fornasier, S., E. Dotto, O. Hainaut, F. 
+        Marzari, H. Boehnhardt, F. De Luise, and M.A. Barucci, Visible        
+        spectroscopic and photometric survey of Jupiter Trojans:  Final       
+        results on dynamical familes, Icarus 190, 622-642, 2007."             
+END_OBJECT                         = REFERENCE                                
+                                                                              
+OBJECT                             = REFERENCE                                
+  REFERENCE_KEY_ID                 = "SCHULZETAL1995"                         
+  REFERENCE_DESC                   = "Schulz, R., Th. Encrenaz, J.A. Stuewe,  
+        and G. Wiedemann. Near-IR emissions in the upper Jovian atmosphere    
+        after SL-9 impact: Indications of possible northern counterparts,     
+        Geophysical Research Letters, 22, 17, 2421-2424, 1995."               
+END_OBJECT                         = REFERENCE                                
+                                                                              
+END                                                                           

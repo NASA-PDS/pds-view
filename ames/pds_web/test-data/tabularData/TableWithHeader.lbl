@@ -1,0 +1,148 @@
+PDS_VERSION_ID                = PDS3
+
+/* FILE DATA ELEMENTS */
+RECORD_TYPE                   = FIXED_LENGTH
+FILE_RECORDS                  = 60
+RECORD_BYTES                  = 88
+^HEADER                       = ("PHX_TAU451_030_20081203A.TAB", 1)
+^TABLE                        = ("PHX_TAU451_030_20081203A.TAB", 10)
+
+/* IDENTIFICATION DATA ELEMENTS */
+DATA_SET_ID                   = "PHX-M-SSI-5-ATMOS-OPACITY-V1.0"
+PRODUCT_ID                    = "PHX_TAU451_030_20081203A"
+PRODUCT_TYPE                  = "OPACITY"
+INSTRUMENT_HOST_ID            = "PHX"
+INSTRUMENT_HOST_NAME          = "PHOENIX"
+FILTER_NAME                   = SSI_L3_451NM
+INSTRUMENT_ID                 = SSI
+MISSION_NAME                  = "PHOENIX"
+TARGET_NAME                   = SUN
+PRODUCT_CREATION_TIME         = 2008-12-03T12:00:00
+START_TIME                    = 2008-05-25T06:00:00
+STOP_TIME                     = 2008-06-21T03:00:00
+
+OBJECT                        = HEADER
+  BYTES                       = 792
+  RECORDS                     = 9
+  HEADER_TYPE                 = SPREADSHEET
+  INTERCHANGE_FORMAT          = ASCII
+  DESCRIPTION                 = "The header contains key parameter values
+                                 used in the opacity computations, along
+                                 with column headings for the table object."
+END_OBJECT                    = HEADER
+
+OBJECT                        = TABLE
+  INTERCHANGE_FORMAT          = ASCII
+  ROWS                        = 51
+  ROW_BYTES                   = 88
+  COLUMNS                     = 8
+  DESCRIPTION                 = "Tables containing the opacity
+                                 determinations for a given 
+                                 solar filter.  Columns in the table
+                                 are fixed-width and separated by
+                                 commas.  The start byte and bytes
+                                 keywords of the column definitions do
+                                 not include quotes or commas in the table."
+
+  OBJECT                      = COLUMN
+    COLUMN_NUMBER             = 1
+    NAME                      = SSI_PRODUCT_ID
+    DATA_TYPE                 = CHARACTER
+    START_BYTE                = 2
+    BYTES                     = 27
+    DESCRIPTION               = "The product_id of the SSI solar
+                                 filter image used for a given opacity
+                                 determination."
+  END_OBJECT                  = COLUMN
+
+  OBJECT                      = COLUMN
+    COLUMN_NUMBER             = 2
+    NAME                      = SOLAR_LONGITUDE
+    DATA_TYPE                 = ASCII_REAL
+    START_BYTE                = 31
+    BYTES                     = 6
+    DESCRIPTION               = "Martian season in degrees past
+                                 northern spring equinox."
+  END_OBJECT                  = COLUMN
+
+  OBJECT                      = COLUMN
+    COLUMN_NUMBER             = 3
+    NAME                      = SOLAR_DISTANCE
+    DATA_TYPE                 = ASCII_REAL
+    START_BYTE                = 38
+    BYTES                     = 6
+    DESCRIPTION               = "Mars-Sun distance in AU at time of
+                                 observation."
+  END_OBJECT                  = COLUMN
+
+  OBJECT                      = COLUMN
+    COLUMN_NUMBER             = 4
+    NAME                      = LOCAL_TIME
+    DATA_TYPE                 = ASCII_REAL
+    START_BYTE                = 45
+    BYTES                     = 8
+    DESCRIPTION               = "Observation time in sols past the local
+                                 Midnight preceding landing. The local
+                                 solar time is given by multiplying the
+                                 fractional component by 24 hours.
+                                 Sol number is obtained by rounding down
+                                 the local_time value. For example, noon
+                                 on Sol 2 is given as local_time of 2.5."
+  END_OBJECT                  = COLUMN
+
+  OBJECT                      = COLUMN
+    COLUMN_NUMBER             = 5
+    NAME                      = ELEVATION
+    DATA_TYPE                 = ASCII_REAL
+    START_BYTE                = 54
+    BYTES                     = 7
+    DESCRIPTION               = "Solar elevation relative to the local 
+                                 horizon."
+  END_OBJECT                  = COLUMN
+
+  OBJECT                      = COLUMN
+    COLUMN_NUMBER             = 6
+    NAME                      = SOLAR_FLUX
+    DATA_TYPE                 = ASCII_REAL
+    START_BYTE                = 62
+    BYTES                     = 8
+    DESCRIPTION               = "Observed solar intensity in DN ms-1
+                                 after subtracting
+                                 background light. Computed using
+                                 SSI calibration parameters.
+                                 A value of -1.0 indicates an image
+                                 that resulted in a non-measurement
+                                 opacity (e.g., due to missing packet
+                                 and/or data saturation)."
+  END_OBJECT                  = COLUMN
+
+  OBJECT                      = COLUMN
+    COLUMN_NUMBER             = 7
+    NAME                      = ATMOSPHERIC_OPACITY
+    DATA_TYPE                 = ASCII_REAL
+    START_BYTE                = 71
+    BYTES                     = 7
+    DESCRIPTION               = "Measured atmospheric opacity using
+                                 the current best relative calibration.
+                                 A value of -1.0 indicates an image
+                                 that resulted in a non-measurement
+                                 opacity (e.g., due to missing packet
+                                 and/or data saturation)."
+  END_OBJECT                  = COLUMN
+
+  OBJECT                      = COLUMN
+    COLUMN_NUMBER             = 8
+    NAME                      = OPACITY_ERROR
+    DATA_TYPE                 = ASCII_REAL
+    START_BYTE                = 79
+    BYTES                     = 8
+    DESCRIPTION               = "Relative error in the opacity
+                                 measurement.
+                                 A value of -1.0 indicates an image
+                                 that resulted in a non-measurement
+                                 opacity (e.g., due to missing packet
+                                 and/or data saturation)."
+  END_OBJECT                  = COLUMN
+
+END_OBJECT                    = TABLE
+END

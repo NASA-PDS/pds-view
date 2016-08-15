@@ -1,0 +1,4 @@
+PDS_VERSION_ID               = PDS3                                           
+RECORD_TYPE                  = STREAM                                         
+DESCRIPTION                  = "NH_SOLAR_WIND.CAT" /*                         
+END                                                                           

@@ -1,0 +1,13 @@
+## Data Set Root - defaults to WEB-INF/dataSets if not defined, restart web server after changing
+#dataSetRoot = C:/dev/sampleDataSets
+
+## Database Configuration - currently only required for logging
+#defaults to root
+mysql.user = root
+mysql.pass =
+#defaults to 3306
+mysql.port = 3306
+#defaults to pds_web
+mysql.db = pds_web
+#defaults to 127.0.0.1
+mysql.server = 127.0.0.1

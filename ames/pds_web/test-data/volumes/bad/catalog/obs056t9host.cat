@@ -1,0 +1,45 @@
+PDS_VERSION_ID                     = PDS3                                     
+RECORD_TYPE                        = "STREAM"                                 
+LABEL_REVISION_NOTE                = "2008-02-15: Information loaded into OLAF
+        by Carol Neese"                                                       
+                                                                              
+OBJECT                             = INSTRUMENT_HOST                          
+  INSTRUMENT_HOST_ID               = "OBS056T9"                               
+  OBJECT                           = INSTRUMENT_HOST_INFORMATION              
+    INSTRUMENT_HOST_NAME           = "EUROPEAN SOUTHERN OBSERVATORY NEW       
+        TECHNOLOGY TELESCOPE (NTT)"                                           
+    INSTRUMENT_HOST_TYPE           = "EARTH BASED"                            
+    INSTRUMENT_HOST_DESC           = "                                        
+                                                                              
+                                                                              
+  Instrument Host Overview                                                    
+  ========================                                                    
+    The ESO New Technology Telescope (NTT) is an Alt-Az, 3.58m                
+    Richey-Chretien telescope which pioneered the use of active               
+    optics.  The NTT first light happened in 1989.                            
+                                                                              
+    GROUP                        = OBSERVATORY_PARAMETERS                     
+      OBSERVATORY_ID             = 'OBS056'                                   
+      NAME                       = 'EUROPEAN SOUTHERN OBSERVATORY'            
+      COUNTRY                    = 'CHILE'                                    
+      ADDRESS                    = 'CASILLA 19001-CORREO 19, SANTIAGO'        
+    END_GROUP                    = OBSERVATORY_PARAMETERS                     
+                                                                              
+    GROUP                        = TELESCOPE_PARAMETERS                       
+      TELESCOPE_ID               = 'T9'                                       
+      NAME                       = 'NEW TECHNOLOGY TELESCOPE (NTT)'           
+      APERTURE                   = 3.58 <METERS>                              
+      LONGITUDE                  =  -70.731742 /* -70 43 54.27 */             
+      LATITUDE                   =  -29.255122 /* -29 15 18.4 */              
+      ALTITUDE                   = 2375 <METERS>                              
+      COORDINATE_SOURCE          = 'Unknown'                                  
+    END_GROUP                    = TELESCOPE_PARAMETERS"                      
+                                                                              
+  END_OBJECT                       = INSTRUMENT_HOST_INFORMATION              
+                                                                              
+  OBJECT                           = INSTRUMENT_HOST_REFERENCE_INFO           
+    REFERENCE_KEY_ID               = "N/A"                                    
+  END_OBJECT                       = INSTRUMENT_HOST_REFERENCE_INFO           
+                                                                              
+END_OBJECT                         = INSTRUMENT_HOST                          
+END                                                                           

@@ -1,0 +1,15 @@
+    OBJECT                        = COLUMN  
+        COLUMN_NUMBER             = 1                            
+        NAME                      = "VAX F-Type - 4 Byte 1"    
+        START_BYTE                = 1                                 
+        DATA_TYPE                 = VAX_REAL                             
+        BYTES                     = 4                               
+    END_OBJECT                    = COLUMN  
+
+    OBJECT                        = COLUMN  
+        COLUMN_NUMBER             = 2                            
+        NAME                      = "MSB_INTEGER Byte 2"    
+        START_BYTE                = 5                                 
+        DATA_TYPE                 = MSB_INTEGER                             
+        BYTES                     = 4                               
+    END_OBJECT                    = COLUMN  

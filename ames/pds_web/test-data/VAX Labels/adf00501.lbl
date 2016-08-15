@@ -1,0 +1,35 @@
+PDS_VERSION_ID                 = "PDS3"                                           
+RECORD_TYPE                    = FIXED_LENGTH                                 
+RECORD_BYTES                   = 32500                                        
+FILE_RECORDS                   = 50         
+PRODUCT_ID                     = "ADF00501.3"                                   
+^HEADER                        = ("ADF00501.3",1)                             
+^TABLE                         = ("ADF00501.3",501<BYTES>)                    
+/*         DATA DESCRIPTION */                                                
+DATA_SET_ID                    = 'MGN-V-RDRS-5-CDR-ALT/RAD-V1.0'              
+TARGET_NAME                    = VENUS                                        
+SPACECRAFT_NAME                = MAGELLAN                                     
+MISSION_PHASE_NAME             = PRIMARY_MISSION                              
+PRODUCT_CREATION_TIME          = 1991-06-28T04:22:09.000Z                     
+ORBIT_NUMBER                   = 501                                          
+HARDWARE_VERSION_ID            = 01                                           
+SOFTWARE_VERSION_ID            = 02                                           
+UPLOAD_ID                      = P0272A                                       
+NAVIGATION_SOLUTION_ID         = "ID = M0275-10                   "           
+DESCRIPTION                    = "                                            
+         This file contains binary records describing, in time order,         
+         each altimeter footprint measured during an orbit of the             
+         Magellan radar mapper."                                              
+/*          DESCRIPTION OF THE OBJECTS CONTAINED IN FILES */                  
+OBJECT                         = HEADER                                       
+ TYPE                          = SFDU                                         
+ BYTES                         = 500                                          
+END_OBJECT                                                                    
+OBJECT                         = TABLE                                        
+ INTERCHANGE_FORMAT            = BINARY                                       
+ ROWS                          = 1574                                         
+ COLUMNS                       = 40                                           
+ ROW_BYTES                     = 1032                                         
+ ^STRUCTURE                    = "ADFTBL.FMT"                                 
+END_OBJECT                                                                    
+END                                                                           

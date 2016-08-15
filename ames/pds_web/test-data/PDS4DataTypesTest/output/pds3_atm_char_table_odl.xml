@@ -1,0 +1,119 @@
+<Product_Observational xmlns="http://pds.nasa.gov/pds4/pds/v1" xmlns:pds="http://pds.nasa.gov/pds4/pds/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="">
+  <Identification_Area>
+    <logical_identifier>urn:nasa:pds:data:phx-m-tt-5-wind-vel-dir-v1.0:telltale_91_151</logical_identifier>
+    <version_id>1.0</version_id>
+    <title>phx-m-tt-5-wind-vel-dir-v1.0 telltale_91_151</title>
+    <information_model_version>1.2.0.1</information_model_version>
+    <product_class>Product_Observational</product_class>
+    <Modification_History>
+      <Modification_Detail>
+        <modification_date>2014-09-18</modification_date>
+        <version_id>1.0</version_id>
+        <description>Auto generated PDS4 product label created by the Transform Tool.</description>
+      </Modification_Detail>
+    </Modification_History>
+  </Identification_Area>
+  <Observation_Area>
+    <Time_Coordinates>
+      <start_date_time>2008-08-26T20:36:36.856Z</start_date_time>
+      <stop_date_time>2008-10-27T15:32:50.952Z</stop_date_time>
+    </Time_Coordinates>
+    <Investigation_Area>
+      <name>phoenix</name>
+      <type>Mission</type>
+      <Internal_Reference>
+        <lid_reference>urn:nasa:pds:investigation.phoenix</lid_reference>
+        <reference_type>data_to_investigation</reference_type>
+      </Internal_Reference>
+    </Investigation_Area>
+    <Observing_System>
+      <Observing_System_Component>
+        <name>phoenix</name>
+        <type>Spacecraft</type>
+      </Observing_System_Component>
+      <Observing_System_Component>
+        <name>telltale</name>
+        <type>Instrument</type>
+      </Observing_System_Component>
+    </Observing_System>
+    <Target_Identification>
+      <name>mars</name>
+      <type>Planet</type>
+    </Target_Identification>
+  </Observation_Area>
+  <File_Area_Observational>
+    <File>
+      <file_name>char_table_collapsed.tab</file_name>
+    </File>
+    <Table_Character>
+      <offset unit="byte">0</offset>
+      <records>23</records>
+      <record_delimiter>Carriage-Return Line-Feed</record_delimiter>
+      <Record_Character>
+        <fields>10</fields>
+        <groups>0</groups>
+        <record_length unit="byte">88</record_length>
+        <Field_Character>
+          <name>sol</name>
+          <field_location unit="byte">1</field_location>
+          <data_type>ASCII_Integer</data_type>
+          <field_length unit="byte">3</field_length>
+        </Field_Character>
+        <Field_Character>
+          <name>ltst</name>
+          <field_location unit="byte">5</field_location>
+          <data_type>ASCII_Real</data_type>
+          <field_length unit="byte">5</field_length>
+        </Field_Character>
+        <Field_Character>
+          <name>lmst</name>
+          <field_location unit="byte">11</field_location>
+          <data_type>ASCII_Real</data_type>
+          <field_length unit="byte">9</field_length>
+        </Field_Character>
+        <Field_Character>
+          <name>v</name>
+          <field_location unit="byte">21</field_location>
+          <data_type>ASCII_Real</data_type>
+          <field_length unit="byte">5</field_length>
+        </Field_Character>
+        <Field_Character>
+          <name>dv+</name>
+          <field_location unit="byte">27</field_location>
+          <data_type>ASCII_Real</data_type>
+          <field_length unit="byte">4</field_length>
+        </Field_Character>
+        <Field_Character>
+          <name>dv-</name>
+          <field_location unit="byte">32</field_location>
+          <data_type>ASCII_Real</data_type>
+          <field_length unit="byte">7</field_length>
+        </Field_Character>
+        <Field_Character>
+          <name>dir</name>
+          <field_location unit="byte">40</field_location>
+          <data_type>ASCII_Real</data_type>
+          <field_length unit="byte">10</field_length>
+        </Field_Character>
+        <Field_Character>
+          <name>ddir</name>
+          <field_location unit="byte">51</field_location>
+          <data_type>ASCII_Real</data_type>
+          <field_length unit="byte">8</field_length>
+        </Field_Character>
+        <Field_Character>
+          <name>exposure time</name>
+          <field_location unit="byte">60</field_location>
+          <data_type>ASCII_Real</data_type>
+          <field_length unit="byte">7</field_length>
+        </Field_Character>
+        <Field_Character>
+          <name>file name</name>
+          <field_location unit="byte">69</field_location>
+          <data_type>ASCII_String</data_type>
+          <field_length unit="byte">17</field_length>
+        </Field_Character>
+      </Record_Character>
+    </Table_Character>
+  </File_Area_Observational>
+</Product_Observational>

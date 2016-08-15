@@ -1,0 +1,441 @@
+PDS_VERSION_ID                = PDS3                                          
+DATA_SET_ID                   = "CO-E/J/S/SW-MIMI-2-CHEMS-UNCALIB-V1.0"       
+PRODUCT_ID                    = "CACC0_1999175_0000"                          
+STANDARD_DATA_PRODUCT_ID      = "MIMI_CHEMS_ACC"                              
+PRODUCT_TYPE                  = "DATA"                                        
+PRODUCT_VERSION_ID            = 0000                                          
+PRODUCT_CREATION_TIME         = 2005-165T20:04:18.000                         
+RECORD_TYPE                   = STREAM                                        
+INTERCHANGE_FORMAT            = ASCII                                         
+FILE_RECORDS                  = 2629                                          
+START_TIME                    = 1999-175T00:00:00                             
+STOP_TIME                     = 1999-175T23:59:59                             
+NATIVE_START_TIME             = "-16545535.815683"                            
+NATIVE_STOP_TIME              = "-16459136.815711"                            
+SPACECRAFT_CLOCK_START_COUNT  = "1/1308873976.099"                            
+SPACECRAFT_CLOCK_STOP_COUNT   = "1/1308960375.244"                            
+INSTRUMENT_HOST_NAME          = "CASSINI ORBITER"                             
+INSTRUMENT_HOST_ID            = "CO"                                          
+MISSION_PHASE_NAME            = "VENUS 2 ENCOUNTER"                           
+ORBIT_NAME                    = "N/A"                                         
+TARGET_NAME                   = {"VENUS", "SOLAR WIND"}                       
+INSTRUMENT_NAME               = "MAGNETOSPHERIC IMAGING INSTRUMENT"           
+INSTRUMENT_ID                 = "MIMI"                                        
+DESCRIPTION                   = "                                             
+    Subsector accumulations for the CHEMS sensor of the MIMI instrument on    
+    the Cassini spacecraft"                                                   
+^HEADER                       = ("CACC0_1999175_0000.CSV", 1 <BYTES>)         
+^SPREADSHEET                  = ("CACC0_1999175_0000.CSV", 459 <BYTES>)       
+OBJECT                        = HEADER                                        
+  RECORDS                     = 1                                             
+  BYTES                       = 458                                           
+  HEADER_TYPE                 = SPREADSHEET                                   
+  DESCRIPTION                 = "                                             
+    This file contains a single row of column headings (text strings enclosed 
+    within double quotes) separated by commas."                               
+END_OBJECT                    = HEADER                                        
+OBJECT                        = SPREADSHEET                                   
+  ROWS                        = 2628                                          
+  FIELDS                      = 33                                            
+  ROW_BYTES                   = 418                                           
+  FIELD_DELIMITER             = COMMA                                         
+  OBJECT                      = FIELD                                         
+    NAME                      = "PURPOSE"                                     
+    FIELD_NUMBER              = 1                                             
+    DATA_TYPE                 = CHARACTER                                     
+    BYTES                     = 32                                            
+    DESCRIPTION               = "                                             
+      The PURPOSE field identifies the purpose or function of the data        
+      contained in current row. Valid entries include:                        
+      SCI - normal science data values                                        
+      VALID_MIN - the inclusive or exclusive minimum value allowed for this   
+      column                                                                  
+      VALID_MAX - the inclusive or exclusive maximum value allowed for this   
+      column                                                                  
+      MIN - the minimum value for this column present in this product         
+      MAX - the maximum value for this column present in this product         
+      MEAN - the mean of the values in this column in this product, this      
+      value will be rounded for integer columns                               
+      STDEV - the standard deviation of the values in this column in this     
+      product, this value will be rounded for integer columns"                
+  END_OBJECT                  = FIELD                                         
+  OBJECT                      = FIELD                                         
+    NAME                      = "START_EPHEMERIS_S"                           
+    FIELD_NUMBER              = 2                                             
+    UNIT                      = SECOND                                        
+    DATA_TYPE                 = ASCII_REAL                                    
+    BYTES                     = 20                                            
+    VALID_MINIMUM             = -71063936                                     
+    VALID_MAXIMUM             = 757339265                                     
+    DESCRIPTION               = "                                             
+      The J2000 ephemeris time in seconds at the beginning of the time period 
+      for this record."                                                       
+  END_OBJECT                  = FIELD                                         
+  OBJECT                      = FIELD                                         
+    NAME                      = "END_EPHEMERIS_S"                             
+    FIELD_NUMBER              = 3                                             
+    UNIT                      = SECOND                                        
+    DATA_TYPE                 = ASCII_REAL                                    
+    BYTES                     = 20                                            
+    VALID_MINIMUM             = -71063936                                     
+    VALID_MAXIMUM             = 757339265                                     
+    DESCRIPTION               = "                                             
+      The J2000 ephemeris time in seconds at the end of the time period for   
+      this record."                                                           
+  END_OBJECT                  = FIELD                                         
+  OBJECT                      = FIELD                                         
+    NAME                      = "SPIN_COUNTER"                                
+    FIELD_NUMBER              = 4                                             
+    DATA_TYPE                 = ASCII_INTEGER                                 
+    BYTES                     = 10                                            
+    VALID_MINIMUM             = 0                                             
+    VALID_MAXIMUM             = 16383                                         
+    DESCRIPTION               = "                                             
+      MIMI always organizes time by Spins, when Cassini is not in spin mode,  
+      MIMI uses a commanded virtual spin period. This column is a counter     
+      that increments with each spin or virtual spin. This counter resets     
+      when MIMI undergoes certain operations like shutdown, and is not        
+      sufficiently large that it will not roll over."                         
+  END_OBJECT                  = FIELD                                         
+  OBJECT                      = FIELD                                         
+    NAME                      = "SECTOR"                                      
+    FIELD_NUMBER              = 5                                             
+    DATA_TYPE                 = ASCII_INTEGER                                 
+    BYTES                     = 10                                            
+    VALID_MINIMUM             = 0                                             
+    VALID_MAXIMUM             = 15                                            
+    DESCRIPTION               = "                                             
+      Each spin is divided into 16 sectors. Sectors have no meaning with      
+      regard to pointing. They are nothing more or less than segments of      
+      time. This column contains the zero based index of the sector.          
+      Sectors have special significance in that the beginning of a sector is  
+      the only time that MIMI records the SCLOCK. All other times must be     
+      calculated based on the subsector, and, where appropriate, microsector  
+      values provided below. Times in this product were calculated in this    
+      manner."                                                                
+  END_OBJECT                  = FIELD                                         
+  OBJECT                      = FIELD                                         
+    NAME                      = "START_SECTOR_SCLOCK_MAJOR"                   
+    FIELD_NUMBER              = 6                                             
+    UNIT                      = COUNT                                         
+    DATA_TYPE                 = ASCII_INTEGER                                 
+    BYTES                     = 10                                            
+    VALID_MINIMUM             = 0                                             
+    VALID_MAXIMUM             = 4000000000                                    
+    DESCRIPTION               = "                                             
+      The value of the Spacecraft clock at the beginning of Sector during     
+      which this record occurred. This, combined with subsector, and          
+      microsector where appropriate, is the monotonic timestamp for the each  
+      record. All other times are calculated from this time representation."  
+  END_OBJECT                  = FIELD                                         
+  OBJECT                      = FIELD                                         
+    NAME                      = "SUBSECTOR"                                   
+    FIELD_NUMBER              = 7                                             
+    DATA_TYPE                 = ASCII_INTEGER                                 
+    BYTES                     = 10                                            
+    VALID_MINIMUM             = 0                                             
+    VALID_MAXIMUM             = 15                                            
+    DESCRIPTION               = "                                             
+      Each sector is divided into 16 subsectors. Subsectors have no meaning   
+      as far as pointing. They are nothing more or less than segments of      
+      time."                                                                  
+  END_OBJECT                  = FIELD                                         
+  OBJECT                      = FIELD                                         
+    NAME                      = "MICROSECTORS_COVERED"                        
+    FIELD_NUMBER              = 8                                             
+    DATA_TYPE                 = ASCII_INTEGER                                 
+    BYTES                     = 10                                            
+    VALID_MINIMUM             = 2                                             
+    VALID_MAXIMUM             = 1024                                          
+    DESCRIPTION               = "                                             
+      Each subsector is divided into 16 microsectors. Microsectors have no    
+      meaning as far as pointing. They are nothing more or less than segments 
+      of time. This column is the number of microsectors over which this      
+      record was recorded, i.e. 16 for one subsector, 32 for two subsectors,  
+      256 for one sector, etc."                                               
+  END_OBJECT                  = FIELD                                         
+  OBJECT                      = FIELD                                         
+    NAME                      = "SPIN_PERIOD_S"                               
+    FIELD_NUMBER              = 9                                             
+    UNIT                      = SECOND                                        
+    DATA_TYPE                 = ASCII_REAL                                    
+    BYTES                     = 20                                            
+    VALID_MINIMUM             = 680                                           
+    VALID_MAXIMUM             = 3072                                          
+    DESCRIPTION               = "                                             
+      The spacecraft spin period in seconds. If the spacecraft is not in spin 
+      mode, this is the virtual spin period used by the MIMI sensor to        
+      determine the timing of data collection. This value is not very         
+      reliable. It represents the 'nominal' spin period. When the spin period 
+      is changing, it will not be very accurate."                             
+  END_OBJECT                  = FIELD                                         
+  OBJECT                      = FIELD                                         
+    NAME                      = "STARING"                                     
+    FIELD_NUMBER              = 10                                            
+    DATA_TYPE                 = ASCII_INTEGER                                 
+    BYTES                     = 10                                            
+    VALID_MINIMUM             = 0                                             
+    VALID_MAXIMUM             = 1                                             
+    DESCRIPTION               = "                                             
+      0 if the spacecraft is in spin mode, 1 if the not in spin mode."        
+  END_OBJECT                  = FIELD                                         
+  OBJECT                      = FIELD                                         
+    NAME                      = "DPPS_LEVEL"                                  
+    FIELD_NUMBER              = 11                                            
+    DATA_TYPE                 = ASCII_INTEGER                                 
+    BYTES                     = 10                                            
+    VALID_MINIMUM             = 0                                             
+    VALID_MAXIMUM             = 2147483646                                    
+    DESCRIPTION               = "                                             
+      This field represents the step level for the calculation of E/Q for the 
+      given duration."                                                        
+  END_OBJECT                  = FIELD                                         
+  OBJECT                      = FIELD                                         
+    NAME                      = "START_HEAD_1"                                
+    FIELD_NUMBER              = 12                                            
+    DATA_TYPE                 = ASCII_INTEGER                                 
+    BYTES                     = 10                                            
+    VALID_MINIMUM             = 0                                             
+    VALID_MAXIMUM             = 2147483646                                    
+    DESCRIPTION               = "                                             
+      This field represents the total number of PHA events that triggered the 
+      head 1 start microplate."                                               
+  END_OBJECT                  = FIELD                                         
+  OBJECT                      = FIELD                                         
+    NAME                      = "START_HEAD_2"                                
+    FIELD_NUMBER              = 13                                            
+    DATA_TYPE                 = ASCII_INTEGER                                 
+    BYTES                     = 10                                            
+    VALID_MINIMUM             = 0                                             
+    VALID_MAXIMUM             = 2147483646                                    
+    DESCRIPTION               = "                                             
+      This field represents the total number of PHA events that triggered the 
+      head 2 start microplate."                                               
+  END_OBJECT                  = FIELD                                         
+  OBJECT                      = FIELD                                         
+    NAME                      = "START_HEAD_3"                                
+    FIELD_NUMBER              = 14                                            
+    DATA_TYPE                 = ASCII_INTEGER                                 
+    BYTES                     = 10                                            
+    VALID_MINIMUM             = 0                                             
+    VALID_MAXIMUM             = 2147483646                                    
+    DESCRIPTION               = "                                             
+      This field represents the total number of PHA events that triggered the 
+      head 3 start microplate."                                               
+  END_OBJECT                  = FIELD                                         
+  OBJECT                      = FIELD                                         
+    NAME                      = "START_SUM"                                   
+    FIELD_NUMBER              = 15                                            
+    DATA_TYPE                 = ASCII_INTEGER                                 
+    BYTES                     = 10                                            
+    VALID_MINIMUM             = 0                                             
+    VALID_MAXIMUM             = 2147483646                                    
+    DESCRIPTION               = "                                             
+      This field represents the total number of PHA events that triggered any 
+      of the start microplates."                                              
+  END_OBJECT                  = FIELD                                         
+  OBJECT                      = FIELD                                         
+    NAME                      = "STOP_HEAD_1"                                 
+    FIELD_NUMBER              = 16                                            
+    DATA_TYPE                 = ASCII_INTEGER                                 
+    BYTES                     = 10                                            
+    VALID_MINIMUM             = 0                                             
+    VALID_MAXIMUM             = 2147483646                                    
+    DESCRIPTION               = "                                             
+      This field represents the total number of PHA events that triggered the 
+      head 1 stop microplate."                                                
+  END_OBJECT                  = FIELD                                         
+  OBJECT                      = FIELD                                         
+    NAME                      = "STOP_HEAD_2"                                 
+    FIELD_NUMBER              = 17                                            
+    DATA_TYPE                 = ASCII_INTEGER                                 
+    BYTES                     = 10                                            
+    VALID_MINIMUM             = 0                                             
+    VALID_MAXIMUM             = 2147483646                                    
+    DESCRIPTION               = "                                             
+      This field represents the total number of PHA events that triggered the 
+      head 2 stop microplate."                                                
+  END_OBJECT                  = FIELD                                         
+  OBJECT                      = FIELD                                         
+    NAME                      = "STOP_HEAD_3"                                 
+    FIELD_NUMBER              = 18                                            
+    DATA_TYPE                 = ASCII_INTEGER                                 
+    BYTES                     = 10                                            
+    VALID_MINIMUM             = 0                                             
+    VALID_MAXIMUM             = 2147483646                                    
+    DESCRIPTION               = "                                             
+      This field represents the total number of PHA events that triggered the 
+      head 3 stop microplate."                                                
+  END_OBJECT                  = FIELD                                         
+  OBJECT                      = FIELD                                         
+    NAME                      = "STOP_SUM"                                    
+    FIELD_NUMBER              = 19                                            
+    DATA_TYPE                 = ASCII_INTEGER                                 
+    BYTES                     = 10                                            
+    VALID_MINIMUM             = 0                                             
+    VALID_MAXIMUM             = 2147483646                                    
+    DESCRIPTION               = "                                             
+      This field represents the total number of PHA events that triggered any 
+      of the stop microplates."                                               
+  END_OBJECT                  = FIELD                                         
+  OBJECT                      = FIELD                                         
+    NAME                      = "ENERGY_HEAD_1"                               
+    FIELD_NUMBER              = 20                                            
+    DATA_TYPE                 = ASCII_INTEGER                                 
+    BYTES                     = 10                                            
+    VALID_MINIMUM             = 0                                             
+    VALID_MAXIMUM             = 2147483646                                    
+    DESCRIPTION               = "                                             
+      This field represents the total number of PHA events that deposited     
+      energy in telescope 1 SSD."                                             
+  END_OBJECT                  = FIELD                                         
+  OBJECT                      = FIELD                                         
+    NAME                      = "ENERGY_HEAD_2"                               
+    FIELD_NUMBER              = 21                                            
+    DATA_TYPE                 = ASCII_INTEGER                                 
+    BYTES                     = 10                                            
+    VALID_MINIMUM             = 0                                             
+    VALID_MAXIMUM             = 2147483646                                    
+    DESCRIPTION               = "                                             
+      This field represents the total number of PHA events that deposited     
+      energy in telescope 2 SSD."                                             
+  END_OBJECT                  = FIELD                                         
+  OBJECT                      = FIELD                                         
+    NAME                      = "ENERGY_HEAD_3"                               
+    FIELD_NUMBER              = 22                                            
+    DATA_TYPE                 = ASCII_INTEGER                                 
+    BYTES                     = 10                                            
+    VALID_MINIMUM             = 0                                             
+    VALID_MAXIMUM             = 2147483646                                    
+    DESCRIPTION               = "                                             
+      This field represents the total number of PHA events that deposited     
+      energy in telescope 3 SSD."                                             
+  END_OBJECT                  = FIELD                                         
+  OBJECT                      = FIELD                                         
+    NAME                      = "ENERGY_SUM"                                  
+    FIELD_NUMBER              = 23                                            
+    DATA_TYPE                 = ASCII_INTEGER                                 
+    BYTES                     = 10                                            
+    VALID_MINIMUM             = 0                                             
+    VALID_MAXIMUM             = 2147483646                                    
+    DESCRIPTION               = "                                             
+      This field represents the total number of PHA events that deposited     
+      energy all three telescopes."                                           
+  END_OBJECT                  = FIELD                                         
+  OBJECT                      = FIELD                                         
+    NAME                      = "DCR_HEAD_1"                                  
+    FIELD_NUMBER              = 24                                            
+    DATA_TYPE                 = ASCII_INTEGER                                 
+    BYTES                     = 10                                            
+    VALID_MINIMUM             = 0                                             
+    VALID_MAXIMUM             = 2147483646                                    
+    DESCRIPTION               = "                                             
+      This field represents the total number of PHA events that triggered two 
+      of the start microplates for telescope 1. Double Coincidence."          
+  END_OBJECT                  = FIELD                                         
+  OBJECT                      = FIELD                                         
+    NAME                      = "DCR_HEAD_2"                                  
+    FIELD_NUMBER              = 25                                            
+    DATA_TYPE                 = ASCII_INTEGER                                 
+    BYTES                     = 10                                            
+    VALID_MINIMUM             = 0                                             
+    VALID_MAXIMUM             = 2147483646                                    
+    DESCRIPTION               = "                                             
+      This field represents the total number of PHA events that triggered two 
+      of the start microplates for telescope 2. Double Coincidence."          
+  END_OBJECT                  = FIELD                                         
+  OBJECT                      = FIELD                                         
+    NAME                      = "DCR_HEAD_3"                                  
+    FIELD_NUMBER              = 26                                            
+    DATA_TYPE                 = ASCII_INTEGER                                 
+    BYTES                     = 10                                            
+    VALID_MINIMUM             = 0                                             
+    VALID_MAXIMUM             = 2147483646                                    
+    DESCRIPTION               = "                                             
+      This field represents the total number of PHA events that triggered two 
+      of the start microplates for telescope 3. Double Coincidence."          
+  END_OBJECT                  = FIELD                                         
+  OBJECT                      = FIELD                                         
+    NAME                      = "DCR_SUM"                                     
+    FIELD_NUMBER              = 27                                            
+    DATA_TYPE                 = ASCII_INTEGER                                 
+    BYTES                     = 10                                            
+    VALID_MINIMUM             = 0                                             
+    VALID_MAXIMUM             = 2147483646                                    
+    DESCRIPTION               = "                                             
+      This field represents the total number of PHA events that triggered two 
+      of the start microplates for all of the telescopes. Double              
+      Coincidence."                                                           
+  END_OBJECT                  = FIELD                                         
+  OBJECT                      = FIELD                                         
+    NAME                      = "TCR_HEAD_1"                                  
+    FIELD_NUMBER              = 28                                            
+    DATA_TYPE                 = ASCII_INTEGER                                 
+    BYTES                     = 10                                            
+    VALID_MINIMUM             = 0                                             
+    VALID_MAXIMUM             = 2147483646                                    
+    DESCRIPTION               = "                                             
+      This field represents the total number of PHA events that triggered all 
+      three of the start microplates for telescope 1. Triple Coincidence."    
+  END_OBJECT                  = FIELD                                         
+  OBJECT                      = FIELD                                         
+    NAME                      = "TCR_HEAD_2"                                  
+    FIELD_NUMBER              = 29                                            
+    DATA_TYPE                 = ASCII_INTEGER                                 
+    BYTES                     = 10                                            
+    VALID_MINIMUM             = 0                                             
+    VALID_MAXIMUM             = 2147483646                                    
+    DESCRIPTION               = "                                             
+      This field represents the total number of PHA events that triggered all 
+      three of the start microplates for telescope 2. Triple Coincidence."    
+  END_OBJECT                  = FIELD                                         
+  OBJECT                      = FIELD                                         
+    NAME                      = "TCR_HEAD_3"                                  
+    FIELD_NUMBER              = 30                                            
+    DATA_TYPE                 = ASCII_INTEGER                                 
+    BYTES                     = 10                                            
+    VALID_MINIMUM             = 0                                             
+    VALID_MAXIMUM             = 2147483646                                    
+    DESCRIPTION               = "                                             
+      This field represents the total number of PHA events that triggered all 
+      three of the start microplates for telescope 3. Triple Coincidence."    
+  END_OBJECT                  = FIELD                                         
+  OBJECT                      = FIELD                                         
+    NAME                      = "TCR_SUM"                                     
+    FIELD_NUMBER              = 31                                            
+    DATA_TYPE                 = ASCII_INTEGER                                 
+    BYTES                     = 10                                            
+    VALID_MINIMUM             = 0                                             
+    VALID_MAXIMUM             = 2147483646                                    
+    DESCRIPTION               = "                                             
+      This field represents the total number of PHA events that triggered all 
+      three of the start microplates for all telescopes. Triple Coincidence." 
+  END_OBJECT                  = FIELD                                         
+  OBJECT                      = FIELD                                         
+    NAME                      = "UFSR"                                        
+    FIELD_NUMBER              = 32                                            
+    DATA_TYPE                 = ASCII_INTEGER                                 
+    BYTES                     = 10                                            
+    VALID_MINIMUM             = 0                                             
+    VALID_MAXIMUM             = 2147483646                                    
+    DESCRIPTION               = "                                             
+      This field represents the total number of PHA events that any of the    
+      start microplates triggered for any telescope.                          
+      (U)niversal (F)ront (S)EDA (R)ate. (S)econdary (E)lectron (D)etector    
+      (A)ssembly."                                                            
+  END_OBJECT                  = FIELD                                         
+  OBJECT                      = FIELD                                         
+    NAME                      = "URSR"                                        
+    FIELD_NUMBER              = 33                                            
+    DATA_TYPE                 = ASCII_INTEGER                                 
+    BYTES                     = 10                                            
+    VALID_MINIMUM             = 0                                             
+    VALID_MAXIMUM             = 2147483646                                    
+    DESCRIPTION               = "                                             
+      This field represents the total number of PHA events that any of the    
+      stop microplates triggered for any telescope.                           
+      (U)niversal (R)ear (S)EDA (R)ate. (S)econdary (E)lectron (D)etector     
+      (A)ssembly."                                                            
+  END_OBJECT                  = FIELD                                         
+END_OBJECT                    = SPREADSHEET                                   
+END                                                                           

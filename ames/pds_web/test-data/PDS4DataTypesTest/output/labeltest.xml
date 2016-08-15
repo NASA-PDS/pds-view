@@ -1,0 +1,81 @@
+<Product_Observational xmlns="http://pds.nasa.gov/pds4/pds/v1" xmlns:pds="http://pds.nasa.gov/pds4/pds/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="">
+  <Identification_Area>
+    <logical_identifier>urn:nasa:pds:data:datatest1.0:labeltest.dat</logical_identifier>
+    <version_id>1.0</version_id>
+    <title>01</title>
+    <information_model_version>1.2.0.1</information_model_version>
+    <product_class>Product_Observational</product_class>
+    <Modification_History>
+      <Modification_Detail>
+        <modification_date>2014-09-18</modification_date>
+        <version_id>1.0</version_id>
+        <description>Auto generated PDS4 product label created by the Transform Tool.</description>
+      </Modification_Detail>
+    </Modification_History>
+  </Identification_Area>
+  <Observation_Area>
+    <Time_Coordinates>
+      <start_date_time xsi:nil="true"/>
+      <stop_date_time xsi:nil="true"/>
+    </Time_Coordinates>
+    <Investigation_Area/>
+    <Observing_System/>
+    <Target_Identification/>
+  </Observation_Area>
+  <File_Area_Observational>
+    <File>
+      <file_name>binarypds4.dat</file_name>
+    </File>
+    <Table_Binary>
+      <offset unit="byte">0</offset>
+      <records>1</records>
+      <Record_Binary>
+        <fields>7</fields>
+        <groups>0</groups>
+        <record_length unit="byte">20</record_length>
+        <Field_Binary>
+          <name>ascii boolean - false</name>
+          <field_location unit="byte">1</field_location>
+          <data_type>ASCII_Boolean</data_type>
+          <field_length unit="byte">5</field_length>
+        </Field_Binary>
+        <Field_Binary>
+          <name>ascii boolean - true</name>
+          <field_location unit="byte">6</field_location>
+          <data_type>ASCII_Boolean</data_type>
+          <field_length unit="byte">4</field_length>
+        </Field_Binary>
+        <Field_Binary>
+          <name>ascii boolean - 0</name>
+          <field_location unit="byte">10</field_location>
+          <data_type>ASCII_Boolean</data_type>
+          <field_length unit="byte">1</field_length>
+        </Field_Binary>
+        <Field_Binary>
+          <name>ascii boolean - 1</name>
+          <field_location unit="byte">11</field_location>
+          <data_type>ASCII_Boolean</data_type>
+          <field_length unit="byte">1</field_length>
+        </Field_Binary>
+        <Field_Binary>
+          <name>ascii integer - 45</name>
+          <field_location unit="byte">12</field_location>
+          <data_type>ASCII_Integer</data_type>
+          <field_length unit="byte">2</field_length>
+        </Field_Binary>
+        <Field_Binary>
+          <name>ascii integer - -45</name>
+          <field_location unit="byte">14</field_location>
+          <data_type>ASCII_Integer</data_type>
+          <field_length unit="byte">3</field_length>
+        </Field_Binary>
+        <Field_Binary>
+          <name>ieee754 - 4bytes</name>
+          <field_location unit="byte">17</field_location>
+          <data_type>IEEE754MSBDouble</data_type>
+          <field_length unit="byte">2</field_length>
+        </Field_Binary>
+      </Record_Binary>
+    </Table_Binary>
+  </File_Area_Observational>
+</Product_Observational>

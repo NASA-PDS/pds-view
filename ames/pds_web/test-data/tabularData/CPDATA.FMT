@@ -1,0 +1,266 @@
+/**************************************************************************/
+/*   This structure describes the format of the                           */
+/*   data record of the pulse time file of the Pioneer Venus Orbiter      */
+/*   (PVO) Supplementary Experimental Data Record (SEDR).  The following  */
+/*   is an overview in tabular form of the pulse time data record:        */
+/*                                                                        */ 
+/*   +----+----------------------------------------+                      */
+/*   |    |BITS -->                                |                      */
+/*   +----+----------------------------------------+                      */
+/*   |    |           111 1111 1112 2222 2222 2333 |                      */
+/*   |    |1234 5678 9012 3456 7890 1234 5678 9012 |                      */
+/*   +----+----------------------------------------+                      */
+/*   |WD 1| YEAR OF Fs PULSE  |  DOY OF Fs PULSE   |                      */
+/*   |   2|  MILLISECONDS (S/C UT) OF Fs PULSE     |                      */
+/*   |   3| YEAR OF RIP PULSE |  DOY OF RIP PULSE  |                      */
+/*   |   4|  MILLISECONDS (S/C UT) OF RIP PULSE    |                      */
+/*   |   5| YEAR OF RAM PULSE |  DOY OF RAM PULSE  |                      */
+/*   |   6|  MILLISECONDS (S/C UT) OF RAM PULSE    |                      */
+/*   |   7|YEAR OF NADIR PULSE| DOY OF NADIR PULSE |                      */
+/*   |   8|  MILLISECONDS (S/C UT) OF NADIR PULSE  |                      */
+/*   |   9| [  MILLISECONDS SINCE LAST REAL SUN  ] |                      */
+/*   |  10| [      PULSE TIME (IBM REAL*8)       ] |                      */
+/*   |  11|*A|             |*B| |*C| |*D|          |                      */
+/*   |  12|                (SPARE)                 |                      */
+/*   +----+----------------------------------------+                      */
+/*                                                                        */ 
+/*   WORD 11 OF EACH RECORD CONTAINS STATUS INFORMATION                   */
+/*                                                                        */ 
+/*      *A = BITS  1 -  2 = STRM                                          */
+/*      *B = BITS 15 - 16 = CLCK                                          */
+/*      *C = BITS 19 - 20 = SRRM                                          */
+/*      *D = BITS 23 - 24 = FIRE                                          */
+/*                                                                        */
+/*           STRM = UNKNOWN PARAMETER                                     */
+/*                                                                        */ 
+/*           CLCK = UNKNOWN PARAMETER                                     */
+/*                                                                        */ 
+/*           SRRM = SELECTED ROLL REFERENCE METHOD                        */
+/*                  0 = SIMULATED SYNCHRONIZATION                         */
+/*                  1 = STAR SYNCHRONIZATION                              */
+/*                  2 = SIMULATED SYNCHRONIZATION                         */
+/*                  3 = SUN SYNCHRONIZATION                               */
+/*                                                                        */ 
+/*           FIRE = SPACECRAFT FIRING                                     */
+/*                  0 = NORMAL                                            */
+/*                  1 = FIRING OCCURRED                                   */
+/*                                                                        */ 
+/**************************************************************************/
+/* Table format description begins here.                                  */
+/**************************************************************************/
+OBJECT               = COLUMN
+  NAME               = "YEAR OF Fs PULSE"
+  DATA_TYPE          = "MSB_INTEGER"
+  START_BYTE         = 1
+  BYTES              = 2
+  DESCRIPTION        = "This object contains the four digit year in
+  spacecraft universal time for the smoothed roll reference signal, the
+  F(s) pulse, of the PVO spacecraft."
+END_OBJECT           = COLUMN
+
+OBJECT               = COLUMN
+  NAME               = "DAY OF YEAR OF Fs PULSE"
+  DATA_TYPE          = "MSB_INTEGER"
+  START_BYTE         = 3
+  BYTES              = 2
+  DESCRIPTION        = "This object contains the three digit day of year
+  in spacecraft universal time, ranging from 1 to 366, for the smoothed
+  roll reference signal, the F(s) pulse, of the PVO spacecraft."
+END_OBJECT           = COLUMN
+
+OBJECT               = COLUMN
+  NAME               = "MILLISECONDS OF DAY OF Fs PULSE"
+  DATA_TYPE          = "MSB_INTEGER"
+  START_BYTE         = 5
+  BYTES              = 4
+  NOTE 	             = "This object contains the milliseconds of the day
+  in spacecraft universal time, where midnight is 0.00, for the smoothed
+  roll reference signal,the F(s) pulse, of the PVO spacecraft."
+END_OBJECT           = COLUMN
+
+OBJECT               = COLUMN
+  NAME               = "YEAR OF RIP PULSE"
+  DATA_TYPE          = "MSB_INTEGER"
+  START_BYTE         = 9
+  BYTES              = 2
+  DESCRIPTION        = "This object contains the four digit year in
+  spacecraft universal time for the roll index pulse, which is determined
+  by adjusting the F(s) pulse by the roll index delay angle."
+END_OBJECT           = COLUMN
+
+OBJECT               = COLUMN
+  NAME               = "DAY OF YEAR OF RIP PULSE"
+  DATA_TYPE          = "MSB_INTEGER"
+  START_BYTE         = 11
+  BYTES              = 2
+  DESCRIPTION        = "This object contains the three digit day of year
+  in spacecraft universal time, ranging from 1 to 366, for the roll index
+  pulse, which is determined by adjusting the F(s) pulse by the roll index
+  delay angle."
+END_OBJECT           = COLUMN
+
+OBJECT               = COLUMN
+  NAME               = "MILLISECONDS OF DAY OF RIP PULSE"
+  DATA_TYPE          = "MSB_INTEGER"
+  START_BYTE         = 13
+  BYTES              = 4
+  DESCRIPTION        = "This object contains the milliseconds of the day
+  in spacecraft universal time, where midnight is 0.00, for the roll index
+  pulse, which is determined by adjusting the F(s) pulse by the roll index
+  delay angle."
+END_OBJECT           = COLUMN
+
+OBJECT               = COLUMN
+  NAME               = "YEAR OF RAM PULSE"
+  DATA_TYPE          = "MSB_INTEGER"
+  START_BYTE         = 17
+  BYTES              = 2
+  DESCRIPTION        = "This object contains the four digit year in
+  spacecraft universal time for the RAM pulse, which is determined
+  by adjusting the RIP pulse by the RAM time delay."
+END_OBJECT           = COLUMN
+
+OBJECT               = COLUMN
+  NAME               = "DAY OF YEAR OF RAM PULSE"
+  DATA_TYPE          = "MSB_INTEGER"
+  START_BYTE         = 19
+  BYTES              = 2
+  DESCRIPTION        = "This object contains the three digit day of year
+  in spacecraft universal time, ranging from 1 to 366, for the RAM pulse,
+  which is determined by adjusting the RIP pulse by the RAM time delay."
+END_OBJECT           = COLUMN
+
+OBJECT               = COLUMN
+  NAME               = "MILLISECONDS OF DAY OF RAM PULSE"
+  DATA_TYPE          = "MSB_INTEGER"
+  START_BYTE         = 21
+  BYTES              = 4
+  DESCRIPTION        = "This object contains the milliseconds of the day
+  in spacecraft universal time, where midnight is 0.00, for the RAM pulse,
+  which is determined by adjusting the RIP pulse by the RAM time delay."
+END_OBJECT           = COLUMN
+
+OBJECT               = COLUMN
+  NAME               = "YEAR OF NADIR PULSE"
+  DATA_TYPE          = "MSB_INTEGER"
+  START_BYTE         = 25
+  BYTES              = 2
+  DESCRIPTION        = "This object contains the four digit year in
+  spacecraft universal time for the NADIR pulse, which is determined
+  by adjusting the RIP pulse by the NADIR time delay."
+END_OBJECT           = COLUMN
+
+OBJECT               = COLUMN
+  NAME               = "DAY OF YEAR OF NADIR PULSE"
+  DATA_TYPE          = "MSB_INTEGER"
+  START_BYTE         = 27
+  BYTES              = 2
+  DESCRIPTION        = "This object contains the three digit day of year
+  in spacecraft universal time, ranging from 1 to 366, for the NADIR pulse,
+  which is determined by adjusting the RIP pulse by the NADIR time delay."
+END_OBJECT           = COLUMN
+
+OBJECT               = COLUMN
+  NAME               = "MILLISECONDS OF DAY OF NADIR PULSE"
+  DATA_TYPE          = "MSB_INTEGER"
+  START_BYTE         = 29
+  BYTES              = 4
+  NOTE 	             = "This object contains the milliseconds of the day
+  in spacecraft universal time, where midnight is 0.00, for the NADIR pulse,
+  which is determined by adjusting the RIP pulse by the NADIR time delay."
+END_OBJECT           = COLUMN
+
+OBJECT               = COLUMN
+  NAME               = "MILLISECONDS SINCE LAST SUN PULSE TIME"
+  DATA_TYPE          = "MSB_INTEGER"
+  START_BYTE         = 33
+  BYTES              = 8
+  NOTE 	             = "This object contains the total number of milliseconds
+  since the real actual sun pulse occurred."
+END_OBJECT           = COLUMN
+
+OBJECT               = COLUMN
+  NAME               = "PULSE TIME STATUS WORD"
+  DATA_TYPE          = "MSB_BIT_STRING"
+  START_BYTE         = 41
+  BYTES              = 4
+  DESCRIPTION        = "This object contains the 4 byte long pulse time
+  status word."
+
+  OBJECT             = BIT_COLUMN
+    NAME             = "STRM"
+    BIT_DATA_TYPE    = "MSB_UNSIGNED_INTEGER"
+    START_BIT        = 1
+    BITS             = 2
+    DESCRIPTION      = "The definition of this parameter is unknown."
+  END_OBJECT         = BIT_COLUMN
+
+  OBJECT             = BIT_COLUMN
+    NAME             = "SPARE"
+    BIT_DATA_TYPE    = "MSB_UNSIGNED_INTEGER"
+    START_BIT        = 3
+    BITS             = 12
+    DESCRIPTION      = "This object contains a spare (empty) value."
+  END_OBJECT         = BIT_COLUMN
+
+  OBJECT             = BIT_COLUMN
+    NAME             = "CLCK"
+    BIT_DATA_TYPE    = "MSB_UNSIGNED_INTEGER"
+    START_BIT        = 15
+    BITS             = 2
+    DESCRIPTION      = "The definition of this parameter is unknown."
+  END_OBJECT         = BIT_COLUMN
+
+  OBJECT             = BIT_COLUMN
+    NAME             = "SPARE"
+    BIT_DATA_TYPE    = "MSB_UNSIGNED_INTEGER"
+    START_BIT        = 17
+    BITS             = 2
+    DESCRIPTION      = "This object contains a spare (empty) value."
+  END_OBJECT         = BIT_COLUMN
+
+  OBJECT             = BIT_COLUMN
+    NAME             = "SELECTED ROLL REFERENCE METHOD"
+    BIT_DATA_TYPE    = "MSB_UNSIGNED_INTEGER"
+    START_BIT        = 19
+    BITS             = 2
+    DESCRIPTION      = "This object contains the synchronization method
+    used to determine the F(s) pulse time.  The possible values are:
+    3 for sun synchronization, 1 for star synchronization and 0 or 2 for
+    simulated synchronization."
+  END_OBJECT         = BIT_COLUMN
+
+  OBJECT             = BIT_COLUMN
+    NAME             = "SPARE"
+    BIT_DATA_TYPE    = "MSB_UNSIGNED_INTEGER"
+    START_BIT        = 21
+    BITS             = 2
+    DESCRIPTION      = "This object contains a spare (empty) value."
+  END_OBJECT         = BIT_COLUMN
+
+  OBJECT             = BIT_COLUMN
+    NAME             = "SPACECRAFT FIRING"
+    BIT_DATA_TYPE    = "MSB_UNSIGNED_INTEGER"
+    START_BIT        = 23
+    BITS             = 2
+    DESCRIPTION      = "This object contains a flag value to indicate
+    whether or not a firing was occurring at this F(s) pulse time.  The
+    possible values are:  0 for no firing and 1 for firing."
+  END_OBJECT         = BIT_COLUMN
+
+  OBJECT             = BIT_COLUMN
+    NAME             = "SPARE"
+    BIT_DATA_TYPE    = "MSB_UNSIGNED_INTEGER"
+    START_BIT        = 25
+    BITS             = 8
+    DESCRIPTION      = "This object contains a spare (empty) value."
+  END_OBJECT         = BIT_COLUMN
+END_OBJECT           = COLUMN
+
+OBJECT               = COLUMN
+  NAME               = "SPARE"
+  DATA_TYPE          = "IBM REAL"
+  START_BYTE         = 45
+  BYTES              = 4
+  DESCRIPTION        = "This object contains a spare (empty) value."
+END_OBJECT           = COLUMN

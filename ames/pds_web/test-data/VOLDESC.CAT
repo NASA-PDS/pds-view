@@ -1,0 +1,43 @@
+PDS_VERSION_ID          = PDS3
+LABEL_REVISION_NOTE     = "M.K. GORDON, 2006-03-13"
+RECORD_TYPE             = STREAM
+
+OBJECT                  = VOLUME
+  VOLUME_SERIES_NAME    = "GIANT PLANET SATELLITE ASTROMETRY"
+  VOLUME_SET_NAME       = "
+SATURN SATELLITE ASTROMETRY DATA FROM WFP2 2002"
+  VOLUME_SET_ID         = "USA_NASA_PDS_ASTROM_0001"
+  VOLUMES               = 1
+  VOLUME_NAME           = "
+VOLUME 1: SATURN SATELLITE ASTROMETRY WITH WFPC2 1994-2002"
+  VOLUME_ID             = "ASTROM_0001"
+  VOLUME_FORMAT         = "ISO-9660"
+  VOLUME_VERSION_ID     = "VERSION 1"
+  MEDIUM_TYPE           = "ELECTRONIC"
+  PUBLICATION_DATE      = 2003-07-30
+  DATA_SET_ID           = "HST-S-WFPC2-4-ASTROM2002-V1.0"
+  DESCRIPTION           = "This volume contains ASCII table files
+giving the positions of various Saturnian satellites in HST images
+taken during the period 1994-2002."
+
+  OBJECT                = DATA_PRODUCER
+    INSTITUTION_NAME    = "SETI INSTITUTE"
+    FACILITY_NAME       = "PDS PLANETARY RINGS NODE"
+    FULL_NAME           = "MITCHELL K. GORDON"
+    ADDRESS_TEXT        = "SETI INSTITUTE
+                           515 N. WHISMAN ROAD
+                           MOUNTAIN VIEW, CA 94043"
+    TELEPHONE_NUMBER    = "2765230341"
+  END_OBJECT            = DATA_PRODUCER
+
+  OBJECT                        = CATALOG
+    ^DATA_SET_CATALOG           = "DATASET.CAT"
+    ^INSTRUMENT_CATALOG         = "INST.CAT"
+    ^INSTRUMENT_HOST_CATALOG    = "INSTHOST.CAT"
+    ^MISSION_CATALOG            = "MISSION.CAT"
+    ^PERSONNEL_CATALOG          = "PERSON.CAT"
+    ^REFERENCE_CATALOG          = "REF.CAT"
+  END_OBJECT                    = CATALOG
+
+END_OBJECT              = VOLUME
+END

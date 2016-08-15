@@ -1,0 +1,908 @@
+PDS_VERSION_ID               = PDS3                                           
+                                                                              
+                                                                              
+/*  FILE CHARACTERISTICS DATA ELEMENTS */                                     
+                                                                              
+RECORD_TYPE                  = FIXED_LENGTH                                   
+RECORD_BYTES                 = 451                                            
+FILE_RECORDS                 = 6114                                           
+FILE_NAME                    = "RA_050627184806_HKTM_ENG.LBL"  /* this file */
+                                                                              
+                                                                              
+/* DATA OBJECT POINTERS IDENTIFICATION DATA ELEMENTS */                       
+                                                                              
+^HOUSEKEEPING_TABLE          = ("RA_050627184806_HKTM_ENG.TAB",1)             
+                                                                              
+                                                                              
+/* TIME RANGE DATA ELEMENTS */                                                
+                                                                              
+START_TIME                   = 2005-06-27T18:48:06.415  /* UTC */             
+STOP_TIME                    = 2005-06-30T16:24:47.258 /* UTC */              
+SPACECRAFT_CLOCK_START_COUNT = "1/78518865.292" /* OBT */                     
+SPACECRAFT_CLOCK_STOP_COUNT  = "1/78769466.093" /* OBT */                     
+                                                                              
+                                                                              
+/* OBSERVATION AND EXPOSURE DATA ELEMENTS */                                  
+                                                                              
+INSTRUMENT_MODE_ID           = "N/A"                                          
+INSTRUMENT_MODE_DESC         = "HOUSEKEEPING"                                 
+EXPOSURE_DURATION            = "N/A"                                          
+DATA_QUALITY_ID              = 0                                              
+DATA_QUALITY_DESC            = "Data quality is nominal"                      
+MISSION_PHASE_NAME           = "CRUISE 2"                                     
+/* see Phase Definition table in RSOC Design Specification, */                
+/* RO-EST-PL-2010 and Archive GVT Plan, RO-EST-PL-5011 */                     
+TARGET_NAME                  = "CHECKOUT"                                     
+TARGET_TYPE                  = "N/A"                                          
+TARGET_DESC                  = "Housekeeping data"                            
+                                                                              
+                                                                              
+/* INSTRUMENT AND MISSION DESCRIPTIVE DATA ELEMENTS */                        
+                                                                              
+INSTRUMENT_ID                = "ALICE"                                        
+INSTRUMENT_NAME              = "ALICE"                                        
+INSTRUMENT_TYPE              = "ULTRAVIOLET SPECTROMETER"                     
+INSTRUMENT_HOST_ID           = "RO"                                           
+INSTRUMENT_HOST_NAME         = "ROSETTA-ORBITER"                              
+MISSION_ID                   = "ROSETTA"                                      
+MISSION_NAME                 = "INTERNATIONAL ROSETTA MISSION"                
+                                                                              
+                                                                              
+/* PRODUCT AND DATA SET DATA ELEMENTS */                                      
+                                                                              
+PRODUCT_ID                   = "RA_050627184806_HKTM_ENG"                     
+PRODUCT_TYPE                 = EDR /* CODMAC Data Level 2 */                  
+PRODUCT_CREATION_TIME        = 2005-06-27T18:48:06                            
+DATA_SET_ID                  = "RO-C/CAL/X-ALICE-2-CR2-V1.0"                  
+DATA_SET_NAME = "ROSETTA-ORBITER 9P/CAL/CHECK ALICE 2 CR2 V1.0"               
+PRODUCER_ID                  = "ROSETTA_ALICE"                                
+PRODUCER_FULL_NAME           = "ANDREW J. STEFFL"                             
+PRODUCER_INSTITUTION_NAME    = "SOUTHWEST RESEARCH INSTITUTE"                 
+                                                                              
+                                                                              
+/* DATA OBJECT DEFINITION */                                                  
+                                                                              
+OBJECT                       = HOUSEKEEPING_TABLE                             
+  INTERCHANGE_FORMAT         = ASCII                                          
+  ROWS                       = 6114                                           
+  COLUMNS                    = 73                                             
+  ROW_BYTES                  = 451                                            
+  DESCRIPTION = "Parameter values from Alice housekeeping                     
+     telemetry (HKTM) data.  The original file contained a                    
+     header that described the contents of the file, but was                  
+     not PDS-compliant for an ASCII text table.  The first                    
+     part of the header contained comment lines (lines that                   
+     start with the #-sign) that list the calibration files                   
+     used to get physical units for parameters like voltage,                  
+     currents, and temperatueres.  Those comment lines are                    
+     as follows:                                                              
+       # Alice Engineering Housekeeping File                                  
+       # - LIMA, version 0.14, date 2005-04-18                                
+       # - generated by LIMA on  2005-06-30T11:49:26(local)                   
+       # - SwRI - Southwest Research Institute (R)                            
+       # Used calibration files:                                              
+       #    HvSet:  ../../../data/cal/lima/ra_hvs_000.cal (06/25/2001)        
+       #    McpV:   ../../../data/cal/lima/ra_mcp_000.cal (06/25/2001)        
+       #    AnodeV: ../../../data/cal/lima/ra_ano_000.cal (06/25/2001)        
+       #    StripI: ../../../data/cal/lima/ra_stp_000.cal (06/25/2001)        
+       #    DiscrV: ../../../data/cal/lima/ra_dis_000.cal (06/25/2001)        
+       #    Temps:  ../../../data/cal/lima/ra_tmp_000.cal (06/25/2001)        
+     The remainder of the original HKTM header contained                      
+     descriptions of the columns, which are used for the                      
+     COLUMN object descriptions below."                                       
+                                                                              
+  OBJECT                     = COLUMN                                         
+    NAME                     = "ScetR"                                        
+    COLUMN_NUMBER            = 1                                              
+    DATA_TYPE                = ASCII_REAL                                     
+    START_BYTE               = 1                                              
+    BYTES                    = 15                                             
+    FORMAT                   = "F15.3"                                        
+    DESCRIPTION              = "SpaceCraft Event Time (secs since 1970)"      
+    UNIT                     = "SECONDS"                                      
+  END_OBJECT                 = COLUMN                                         
+                                                                              
+  OBJECT                     = COLUMN                                         
+    NAME                     = "ScetC"                                        
+    COLUMN_NUMBER            = 2                                              
+    DATA_TYPE                = TIME                                           
+    START_BYTE               = 16                                             
+    BYTES                    = 24                                             
+    FORMAT                   = "A24"                                          
+    DESCRIPTION              = "SpaceCraft Event Time (UTC)"                  
+    UNIT                     = "N/A"                                          
+  END_OBJECT                 = COLUMN                                         
+                                                                              
+  OBJECT                     = COLUMN                                         
+    NAME                     = "InstTime"                                     
+    COLUMN_NUMBER            = 3                                              
+    DATA_TYPE                = ASCII_REAL                                     
+    START_BYTE               = 40                                             
+    BYTES                    = 15                                             
+    FORMAT                   = "F15.3"                                        
+    DESCRIPTION              = "Alice instrument time (OBT, seconds)"         
+    UNIT                     = "SECONDS"                                      
+  END_OBJECT                 = COLUMN                                         
+                                                                              
+  OBJECT                     = COLUMN                                         
+    NAME                     = "TOffset"                                      
+    COLUMN_NUMBER            = 4                                              
+    DATA_TYPE                = ASCII_REAL                                     
+    START_BYTE               = 55                                             
+    BYTES                    = 15                                             
+    FORMAT                   = "F15.3"                                        
+    DESCRIPTION              = "Alice OBT offset from SCET (seconds)"         
+    UNIT                     = "SECONDS"                                      
+  END_OBJECT                 = COLUMN                                         
+                                                                              
+  OBJECT                     = COLUMN                                         
+    NAME                     = "InstSync"                                     
+    COLUMN_NUMBER            = 5                                              
+    DATA_TYPE                = ASCII_INTEGER                                  
+    START_BYTE               = 70                                             
+    BYTES                    = 2                                              
+    FORMAT                   = "I2"                                           
+    DESCRIPTION              = "Alice instrument time synchronized"           
+    UNIT                     = "N/A"                                          
+  END_OBJECT                 = COLUMN                                         
+                                                                              
+  OBJECT                     = COLUMN                                         
+    NAME                     = "HvOn"                                         
+    COLUMN_NUMBER            = 6                                              
+    DATA_TYPE                = CHARACTER                                      
+    START_BYTE               = 72                                             
+    BYTES                    = 4                                              
+    FORMAT                   = "A4"                                           
+    DESCRIPTION              = "HkHvOn (on/off)"                              
+    UNIT                     = "N/A"                                          
+  END_OBJECT                 = COLUMN                                         
+                                                                              
+  OBJECT                     = COLUMN                                         
+    NAME                     = "DetStim"                                      
+    COLUMN_NUMBER            = 7                                              
+    DATA_TYPE                = CHARACTER                                      
+    START_BYTE               = 76                                             
+    BYTES                    = 5                                              
+    FORMAT                   = "A5"                                           
+    DESCRIPTION              = "HkDetStim (stim/off)"                         
+    UNIT                     = "N/A"                                          
+  END_OBJECT                 = COLUMN                                         
+                                                                              
+  OBJECT                     = COLUMN                                         
+    NAME                     = "AcqMode"                                      
+    COLUMN_NUMBER            = 8                                              
+    DATA_TYPE                = CHARACTER                                      
+    START_BYTE               = 81                                             
+    BYTES                    = 10                                             
+    FORMAT                   = "A10"                                          
+    DESCRIPTION              = "AcquisitionMode                               
+      (PixelList/Histogram/CountRate)"                                        
+    UNIT                     = "N/A"                                          
+  END_OBJECT                 = COLUMN                                         
+                                                                              
+  OBJECT                     = COLUMN                                         
+    NAME                     = "AcqActiv"                                     
+    COLUMN_NUMBER            = 9                                              
+    DATA_TYPE                = CHARACTER                                      
+    START_BYTE               = 91                                             
+    BYTES                    = 4                                              
+    FORMAT                   = "A4"                                           
+    DESCRIPTION              = "HkAcqActive (on/off)"                         
+    UNIT                     = "N/A"                                          
+  END_OBJECT                 = COLUMN                                         
+                                                                              
+  OBJECT                     = COLUMN                                         
+    NAME                     = "DetDoor"                                      
+    COLUMN_NUMBER            = 10                                             
+    DATA_TYPE                = CHARACTER                                      
+    START_BYTE               = 95                                             
+    BYTES                    = 7                                              
+    FORMAT                   = "A7"                                           
+    DESCRIPTION              = "HkDetDoor (open/closed)"                      
+    UNIT                     = "N/A"                                          
+  END_OBJECT                 = COLUMN                                         
+                                                                              
+  OBJECT                     = COLUMN                                         
+    NAME                     = "ApDoor"                                       
+    COLUMN_NUMBER            = 11                                             
+    DATA_TYPE                = CHARACTER                                      
+    START_BYTE               = 102                                            
+    BYTES                    = 8                                              
+    FORMAT                   = "A8"                                           
+    DESCRIPTION              = "HkApDoor (error/closed/open/between)"         
+    UNIT                     = "N/A"                                          
+  END_OBJECT                 = COLUMN                                         
+                                                                              
+  OBJECT                     = COLUMN                                         
+    NAME                     = "Code"                                         
+    COLUMN_NUMBER            = 12                                             
+    DATA_TYPE                = CHARACTER                                      
+    START_BYTE               = 110                                            
+    BYTES                    = 8                                              
+    FORMAT                   = "A8"                                           
+    DESCRIPTION              = "EEPromCode/EEPromPage (PROM/EEPROM0-3)"       
+    UNIT                     = "N/A"                                          
+  END_OBJECT                 = COLUMN                                         
+                                                                              
+  OBJECT                     = COLUMN                                         
+    NAME                     = "State"                                        
+    COLUMN_NUMBER            = 13                                             
+    DATA_TYPE                = CHARACTER                                      
+    START_BYTE               = 118                                            
+    BYTES                    = 9                                              
+    FORMAT                   = "A9"                                           
+    DESCRIPTION              = "HkState                                       
+      (checkout/acquire/dump/safe/hold/safedump)"                             
+    UNIT                     = "N/A"                                          
+  END_OBJECT                 = COLUMN                                         
+                                                                              
+  OBJECT                     = COLUMN                                         
+    NAME                     = "MirrHtr"                                      
+    COLUMN_NUMBER            = 14                                             
+    DATA_TYPE                = CHARACTER                                      
+    START_BYTE               = 127                                            
+    BYTES                    = 4                                              
+    FORMAT                   = "A4"                                           
+    DESCRIPTION              = "HkMirrorHtrOn (on/off)"                       
+    UNIT                     = "N/A"                                          
+  END_OBJECT                 = COLUMN                                         
+                                                                              
+  OBJECT                     = COLUMN                                         
+    NAME                     = "GratHtr"                                      
+    COLUMN_NUMBER            = 15                                             
+    DATA_TYPE                = CHARACTER                                      
+    START_BYTE               = 131                                            
+    BYTES                    = 4                                              
+    FORMAT                   = "A4"                                           
+    DESCRIPTION              = "HkGratingHtrOn (on/off)"                      
+    UNIT                     = "N/A"                                          
+  END_OBJECT                 = COLUMN                                         
+                                                                              
+  OBJECT                     = COLUMN                                         
+    NAME                     = "CntRate"                                      
+    COLUMN_NUMBER            = 16                                             
+    DATA_TYPE                = ASCII_INTEGER                                  
+    START_BYTE               = 135                                            
+    BYTES                    = 6                                              
+    FORMAT                   = "I6"                                           
+    DESCRIPTION              = "HkCountRate (most recent countrate value)"    
+    UNIT                     = "HZ"                                           
+  END_OBJECT                 = COLUMN                                         
+                                                                              
+  OBJECT                     = COLUMN                                         
+    NAME                     = "CntRateL"                                     
+    COLUMN_NUMBER            = 17                                             
+    DATA_TYPE                = ASCII_INTEGER                                  
+    START_BYTE               = 141                                            
+    BYTES                    = 6                                              
+    FORMAT                   = "I6"                                           
+    DESCRIPTION              = "HkCountRateLo (low value in last HK period)"  
+    UNIT                     = "HZ"                                           
+  END_OBJECT                 = COLUMN                                         
+                                                                              
+  OBJECT                     = COLUMN                                         
+    NAME                     = "CntRateH"                                     
+    COLUMN_NUMBER            = 18                                             
+    DATA_TYPE                = ASCII_INTEGER                                  
+    START_BYTE               = 147                                            
+    BYTES                    = 6                                              
+    FORMAT                   = "I6"                                           
+    DESCRIPTION              = "HkCountRateHi (high value in last HK period)" 
+    UNIT                     = "HZ"                                           
+  END_OBJECT                 = COLUMN                                         
+                                                                              
+  OBJECT                     = COLUMN                                         
+    NAME                     = "HvSetR"                                       
+    COLUMN_NUMBER            = 19                                             
+    DATA_TYPE                = ASCII_INTEGER                                  
+    START_BYTE               = 153                                            
+    BYTES                    = 4                                              
+    FORMAT                   = "I4"                                           
+    DESCRIPTION              = "HkHvSet (calibration: HvSet)"                 
+    UNIT                     = "COUNTS"                                       
+  END_OBJECT                 = COLUMN                                         
+                                                                              
+  OBJECT                     = COLUMN                                         
+    NAME                     = "HvSetC"                                       
+    COLUMN_NUMBER            = 20                                             
+    DATA_TYPE                = ASCII_INTEGER                                  
+    START_BYTE               = 157                                            
+    BYTES                    = 6                                              
+    FORMAT                   = "I6"                                           
+    DESCRIPTION              = "High Voltage set point"                       
+    UNIT                     = "VOLT"                                         
+  END_OBJECT                 = COLUMN                                         
+                                                                              
+  OBJECT                     = COLUMN                                         
+    NAME                     = "McpVR"                                        
+    COLUMN_NUMBER            = 21                                             
+    DATA_TYPE                = ASCII_INTEGER                                  
+    START_BYTE               = 163                                            
+    BYTES                    = 4                                              
+    FORMAT                   = "I4"                                           
+    DESCRIPTION              = "HkMcpV (calibration: McpV)"                   
+    UNIT                     = "COUNTS"                                       
+  END_OBJECT                 = COLUMN                                         
+                                                                              
+  OBJECT                     = COLUMN                                         
+    NAME                     = "McpVC"                                        
+    COLUMN_NUMBER            = 22                                             
+    DATA_TYPE                = ASCII_INTEGER                                  
+    START_BYTE               = 167                                            
+    BYTES                    = 6                                              
+    FORMAT                   = "I6"                                           
+    DESCRIPTION              = "most recent measured Mcp voltage"             
+    UNIT                     = "VOLT"                                         
+  END_OBJECT                 = COLUMN                                         
+                                                                              
+  OBJECT                     = COLUMN                                         
+    NAME                     = "McpVLoR"                                      
+    COLUMN_NUMBER            = 23                                             
+    DATA_TYPE                = ASCII_INTEGER                                  
+    START_BYTE               = 173                                            
+    BYTES                    = 4                                              
+    FORMAT                   = "I4"                                           
+    DESCRIPTION              = "HkMcpVlo (calibration: McpV)"                 
+    UNIT                     = "COUNTS"                                       
+  END_OBJECT                 = COLUMN                                         
+                                                                              
+  OBJECT                     = COLUMN                                         
+    NAME                     = "McpVLoC"                                      
+    COLUMN_NUMBER            = 24                                             
+    DATA_TYPE                = ASCII_INTEGER                                  
+    START_BYTE               = 177                                            
+    BYTES                    = 6                                              
+    FORMAT                   = "I6"                                           
+    DESCRIPTION              = "lowest Mcp voltage measured in HK period"     
+    UNIT                     = "VOLT"                                         
+  END_OBJECT                 = COLUMN                                         
+                                                                              
+  OBJECT                     = COLUMN                                         
+    NAME                     = "McpVHiR"                                      
+    COLUMN_NUMBER            = 25                                             
+    DATA_TYPE                = ASCII_INTEGER                                  
+    START_BYTE               = 183                                            
+    BYTES                    = 4                                              
+    FORMAT                   = "I4"                                           
+    DESCRIPTION              = "HkMcpVhi (calibration: McpV)"                 
+    UNIT                     = "COUNTS"                                       
+  END_OBJECT                 = COLUMN                                         
+                                                                              
+  OBJECT                     = COLUMN                                         
+    NAME                     = "McpVHiC"                                      
+    COLUMN_NUMBER            = 26                                             
+    DATA_TYPE                = ASCII_INTEGER                                  
+    START_BYTE               = 187                                            
+    BYTES                    = 6                                              
+    FORMAT                   = "I6"                                           
+    DESCRIPTION              = "highest Mcp voltage measured in HK period"    
+    UNIT                     = "VOLT"                                         
+  END_OBJECT                 = COLUMN                                         
+                                                                              
+  OBJECT                     = COLUMN                                         
+    NAME                     = "AnoVR"                                        
+    COLUMN_NUMBER            = 27                                             
+    DATA_TYPE                = ASCII_INTEGER                                  
+    START_BYTE               = 193                                            
+    BYTES                    = 4                                              
+    FORMAT                   = "I4"                                           
+    DESCRIPTION              = "HkAnodeV (calibration: AnodeV)"               
+    UNIT                     = "COUNTS"                                       
+  END_OBJECT                 = COLUMN                                         
+                                                                              
+  OBJECT                     = COLUMN                                         
+    NAME                     = "AnoVC"                                        
+    COLUMN_NUMBER            = 28                                             
+    DATA_TYPE                = ASCII_INTEGER                                  
+    START_BYTE               = 197                                            
+    BYTES                    = 5                                              
+    FORMAT                   = "I5"                                           
+    DESCRIPTION              = "most recent measured anode voltage"           
+    UNIT                     = "VOLT"                                         
+  END_OBJECT                 = COLUMN                                         
+                                                                              
+  OBJECT                     = COLUMN                                         
+    NAME                     = "AnoVLoR"                                      
+    COLUMN_NUMBER            = 29                                             
+    DATA_TYPE                = ASCII_INTEGER                                  
+    START_BYTE               = 202                                            
+    BYTES                    = 4                                              
+    FORMAT                   = "I4"                                           
+    DESCRIPTION              = "HkAnodeVlo (calibration: AnodeV)"             
+    UNIT                     = "COUNTS"                                       
+  END_OBJECT                 = COLUMN                                         
+                                                                              
+  OBJECT                     = COLUMN                                         
+    NAME                     = "AnoVLoC"                                      
+    COLUMN_NUMBER            = 30                                             
+    DATA_TYPE                = ASCII_INTEGER                                  
+    START_BYTE               = 206                                            
+    BYTES                    = 5                                              
+    FORMAT                   = "I5"                                           
+    DESCRIPTION              = "lowest anode voltage measured in HK period"   
+    UNIT                     = "VOLT"                                         
+  END_OBJECT                 = COLUMN                                         
+                                                                              
+  OBJECT                     = COLUMN                                         
+    NAME                     = "AnoVHiR"                                      
+    COLUMN_NUMBER            = 31                                             
+    DATA_TYPE                = ASCII_INTEGER                                  
+    START_BYTE               = 211                                            
+    BYTES                    = 4                                              
+    FORMAT                   = "I4"                                           
+    DESCRIPTION              = "HkAnodeVhi (calibration: AnodeV)"             
+    UNIT                     = "COUNTS"                                       
+  END_OBJECT                 = COLUMN                                         
+                                                                              
+  OBJECT                     = COLUMN                                         
+    NAME                     = "AnoVHiC"                                      
+    COLUMN_NUMBER            = 32                                             
+    DATA_TYPE                = ASCII_INTEGER                                  
+    START_BYTE               = 215                                            
+    BYTES                    = 5                                              
+    FORMAT                   = "I5"                                           
+    DESCRIPTION              = "highest anode voltage measured in HK period"  
+    UNIT                     = "VOLT"                                         
+  END_OBJECT                 = COLUMN                                         
+                                                                              
+  OBJECT                     = COLUMN                                         
+    NAME                     = "StrIR"                                        
+    COLUMN_NUMBER            = 33                                             
+    DATA_TYPE                = ASCII_INTEGER                                  
+    START_BYTE               = 220                                            
+    BYTES                    = 4                                              
+    FORMAT                   = "I4"                                           
+    DESCRIPTION              = "HkStripI (calibration StripI)"                
+    UNIT                     = "COUNTS"                                       
+  END_OBJECT                 = COLUMN                                         
+                                                                              
+  OBJECT                     = COLUMN                                         
+    NAME                     = "StrIC"                                        
+    COLUMN_NUMBER            = 34                                             
+    DATA_TYPE                = ASCII_REAL                                     
+    START_BYTE               = 224                                            
+    BYTES                    = 6                                              
+    FORMAT                   = "F6.2"                                         
+    DESCRIPTION              = "most recent measured strip current"           
+    UNIT                     = "MICROAMP"                                     
+  END_OBJECT                 = COLUMN                                         
+                                                                              
+  OBJECT                     = COLUMN                                         
+    NAME                     = "StrILoR"                                      
+    COLUMN_NUMBER            = 35                                             
+    DATA_TYPE                = ASCII_INTEGER                                  
+    START_BYTE               = 230                                            
+    BYTES                    = 4                                              
+    FORMAT                   = "I4"                                           
+    DESCRIPTION              = "HkStripIlo (calibration StripI)"              
+    UNIT                     = "COUNTS"                                       
+  END_OBJECT                 = COLUMN                                         
+                                                                              
+  OBJECT                     = COLUMN                                         
+    NAME                     = "StrILoC"                                      
+    COLUMN_NUMBER            = 36                                             
+    DATA_TYPE                = ASCII_REAL                                     
+    START_BYTE               = 234                                            
+    BYTES                    = 6                                              
+    FORMAT                   = "F6.2"                                         
+    DESCRIPTION              = "lowest strip current measured in HK period"   
+    UNIT                     = "MICROAMP"                                     
+  END_OBJECT                 = COLUMN                                         
+                                                                              
+  OBJECT                     = COLUMN                                         
+    NAME                     = "StrIHiR"                                      
+    COLUMN_NUMBER            = 37                                             
+    DATA_TYPE                = ASCII_INTEGER                                  
+    START_BYTE               = 240                                            
+    BYTES                    = 4                                              
+    FORMAT                   = "I4"                                           
+    DESCRIPTION              = "HkStripIhi (calibration StripI)"              
+    UNIT                     = "COUNTS"                                       
+  END_OBJECT                 = COLUMN                                         
+                                                                              
+  OBJECT                     = COLUMN                                         
+    NAME                     = "StrIHiC"                                      
+    COLUMN_NUMBER            = 38                                             
+    DATA_TYPE                = ASCII_REAL                                     
+    START_BYTE               = 244                                            
+    BYTES                    = 6                                              
+    FORMAT                   = "F6.2"                                         
+    DESCRIPTION              = "highest strip current measured in HK period"  
+    UNIT                     = "MICROAMP"                                     
+  END_OBJECT                 = COLUMN                                         
+                                                                              
+  OBJECT                     = COLUMN                                         
+    NAME                     = "T_Mirr1R"                                     
+    COLUMN_NUMBER            = 39                                             
+    DATA_TYPE                = ASCII_INTEGER                                  
+    START_BYTE               = 250                                            
+    BYTES                    = 4                                              
+    FORMAT                   = "I4"                                           
+    DESCRIPTION              = "HkMirrorTempPri (calibration: Temps)"         
+    UNIT                     = "COUNTS"                                       
+  END_OBJECT                 = COLUMN                                         
+                                                                              
+  OBJECT                     = COLUMN                                         
+    NAME                     = "T_Mirr1C"                                     
+    COLUMN_NUMBER            = 40                                             
+    DATA_TYPE                = ASCII_REAL                                     
+    START_BYTE               = 254                                            
+    BYTES                    = 6                                              
+    FORMAT                   = "F6.1"                                         
+    DESCRIPTION              = "temperature measured by primary mirror sensor"
+    UNIT                     = "DEGC"                                         
+  END_OBJECT                 = COLUMN                                         
+                                                                              
+  OBJECT                     = COLUMN                                         
+    NAME                     = "T_Mirr2R"                                     
+    COLUMN_NUMBER            = 41                                             
+    DATA_TYPE                = ASCII_INTEGER                                  
+    START_BYTE               = 260                                            
+    BYTES                    = 4                                              
+    FORMAT                   = "I4"                                           
+    DESCRIPTION              = "HkMirrorTempSec (calibration: Temps)"         
+    UNIT                     = "COUNTS"                                       
+  END_OBJECT                 = COLUMN                                         
+                                                                              
+  OBJECT                     = COLUMN                                         
+    NAME                     = "T_Mirr2C"                                     
+    COLUMN_NUMBER            = 42                                             
+    DATA_TYPE                = ASCII_REAL                                     
+    START_BYTE               = 264                                            
+    BYTES                    = 6                                              
+    FORMAT                   = "F6.1"                                         
+    DESCRIPTION              = "temperature measured by secondary mirror      
+      sensor"                                                                 
+    UNIT                     = "DEGC"                                         
+  END_OBJECT                 = COLUMN                                         
+                                                                              
+  OBJECT                     = COLUMN                                         
+    NAME                     = "TS_MirrR"                                     
+    COLUMN_NUMBER            = 43                                             
+    DATA_TYPE                = ASCII_INTEGER                                  
+    START_BYTE               = 270                                            
+    BYTES                    = 4                                              
+    FORMAT                   = "I4"                                           
+    DESCRIPTION              = "HkMirrorHtrSet (calibration: Temps)"          
+    UNIT                     = "COUNTS"                                       
+  END_OBJECT                 = COLUMN                                         
+                                                                              
+  OBJECT                     = COLUMN                                         
+    NAME                     = "TS_MirrC"                                     
+    COLUMN_NUMBER            = 44                                             
+    DATA_TYPE                = ASCII_REAL                                     
+    START_BYTE               = 274                                            
+    BYTES                    = 6                                              
+    FORMAT                   = "F6.1"                                         
+    DESCRIPTION              = "mirror heater temperature setpoint"           
+    UNIT                     = "DEGC"                                         
+  END_OBJECT                 = COLUMN                                         
+                                                                              
+  OBJECT                     = COLUMN                                         
+    NAME                     = "T_Grat1R"                                     
+    COLUMN_NUMBER            = 45                                             
+    DATA_TYPE                = ASCII_INTEGER                                  
+    START_BYTE               = 280                                            
+    BYTES                    = 4                                              
+    FORMAT                   = "I4"                                           
+    DESCRIPTION              = "HkGratingTempPri (calibration: Temps)"        
+    UNIT                     = "COUNTS"                                       
+  END_OBJECT                 = COLUMN                                         
+                                                                              
+  OBJECT                     = COLUMN                                         
+    NAME                     = "T_Grat1C"                                     
+    COLUMN_NUMBER            = 46                                             
+    DATA_TYPE                = ASCII_REAL                                     
+    START_BYTE               = 284                                            
+    BYTES                    = 6                                              
+    FORMAT                   = "F6.1"                                         
+    DESCRIPTION              = "temperature measured by primary grating       
+      sensor"                                                                 
+    UNIT                     = "DEGC"                                         
+  END_OBJECT                 = COLUMN                                         
+                                                                              
+  OBJECT                     = COLUMN                                         
+    NAME                     = "T_Grat2R"                                     
+    COLUMN_NUMBER            = 47                                             
+    DATA_TYPE                = ASCII_INTEGER                                  
+    START_BYTE               = 290                                            
+    BYTES                    = 4                                              
+    FORMAT                   = "I4"                                           
+    DESCRIPTION              = "HkGratingTempSec (calibration: Temps)"        
+    UNIT                     = "COUNTS"                                       
+  END_OBJECT                 = COLUMN                                         
+                                                                              
+  OBJECT                     = COLUMN                                         
+    NAME                     = "T_Grat2C"                                     
+    COLUMN_NUMBER            = 48                                             
+    DATA_TYPE                = ASCII_REAL                                     
+    START_BYTE               = 294                                            
+    BYTES                    = 6                                              
+    FORMAT                   = "F6.1"                                         
+    DESCRIPTION              = "temperature measured by secondary grating     
+      sensor"                                                                 
+    UNIT                     = "DEGC"                                         
+  END_OBJECT                 = COLUMN                                         
+                                                                              
+  OBJECT                     = COLUMN                                         
+    NAME                     = "TS_GratR"                                     
+    COLUMN_NUMBER            = 49                                             
+    DATA_TYPE                = ASCII_INTEGER                                  
+    START_BYTE               = 300                                            
+    BYTES                    = 4                                              
+    FORMAT                   = "I4"                                           
+    DESCRIPTION              = "HkGratingHtrSet (calibration: Temps)"         
+    UNIT                     = "COUNTS"                                       
+  END_OBJECT                 = COLUMN                                         
+                                                                              
+  OBJECT                     = COLUMN                                         
+    NAME                     = "TS_GratC"                                     
+    COLUMN_NUMBER            = 50                                             
+    DATA_TYPE                = ASCII_REAL                                     
+    START_BYTE               = 304                                            
+    BYTES                    = 6                                              
+    FORMAT                   = "F6.1"                                         
+    DESCRIPTION              = "grating heater temperature setpoint"          
+    UNIT                     = "DEGC"                                         
+  END_OBJECT                 = COLUMN                                         
+                                                                              
+  OBJECT                     = COLUMN                                         
+    NAME                     = "DetDiscR"                                     
+    COLUMN_NUMBER            = 51                                             
+    DATA_TYPE                = ASCII_INTEGER                                  
+    START_BYTE               = 310                                            
+    BYTES                    = 4                                              
+    FORMAT                   = "I4"                                           
+    DESCRIPTION              = "HkDetDiscr (calibration: DiscrV)"             
+    UNIT                     = "COUNTS"                                       
+  END_OBJECT                 = COLUMN                                         
+                                                                              
+  OBJECT                     = COLUMN                                         
+    NAME                     = "DetDiscC"                                     
+    COLUMN_NUMBER            = 52                                             
+    DATA_TYPE                = ASCII_REAL                                     
+    START_BYTE               = 314                                            
+    BYTES                    = 5                                              
+    FORMAT                   = "F5.2"                                         
+    DESCRIPTION              = "detector discriminator voltage readback"      
+    UNIT                     = "VOLT"                                         
+  END_OBJECT                 = COLUMN                                         
+                                                                              
+  OBJECT                     = COLUMN                                         
+    NAME                     = "CycRem"                                       
+    COLUMN_NUMBER            = 53                                             
+    DATA_TYPE                = ASCII_INTEGER                                  
+    START_BYTE               = 319                                            
+    BYTES                    = 4                                              
+    FORMAT                   = "I4"                                           
+    DESCRIPTION              = "HkCyclesRemaining (in current MAD command)"   
+    UNIT                     = "COUNTS"                                       
+  END_OBJECT                 = COLUMN                                         
+                                                                              
+  OBJECT                     = COLUMN                                         
+    NAME                     = "LastPrsR"                                     
+    COLUMN_NUMBER            = 54                                             
+    DATA_TYPE                = ASCII_INTEGER                                  
+    START_BYTE               = 323                                            
+    BYTES                    = 4                                              
+    FORMAT                   = "I4"                                           
+    DESCRIPTION              = "HkLastPressure (format: Rosina Real)"         
+    UNIT                     = "COUNTS"                                       
+  END_OBJECT                 = COLUMN                                         
+                                                                              
+  OBJECT                     = COLUMN                                         
+    NAME                     = "LastPrsC"                                     
+    COLUMN_NUMBER            = 55                                             
+    DATA_TYPE                = ASCII_REAL                                     
+    START_BYTE               = 327                                            
+    BYTES                    = 6                                              
+    FORMAT                   = "E6.0"                                         
+    DESCRIPTION              = "most recent pressure value received from      
+      Rosina"                                                                 
+    UNIT                     = "MBAR"                                         
+  END_OBJECT                 = COLUMN                                         
+                                                                              
+  OBJECT                     = COLUMN                                         
+    NAME                     = "LastPRaR"                                     
+    COLUMN_NUMBER            = 56                                             
+    DATA_TYPE                = ASCII_INTEGER                                  
+    START_BYTE               = 333                                            
+    BYTES                    = 4                                              
+    FORMAT                   = "I4"                                           
+    DESCRIPTION              = "HkLastPrsRate (format: Rosina Real)"          
+    UNIT                     = "COUNTS"                                       
+  END_OBJECT                 = COLUMN                                         
+                                                                              
+  OBJECT                     = COLUMN                                         
+    NAME                     = "LastPRaC"                                     
+    COLUMN_NUMBER            = 57                                             
+    DATA_TYPE                = ASCII_REAL                                     
+    START_BYTE               = 337                                            
+    BYTES                    = 6                                              
+    FORMAT                   = "E6.0"                                         
+    DESCRIPTION              = "most recent pressure trend received from      
+      Rosina"                                                                 
+    UNIT                     = "MBAR/S"                                       
+  END_OBJECT                 = COLUMN                                         
+                                                                              
+  OBJECT                     = COLUMN                                         
+    NAME                     = "PresTime"                                     
+    COLUMN_NUMBER            = 58                                             
+    DATA_TYPE                = ASCII_REAL                                     
+    START_BYTE               = 343                                            
+    BYTES                    = 15                                             
+    FORMAT                   = "F15.3"                                        
+    DESCRIPTION              = "HkPressureTime (OBT, seconds)"                
+    UNIT                     = "COUNTS"                                       
+  END_OBJECT                 = COLUMN                                         
+                                                                              
+  OBJECT                     = COLUMN                                         
+    NAME                     = "PresScet"                                     
+    COLUMN_NUMBER            = 59                                             
+    DATA_TYPE                = TIME                                           
+    START_BYTE               = 358                                            
+    BYTES                    = 24                                             
+    FORMAT                   = "A24"                                          
+    DESCRIPTION              = "HkPressureTime (SCET, UTC)"                   
+    UNIT                     = "N/A"                                          
+  END_OBJECT                 = COLUMN                                         
+                                                                              
+  OBJECT                     = COLUMN                                         
+    NAME                     = "Unsafe"                                       
+    COLUMN_NUMBER            = 60                                             
+    DATA_TYPE                = ASCII_INTEGER                                  
+    START_BYTE               = 382                                            
+    BYTES                    = 6                                              
+    FORMAT                   = "I6"                                           
+    DESCRIPTION              = "HkUnsafeTimer (sec, timeout remaining)"       
+    UNIT                     = "SEC"                                          
+  END_OBJECT                 = COLUMN                                         
+                                                                              
+  OBJECT                     = COLUMN                                         
+    NAME                     = "Safety"                                       
+    COLUMN_NUMBER            = 61                                             
+    DATA_TYPE                = ASCII_INTEGER                                  
+    START_BYTE               = 388                                            
+    BYTES                    = 4                                              
+    FORMAT                   = "I4"                                           
+    DESCRIPTION              = "HkSafety (bitmask)"                           
+    UNIT                     = "N/A"                                          
+  END_OBJECT                 = COLUMN                                         
+                                                                              
+  OBJECT                     = COLUMN                                         
+    NAME                     = "OverRide"                                     
+    COLUMN_NUMBER            = 62                                             
+    DATA_TYPE                = CHARACTER                                      
+    START_BYTE               = 392                                            
+    BYTES                    = 4                                              
+    FORMAT                   = "A4"                                           
+    DESCRIPTION              = "HkSafetyOverride (on/off)"                    
+    UNIT                     = "N/A"                                          
+  END_OBJECT                 = COLUMN                                         
+                                                                              
+  OBJECT                     = COLUMN                                         
+    NAME                     = "SafeMask"                                     
+    COLUMN_NUMBER            = 63                                             
+    DATA_TYPE                = ASCII_INTEGER                                  
+    START_BYTE               = 396                                            
+    BYTES                    = 4                                              
+    FORMAT                   = "I4"                                           
+    DESCRIPTION              = "HkSafetyMask (bitmask)"                       
+    UNIT                     = "N/A"                                          
+  END_OBJECT                 = COLUMN                                         
+                                                                              
+  OBJECT                     = COLUMN                                         
+    NAME                     = "T_DElecR"                                     
+    COLUMN_NUMBER            = 64                                             
+    DATA_TYPE                = ASCII_INTEGER                                  
+    START_BYTE               = 400                                            
+    BYTES                    = 4                                              
+    FORMAT                   = "I4"                                           
+    DESCRIPTION              = "HkDetElecTemp (calibration: Temps)"           
+    UNIT                     = "COUNTS"                                       
+  END_OBJECT                 = COLUMN                                         
+                                                                              
+  OBJECT                     = COLUMN                                         
+    NAME                     = "T_DElecC"                                     
+    COLUMN_NUMBER            = 65                                             
+    DATA_TYPE                = ASCII_REAL                                     
+    START_BYTE               = 404                                            
+    BYTES                    = 6                                              
+    FORMAT                   = "F6.1"                                         
+    DESCRIPTION              = "temperature measured inside detector          
+      electronics box"                                                        
+    UNIT                     = "DEGC"                                         
+  END_OBJECT                 = COLUMN                                         
+                                                                              
+  OBJECT                     = COLUMN                                         
+    NAME                     = "T_DHousR"                                     
+    COLUMN_NUMBER            = 66                                             
+    DATA_TYPE                = ASCII_INTEGER                                  
+    START_BYTE               = 410                                            
+    BYTES                    = 4                                              
+    FORMAT                   = "I4"                                           
+    DESCRIPTION              = "HkDetHousingTemp (calibration: Temps)"        
+    UNIT                     = "COUNTS"                                       
+  END_OBJECT                 = COLUMN                                         
+                                                                              
+  OBJECT                     = COLUMN                                         
+    NAME                     = "T_DHousC"                                     
+    COLUMN_NUMBER            = 67                                             
+    DATA_TYPE                = ASCII_REAL                                     
+    START_BYTE               = 414                                            
+    BYTES                    = 6                                              
+    FORMAT                   = "F6.1"                                         
+    DESCRIPTION              = "temperature measured on detector electronics  
+      housing"                                                                
+    UNIT                     = "DEGC"                                         
+  END_OBJECT                 = COLUMN                                         
+                                                                              
+  OBJECT                     = COLUMN                                         
+    NAME                     = "T_CNDHR"                                      
+    COLUMN_NUMBER            = 68                                             
+    DATA_TYPE                = ASCII_INTEGER                                  
+    START_BYTE               = 420                                            
+    BYTES                    = 4                                              
+    FORMAT                   = "I4"                                           
+    DESCRIPTION              = "HkCdhElecTemp (calibration: Temps)"           
+    UNIT                     = "COUNTS"                                       
+  END_OBJECT                 = COLUMN                                         
+                                                                              
+  OBJECT                     = COLUMN                                         
+    NAME                     = "T_CNDHC"                                      
+    COLUMN_NUMBER            = 69                                             
+    DATA_TYPE                = ASCII_REAL                                     
+    START_BYTE               = 424                                            
+    BYTES                    = 6                                              
+    FORMAT                   = "F6.1"                                         
+    DESCRIPTION              = "temperature measured inside C&DH box"         
+    UNIT                     = "DEGC"                                         
+  END_OBJECT                 = COLUMN                                         
+                                                                              
+  OBJECT                     = COLUMN                                         
+    NAME                     = "T_IHousR"                                     
+    COLUMN_NUMBER            = 70                                             
+    DATA_TYPE                = ASCII_INTEGER                                  
+    START_BYTE               = 430                                            
+    BYTES                    = 4                                              
+    FORMAT                   = "I4"                                           
+    DESCRIPTION              = "HkInstrHousingTemp (calibration: Temps)"      
+    UNIT                     = "COUNTS"                                       
+  END_OBJECT                 = COLUMN                                         
+                                                                              
+  OBJECT                     = COLUMN                                         
+    NAME                     = "T_IHousC"                                     
+    COLUMN_NUMBER            = 71                                             
+    DATA_TYPE                = ASCII_REAL                                     
+    START_BYTE               = 434                                            
+    BYTES                    = 6                                              
+    FORMAT                   = "F6.1"                                         
+    DESCRIPTION              = "temperature measured on instrument housing"   
+    UNIT                     = "DEGC"                                         
+  END_OBJECT                 = COLUMN                                         
+                                                                              
+  OBJECT                     = COLUMN                                         
+    NAME                     = "TestStat"                                     
+    COLUMN_NUMBER            = 72                                             
+    DATA_TYPE                = ASCII_INTEGER                                  
+    START_BYTE               = 440                                            
+    BYTES                    = 4                                              
+    FORMAT                   = "I4"                                           
+    DESCRIPTION              = "HkTestStatus (bitmask)"                       
+    UNIT                     = "N/A"                                          
+  END_OBJECT                 = COLUMN                                         
+                                                                              
+  OBJECT                     = COLUMN                                         
+    NAME                     = "SwVers"                                       
+    COLUMN_NUMBER            = 73                                             
+    DATA_TYPE                = ASCII_REAL                                     
+    START_BYTE               = 444                                            
+    BYTES                    = 6                                              
+    FORMAT                   = "F6.2"                                         
+    DESCRIPTION              = "HkAfsVersion (flight software version number)"
+    UNIT                     = "N/A"                                          
+  END_OBJECT                 = COLUMN                                         
+                                                                              
+END_OBJECT                   = HOUSEKEEPING_TABLE                             
+                                                                              
+END                                                                           

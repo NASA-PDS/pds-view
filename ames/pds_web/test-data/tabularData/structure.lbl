@@ -1,0 +1,55 @@
+PDS_VERSION_ID               = PDS3                                           
+DATA_SET_ID                  = "MGS-M-ER-3-MAP1/OMNIDIR-FLUX-V1.0"            
+MISSION_PHASE_NAME           = "ORBIT INSERTION"                              
+SPACECRAFT_NAME              = "MARS GLOBAL SURVEYOR"                         
+START_TIME                   = 1999-03-09T00:04:15.179Z                       
+STOP_TIME                    = 1999-03-09T17:38:25.179Z                       
+SPACECRAFT_CLOCK_START_COUNT = "UNK"                                          
+SPACECRAFT_CLOCK_STOP_COUNT  = "UNK"                                          
+INSTRUMENT_ID                = "ER"                                           
+INSTRUMENT_NAME              = "ELECTRON REFLECTOMETER"                       
+^HEADER                      = ("99068.STS", 1<BYTES>)                        
+^TABLE                       = ("99068.STS", 5570<BYTES>)                     
+PRODUCT_ID                   = "99068.STS"                                    
+ORIGINAL_PRODUCT_ID          = "m99d068_er.sts"                               
+                                                                              
+OBJECT                       = FILE                                           
+  INTERCHANGE_FORMAT           = ASCII                                        
+  RECORD_TYPE                  = STREAM                                       
+  FILE_RECORDS                 = 31632                                        
+  FILE_NAME                    = "99068.STS"                                  
+  DESCRIPTION                  = "                                            
+      This file contains electron reflectometer omni-directional flux         
+      data from 19 energy channels (11 - 16127 eV). The data are provided at  
+      the full instrument downlink sampling frequency which varies by         
+      orbit (spacecraft telemetry mode). This is an ASCII data file.          
+      It includes an attached header (162 lines, 5569 bytes) followed by a    
+      data table."                                                            
+                                                                              
+  OBJECT                       = HEADER                                       
+    HEADER_TYPE                = "GSFC-ODL"                                   
+    RECORDS                      = 162                                        
+    BYTES                        = 5569                                       
+    DESCRIPTION                  = "The first 162 records of this             
+      file is the header section. These records are not fixed length          
+      but the sum of the header bytes is 5569. The ASCII text preceding       
+      the tabular data is a KEYWORD = VALUE type header with carriage         
+      return line feed <CR><LF> 'line' terminators. The header includes       
+      information about the data file in a form that is native to the         
+      instrument team and does not use PDS nomenclature."                     
+  END_OBJECT                   = HEADER                                       
+                                                                              
+  OBJECT                       = TABLE                                        
+    NAME                         = "ER DATA"                                  
+    INTERCHANGE_FORMAT           = ASCII                                      
+    ROWS                         = 31470                                      
+    ROW_BYTES                    = 233                                        
+    COLUMNS                      = 20                                         
+    DESCRIPTION                  = "                                          
+The electron flux data are stored in a fixed field ASCII table structure that 
+immediately follows the attached header. This file contains 31470 rows of time
+ordered electron flux values."                                                
+    ^STRUCTURE                   = "ER_DATA.FMT"                              
+  END_OBJECT                   = TABLE                                        
+END_OBJECT                   = FILE                                           
+END                                                                           

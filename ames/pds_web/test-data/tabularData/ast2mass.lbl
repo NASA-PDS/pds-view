@@ -1,0 +1,834 @@
+PDS_VERSION_ID                     = PDS3                                     
+                                                                              
+RECORD_TYPE                        = "FIXED_LENGTH"                           
+RECORD_BYTES                       = 461                                      
+FILE_RECORDS                       = 15965                                    
+                                                                              
+^TABLE                             = "ast2mass.tab"                           
+                                                                              
+DATA_SET_ID                        = "EAR-A-I0054/I0055-5-2MASS-V1.0"         
+PRODUCT_NAME                       = "2MASS ASTEROID ASSOCIATION LIST"        
+PRODUCT_ID                         = "AST2MASS_TAB"                           
+INSTRUMENT_HOST_ID                 = {"OBS055T6", "OBS320T13"}                
+INSTRUMENT_HOST_NAME               = {"CERRO TOLOLO INTER-AMERICAN OBSERVATORY
+        2MASS 1.3M TELESCOPE", "FRED L. WHIPPLE OBSERVATORY 2MASS 1.3M        
+        TELESCOPE"}                                                           
+INSTRUMENT_ID                      = {"I0054", "I0055"}                       
+INSTRUMENT_NAME                    = {"2MASS CAMERA - NORTH", "2MASS CAMERA - 
+        SOUTH"}                                                               
+TARGET_NAME                        = "ASTEROID"                               
+TARGET_TYPE                        = "ASTEROID"                               
+START_TIME                         = 1997-06-07                               
+STOP_TIME                          = 2001-02-15                               
+PRODUCT_CREATION_TIME              = 2005-09-23  /* File uploaded to OLAF */  
+CITATION_DESC                      = "Sykes, M.V., Cutri, R.M., Fowler, J.W., 
+        Tholen, D.J., and Skrutskie, M.F., 2MASS Asteroid Association List.   
+        EAR-A-I0054/I0055-5-2MASS-V1.0:AST2MASS_TAB. NASA Planetary Data      
+        System, 2005."                                                        
+REFERENCE_KEY_ID                   = "SYKESETAL2000"                          
+                                                                              
+OBJECT                             = TABLE                                    
+ ROWS                              = 15965                                    
+ ROW_BYTES                         = 461                                      
+ INTERCHANGE_FORMAT                = "ASCII"                                  
+ COLUMNS                           = 60                                       
+ DESCRIPTION                       = "The 2MASS All-Sky Release PSC (Point    
+        Source Catalog) contains 15,964 sources that are positionally         
+        associated with the predicted positions of known asteroids. These     
+        sources were identified by determining which known asteroids were     
+        within the boundaries of a 2MASS Tile when it was scanned, and        
+        searching for positional correlations between the predicted positions 
+        of those objects and extracted 2MASS sources.  This table lists PSC   
+        object identification, orbital data used to predict positions and     
+        visual brightness, and abridged PSC data for the source, including J, 
+        H, and Ks photometric magnitudes."                                    
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 1                                        
+  NAME                             = "AST_NUMBER"                             
+  DESCRIPTION                      = "Asteroid number"                        
+  DATA_TYPE                        = "ASCII_INTEGER"                          
+  START_BYTE                       = 1                                        
+  BYTES                            = 5                                        
+  FORMAT                           = "I5"                                     
+  MISSING_CONSTANT                 = 0                                        
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 2                                        
+  NAME                             = "AST_NAME"                               
+  DESCRIPTION                      = "Asteroid name"                          
+  DATA_TYPE                        = "CHARACTER"                              
+  START_BYTE                       = 7                                        
+  BYTES                            = 16                                       
+  FORMAT                           = "A16"                                    
+  MISSING_CONSTANT                 = "-"                                      
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 3                                        
+  NAME                             = "PROV_ID"                                
+  DESCRIPTION                      = "Asteroid provisional designation"       
+  DATA_TYPE                        = "CHARACTER"                              
+  START_BYTE                       = 24                                       
+  BYTES                            = 10                                       
+  FORMAT                           = "A10"                                    
+  MISSING_CONSTANT                 = "-"                                      
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 4                                        
+  NAME                             = "J_MAG"                                  
+  DESCRIPTION                      = "J band selected magnitude, or if the    
+        source is not detected in the J-band, the 95% confidence upper limit  
+        derived from a 4 arcsec radius aperture measurement taken at the      
+        position of the source on the Atlas Image.  (The Atlas Images are     
+        quick-look images suitable for deriving positional information but not
+        accurate photometry.)  The origin of the  magnitude is given by the   
+        first character of the rd_flg value."                                 
+  UNIT                             = "MAGNITUDE"                              
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 35                                       
+  BYTES                            = 6                                        
+  FORMAT                           = "F6.3"                                   
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 5                                        
+  NAME                             = "J_MAG_SIG"                              
+  DESCRIPTION                      = "Corrected photometric uncertainty for   
+        the J-band magnitude J_MAG. If rd_flg[1]=2, this is the measurement   
+        error from the profile-fitting procedure, corrected to be consistent  
+        with observed repeatability statistics. If rd_flg[1]=1 or 4, this is  
+        the RMS of the brightness measured in aperture photometry on the      
+        individual frames. If rd_flg=3, the uncertainty is derived from the   
+        residuals to the 1-d radial profile fit (averaging over azimuth) to   
+        the unsaturated wings of the bright source. If J_MAG_SIG > 8.0, it is 
+        a flag value indicating that a meaningful uncertainty could not be    
+        determined for the source. This column is null if the  magnitude is a 
+        95% confidence upper limit (rd_flg[1]=0 or 6) or if the source is not 
+        measurable (rd_flg[1]=9)."                                            
+  UNIT                             = "MAGNITUDE"                              
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 42                                       
+  BYTES                            = 5                                        
+  FORMAT                           = "F5.3"                                   
+  MISSING_CONSTANT                 = -.999                                    
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 6                                        
+  NAME                             = "H_MAG"                                  
+  DESCRIPTION                      = "H band selected magnitude, or if the    
+        source is not detected in the H-band, the 95% confidence upper limit  
+        derived from a 4 arcsec radius aperture measurement taken at the      
+        position of the source on the Atlas Image.  (The Atlas Images are     
+        quick-look images suitable for deriving positional information but not
+        accurate photometry.)  The origin of the  magnitude is given by the   
+        second character of the rd_flg value."                                
+  UNIT                             = "MAGNITUDE"                              
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 48                                       
+  BYTES                            = 6                                        
+  FORMAT                           = "F6.3"                                   
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 7                                        
+  NAME                             = "H_MAG_SIG"                              
+  DESCRIPTION                      = "Corrected photometric uncertainty for   
+        the H-band magnitude H_MAG. If rd_flg[2]=2, this is the measurement   
+        error from the profile-fitting procedure, corrected to be consistent  
+        with observed repeatability statistics. If rd_flg[2]=1 or 4, this is  
+        the RMS of the brightness measured in aperture photometry on the      
+        individual frames. If rd_flg=3, the uncertainty is derived from the   
+        residuals to the 1-d radial profile fit (averaging over azimuth) to   
+        the unsaturated wings of the bright source. If H_MAG_SIG > 8.0, it is 
+        a flag value indicating that a meaningful uncertainty could not be    
+        determined for the source. This column is null if the  magnitude is a 
+        95% confidence upper limit (rd_flg[2]=0 or 6) or if the source is not 
+        measurable (rd_flg[2]=9)."                                            
+  UNIT                             = "MAGNITUDE"                              
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 55                                       
+  BYTES                            = 5                                        
+  FORMAT                           = "F5.3"                                   
+  MISSING_CONSTANT                 = -.999                                    
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 8                                        
+  NAME                             = "KS_MAG"                                 
+  DESCRIPTION                      = "Ks band selected magnitude, or if the   
+        source is not detected in the Ks-band, the 95% confidence upper limit 
+        derived from a 4 arcsec radius aperture measurement taken at the      
+        position of the source on the Atlas Image. (The Atlas Images are      
+        quick-look images suitable for deriving positional information but not
+        accurate photometry.)  The origin of the  magnitude is given by the   
+        third character of the rd_flg value."                                 
+  UNIT                             = "MAGNITUDE"                              
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 61                                       
+  BYTES                            = 6                                        
+  FORMAT                           = "F6.3"                                   
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 9                                        
+  NAME                             = "KS_MAG_SIG"                             
+  DESCRIPTION                      = "Corrected photometric uncertainty for   
+        the Ks-band magnitude KS_MAG. If rd_flg[3]=2, this is the measurement 
+        error from the profile-fitting procedure, corrected to be consistent  
+        with observed repeatability statistics. If rd_flg[3]=1 or 4, this is  
+        the RMS of the brightness measured in aperture photometry on the      
+        individual frames. If rd_flg=3, the uncertainty is derived from the   
+        residuals to the 1-d radial profile fit (averaging over azimuth) to   
+        the unsaturated wings of the bright source. If KS_MAG_SIG > 8.0, it is
+        a flag value indicating that a meaningful uncertainty could not be    
+        determined for the source. This column is null if the  magnitude is a 
+        95% confidence upper limit (rd_flg[3]=0 or 6) or if the source is not 
+        measurable (rd_flg[3]=9)."                                            
+  UNIT                             = "MAGNITUDE"                              
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 68                                       
+  BYTES                            = 5                                        
+  FORMAT                           = "F5.3"                                   
+  MISSING_CONSTANT                 = -.999                                    
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 10                                       
+  NAME                             = "V_MAG"                                  
+  DESCRIPTION                      = "Predicted V magnitude"                  
+  UNIT                             = "MAGNITUDE"                              
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 74                                       
+  BYTES                            = 6                                        
+  FORMAT                           = "F6.3"                                   
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 11                                       
+  NAME                             = "JD_OBS"                                 
+  DESCRIPTION                      = "Julian date of observation"             
+  UNIT                             = "DAY"                                    
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 81                                       
+  BYTES                            = 13                                       
+  FORMAT                           = "F13.5"                                  
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 12                                       
+  NAME                             = "RD_FLG"                                 
+  DESCRIPTION                      = "Three character flag, one character per 
+        band [JHKs], that indicates the origin of the default magnitudes and  
+        uncertainties in each band.  Rd_flg values of '1', '2' or '3'         
+        generally indicate the best quality detections, photometry and        
+        astrometry (although other quality flags must be considered). Values  
+        of '0', '4', '6' and '9' in a band indicate either non-detections, or 
+        generally poor quality photometry and positions.  See document file   
+        flagdef.txt for  complete definitions of the values of rd_flg and     
+        other flags."                                                         
+  DATA_TYPE                        = "CHARACTER"                              
+  START_BYTE                       = 95                                       
+  BYTES                            = 3                                        
+  FORMAT                           = "A3"                                     
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 13                                       
+  NAME                             = "BL_FLG"                                 
+  DESCRIPTION                      = "Blend flag. Three character flag, one   
+        character per band [JHKs], that indicates the number of components    
+        that were fit simultaneously when estimating the brightness of a      
+        source. See document file flagdef.txt for complete definitions of the 
+        values of bl_flg and other flags."                                    
+  DATA_TYPE                        = "CHARACTER"                              
+  START_BYTE                       = 99                                       
+  BYTES                            = 3                                        
+  FORMAT                           = "A3"                                     
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 14                                       
+  NAME                             = "CC_FLG"                                 
+  DESCRIPTION                      = "Contamination and confusion flag. Three 
+        character flag, one character per band [JHKs], that indicates that the
+        photometry and/or position measurements of a source may be            
+        contaminated or biased due to proximity to an image artifact or nearby
+        source of equal or greater brightness. Non-zero values the cc_flg in  
+        any band is an indicator that the measurements of that source may be  
+        contaminated.  See document file flagdef.txt for complete definitions 
+        of the values of cc_flg and other flags."                             
+  DATA_TYPE                        = "CHARACTER"                              
+  START_BYTE                       = 103                                      
+  BYTES                            = 3                                        
+  FORMAT                           = "A3"                                     
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 15                                       
+  NAME                             = "PH_QUAL"                                
+  DESCRIPTION                      = "Photometric quality flag. Three         
+        character flag, one character per band [JHKs], that provides a summary
+        of the net quality of the default photometry in each band.  See       
+        document file flagdef.txt for complete definitions of the values of   
+        ph_qual and other flags."                                             
+  DATA_TYPE                        = "CHARACTER"                              
+  START_BYTE                       = 107                                      
+  BYTES                            = 3                                        
+  FORMAT                           = "A3"                                     
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 16                                       
+  NAME                             = "RA_PTS"                                 
+  DESCRIPTION                      = "J2000 Right ascension of point source   
+        match"                                                                
+  UNIT                             = "DEGREES"                                
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 111                                      
+  BYTES                            = 10                                       
+  FORMAT                           = "F10.6"                                  
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 17                                       
+  NAME                             = "DEC_PTS"                                
+  DESCRIPTION                      = "J2000 Declination of point source match"
+  UNIT                             = "DEGREE"                                 
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 122                                      
+  BYTES                            = 10                                       
+  FORMAT                           = "F10.6"                                  
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 18                                       
+  NAME                             = "G_LON"                                  
+  DESCRIPTION                      = "Galactic longitude of point source      
+        match"                                                                
+  UNIT                             = "DEGREE"                                 
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 133                                      
+  BYTES                            = 7                                        
+  FORMAT                           = "F7.3"                                   
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 19                                       
+  NAME                             = "G_LAT"                                  
+  DESCRIPTION                      = "Galactic latitude of point source match"
+  UNIT                             = "DEGREE"                                 
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 141                                      
+  BYTES                            = 7                                        
+  FORMAT                           = "F7.3"                                   
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 20                                       
+  NAME                             = "ERR_MAJ_PTS"                            
+  DESCRIPTION                      = "Semimajor axis of position error ellipse
+        of 2MASS source"                                                      
+  UNIT                             = "ARCSECOND"                              
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 149                                      
+  BYTES                            = 4                                        
+  FORMAT                           = "F4.2"                                   
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 21                                       
+  NAME                             = "ERR_MIN_PTS"                            
+  DESCRIPTION                      = "Semiminor axis of position error ellipse
+        of 2MASS source"                                                      
+  UNIT                             = "ARCSECOND"                              
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 154                                      
+  BYTES                            = 4                                        
+  FORMAT                           = "F4.2"                                   
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 22                                       
+  NAME                             = "ERR_ANG_PTS"                            
+  DESCRIPTION                      = "Angle of position error ellipse major   
+        axis (east of north)"                                                 
+  UNIT                             = "DEGREES"                                
+  DATA_TYPE                        = "ASCII_INTEGER"                          
+  START_BYTE                       = 159                                      
+  BYTES                            = 3                                        
+  FORMAT                           = "I3"                                     
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 23                                       
+  NAME                             = "RA_PRED"                                
+  DESCRIPTION                      = "Predicted J2000 Right ascension of minor
+        planet"                                                               
+  UNIT                             = "DEGREES"                                
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 163                                      
+  BYTES                            = 10                                       
+  FORMAT                           = "F10.6"                                  
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 24                                       
+  NAME                             = "DEC_PRED"                               
+  DESCRIPTION                      = "Predicted J2000 Declination of minor    
+        planet"                                                               
+  UNIT                             = "DEGREE"                                 
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 174                                      
+  BYTES                            = 10                                       
+  FORMAT                           = "F10.6"                                  
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 25                                       
+  NAME                             = "ERR_MAJ_PRED"                           
+  DESCRIPTION                      = "Semimajor axis of 1-sigma error ellipse 
+        of minor planet predicted position"                                   
+  UNIT                             = "ARCSECOND"                              
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 185                                      
+  BYTES                            = 3                                        
+  FORMAT                           = "F3.1"                                   
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 26                                       
+  NAME                             = "ERR_MIN_PRED"                           
+  DESCRIPTION                      = "Semiminor axis of 1-sigma error ellipse 
+        of minor planet predicted position"                                   
+  UNIT                             = "ARCSECOND"                              
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 189                                      
+  BYTES                            = 3                                        
+  FORMAT                           = "F3.1"                                   
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 27                                       
+  NAME                             = "ERR_ANG_PRED"                           
+  DESCRIPTION                      = "Angle of error ellipse major axis (east 
+        of north) of minor planet predicted position"                         
+  UNIT                             = "DEGREE"                                 
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 193                                      
+  BYTES                            = 5                                        
+  FORMAT                           = "F5.1"                                   
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 28                                       
+  NAME                             = "RA_DIST"                                
+  DESCRIPTION                      = "Distance (2MASS point source position   
+        minus minor planet predicted position) in J2000 Right Ascension"      
+  UNIT                             = "ARCSECOND"                              
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 199                                      
+  BYTES                            = 4                                        
+  FORMAT                           = "F4.1"                                   
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 29                                       
+  NAME                             = "DEC_DIST"                               
+  DESCRIPTION                      = "Distance (2MASS point source position   
+        minus minor planet predicted position) in J2000 Declination"          
+  UNIT                             = "ARCSECOND"                              
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 204                                      
+  BYTES                            = 4                                        
+  FORMAT                           = "F4.1"                                   
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 30                                       
+  NAME                             = "MU"                                     
+  DESCRIPTION                      = "Minor planet apparent motion"           
+  UNIT                             = "ARCSECONDS/SECOND"                      
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 209                                      
+  BYTES                            = 5                                        
+  FORMAT                           = "F5.3"                                   
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 31                                       
+  NAME                             = "THETA"                                  
+  DESCRIPTION                      = "Minor planet angle of apparent motion   
+        (east of north)"                                                      
+  UNIT                             = "DEGREES"                                
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 215                                      
+  BYTES                            = 5                                        
+  FORMAT                           = "F5.1"                                   
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 32                                       
+  NAME                             = "R_HELIO"                                
+  DESCRIPTION                      = "Minor planet heliocentric distance"     
+  UNIT                             = "ASTRONOMICAL UNITS"                     
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 221                                      
+  BYTES                            = 8                                        
+  FORMAT                           = "F8.5"                                   
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 33                                       
+  NAME                             = "R_TOPO"                                 
+  DESCRIPTION                      = "Minor planet topocentric distance"      
+  UNIT                             = "ASTRONOMICAL UNITS"                     
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 230                                      
+  BYTES                            = 8                                        
+  FORMAT                           = "F8.5"                                   
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 34                                       
+  NAME                             = "PHASE"                                  
+  DESCRIPTION                      = "Minor planet solar phase angle"         
+  UNIT                             = "DEGREES"                                
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 239                                      
+  BYTES                            = 6                                        
+  FORMAT                           = "F6.3"                                   
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 35                                       
+  NAME                             = "Q"                                      
+  DESCRIPTION                      = "Minor planet perihelion distance"       
+  UNIT                             = "ASTRONOMICAL UNITS"                     
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 246                                      
+  BYTES                            = 10                                       
+  FORMAT                           = "F10.7"                                  
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 36                                       
+  NAME                             = "ECC"                                    
+  DESCRIPTION                      = "Minor planet orbital eccentricity"      
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 257                                      
+  BYTES                            = 9                                        
+  FORMAT                           = "F9.7"                                   
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 37                                       
+  NAME                             = "INCL"                                   
+  DESCRIPTION                      = "Minor planet orbital inclination"       
+  UNIT                             = "DEGREES"                                
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 267                                      
+  BYTES                            = 12                                       
+  FORMAT                           = "F12.8"                                  
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 38                                       
+  NAME                             = "PV1"                                    
+  DESCRIPTION                      = "The x component in heliocentric         
+        coordinates of the unit P vector in the perifocal coordinate system of
+        the body's orbit (i.e. direction of perihelion)"                      
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 280                                      
+  BYTES                            = 11                                       
+  FORMAT                           = "F11.8"                                  
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 39                                       
+  NAME                             = "PV2"                                    
+  DESCRIPTION                      = "The y component in heliocentric         
+        coordinates of the unit P vector in the perifocal coordinate system of
+        the body's orbit (i.e. direction of perihelion)"                      
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 292                                      
+  BYTES                            = 11                                       
+  FORMAT                           = "F11.8"                                  
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 40                                       
+  NAME                             = "PV3"                                    
+  DESCRIPTION                      = "The z component in heliocentric         
+        coordinates of the unit P vector in the perifocal coordinate system of
+        the body's orbit (i.e. direction of perihelion)"                      
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 304                                      
+  BYTES                            = 11                                       
+  FORMAT                           = "F11.8"                                  
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 41                                       
+  NAME                             = "QV1"                                    
+  DESCRIPTION                      = "The x component in heliocentric         
+        coordinates of the unit Q vector in the perifocal coordinate system of
+        the body's orbit"                                                     
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 316                                      
+  BYTES                            = 11                                       
+  FORMAT                           = "F11.8"                                  
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 42                                       
+  NAME                             = "QV2"                                    
+  DESCRIPTION                      = "The y component in heliocentric         
+        coordinates of the unit Q vector in the perifocal coordinate system of
+        the body's orbit"                                                     
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 328                                      
+  BYTES                            = 11                                       
+  FORMAT                           = "F11.8"                                  
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 43                                       
+  NAME                             = "QV3"                                    
+  DESCRIPTION                      = "The z component in heliocentric         
+        coordinates of the unit Q vector in the perifocal coordinate system of
+        the body's orbit"                                                     
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 340                                      
+  BYTES                            = 11                                       
+  FORMAT                           = "F11.8"                                  
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 44                                       
+  NAME                             = "T_PERI"                                 
+  DESCRIPTION                      = "Perihelion passage time, Julian date"   
+  UNIT                             = "DAYS"                                   
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 352                                      
+  BYTES                            = 13                                       
+  FORMAT                           = "F13.5"                                  
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 45                                       
+  NAME                             = "EPOCH"                                  
+  DESCRIPTION                      = "Epoch of orbital elements, Julian date" 
+  UNIT                             = "DAYS"                                   
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 366                                      
+  BYTES                            = 9                                        
+  FORMAT                           = "F9.1"                                   
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 46                                       
+  NAME                             = "ERR_ELEM"                               
+  DESCRIPTION                      = "An estimate of the ephemeris error in   
+        arcseconds at the time corresponding to the epoch of osculation for   
+        the particular                                                        
+        orbital element set used to compute the ephemeris and match the object
+        with the detected source"                                             
+  UNIT                             = "ARCSECONDS"                             
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 376                                      
+  BYTES                            = 4                                        
+  FORMAT                           = "F4.1"                                   
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 47                                       
+  NAME                             = "ABS_MAG"                                
+  DESCRIPTION                      = "Absolute magnitude (H) of minor planet" 
+  UNIT                             = "MAGNITUDES"                             
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 381                                      
+  BYTES                            = 5                                        
+  FORMAT                           = "F5.2"                                   
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 48                                       
+  NAME                             = "SLOPE"                                  
+  DESCRIPTION                      = "Slope parameter (G) of minor planet"    
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 387                                      
+  BYTES                            = 5                                        
+  FORMAT                           = "F5.2"                                   
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 49                                       
+  NAME                             = "MCH_CNF"                                
+  DESCRIPTION                      = "The match confidence parameter is a     
+        two-dimensional position match chi-squared estimator computed from the
+        offset between the predicted minor planet and candidate 2MASS         
+        associated source positions, and the uncertainties on each."          
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 393                                      
+  BYTES                            = 5                                        
+  FORMAT                           = "F5.2"                                   
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 50                                       
+  NAME                             = "NPTS_MCHS"                              
+  DESCRIPTION                      = "Number of point sources within          
+        association threshhold (<=9)"                                         
+  DATA_TYPE                        = "ASCII_INTEGER"                          
+  START_BYTE                       = 399                                      
+  BYTES                            = 1                                        
+  FORMAT                           = "I1"                                     
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 51                                       
+  NAME                             = "A"                                      
+  DESCRIPTION                      = "Catalog identifier of an optical source 
+        from either the Tycho 2 or USNO-A2.0 catalog that falls within        
+        approximately 5 arcsec of the 2MASS source position. An association   
+        with Tycho 2 takes precedence over USNO-A2.0. The values of this      
+        column can be:                                                        
+                                                                              
+        0 = no optical source positionally associated with 2MASS source, or   
+        the optical association has dist_opt > 5 arcsec                       
+        T = Tycho 2 catalog source positionally associated with 2MASS source  
+        U = USNO-A2.0 catalog source positionally associated with 2MASS       
+        source"                                                               
+  DATA_TYPE                        = "CHARACTER"                              
+  START_BYTE                       = 401                                      
+  BYTES                            = 1                                        
+  FORMAT                           = "A1"                                     
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 52                                       
+  NAME                             = "DIST_OPT"                               
+  DESCRIPTION                      = "Distance separating 2MASS source        
+        position and associated optical source within approximately 5 arcsecs.
+        For Tycho 2 associations (a=T), the separation is computed for the    
+        position of the Tycho 2 source corrected for proper motion to the time
+        of the 2MASS observation (if proper motions are provided in Tycho 2). 
+        This column is null if there is no associated optical source."        
+  UNIT                             = "ARCSECONDS"                             
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 403                                      
+  BYTES                            = 4                                        
+  FORMAT                           = "F4.2"                                   
+  MISSING_CONSTANT                 = -.99                                     
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 53                                       
+  NAME                             = "PHI_OPT"                                
+  DESCRIPTION                      = "Position angle on the sky of the vector 
+        from the the associated optical source to the 2MASS source position,  
+        in degrees East of North. This column is null if there is no          
+        associated optical source."                                           
+  UNIT                             = "DEGREES"                                
+  DATA_TYPE                        = "ASCII_INTEGER"                          
+  START_BYTE                       = 408                                      
+  BYTES                            = 4                                        
+  FORMAT                           = "I4"                                     
+  MISSING_CONSTANT                 = -999                                     
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 54                                       
+  NAME                             = "B_M_OPT"                                
+  DESCRIPTION                      = "Blue magnitude of associated optical    
+        source. If Tycho 2 (a=T), then this is the Johnson B magnitude B(J),  
+        derived from B(Tycho) and V(Tycho) using B(J)-V(J) = 0.85*[B(T)-V(T)].
+        If USNO-A2.0 (a=U), then this is the photographic blue magnitude. This
+        column is null if there is no associated optical source."             
+  UNIT                             = "MAGNITUDES"                             
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 413                                      
+  BYTES                            = 5                                        
+  FORMAT                           = "F5.2"                                   
+  MISSING_CONSTANT                 = -9.99                                    
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 55                                       
+  NAME                             = "VR_M_OPT"                               
+  DESCRIPTION                      = "Visual or red magnitude of the          
+        associated optical source. If Tycho 2 (a=T), then this is the Johnson 
+        V magnitude V(J), derived from B(Tycho) and V(Tycho) using V(J) = V(T)
+        - 0.09*[B(T)-V(T)]. If USNO-A2.0 (a=U), then this is the photographic 
+        red magnitude. This column is null if there is no associated optical  
+        source."                                                              
+  UNIT                             = "MAGNITUDES"                             
+  DATA_TYPE                        = "ASCII_REAL"                             
+  START_BYTE                       = 419                                      
+  BYTES                            = 5                                        
+  FORMAT                           = "F5.2"                                   
+  MISSING_CONSTANT                 = -9.99                                    
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 56                                       
+  NAME                             = "OBS_DATE"                               
+  DESCRIPTION                      = "Date of observation"                    
+  DATA_TYPE                        = "CHARACTER"                              
+  START_BYTE                       = 425                                      
+  BYTES                            = 10                                       
+  FORMAT                           = "A10"                                    
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 57                                       
+  NAME                             = "HEMIS"                                  
+  DESCRIPTION                      = "Hemisphere code for the 2MASS           
+        Observatory from which this source was observed.                      
+                                                                              
+        n = North/Mt. Hopkins                                                 
+        s = South/CTIO"                                                       
+  DATA_TYPE                        = "CHARACTER"                              
+  START_BYTE                       = 436                                      
+  BYTES                            = 1                                        
+  FORMAT                           = "A1"                                     
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 58                                       
+  NAME                             = "SCAN"                                   
+  DESCRIPTION                      = "The nightly scan number in which the    
+        source was detected (unique within obs_date)"                         
+  DATA_TYPE                        = "ASCII_INTEGER"                          
+  START_BYTE                       = 438                                      
+  BYTES                            = 3                                        
+  FORMAT                           = "I3"                                     
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 59                                       
+  NAME                             = "PTS_KEY"                                
+  DESCRIPTION                      = "2MASS Point Source Catalog ID number"   
+  DATA_TYPE                        = "ASCII_INTEGER"                          
+  START_BYTE                       = 442                                      
+  BYTES                            = 10                                       
+  FORMAT                           = "I10"                                    
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+ OBJECT                            = COLUMN                                   
+  COLUMN_NUMBER                    = 60                                       
+  NAME                             = "EXT_KEY"                                
+  DESCRIPTION                      = "2MASS Extended Source Catalog ID number"
+  DATA_TYPE                        = "ASCII_INTEGER"                          
+  START_BYTE                       = 453                                      
+  BYTES                            = 7                                        
+  FORMAT                           = "I7"                                     
+  MISSING_CONSTANT                 = -999999                                  
+ END_OBJECT                        = COLUMN                                   
+                                                                              
+END_OBJECT                         = TABLE                                    
+END                                                                           
