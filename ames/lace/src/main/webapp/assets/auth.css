@@ -1,0 +1,98 @@
+body {
+    line-height: 1.4em;
+    background-color: #FFFFE5;
+}
+
+p {
+    max-width: 40em;
+}
+
+#header {
+    padding: .5em 1em;
+    background: #585858;
+    background-image: linear-gradient(#585858, #404040 60%);
+}
+
+#logo {
+    float: right;
+    vertical-align: middle;
+}
+
+#logo img {
+    padding-left: 2em;
+    vertical-align: middle;
+}
+
+#header h1 {
+    margin-right: 250px;
+    font-size: 1.6em;
+    color: #F2BD43;
+}
+
+#content {
+    padding: 1em;
+}
+
+#content h1 {
+    line-height: 1em;
+}
+
+label span.label {
+    clear: both;
+    float: left;
+    width: 7em;
+}
+
+label input {
+    display: block;
+    margin-left: 8em;
+    width: 16em;
+}
+
+label span.label-above {
+    display: block;
+}
+
+label textarea {
+    display: block;
+    width: 40em;
+    height: 8em;
+}
+
+.terms {
+    padding: .5em;
+    background: #F0F0F8;
+    width: 39em;
+}
+
+.terms input {
+    float: left;
+    width: 1.5em;
+}
+
+.buttons {
+    text-align: right;
+}
+
+.buttons span {
+/*    line-height: 1em;*/
+}
+
+ul.errorMessage {
+    color: red;
+}
+
+.halfColumn {
+	float: left;
+	width: 45%;
+	border-top: 1px solid gray;
+}
+
+.halfColumn.first {
+	padding-right: 1em;
+}
+
+.halfColumn.last {
+	padding-left: 1em;
+	border-left: 1px solid gray;
+}

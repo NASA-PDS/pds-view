@@ -1,0 +1,4 @@
+#! /bin/bash
+
+rm -rf src/main/webapp/projects
+(cd src/misc/data; tar cf - projects) | (cd src/main/webapp; tar xvf -)

@@ -1,0 +1,192 @@
+#! /bin/bash
+
+LACE_PROJECT_DIR=src/main/webapp/WEB-INF/data/projects
+
+PGM_DIR="`dirname $0`"
+PGM_NAME="`basename $0`"
+
+function usage() {
+    echo "usage: $PGM_NAME command options"
+    echo "Available commands:"
+    echo "    list               list users"
+    echo "    pending            show pending registration requests"
+    echo "    info userid        show user details"
+    echo "    approve userid     approve a user registration request"
+    echo "    deny userid        disapprove a user registration request"
+    echo "    unapprove userid   put user back into 'awaiting approval' state"
+    echo "    delete userid      delete a user and all data"
+    echo "    create userid      create a registration request for a user"
+    echo "    properties userid  show user properties file"
+    exit 1
+}
+
+function getUsers() {
+    find "$LACE_PROJECT_DIR" -name 'user\.properties' | sed -e 's;/user\.properties;;'
+}
+
+function getUserProperty() {
+    PROPERTY="$2"
+    awk '-F *= *' "\$1==\"$PROPERTY\" {print \$2}" "$1/user.properties"
+}
+
+function getUserID() {
+    getUserProperty "$1" user.id
+}
+
+function getUserStatus() {
+    STATUS=`getUserProperty "$1" user.registration-state`
+    if [ "$STATUS" = "" ]; then
+        STATUS=UNREGISTERED
+    fi
+    echo $STATUS
+}
+
+function createUser() {
+    USER_DIR=`openssl rand -base64 15`
+    while [ -e "$LACE_PROJECT_DIR/$USER_DIR" ]; do
+        USER_DIR=`openssl rand -base64 15`
+    done
+    
+    U="$LACE_PROJECT_DIR/$USER_DIR"
+    mkdir "$U"
+    echo "user.id=$1" >>"$U/user.properties"
+    echo "user.registration-state=AWAITING_APPROVAL" >>"$U/user.properties"
+}
+
+function getUserDir() {
+    for u in `getUsers`; do
+        USER_NAME=`grep 'user\.id' "$u/user.properties" | awk '-F *= *' '{print $2}'`
+
+        if [ "$USER_NAME" = "$1" ]; then
+            echo "$u"
+        fi
+    done
+}
+
+function listUsers() {
+    for u in `getUsers`; do
+        echo "`getUserID $u`  `getUserStatus $u`  $u"
+    done | sort
+}
+
+function setUserProperty() {
+    USER_DIR="$1"
+    PROPERTY="$2"
+    NEW_VALUE="$3"
+    TMP=`mktemp -t lace-users`
+    awk '-F *= *' "\$1!=\"$PROPERTY\" {print \$0}" "$USER_DIR/user.properties" >$TMP
+    echo "$PROPERTY = $NEW_VALUE" >>$TMP
+    mv $TMP "$USER_DIR/user.properties"
+}
+
+function setStateChangedBy() {
+    setUserProperty "$1" state.changed-by "`whoami`"
+    setUserProperty "$1" state.changed-on "`date`"
+}
+
+function showInfo() {
+    cat "$1" | awk '-F *= *' '
+NF==2 {user[$1] = $2;}
+END {
+    printf "%-30s %s\n", "User ID:", user["user.id"]
+    printf "%-30s %s\n", "Status:", user["user.registration-state"]
+    print ""
+    printf "%-30s %s\n", "Name:", user["user.property.name"]
+    printf "%-30s %s\n", "Email:", user["user.property.email"]
+    printf "%-30s %s\n", "Affiliation:", user["user.property.affiliation"]
+    print ""
+    print "Reason for use:"
+    print user["user.property.reason"]    
+}
+'
+}
+
+if [ $# -lt 1 ]; then
+    usage
+    exit 1
+fi
+
+COMMAND="$1"
+shift
+
+case "$COMMAND" in
+	list|pending)
+        ARGS_NEEDED=0
+		;;
+	approve|deny|unapprove|properties|create|delete|info|properties)
+		ARGS_NEEDED=1
+		;;
+	*)
+		usage
+		exit 1
+		;;
+esac
+
+if [ $# -lt $ARGS_NEEDED ]; then
+    usage
+    exit 1
+fi
+
+case "$COMMAND" in
+    list)
+        listUsers
+    	;;
+	pending)
+	    listUsers | awk '$2 == "AWAITING_APPROVAL"'
+		;;
+	approve|deny|unapprove)
+        case "$COMMAND" in
+            approve)
+            	NEW_STATUS=APPROVED
+            	;;
+            deny)
+            	NEW_STATUS=DENIED
+            	;;
+            unapprove)
+            	NEW_STATUS=AWAITING_APPROVAL
+            	;;
+        esac
+	    USER_DIR=`getUserDir "$1"`
+	    if [ "$USER_DIR" = "" ]; then
+	        echo "Cannot find user with id '$1'."
+	        exit 1
+	    fi
+	    setUserProperty "$USER_DIR" user.registration-state $NEW_STATUS
+	    setStateChangedBy "$USER_DIR"
+	    ;;
+    properties)
+	    USER_DIR=`getUserDir "$1"`
+	    if [ "$USER_DIR" = "" ]; then
+	        echo "Cannot find user with id '$1'."
+	        exit 1
+	    fi
+	    cat "$USER_DIR/user.properties"
+	    ;;
+	create)
+	    createUser $1
+	    ;;
+	delete)
+	    USER_DIR=`getUserDir "$1"`
+	    if [ "$USER_DIR" = "" ]; then
+	        echo "Cannot find user with id '$1'."
+	        exit 1
+	    fi
+	    rm -r "$USER_DIR"
+	    ;;
+	info)
+	    USER_DIR=`getUserDir "$1"`
+	    if [ "$USER_DIR" = "" ]; then
+	        echo "Cannot find user with id '$1'."
+	        exit 1
+	    fi
+	    showInfo "$USER_DIR/user.properties"
+	    ;;
+	properties)
+	    USER_DIR=`getUserDir "$1"`
+	    if [ "$USER_DIR" = "" ]; then
+	        echo "Cannot find user with id '$1'."
+	        exit 1
+	    fi
+	    cat "$USER_DIR/user.properties"
+	    ;;
+esac

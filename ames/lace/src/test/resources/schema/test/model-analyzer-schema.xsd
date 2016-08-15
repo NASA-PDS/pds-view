@@ -1,0 +1,515 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns="http://arc.nasa.gov/pds4/model-analyzer"
+  elementFormDefault="qualified"
+  targetNamespace="http://arc.nasa.gov/pds4/model-analyzer">
+  
+  <xs:annotation>
+    <xs:documentation>
+      This schema is for testing the ModelAnalyzer class.
+    </xs:documentation>
+  </xs:annotation>
+  
+  <!--
+    Tests of a very simple schema, where the content model is the
+    same for all variations, but different levels of indirection
+    are used. The resulting model should be the same for all
+    cases.
+  -->
+  
+  <xs:element name="Simple1">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="SimpleValue" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:simpleType name="SimpleString">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  
+  <xs:element name="Simple2">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="SimpleValue" type="SimpleString" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:complexType name="Simple3">
+    <xs:sequence>
+      <xs:element name="SimpleValue" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:element name="Simple3" type="Simple3" />
+  
+  <xs:complexType name="Simple4">
+    <xs:sequence>
+      <xs:element name="SimpleValue" type="SimpleString" />
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:element name="Simple4" type="Simple4" />
+  
+  <!--
+ 	Tests of a simple schema where the element has restrictions. 
+  -->
+  
+  <xs:simpleType name="SimpleWithRestriction1">
+  	<xs:restriction base="xs:string">
+  		<xs:minLength value="1"></xs:minLength>
+  		<xs:maxLength value="255"></xs:maxLength>
+  		<xs:pattern value="[a-z]"></xs:pattern>
+  		<xs:pattern value="[A-Z]"></xs:pattern>
+  		<xs:enumeration value="enum1"></xs:enumeration>
+  		<xs:enumeration value="enum2"></xs:enumeration>
+  	</xs:restriction>
+  </xs:simpleType>
+  
+  <xs:element name="Simple5" type="SimpleWithRestriction1" />
+  
+  <xs:simpleType name="SimpleWithRestriction2">
+  	<xs:restriction base="xs:token">  		
+  	</xs:restriction>
+  </xs:simpleType>
+  
+  <xs:element name="Simple6" type="SimpleWithRestriction2" />
+  
+  <!--
+    Tests of a slightly more complex schema where the contents of the
+    top-level element is a single complex item that has a single
+    simple item inside. All variations should give the same model,
+    from different levels of indirection in the schema.
+  -->
+  
+  <xs:element name="Middling1">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Container">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="SimpleValue" type="xs:string" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:complexType name="Container2">
+    <xs:sequence>
+      <xs:element name="SimpleValue" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:element name="Middling2">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Container" type="Container2" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:complexType name="Container3">
+    <xs:sequence>
+      <xs:element name="SimpleValue" type="SimpleString" />
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:complexType name="Middling3">
+    <xs:sequence>
+      <xs:element name="Container" type="Container3" />
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:element name="Middling3" type="Middling3" />
+  
+  <!--
+    Tests of various schema items that should become insertion
+    points. All top-level elements should have a model of at
+    single insertion point, some repeating, some just optional.
+  -->
+  
+  <xs:element name="InsPoint1">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Container" minOccurs="0" maxOccurs="1" type="CommonContainer" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="InsPoint2">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Container" minOccurs="0" maxOccurs="unbounded" type="CommonContainer" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="InsPoint3">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Container" minOccurs="1" maxOccurs="unbounded" type="CommonContainer" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="InsPoint4">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Value" minOccurs="1" maxOccurs="unbounded" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="InsPoint5">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Value" minOccurs="0" maxOccurs="unbounded" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="InsPoint6">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="Value1" type="xs:string" />
+        <xs:element name="Value2" type="xs:string" />
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="InsPoint7">
+    <xs:complexType>
+      <xs:choice minOccurs="1" maxOccurs="1">
+        <xs:element name="Value1" type="xs:string" />
+        <xs:element name="Value2" type="xs:string" />
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  
+  <!-- 
+	Tests of xs:any schema items that should become insertion points of type 'any'.
+   -->
+  <xs:element name="AnyInsPoint1">
+  	<xs:complexType>
+  		<xs:sequence>
+  			<xs:any namespace="##other" minOccurs="0" maxOccurs="unbounded"></xs:any>
+  		</xs:sequence>
+  	</xs:complexType>
+  </xs:element>
+  
+  <xs:element name="AnyInsPoint2">
+  	<xs:complexType>
+  		<xs:sequence>
+  			<xs:any namespace="##any" minOccurs="0" maxOccurs="unbounded"></xs:any>
+  		</xs:sequence>
+  	</xs:complexType>
+  </xs:element>
+
+  <xs:element name="AnyInsPoint3">
+  	<xs:complexType>
+  		<xs:sequence>
+  			<xs:any namespace="##targetNamespace" minOccurs="0" maxOccurs="unbounded"></xs:any>
+  		</xs:sequence>
+  	</xs:complexType>
+  </xs:element>
+  
+  <xs:element name="AnyInsPoint4">
+  	<xs:complexType>
+  		<xs:sequence>
+  			<xs:any namespace="http://pds.nasa.gov/pds4/pds/v03 http://arc.nasa.gov/pds4/model-analyzer" minOccurs="0" maxOccurs="unbounded"></xs:any>
+  		</xs:sequence>
+  	</xs:complexType>
+  </xs:element>
+  
+  <xs:element name="AnyInsPoint5">
+  	<xs:complexType>
+  		<xs:sequence>
+  			<xs:any namespace="##local" minOccurs="0" maxOccurs="unbounded"></xs:any>
+  		</xs:sequence>
+  	</xs:complexType>
+  </xs:element>
+  
+  <!--
+    Tests of using the same type at multiple locations in a schema, but
+    with differing element names. Each should be a separate instance of
+    LabelItemType.
+  -->
+  
+  <xs:simpleType name="CommonValue">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  
+  <xs:element name="Common1">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Value1" type="CommonValue" minOccurs="1" maxOccurs="1" />
+        <xs:element name="Value2" type="CommonValue" minOccurs="0" maxOccurs="1" />
+        <xs:element name="Value3" type="CommonValue" minOccurs="1" maxOccurs="unbounded" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:complexType name="CommonContainer">
+    <xs:sequence>
+      <xs:element name="String" type="xs:string" />
+    </xs:sequence>  
+  </xs:complexType>
+  
+  <xs:element name="Common2">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Container1" type="CommonContainer" minOccurs="1" maxOccurs="1" />
+        <xs:element name="Container2" type="CommonContainer" minOccurs="0" maxOccurs="1" />
+        <xs:element name="Container3" type="CommonContainer" minOccurs="1" maxOccurs="unbounded" />
+        <xs:element name="Container4" type="CommonContainer" minOccurs="0" maxOccurs="unbounded" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <!--
+    Tests of elements with attributes. All of these elements
+    should have the same model, but differ in the level of
+    indirection within the schema.
+   -->
+   
+  <xs:element name="SimpleWithAttribute1">
+    <xs:complexType>
+      <xs:attribute name="attribute" type="xs:string" />
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:simpleType name="AttributeString">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="10" />
+    </xs:restriction>
+  </xs:simpleType>
+    
+  <xs:element name="SimpleWithAttribute2">
+    <xs:complexType>
+      <xs:attribute name="attribute" type="AttributeString" />
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:complexType name="SimpleWithAttributeElement3">
+    <xs:attribute name="attribute" type="AttributeString" />
+  </xs:complexType>
+
+  <xs:element name="SimpleWithAttribute3" type="SimpleWithAttributeElement3" />
+    
+  <xs:element name="SimpleWithAttributeAndNesting">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="offset">
+          <xs:complexType>
+            <xs:attribute name="unit" />
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <!-- 
+  	Tests of a complex schema where the contents of the top-level
+  	element is a complex container that has a complex container of
+  	the same type inside.   
+   -->  
+   
+  <xs:complexType name="RepeatingContainer">
+  	<xs:choice minOccurs="1" maxOccurs="unbounded">
+  		<xs:element name="SimpleValue" type="xs:string" />
+  		<xs:element name="Container" type="RepeatingContainer" />		
+  	</xs:choice>
+  </xs:complexType>  
+  
+  <xs:element name="Repeating1">
+    <xs:complexType>      
+      <xs:sequence>        
+        <xs:element name="Container" type="RepeatingContainer" />        
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="SimpleWithStringType" type="xs:string" />
+  
+  <!--
+    Tests of a schema with a subtitution group.
+  -->
+  
+  <xs:element name="ElementWithSubstitutionGroup" abstract="true" />
+  
+  <xs:element name="GroupElement1" substitutionGroup="ElementWithSubstitutionGroup">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="String1" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="GroupElement2" substitutionGroup="ElementWithSubstitutionGroup">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="String1" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="ContainerWithSubstitutionGroup">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="ElementWithSubstitutionGroup" minOccurs="0" maxOccurs="unbounded" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <!--
+    Tests of schema constraints.
+  -->
+  
+  <xs:element name="StringWithEnumerations">
+    <xs:simpleType>
+      <xs:restriction base="xs:string">
+        <xs:enumeration value="ONE" />
+        <xs:enumeration value="TWO" />
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:element>
+  
+  <xs:element name="StringWithOneEnumeratedValue">
+    <xs:simpleType>
+      <xs:restriction base="xs:string">
+        <xs:enumeration value="ONE" />
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:element>
+  
+  <xs:element name="ElementWithAttributeThatHasEnumerations">
+    <xs:complexType>
+      <xs:attribute name="Attribute">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="ONE" />
+            <xs:enumeration value="TWO" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="ElementWithAttributeThatHasDefault">
+    <xs:complexType>
+      <xs:attribute name="Attribute" default="DEFAULT" />
+    </xs:complexType>
+  </xs:element>
+  
+  <!--
+    Tests of finding enumerated values with union types.
+  -->
+  <xs:simpleType name="color">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="red" />
+      <xs:enumeration value="green" />
+      <xs:enumeration value="blue" />
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="flip">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="heads" />
+      <xs:enumeration value="tails" />
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="colorOrFlip">
+    <xs:union memberTypes="color flip" />
+  </xs:simpleType>
+
+  <xs:element name="colorOrFlip" type="colorOrFlip" />
+  
+  <!--
+    Tests of documentation information.
+  -->
+  <xs:complexType name="typeWithDocumentation">
+    <xs:annotation>
+      <xs:documentation>Documentation for typeWithDocumentation.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence />
+  </xs:complexType>
+  
+  <xs:element name="elementForTypeWithDocumentation" type="typeWithDocumentation" />
+  
+  <xs:element name="elementWithDocumentation">
+    <xs:annotation>
+      <xs:documentation>
+        Documentation for elementWithDocumentation.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="elementWithDocumentationForTypeWithDocumentation" type="typeWithDocumentation">
+    <xs:annotation>
+      <xs:documentation>Documentation for elementWithDocumentationForTypeWithDocumentation.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  
+  <xs:element name="docTopLevel">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="simpleNonRepeating" type="xs:string" />
+        <xs:element name="simpleRepeating" type="xs:string" maxOccurs="unbounded" />
+        <xs:element name="lengthMinMax">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:minLength value="0" />
+              <xs:maxLength value="10" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="numericMinMax">
+          <xs:simpleType>
+            <xs:restriction base="xs:integer">
+              <xs:minInclusive value="1" />
+              <xs:maxInclusive value="10" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="withPatterns">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:pattern value="[A-Za-z_][A-Za-z_0-9]*" />
+              <xs:pattern value="\\$[A-Za-z_0-9]*" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:simpleType name="lowerCaseLatinAlpha">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[a-z]+" />
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="lowerCaseVowel">
+    <xs:restriction base="lowerCaseLatinAlpha">
+      <xs:pattern value="[aei]+" />
+      <xs:pattern value="[ou]+" />
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="subTypeNoRestrictions">
+    <xs:restriction base="lowerCaseLatinAlpha" />
+  </xs:simpleType>
+  
+  <xs:element name="lowerCaseVowel" type="lowerCaseVowel" />
+  
+  <xs:element name="subTypeNoRestrictions" type="subTypeNoRestrictions" />
+</xs:schema>

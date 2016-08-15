@@ -1,0 +1,16 @@
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+             xmlns:g="urn:import:com.google.gwt.user.client.ui"
+             xmlns:lace="urn:import:gov.nasa.arc.pds.lace.client.presenter">
+
+  <g:HTMLPanel styleName="settingsPanel">
+    <p>If the label is a template for generating instantiated labels, choose the template
+    variable syntax. Errors will be ignored on elements matching the variable syntax.</p>
+
+    <lace:EnumeratedRadioGroup ui:field="radioGroup" />
+	<g:HTMLPanel styleName="popupButtonContainer">
+		<g:Button ui:field="okButton" text="OK" />
+		<g:Button ui:field="cancelButton" text="Cancel" />
+	</g:HTMLPanel>
+  </g:HTMLPanel>
+  
+</ui:UiBinder>

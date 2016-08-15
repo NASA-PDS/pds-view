@@ -1,0 +1,177 @@
+<?xml-model href="http://pds.nasa.gov/pds4/schema/released/pds/v1/PDS4_PDS_1101.sch"
+    schematypens="http://purl.oclc.org/dsdl/schematron"?>
+
+<Product_Observational xmlns="http://pds.nasa.gov/pds4/pds/v1" xmlns:img="http://pds.nasa.gov/pds4/img/v1" xmlns:pds="http://pds.nasa.gov/pds4/pds/v03" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://pds.nasa.gov/pds4/pds/v1 http://pds.nasa.gov/pds4/schema/develop/pds/PDS4_PDS_1101.xsd    http://pds.nasa.gov/pds4/img/v1     http://pds.nasa.gov/pds4/schema/released/img/v1/PDS4_IMG_1100.xsd">
+  <Identification_Area>
+    <logical_identifier>urn:nasa:pds:moon_clem_uvvis_750nm_basemap:bi03n003:1</logical_identifier>
+    <version_id>1.0</version_id>
+    <title>Clementine UVVIS 750nm basemap tile - BI03N003</title>
+    <information_model_version>1.1.0.1</information_model_version>
+    <product_class>Product_Observational</product_class>
+    <Alias_List>
+      <Alias>
+        <alternate_id>BI03N003</alternate_id>
+        <comment>PDS3 product_id</comment>
+      </Alias>
+    </Alias_List>
+    <Modification_History>
+      <Modification_Detail>
+        <modification_date>2012-09-01</modification_date>
+        <version_id>0.1</version_id>
+        <description>
+                    This product is a result of PDS4 bundle testing for sample products from an original PDS3 archive.
+                </description>
+      </Modification_Detail>
+    </Modification_History>
+  </Identification_Area>
+  <Observation_Area>
+    <comment>LUNAR BASEMAP MOSAIC</comment>
+    <Time_Coordinates>
+      <start_date_time xsi:nil="true"/>
+      <stop_date_time xsi:nil="true"/>
+    </Time_Coordinates>
+    <Investigation_Area>
+      <name>Product_Observational</name>
+      <type>Observing Campaign</type>
+      <Internal_Reference>
+        <lid_reference>urn:nasa:pds:mission.DEEP_SPACE_PROGRAM_SCIENCE_EXPERIMENT</lid_reference>
+        <reference_type>data_to_investigation</reference_type>
+      </Internal_Reference>
+    </Investigation_Area>
+    <Observing_System>
+      <Observing_System_Component>
+        <name>Clementine 1</name>
+        <type>Spacecraft</type>
+        <Internal_Reference>
+          <lid_reference>urn:nasa:pds:instrument_host.CLEM1</lid_reference>
+          <reference_type>is_instrument_host</reference_type>
+          <comment>This is a reference to the context product describing the Clementine spacecraft.</comment>
+        </Internal_Reference>
+      </Observing_System_Component>
+      <Observing_System_Component>
+        <name>ULTRAVIOLET/VISIBLE CAMERA for CLEM1</name>
+        <type>Spacecraft</type>
+        <Internal_Reference>
+          <lid_reference>urn:nasa:pds:instrument.UVVIS__CLEM1</lid_reference>
+          <reference_type>is_instrument</reference_type>
+          <comment>This is the PDS4 logical identifier for the UVVIS instrument.</comment>
+        </Internal_Reference>
+      </Observing_System_Component>
+    </Observing_System>
+    <Target_Identification>
+      <name>Moon</name>
+      <type>Satellite</type>
+      <Internal_Reference>
+        <lid_reference>urn:nasa:pds:target.MOON</lid_reference>
+        <reference_type>collection_to_target</reference_type>
+        <comment>This is the logical identifier for the Earth's Moon</comment>
+      </Internal_Reference>
+    </Target_Identification>
+    <Mission_Area>
+      <img:Imaging_Instrument_Parameters>
+      </img:Imaging_Instrument_Parameters>
+      <img:Filter>
+        <img:filter_name>B</img:filter_name>
+      </img:Filter>
+      <!-- check here for possible inclusion of missing PDS3 keywords/values -->
+    </Mission_Area>
+    <Discipline_Area>
+<!--      <img:Geometry>
+        <img:Coordinate_System>
+          <img:coordinate_system_name>PLANETOGRAPHIC</img:coordinate_system_name>
+          <img:reference_coordinate_system_name>PLANETOGRAPHIC</img:reference_coordinate_system_name>
+          <img:origin_offset_vector>4549.5024429 2123.6345297</img:origin_offset_vector>-->
+          <!-- PENDING: PDS3 Sample and Line projection offsets (a vector here above) will be replaced
+                                  with something like ISIS3 "UpperLeftCornerX" and "UpperLeftCornerY" for PDS4 -->
+<!--        </img:Coordinate_System>
+      </img:Geometry>
+      <img:Cartography xmlns="http://pds.nasa.gov/pds4/img/v1">
+        <img:Spatial_Domain>
+          <img:Bounding_Coordinates>
+            <img:west_bounding_coordinate>0.0000000</img:west_bounding_coordinate>
+            <img:east_bounding_coordinate>6.0131998</img:east_bounding_coordinate>
+            <img:north_bounding_coordinate>7.0000000</img:north_bounding_coordinate>
+            <img:south_bounding_coordinate>-0.0132000</img:south_bounding_coordinate>
+          </img:Bounding_Coordinates>
+        </img:Spatial_Domain>
+        <img:Spatial_Reference_Information>
+          <img:Horizontal_Coordinate_System_Definition>
+            <img:Geographic>
+              <img:latitude_resolution>0.003297788776562905</img:latitude_resolution>
+              <img:longitude_resolution>0.003297788776562905</img:longitude_resolution>
+              <geographic_coordinate_units>Decimal degrees</geographic_coordinate_units>
+            </img:Geographic>
+            <img:Planar>
+              <img:Map_Projection>
+                <img:map_projection_name>Sinusoidal</img:map_projection_name>
+                <img:Sinusoidal>
+                  <img:longitude_of_central_meridian>15.0000000</img:longitude_of_central_meridian>
+                </img:Sinusoidal>
+              </img:Map_Projection>
+              <img:Planar_Coordinate_Information>
+                <img:planar_coordinate_encoding_method>coordinate pair</img:planar_coordinate_encoding_method>
+                <img:Coordinate_Representation>
+                  <abscissa_resolution>100.0</abscissa_resolution>
+                  <ordinate_resolution>100.0</ordinate_resolution>
+                </img:Coordinate_Representation>
+                <img:planar_distance_units>meters</img:planar_distance_units>
+              </img:Planar_Coordinate_Information>
+            </img:Planar>
+            <img:Geodetic_Model>
+              <ellipsoid_name>Moon_1737400</ellipsoid_name>
+              <img:semi_major_radius>1737.4000000</img:semi_major_radius>
+              <img:semi_minor_radius>1737.4000000</img:semi_minor_radius>
+              <img:polar_radius>1737.4000000</img:polar_radius>
+              <longitude_direction>POSITIVE_EAST</longitude_direction>
+            </img:Geodetic_Model>
+          </img:Horizontal_Coordinate_System_Definition>
+        </img:Spatial_Reference_Information>
+      </img:Cartography>
+-->
+    </Discipline_Area>
+  </Observation_Area>
+  <File_Area_Observational>
+    <!-- Image file with attached PDS3 header -->
+    <File>
+      <file_name>bi03n003.img</file_name>
+      <creation_date_time>1997-07-23T17:40:14</creation_date_time>
+      <file_size unit="byte">7851752</file_size>
+      <records>2129</records>
+      <md5_checksum>76644449fa85bd1c58711bc35a7fa85f</md5_checksum>
+      <comment>Image data product with attached PDS3 header.</comment>
+    </File>
+    <Header>
+      <offset unit="byte">0</offset>
+      <object_length unit="byte">7376</object_length>
+      <parsing_standard_id>7-Bit ASCII Text</parsing_standard_id>
+      <description>Attached header label (PDS3 format)</description>
+    </Header>
+    <Array_2D_Image>
+      <offset unit="byte">7376</offset>
+      <axes>2</axes>
+      <axis_index_order>Last Index Fastest</axis_index_order>
+      <Element_Array>
+        <data_type>UnsignedMSB2</data_type>
+      </Element_Array>
+      <Axis_Array>
+        <axis_name>Sample</axis_name>
+        <elements>1844</elements>
+        <sequence_number>1</sequence_number>
+      </Axis_Array>
+      <Axis_Array>
+        <axis_name>Line</axis_name>
+        <elements>2127</elements>
+        <sequence_number>2</sequence_number>
+      </Axis_Array>
+      <Object_Statistics>
+        <!-- <bit_mask>2#1111111111111111#</bit_mask> -->
+        <bit_mask>1111111111111111</bit_mask>
+        <maximum_scaled_value>2921</maximum_scaled_value>
+        <minimum_scaled_value>938</minimum_scaled_value>
+      </Object_Statistics>
+    </Array_2D_Image>
+  </File_Area_Observational>
+</Product_Observational>
+
+

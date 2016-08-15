@@ -1,0 +1,20 @@
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+			 xmlns:g="urn:import:com.google.gwt.user.client.ui">
+
+  <g:FocusPanel ui:field="projectItem" styleName="projectItem">
+  	<g:HTMLPanel>    
+	    <g:HTMLPanel ui:field="itemLine" styleName="itemLine">
+	        <g:InlineLabel ui:field="itemIcon" />
+	        <g:InlineLabel ui:field="itemLink" styleName="itemName" />
+	    </g:HTMLPanel>
+	    <g:HTMLPanel styleName="itemInfo">
+	    	<g:InlineLabel ui:field="lastUpdated" styleName="itemLastUpdated" />
+	    	<div class="actions">
+	      		<g:InlineLabel ui:field="deleteButton" styleName="deleteButton" />
+	      	</div>
+	    </g:HTMLPanel>
+	    <div class="clearFloat"></div>
+	   </g:HTMLPanel> 
+  </g:FocusPanel>
+
+</ui:UiBinder>
