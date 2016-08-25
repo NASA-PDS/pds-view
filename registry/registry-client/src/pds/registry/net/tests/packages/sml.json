@@ -1,0 +1,22 @@
+{
+   "guid" : "urn:pkg:sml",
+   "slots" : [
+      {
+         "name" : "hirsuteness",
+         "values" : [
+            "wiry"
+         ],
+         "id" : 146,
+         "slotType" : null
+      }
+   ],
+   "home" : "http://pkg.xxx/registry",
+   "name" : "Small Package",
+   "description" : "The size of this package is rather small.",
+   "lid" : "sml",
+   "objectType" : "RegistryPackage",
+   "externalIdentifiers" : [],
+   "status" : "Submitted",
+   "classifications" : [],
+   "versionName" : "1.0"
+}

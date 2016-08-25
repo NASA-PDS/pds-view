@@ -1,5 +1,5 @@
 # encoding: utf-8
-# Copyright 2011 California Institute of Technology. ALL RIGHTS
+# Copyright 2011–2016 California Institute of Technology. ALL RIGHTS
 # RESERVED. U.S. Government Sponsorship acknowledged.
 
 '''PDS Registry: network base communications'''
@@ -16,6 +16,9 @@ for name in ('egg', 'spam', 'bacon'):
 _ass = {}
 for name in ('ass', 'but', 'boo'):
     _ass[name] = pkg_resources.resource_string(__name__, 'associations/%s.json' % name)
+_pkg = {}
+for name in ('sml', 'med', 'lrg'):
+    _pkg[name] = pkg_resources.resource_string(__name__, 'packages/%s.json' % name)
 
 _testData = {
     'extrinsics':                '{"start":1,"numFound":3,"results":[%s,%s,%s]}' % (_exts['egg'], _exts['spam'], _exts['bacon']),
@@ -83,7 +86,29 @@ _testData = {
     'associations?start=1&sourceObject=urn%3Auuid%3A8007636f-adcd-416e-a75b-e954814bd953&rows=20':
         '{"start":1,"numFound":3,"results":[%s,%s,%s]}' % (_ass['ass'], _ass['but'], _ass['boo']),
     'associations?start=1&rows=20&targetObject=urn%3Auuid%3A2cdad332-f667-4e8b-814a-4b67624c4e2a':
-        '{"start":1,"numFound":1,"results":[%s]}' % _ass['ass']
+        '{"start":1,"numFound":1,"results":[%s]}' % _ass['ass'],
+    'packages': '{"start":1,"numFound":3,"results":[%s,%s,%s]}' % (_pkg['sml'],_pkg['med'],_pkg['lrg']),
+    'packages?start=1&rows=1': '{"start":1,"numFound":3,"results":[%s]}' % _pkg['sml'],
+    'packages?start=1&rows=2': '{"start":1,"numFound":3,"results":[%s,%s]}' % (_pkg['sml'],_pkg['med']),
+    'packages?start=1&rows=3': '{"start":1,"numFound":3,"results":[%s,%s,%s]}' % (_pkg['sml'],_pkg['med'],_pkg['lrg']),
+    'packages?start=1&rows=20':'{"start":1,"numFound":3,"results":[%s,%s,%s]}' % (_pkg['sml'],_pkg['med'],_pkg['lrg']),
+    'packages?start=2&rows=1': '{"start":2,"numFound":3,"results":[%s]}' % _pkg['med'],
+    'packages?start=2&rows=2': '{"start":2,"numFound":3,"results":[%s,%s]}' % (_pkg['med'],_pkg['lrg']),
+    'packages?start=2&rows=3': '{"start":2,"numFound":3,"results":[%s,%s]}' % (_pkg['med'],_pkg['lrg']),
+    'packages?start=2&rows=20':'{"start":2,"numFound":3,"results":[%s,%s]}' % (_pkg['med'],_pkg['lrg']),
+    'packages?start=3&rows=1': '{"start":3,"numFound":3,"results":[%s]}' % _pkg['lrg'],
+    'packages?start=3&rows=2': '{"start":3,"numFound":3,"results":[%s]}' % _pkg['lrg'],
+    'packages?start=3&rows=3': '{"start":3,"numFound":3,"results":[%s]}' % _pkg['lrg'],
+    'packages?start=3&rows=20':'{"start":3,"numFound":3,"results":[%s]}' % _pkg['lrg'],
+    'packages?start=4&rows=1': '{"start":4,"numFound":3,"results":[]}',
+    'packages/urn:pkg:sml': _pkg['sml'],
+    'packages/urn:pkg:med': _pkg['med'],
+    'packages/urn:pkg:lrg': _pkg['lrg'],
+    'packages/urn:pkg:sml/deprecate': '',
+    'packages/urn:pkg:sml/members': '',
+    'packages/urn:pkg:sml/members/deprecate': '',
+    'packages/urn:pkg:sml/members/undeprecate': '',
+    'packages/urn:pkg:sml/undeprecate': '',
 }
 
 class _TestHandlerError(urllib2.HTTPError):

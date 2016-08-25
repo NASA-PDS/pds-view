@@ -1,0 +1,13 @@
+{
+   "guid" : "urn:pkg:med",
+   "slots" : [],
+   "home" : "http://pkg.xxx/registry",
+   "name" : "Medium Package",
+   "description" : "The size of this package is medium.",
+   "lid" : "med",
+   "objectType" : "RegistryPackage",
+   "externalIdentifiers" : [],
+   "status" : "Submitted",
+   "classifications" : [],
+   "versionName" : "1.0"
+}

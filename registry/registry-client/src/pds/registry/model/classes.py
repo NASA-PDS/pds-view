@@ -1,5 +1,5 @@
 # encoding: utf-8
-# Copyright 2011 California Institute of Technology. ALL RIGHTS
+# Copyright 2011–2016 California Institute of Technology. ALL RIGHTS
 # RESERVED. U.S. Government Sponsorship acknowledged.
 
 '''PDS Registry Client: class implementations.'''
@@ -10,7 +10,7 @@ class Identifiable(object):
     The Identifiable class is the common super class for most classes in the
     information model.  Information model Classes whose instances have a
     unique identity are descendants of the Identifiable Class.
-    
+
     Example of use:
 
     >>> i = Identifiable('guid', 'urn:home', slots=set())
@@ -53,12 +53,12 @@ class Identifiable(object):
 
 
 class Slot(object):
-    ''' 
+    '''
     Slot instances provide a dynamic way to add arbitrary attributes to
     RegistryObject instances.  This ability to add attributes dynamically to
     RegistryObject instances enables extensibility within the information
     model.
-    
+
     >>> a = Slot(u'http://purl.org/dc/terms/title', ["Bluish Eggs and a Side of Pastrami"],
     ...     slotType='http://www.w3.org/2001/XMLSchema#string')
     >>> b = Slot(u'http://purl.org/dc/terms/title', ["Oh The Destinations You'll Briefly Visit"],
@@ -83,15 +83,15 @@ class Slot(object):
         return hash((self.name, self.slotType, reduce(lambda x, y: x ^ y, [hash(i) for i in self.values], 0x55555555)))
     def __cmp__(self, other):
         return cmp((self.name, self.slotType, self.values), (other.name, other.slotType, other.values))
-        
+
 
 class RegistryObject(Identifiable):
     '''
     The RegistryObject class extends the Identifiable class and serves as a
     common super class for most classes in the information model.
-    
+
     There should be no more versionID attribute anymore:
-    
+
     >>> ro = RegistryObject(
     ...     guid=u'urn:test:guid:1', lid=u'urn:test:lid:1', home=u'http://localhost:8080/test',
     ...     slots=set(), name=u'Test Object', status='Accepted', description=u'An object for testing',
@@ -107,6 +107,7 @@ class RegistryObject(Identifiable):
     SPECIFICATION_LINK = 'SpecificationLink'
     EXTRINSIC_OBJECT = 'ExtrinsicObject'
     ASSOCIATION = 'Association'
+    PACKAGE = 'Package'
     def __init__(
         self, guid, lid,
         home=None, slots=None, name=None, objectType=None, status=None, description=None, versionName=None
@@ -154,6 +155,20 @@ class Association(RegistryObject):
             status, description, versionName
         )
         self.source, self.target, self.associationType = source, target, associationType
+
+
+class Package(RegistryObject):
+    '''Packages group logically related RegistryObjects together even when those
+    individual objects belong to varying submitting organizations.
+    '''
+    def __init__(
+        self, guid, lid,
+        home=None, slots=None, name=None, objectType=None, status=None, description=None, versionName=None
+    ):
+        super(Package, self).__init__(
+            guid, lid, home, slots, name, objectType if objectType is not None else RegistryObject.PACKAGE,
+            status, description, versionName
+        )
 
 
 class Service(RegistryObject):
@@ -214,7 +229,7 @@ class SpecificationLink(RegistryObject):
     def __init__(
         self, guid, lid, serviceBinding, specificationObject,
         home=None, slots=None, name=None, status=None, description=None, versionName=None,
-        usageDescription=None, usageParameters=None        
+        usageDescription=None, usageParameters=None
     ):
         super(SpecificationLink, self).__init__(
             guid, lid, home, slots, name, RegistryObject.SPECIFICATION_LINK, status, description, versionName,
@@ -231,5 +246,3 @@ class SpecificationLink(RegistryObject):
     def serviceBinding(self):
         '''GUID of the service binding for this specification link, immutable'''
         return self._serviceBinding
-    
-

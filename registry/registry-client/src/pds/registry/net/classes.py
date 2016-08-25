@@ -5,7 +5,9 @@
 '''PDS Registry network communication classes'''
 
 from contextlib import closing
-from pds.registry.model.classes import Service, ServiceBinding, SpecificationLink, Slot, ExtrinsicObject, Association
+from pds.registry.model.classes import (
+    Service, ServiceBinding, SpecificationLink, Slot, ExtrinsicObject, Association, Package
+)
 from urllib import urlencode
 from urllib2 import Request, urlopen, HTTPError
 import anyjson, httplib
@@ -101,6 +103,21 @@ class PDSRegistryClient(object):
             versionName=d.get('versionName', None),
             serviceBindings=self._createServiceBindings(serviceGUID, d.get('serviceBindings', []))
         )
+    def _createPackage(self, d):
+        '''Create a package from post-JSON-quantized dictionary ``d``.'''
+        if 'objectType' not in d: raise ValueError('No "objectType')
+        if d['objectType'] != 'RegistryPackage': raise ValueError('Expected "Association" but got "%s"' % d['objectType'])
+        packageGUID = d['guid']
+        return Package(
+            guid=packageGUID,
+            lid=d['lid'],
+            home=d['home'],
+            slots=self._createSlots(d.get('slots', [])),
+            name=d['name'],
+            status=d.get('status', None),
+            description=d.get('description', None),
+            versionName=d.get('versionName', None)
+        )
     def _createAssociation(self, d):
         '''Create an Association from a post-JSON-quantized dictionary ``d``.'''
         if 'objectType' not in d: raise ValueError('No "objectType"')
@@ -181,6 +198,18 @@ class PDSRegistryClient(object):
             'slots':            self._mapSlots(service.slots),
             'versionName':      service.versionName,
         })
+    def _serializePackage(self, package):
+        '''Serialize a Package into JSON.'''
+        return anyjson.serialize({
+            'description':      package.description,
+            'guid':             package.guid,
+            'home':             package.home,
+            'lid':              package.lid,
+            'name':             package.name,
+            'objectType':       package.objectType,
+            'slots':            self._mapSlots(package.slots),
+            'versionName':      package.versionName,
+        })
     def _serializeAssociation(self, association):
         '''Serialize an Association into JSON.'''
         return anyjson.serialize({
@@ -234,6 +263,25 @@ class PDSRegistryClient(object):
         '''
         answer = self._callServer('/extrinsics', dict(start=start+1, rows=rows))  # Why is it one-based indexing? Lame.
         return [self._createExtrinsic(i) for i in answer.get('results', [])]
+    def getPackages(self, start=0, rows=20):
+        '''Retrieve packages registered with the registry service, starting at index ``start`` in the
+        package list and retrieving no more than ``rows`` worth.
+
+        >>> import pds.registry.net.tests.base
+        >>> rs = PDSRegistryClient('testscheme:/rs')
+        >>> packages = rs.getPackages()
+        >>> len(packages)
+        3
+        >>> packages[0].guid, packages[1].guid, packages[2].guid
+        (u'urn:pkg:sml', u'urn:pkg:med', u'urn:pkg:lrg')
+        >>> packages = rs.getPackages(1, 1)
+        >>> len(packages)
+        1
+        >>> packages[0].guid
+        u'urn:pkg:med'
+        '''
+        answer = self._callServer('/packages', dict(start=start+1, rows=rows))  # Why is it … oh nevermind
+        return [self._createPackage(i) for i in answer.get('results', [])]
     def getAssociations(self, start=0, rows=20, source=None, target=None):
         '''Retrieve associations registered with the registry service, starting at index ``start`` in
         the associations list and retrieving no more than ``rows`` worth.  Optionally, you can search
@@ -326,6 +374,31 @@ class PDSRegistryClient(object):
             answer = self._callServer('/services/%s' % guid)
             if 'Service' != answer.get('objectType', None): return None
             return self._createService(answer)
+        except HTTPError, ex:
+            if ex.code == httplib.NOT_FOUND:
+                return None
+            else:
+                raise ex
+    def getPackage(self, guid):
+        '''Retrieve a package with a known ``guid`` or None if ``guid`` is not found.
+
+        >>> import pds.registry.net.tests.base
+        >>> rs = PDSRegistryClient('testscheme:/rs')
+        >>> pkg = rs.getPackage('urn:pkg:sml')
+        >>> pkg.guid, pkg.lid, pkg.name
+        (u'urn:pkg:sml', u'sml', u'Small Package')
+        >>> pkg.status, pkg.description, pkg.versionName
+        (u'Submitted', u'The size of this package is rather small.', u'1.0')
+        >>> len(pkg.slots)
+        1
+        >>> slot = pkg.slots.pop()
+        >>> slot.name, slot.values
+        (u'hirsuteness', [u'wiry'])
+        '''
+        try:
+            answer = self._callServer('/packages/%s' % guid)
+            if 'RegistryPackage' != answer.get('objectType', None): return None
+            return self._createPackage(answer)
         except HTTPError, ex:
             if ex.code == httplib.NOT_FOUND:
                 return None
@@ -451,6 +524,25 @@ class PDSRegistryClient(object):
             self._callServer('/services/%s' % service.guid, params=None, json=json, method='PUT')
         else:
             self._callServer('/services', params=None, json=json, method='POST')
+    def putPackage(self, package):
+        '''Send Package ``package`` into the registry.
+
+        >>> import pds.registry.net.tests.base
+        >>> from pds.registry.model.classes import Package
+        >>> rs = PDSRegistryClient('testscheme:/rs')
+        >>> pkg = Package(u'urn:pkg:tiny', u'tiny', u'testscheme:/rs', set(), u'Tiny Package', u'Submitted', u'Tiny', u'1.0')
+        >>> rs.putPackage(pkg)
+        >>> pkg = Package(u'urn:pkg:huge', u'huge', u'testscheme:/rs', set(), u'Huge Package', u'Submitted', u'Huge', u'1.0')
+        >>> rs.putPackage(pkg)
+        '''
+        # If it doesn't exist, POST to the /packages path.  But if it does exist, PUT to the existing
+        # /packages/guid path.  FIXME: Yes, there is a race here.
+        json = self._serializePackage(package)
+        existing = self.getPackage(package.guid)
+        if existing:
+            self._callServer('/packages/%s' % package.guid, params=None, json=json, method='PUT')
+        else:
+            self._callServer('/packages', params=None, json=json, method='POST')
     def putExtrinsic(self, extrinsic):
         '''Send ExtrinsicObject ``extrinsic`` into the Registry.
 
@@ -506,6 +598,15 @@ class PDSRegistryClient(object):
         >>> rs.deleteExtrinsic('egg-1.0')
         '''
         self._callServer('/extrinsics/%s' % extrinsicGUID, params=None, json=None, method='DELETE')
+    def deletePackage(self, packageGUID):
+        '''Delete the package with UUID ``packageGUID`` from the Registry.
+
+        >>> import pds.registry.net.tests.base
+        >>> rs = PDSRegistryClient('testscheme:/rs')
+        >>> rs.deletePackage('urn:pkg:sml')
+        '''
+        self._callServer('/packages/%s/members' % packageGUID, params=None, json=None, method='DELETE')
+        self._callServer('/packages/%s' % packageGUID, params=None, json=None, method='DELETE')
     def deleteAssocation(self, associationGUID):
         '''Delete the association with the UUID ``associationGUID`` from the Registry.
 
@@ -514,6 +615,19 @@ class PDSRegistryClient(object):
         >>> rs.deleteAssocation('urn:anatomyid:ass')
         '''
         self._callServer('/associations/%s' % associationGUID, params=None, json=None, method='DELETE')
+    def updatePackageStatus(self, packageGUID, status):
+        '''Update the status for the package with the UUID ``packageGUID`` to ``status``.
+        Status is typically one of ``approve``, ``deprecate``, or ``undeprecate``.
+
+        ("Undeprecate"?  Surely we could've come up with a better antonym.  Say, "revalue", "reappraise"?)
+
+        >>> import pds.registry.net.tests.base
+        >>> rs = PDSRegistryClient('testscheme:/rs')
+        >>> rs.updatePackageStatus('urn:pkg:sml', 'deprecate')
+        >>> rs.updatePackageStatus('urn:pkg:sml', 'undeprecate')
+        '''
+        self._callServer('/packages/%s/members/%s' % (packageGUID, status), params=None, json=None, method='POST')
+        self._callServer('/packages/%s/%s' % (packageGUID, status), params=None, json=None, method='POST')
 
 
 # Demonstration with actual PDS Registry Service:

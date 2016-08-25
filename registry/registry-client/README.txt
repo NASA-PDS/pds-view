@@ -11,6 +11,13 @@ package's ``docs`` directory for more information, including installation
 instructions, license, and history of changes.
 
 
+Notable Registies
+-----------------
+
+• PDS: https://pds.nasa.gov/services/registry-pds4
+• IPDA: https://planetarydata.org/registry/packages
+
+
 .. References:
 .. _ebXML: http://www.oasis-open.org/committees/tc_home.php?wg_abbrev=regrep
 .. _NASA: http://www.nasa.gov/
@@ -25,5 +32,5 @@ instructions, license, and history of changes.
     California Institute of Technology
 
 .. Copyright:
-    Copyright 2011-2013 California Institute of Technology. ALL RIGHTS
+    Copyright 2011-2016 California Institute of Technology. ALL RIGHTS
     RESERVED.  U.S. Government sponsorship acknowledged.
