@@ -1,5 +1,5 @@
 # encoding: utf-8
-# Copyright 2011 California Institute of Technology. ALL RIGHTS
+# Copyright 2011–2016 California Institute of Technology. ALL RIGHTS
 # RESERVED. U.S. Government Sponsorship acknowledged.
 
 '''PDS Registry network communication classes'''
@@ -14,6 +14,7 @@ _standardHeaders = {
     u'Accept':       u'application/json',
     u'Content-type': u'application/json',
 }
+
 
 class PDSRegistryClient(object):
     '''Client connection to a PDS Registry Server.'''
@@ -198,7 +199,7 @@ class PDSRegistryClient(object):
     def getServices(self, start=0, rows=20):
         '''Retrieve services registered with the registry service, starting at index ``start`` in the
         services list and retrieving no more than ``rows`` worth.
-        
+
         >>> import pds.registry.net.tests.base
         >>> rs = PDSRegistryClient('testscheme:/rs')
         >>> services = rs.getServices()
@@ -212,12 +213,12 @@ class PDSRegistryClient(object):
         >>> services[0].guid
         u'urn:sk:services:insults:0'
         '''
-        answer = self._callServer('/services', dict(start=start+1, rows=rows)) # Why is it one-based indexing? Lame.
+        answer = self._callServer('/services', dict(start=start+1, rows=rows))  # Why is it one-based indexing? Lame.
         return [self._createService(i) for i in answer.get('results', [])]
     def getExtrinsics(self, start=0, rows=20):
         '''Retrieve extrinsics registered with the registry service, starting at index ``start`` in the
         services list and retrieving no more than ``rows`` worth.
-        
+
         >>> import pds.registry.net.tests.base
         >>> rs = PDSRegistryClient('testscheme:/rs')
         >>> extrinsics = rs.getExtrinsics()
@@ -231,7 +232,7 @@ class PDSRegistryClient(object):
         >>> extrinsics[0].guid
         u'spam-1.0'
         '''
-        answer = self._callServer('/extrinsics', dict(start=start+1, rows=rows)) # Why is it one-based indexing? Lame.
+        answer = self._callServer('/extrinsics', dict(start=start+1, rows=rows))  # Why is it one-based indexing? Lame.
         return [self._createExtrinsic(i) for i in answer.get('results', [])]
     def getAssociations(self, start=0, rows=20, source=None, target=None):
         '''Retrieve associations registered with the registry service, starting at index ``start`` in
@@ -332,7 +333,7 @@ class PDSRegistryClient(object):
                 raise ex
     def getAssociation(self, guid):
         '''Retrieve an association with a known ``guid``, or None if ``guid`` is not found.
-        
+
         >>> import pds.registry.net.tests.base
         >>> rs = PDSRegistryClient('testscheme:/rs')
         >>> ass = rs.getAssociation('urn:anatomyid:ass')
@@ -362,7 +363,7 @@ class PDSRegistryClient(object):
     def getExtrinsicByLID(self, lid, earliest=False):
         '''Retrieve an extrinsic by its logical identifier, ``lid``; by default the latest version
         is returned, if found.  To get the earliest version, set ``earliest`` to True.
-        
+
         >>> import pds.registry.net.tests.base
         >>> rs = PDSRegistryClient('testscheme:/rs')
         >>> ext = rs.getExtrinsicByLID('egg')
@@ -403,7 +404,7 @@ class PDSRegistryClient(object):
                 raise ex
     def getExtrinsic(self, guid):
         '''Retrieve an extrinsic with a known ``guid``, or None if ``guid`` is not found.
-        
+
         >>> import pds.registry.net.tests.base
         >>> rs = PDSRegistryClient('testscheme:/rs')
         >>> ext = rs.getExtrinsic('egg-1.0')
@@ -433,7 +434,7 @@ class PDSRegistryClient(object):
                 raise ex
     def putService(self, service):
         '''Send Service ``service`` into the Registry.
-        
+
         >>> import pds.registry.net.tests.base
         >>> from pds.registry.model.classes import Service
         >>> rs = PDSRegistryClient('testscheme:/rs')
@@ -452,7 +453,7 @@ class PDSRegistryClient(object):
             self._callServer('/services', params=None, json=json, method='POST')
     def putExtrinsic(self, extrinsic):
         '''Send ExtrinsicObject ``extrinsic`` into the Registry.
-        
+
         >>> import pds.registry.net.tests.base
         >>> from pds.registry.model.classes import ExtrinsicObject
         >>> rs = PDSRegistryClient('testscheme:/rs')
@@ -491,7 +492,7 @@ class PDSRegistryClient(object):
             self._callServer('/associations', params=None, json=json, method='POST')
     def deleteService(self, serviceGUID):
         '''Delete the service with UUID ``serviceGUID`` from the Registry.
-        
+
         >>> import pds.registry.net.tests.base
         >>> rs = PDSRegistryClient('testscheme:/rs')
         >>> rs.deleteService('urn:sk:radio:lush')
@@ -499,7 +500,7 @@ class PDSRegistryClient(object):
         self._callServer('/services/%s' % serviceGUID, params=None, json=None, method='DELETE')
     def deleteExtrinsic(self, extrinsicGUID):
         '''Delete the extrinsic with UUID ``extrinsicGUID`` from the Registry.
-        
+
         >>> import pds.registry.net.tests.base
         >>> rs = PDSRegistryClient('testscheme:/rs')
         >>> rs.deleteExtrinsic('egg-1.0')
