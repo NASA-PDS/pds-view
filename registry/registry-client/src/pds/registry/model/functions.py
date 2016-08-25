@@ -10,7 +10,7 @@ def areSpecificationLinksIdentical(a, b):
     service and they happen to have the same UUIDs?  That's when, like Leonardo DiCaprio in his
     role as "Cobb" would advise you to "go deeper".  This function does that, doing deep field-by-
     field comparisons of every aspect of SpecificationLinks.
-    
+
     >>> from pds.registry.model.classes import Slot, SpecificationLink
     >>> slots = set([Slot('a', ['a'])])
     >>> a = SpecificationLink('urn:a', 'urn:a', 'urn:s', 'urn:x', 'urn:h', slots, 'a', 'accepted', 'a', '1', 'a', ['a'])
@@ -32,11 +32,12 @@ def areSpecificationLinksIdentical(a, b):
         if getattr(a, fieldName, None) != getattr(b, fieldName, None): return False
     return True
 
+
 def areSpecificationBindingsIdentical(a, b):
     '''Tell if two ServiceBindings ``a`` and ``b`` are identical.  This goes beyond comparison of the UUID
     of each which should be sufficient in practice.  However, if you're dealing with potentially identical
     objects yielded from different data sources, then you need to go deeper, Inception-like.
-    
+
     >>> from pds.registry.model.classes import Slot, ServiceBinding, SpecificationLink
     >>> slots = set([Slot('a', ['a'])])
     >>> a = ServiceBinding('urn:a', 'urn:a', 'urn:s', 'http://a/', slots, 'a', 'accepted', 'a', '1', 'http://x/')
@@ -60,7 +61,7 @@ def areSpecificationBindingsIdentical(a, b):
     True
     '''
     for fieldName in (
-        'guid', 'lid', 'service', 'home', 'name', 'status', 'description', 'versionName', 
+        'guid', 'lid', 'service', 'home', 'name', 'status', 'description', 'versionName',
         'slots', 'accessURI', 'targetBinding'
     ):
         if getattr(a, fieldName, None) != getattr(b, fieldName, None): return False
@@ -74,11 +75,12 @@ def areSpecificationBindingsIdentical(a, b):
         if not areSpecificationLinksIdentical(aLink, bLink): return False
     return True
 
+
 def areServicesIdentical(a, b):
     '''Tell if two Services ``a`` and ``b`` are identical.  This goes beyond comparison of the UUID
     of each which should be sufficient.  This function enables you to check Service objects that you
     might've quantized from multiple databases, for example.
-    
+
     >>> from pds.registry.model.classes import Slot, Service, ServiceBinding, SpecificationLink
     >>> a = Service('urn:a', 'urn:a', 'http://a/', set([Slot('a', ['a'])]), 'a', 'accepted', 'a', '1')
     >>> b = Service('urn:a', 'urn:a', 'http://a/', set([Slot('a', ['a'])]), 'a', 'accepted', 'a', '2')
