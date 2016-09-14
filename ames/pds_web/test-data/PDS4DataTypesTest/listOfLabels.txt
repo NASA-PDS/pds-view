@@ -1,2 +1,0 @@
-http://pds-rings.seti.org/volumes/ASTROM_xxxx/ASTROM_0101/DATA/EASYDATA/ENCELADUS_REV8.LBL
-http://pds-rings.seti.org/volumes/ASTROM_xxxx/ASTROM_0101/DATA/EASYDATA/CALYPSO_REV8.LBL

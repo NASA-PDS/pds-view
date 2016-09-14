@@ -1,7 +1,0 @@
-RECORD_TYPE                  = STREAM                                         
-
-OBJECT                             = TEXT                                     
-   PUBLICATION_DATE                = 2008-07-23  /* Label Generated */        
-   NOTE                            = "Volume information"                     
-END_OBJECT                         = TEXT   
-END

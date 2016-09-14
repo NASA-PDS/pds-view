@@ -1,9 +1,0 @@
-PDS_VERSION_ID = PDS3
-RECORD_TYPE = STREAM
-RECORD_BYTES = 81                                                              
-FILE_RECORDS = 2
-LABEL_RECORDS = 6
-^IMAGE = 128 <BYTES>
-END
-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
