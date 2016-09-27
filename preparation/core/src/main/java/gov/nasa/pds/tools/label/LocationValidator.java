@@ -27,6 +27,8 @@ import javax.xml.transform.TransformerConfigurationException;
 import org.apache.commons.chain.Catalog;
 import org.apache.commons.chain.CatalogFactory;
 import org.apache.commons.chain.config.ConfigParser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Implements a validator that validates a location (file or directory)
@@ -35,12 +37,15 @@ import org.apache.commons.chain.config.ConfigParser;
  */
 public class LocationValidator {
 	
+	private static final Logger LOG = LoggerFactory.getLogger(LocationValidator.class);
+	
 	private TargetRegistrar targetRegistrar;
 	private SettingsManager settingsManager;
 	private ValidationRuleManager ruleManager;
 	private TaskManager taskManager;
 	private LabelValidator labelValidator;
 	private RuleContext ruleContext;
+	private String validationRule;
 	
 	/**
 	 * Creates a new instance.
@@ -106,9 +111,16 @@ public class LocationValidator {
 		}
 
 		ValidationRule rule = getRule(f);
-		if (rule != null) {
+		String location = url.getFile();
+		if (rule == null) {
+			LOG.error("No matching validation rule found for location {}", location);
+		} else {
+			LOG.error("Using validation style '{}' for location {}", rule.getCaption(), location);
 			ProblemListener listener = new ListenerExceptionPropagator(exceptionHandler);
 			ValidationTask task = new ValidationTask(listener, ruleContext, targetRegistrar);
+			task.setLocation(location);
+			task.setRule(rule);
+			task.setRuleManager(ruleManager);
 			taskManager.submit(task);
 		}
 	}
@@ -133,6 +145,9 @@ public class LocationValidator {
 	
 	private ValidationRule getRule(File location) {
 		String validationType = settingsManager.getString(ValidationSettings.VALIDATION_RULE, null);
+		if (validationRule != null) {
+			validationType = validationRule;
+		}
 		ValidationRule rule;
 		
 		if (validationType == null) {
@@ -141,7 +156,7 @@ public class LocationValidator {
 				System.err.println("No validation type specified and no applicable default rules.");
 			}
 		} else {
-			rule = ruleManager.findRuleByCaption(validationType);
+			rule = ruleManager.findRuleByName(validationType);
 			if (rule == null) {
 				System.err.println("Specified validation type is invalid: " + validationType);
 			}
@@ -210,6 +225,15 @@ public class LocationValidator {
 	 */
 	public LabelValidator getLabelValidator() {
 		return labelValidator;
+	}
+	
+	/**
+	 * Forces a validation rule to use for the target location.
+	 * 
+	 * @param ruleName the name of the rule
+	 */
+	public void setRule(String ruleName) {
+		this.validationRule = ruleName;
 	}
 	
 	private class ListenerExceptionPropagator implements ProblemListener {
@@ -294,7 +318,25 @@ public class LocationValidator {
 
 		@Override
 		public void addException(LabelException exception) {
-			System.err.println(exception.toString());
+			StringBuilder buf = new StringBuilder();
+			buf.append(exception.getMessage());
+			if (exception.getPublicId()!=null && !exception.getPublicId().isEmpty()) {
+				buf.append(": ");
+				buf.append(exception.getPublicId());
+			}
+			if (exception.getSystemId()!=null && !exception.getSystemId().isEmpty()) {
+				buf.append(": ");
+				buf.append(exception.getSystemId());
+			}
+			if (exception.getLineNumber() > 0) {
+				buf.append(", line ");
+				buf.append(Integer.toString(exception.getLineNumber()));
+			}
+			if (exception.getColumnNumber() > 0) {
+				buf.append(", column ");
+				buf.append(Integer.toString(exception.getColumnNumber()));
+			}
+			System.err.println(buf.toString());
 		}
 		
 	}
