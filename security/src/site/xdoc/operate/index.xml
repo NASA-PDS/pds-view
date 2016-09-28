@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2010-2011, by the California Institute of Technology.
+  Copyright 2010-2016, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -25,32 +25,59 @@
 
   <body>
     <section name="Operation">
-      <p>When Graphical User Interface (GUI) applications have been configured for access control, the following login screen is displayed for users to provide their identification credentials:
-      </p>
+      <p>Now we're ready to verify the added entries are in your directory. We can use the <i>ldapsearch</i> tool.</p>
+      <p>The following command will search for and retrieve every entry in the database.</p>
 
-      <center>
-        <img alt="OpenDS Login Screen" src="../images/tomcat_opends_login_screen.jpg" border="1"/>
-      </center>
+       <source>
+% $OPENLDAP_HOME/bin/ldapsearch -x -b 'dc=pdsdev,dc=jpl,dc=nasa,dc=gov' '(objectClass=*)'
+       </source>
+       
+       <p>The following command will search for and retrieve <i>PDSPerson</i> entry in the database.</p>
 
-      <p>Once the user enters their identification credentials (user name and password) correctly, they can access the requested application. Also, you can utilize the <i>curl</i> command to access a controlled application. An example of the command is as follows:
-      </p>
+       <source>
+% $OPENLDAP_HOME/bin/ldapsearch -x -b 'dc=pdsdev,dc=jpl,dc=nasa,dc=gov' '(objectClass=PDSPerson)'
+       </source>
+       
+       
+       <subsection name="Change Your Own User Password">
+       <p>We can use the <i>ldappasswd</i> tool to modify user account password. To change your password, you will need to bind to an LDAP user entry and authenticate with the current password. This follows the same general syntax as the other OpenLDAP tools.</p>
+          <source>
+% $OPENLDAP_HOME/bin/ldappasswd -H ldap://server_domain_or_IP -x -D "user_dn" -w [old_passwd] -a [old_passwd] -s [new_passwd]
+          </source>
+               
+          <ul>
+          <li>server_domain_or_IP: the ldap server domain,    eg. pdsdev.jpl.nasa.gov:1636</li>
+          <li>user_dn: bind DN,    eg. "uid=hlee,ou=people,dc=pdsdev,dc=jpl,dc=nasa,dc=gov".</li>
+          </ul>
+          <br/>
+          
+          
+          <p>The following command demonstrates that the user dn 'uid=hlee,ou=people,dc=pdsdev,dc=jpl,dc=nasa,dc=gov' changes the password from 'changeMe' to 'test'.</p>
+          <source>
+% $OPENLDAP_HOME/bin/ldappasswd -H ldap://pdsdev.jpl.nasa.gov:1636 -x -D "uid=hlee,ou=people,dc=pdsdev,dc=jpl,dc=nasa,dc=gov" \
+-w changeMe -a changeMe -s test
+          </source>
+       </subsection>
+       
+       
+       <subsection name="Check Your User Authentication">
+       <p>We can use the <i>ldapsearch</i> tool to check the authentication.</p>
+          <source>
+% $OPENLDAP_HOME/bin/ldapsearch -x -D "user_dn" -W '(search_filter)'
+          </source>
 
-      <source>
-% curl -X POST -H "Content-type:application/xml" -d @./new_product_build0.xml \
--v https://localhost:8443/registry-service/registry/extrinsics -u username:password \
--k -c tomcat_cookie.txt
-      </source>
-
-      <p>The cookie file <i>tomcat_cookie.txt</i> can then be passed to the next <i>curl</i> command: 
-      </p>
-
-      <source>
-% curl -X POST -H "Content-type:application/xml" -d @./new_product_build1.xml \
--v https://localhost:8443/registry-service/registry/extrinsics/1234 -k -b tomcat_cookie.txt
-      </source>
-
-      <p>The example above also applies to a <i>DELETE</i> request.
-      </p>
+          <ul>
+            <li>-D - bind DN</li>
+            <li>-W - Prompt for password</li>
+            <li>-x - Simple authentication</li>
+            <li>Finally the search filter as a non-option argument.</li>
+          </ul>
+          <br/>
+          <p>The following command demonstrates checking the authentication with the user dn 'uid=hlee,ou=people,dc=pdsdev,dc=jpl,dc=nasa,dc=gov' to search for the uid of 'pdsmc'.</p>
+           <source>
+% $OPENLDAP_HOME/bin/ldapsearch -x -D "uid=hlee,ou=people,dc=pdsdev,dc=jpl,dc=nasa,dc=gov" -W '(uid=pdsmc)'
+          </source>
+       </subsection>
     </section>
   </body>
 </document>

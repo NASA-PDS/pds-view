@@ -1,0 +1,22 @@
+dn: uid=pdsmc,ou=people,dc=pdsops,dc=jpl,dc=nasa,dc=gov
+uid: pdsmc
+fullName: PDS MC
+affiliationType: NODE STAFF
+alternateTelephoneNumber: NULL
+mail: PDS_OPERATOR@JPL.NASA.GOV
+institutionName: Goddard Space Flight Center
+postalAddress: GODDARD SPACE FLIGHT CENTER
+                   8800 GREENBELT ROAD
+                   GREENBELT, MD 20771
+registrationDate: 2012-01-31T00:00:00
+sortName: PDS MC
+telephoneNumber: 000-000-0000
+cn: PDS MC
+sn: MC
+givenName: PDS
+userPassword: changeMe
+objectClass: top
+objectClass: PDSPerson
+objectClass: person
+objectClass: inetorgperson
+objectClass: organizationalperson

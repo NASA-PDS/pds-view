@@ -25,18 +25,18 @@
 
   <body>
     <section name="Installation">
-      <p>This document describes how to install the <a href="http://www.opends.org/" target="_blank">OpenDS</a> software package. This package serve as the Security Service for the PDS 2010 system. The following topics can be found in this section:
+      <p>This document describes how to install the <a href="http://www.openldap.org/" target="_blank">OpenLDAP</a> software package. This package serve as the Security Service for the PDS 2010 system. The following topics can be found in this section:
       </p>
 
       <ul>
         <li><a href="#System_Requirements">System Requirements</a></li>
         <li><a href="#Software_Installation">Software Installation</a></li>
-        <li><a href="#Configuration">Configuration</a></li>
+        <li><a href="#Populate_the_Directory">Populate the Directory</a></li>
       </ul>
     </section>
 
     <section name="System Requirements">
-      <p>The software that makes up this project consists of the OpenDS open source package that is available for download and installation. This release requires version <i>2.2.0</i> of OpenDS. This package requires Java and a Java Application Server to be installed in the target environment.
+      <p>The software that makes up this project consists of the OpenLDAP open source package that is available for download and installation. This release requires version <i>2.4.44</i> of OpenLDAP. This package requires Java to be installed in the target environment.
       </p>
 
       <subsection name="Java Runtime Environment">
@@ -56,194 +56,201 @@ Java HotSpot(TM) 64-Bit Server VM (build 24.72-b04, mixed mode)
         <p>The first command above checks whether the <i>java</i> executable is in the environment's path and the second command reports the version. If Java is not installed or the version is not at least 1.7, Java will need to be downloaded and installed in the current environment. Consult the local system administrator for installation of this software. For the do-it-yourself crowd, the Java software can be downloaded from the <a href="http://www.oracle.com/technetwork/java/javase/downloads/" target="_blank">Oracle Java Download</a> page. The suggested software package is the Java Standard Edition (SE) 7, either the JDK or the JRE package. The JDK package is not necessary to run the software but could be useful if development and compilation of Java software will also occur in the current environment.
         </p>
       </subsection>
-
-      <subsection name="Java Application Server">
-        <p>OpenDS requires a Java application server for hosting the web application. The suggested application server for this release is Apache Tomcat with a minimal version of 7.0.X. Consult the local system administrator for installation of this software. For the do-it-yourself crowd, see the <a href="../../../release/index-tomcat.html" target="_blank">Tomcat Deployment</a> document for installation and configuration details. If viewing this document from the ${project.artifactId} package, view the <a href="http://pds-engineering.jpl.nasa.gov/development/pds4/current/release/index-tomcat.html" target="_blank">Tomcat Deployment</a> document from the Engineering Node site.
-        </p>
-      </subsection>
     </section>
 
     <section name="Software Installation">
-      <subsection name="1. Install Directory Server">
-        <p>We are choosing to install a directory server (<a href="http://www.opends.org/" target="_blank">OpenDS</a>), within the application server so that it is accessible from other applications that require a standard LDAP interface.</p>
+        <p>We are choosing to install a directory server (<a href="http://www.openldap.org" target="_blank">OpenLDAP</a>) so that it is accessible from other applications that require a standard LDAP interface.</p>
 
         <ul>
-          <li>Download the package from <a href="http://www.opends.org/promoted-builds/2.2.0/" target="_blank">http://www.opends.org/promoted-builds/2.2.0/</a>. There are a couple of options to choose from including the QuickSetup Installer or just downloading the ZIP package.</li>
-          <li>Install the package so that it operates on the standard LDAP port 389. The ZIP package provides installation documentation. Additional documentation is available at <a href="https://docs.opends.org/2.2/page/InstallingTheDs" target="_blank">https://docs.opends.org/2.2/page/InstallingTheDs</a>.</li>
+          <li>Download the package from <a href="http://www.openldap.org/software/download/" target="_blank">http://www.openldap.org/software/download/</a>.</li>
+          <li>Install the package so that it operates on the standard LDAP port 389. The distribution package provides installation documentation. Additional documentation is available at <a href="http://www.openldap.org/doc/admin24/" target="_blank">http://www.openldap.org/doc/admin24/</a>.</li>
           <li>Startup the server.</li>
         </ul>
 
-        <subsection name="Install OpenDS with QuickSetup">
-          <p>Launch QuickSetup Locally.</p>
-          <source>% $OPENDS_HOME/setup</source>
-          <ul>
-            <li>Click <i>Next</i> to install a server.
-              <p>
-              <center>
-                <a href="../images/opends_step1.jpg" target="_blank"><img alt="OpenDS QuickSetup Welcome Screen" src="../images/opends_step1_scale.jpg" border="1"/></a><br/>
-                Click on the image for a larger version.
-              </center>
-              </p>
-            </li>
-      
-            <li>Enter a valid port for LDAP operations. If you run QuickSetup as the root user, port 389 is used as default LDAP port. If you run QuickSetup as a non-root user, port 1389 is used as the default port.
-            </li>
-
-            <li>LDAP secure access is disabled by default. If you require secure access, follow the instructions under <a href="#Configure_the_LDAP_server_with_SSL_using_a_self-signed_certificate">Configure the LDAP server with SSL using a self-signed certificate.</a>
-              <p>
-              <center>
-                <a href="../images/opends_step2.jpg" target="_blank"><img alt="OpenDS QuickSetup Server Settings Screen" src="../images/opends_step2_scale.jpg" border="1"/></a><br/>
-                Click on the image for a larger version.
-              </center>
-              </p>
-            </li>
-
-            <li>Select <i>This will be a standalone server</i> and click Next.
-              <p>
-              <center>
-                <a href="../images/opends_step3.jpg" target="_blank"><img alt="OpenDS QuickSetup Topology Options Screen" src="../images/opends_step3_scale.jpg" border="1"/></a><br/>
-                Click on the image for a larger version.
-              </center>
-              </p>
-            </li>
-      
-            <li>Enter <i>Directory Base DN:</i> (example: dc=pdsops,dc=jpl,dc=nasa,dc=gov) and click Next.
-              <p>
-              <center>
-                <a href="../images/opends_step4.jpg" target="_blank"><img alt="OpenDS QuickSetup Data Options Screen" src="../images/opends_step4_scale.jpg" border="1"/></a><br/>
-                Click on the image for a larger version.
-              </center>
-              </p>
-            </li>
-
-            <li>This panel enables you to review your configuration settings and make any necessary adjustments.
-            </li>
-
-            <li>Click <i>Finish</i> to complete the configuration after verifying your configuration settings.
-              <p>
-              <center>
-                <a href="../images/opends_step5.jpg" target="_blank"><img alt="OpenDS QuickSetup Review Screen" src="../images/opends_step5_scale.jpg" border="1"/></a><br/>
-                Click on the image for a larger version.
-              </center>
-              </p>
-            </li>
-
-            <li>When the installation is complete, a status message is displayed indicating success or failure.
-            </li>
-
-            <li>To view the status of the server, click the <i>Launch Control Panel</i> button.
-              <p>
-              <center>
-                <a href="../images/opends_step6.jpg" target="_blank"><img alt="OpenDS QuickSetup Progress Screen when Done" src="../images/opends_step6_scale.jpg" border="1"/></a><br/>
-                Click on the image for a larger version.
-              </center>
-              </p>
-            </li>
-          </ul>
+        <subsection name="Unpack the distribution">
+          <p>Change directory to a directory for the source to live under and unpack the distribution using the following commands.</p>
+          <source>% gunzip -c openldap-VERSION.tgz | tar xvfB -</source>
+          <p>Then relocate yourself into the distribution directory:</p>
+          <source>cd openldap-VERSION</source>
         </subsection>
-
-        <subsection name="Configure the LDAP server with SSL using a self-signed certificate">
-          <p>Assume that you are running following commands under <i>$OPENDS_HOME/config</i> directory.</p>
-          <ol>
-            <li>Create a private key for the certificate
-            <source>
-% /usr/java/jdk/bin/keytool -genkey -alias server-cert -keyalg rsa \
--dname "CN=pdsops.jpl.nasa.gov,O=JPL,C=US" -keystore keystore -storetype JKS
-            </source>
-            </li>
-            <li>Generate a self-signed certificate for the key with the command:
-              <source>
-% /usr/java/jdk/bin/keytool -selfcert -alias server-cert -validity 1825 \
--keystore keystore -storetype JKS
-              </source>
-              <p>When you are prompted for the keystore password, enter the same password that you provided in Step 1.
-              </p><br/><br/>
-            </li>
-            <li>Create a text file named <i>keystore.pin</i>.<br/>
-            <p>The file should contain the password that you chose to protect the contents of the keystore.</p><br/><br/>
-            </li>
-            <li>Export the public key for the certificate.
-              <source>
-% /usr/java/jdk/bin/keytool -export -alias server-cert -file server-cert.txt -rfc \
--keystore keystore -storetype JKS
-              </source>
-            </li>
-            <li>Create a new trust store and import the server certificate into it.
-              <source>
-% /usr/java/jdk/bin/keytool -import -alias server-cert -file server-cert.txt \
--keystore truststore -storetype JKS
-              </source>
-              <p>Type <code class="codespan">yes</code> when you are prompted about whether you want to trust the certificate.
-              </p><br/><br/>
-            </li>   
-            <li>Use the <code class="codespan">dsconfig</code> command to enable the key manager provider, trust manager provider, and connection handler.
-              <source>
-% $OPENDS_HOME/bin/dsconfig -h pdsops.jpl.nasa.gov -p 4444 \
--D "cn=Directory Manager" -w password -X -n set-key-manager-provider-prop \
---provider-name JKS --set enabled:true
-
-% $OPENDS_HOME/bin/dsconfig -h pdsops.jpl.nasa.gov -p 4444 \
--D "cn=Directory Manager" -w password -X -n set-trust-manager-provider-prop \
---provider-name "Blind Trust" --set enabled:true
-
-% $OPENDS_HOME/bin/dsconfig -h pdsops.jpl.nasa.gov -p 4444 \
--D "cn=Directory Manager" -w password -X -n set-connection-handler-prop \
---handler-name "LDAPS Connection Handler" \
---set "trust-manager-provider:Blind Trust" --set key-manager-provider:JKS \
---set listen-port:636 --set enabled:true
-              </source>
-              <p>Port <code class="codespan">636</code> is the standard LDAPS port, but you might not be able to use it if it is already taken or you are a regular user. If you need to use other port than <code class="codespan">636</code>, then change the <code class="codespan">listen-port</code> property in the last command to the number being used.
-              </p><br/><br/>
-            </li>
-            <li>Test the LDAPS connection with the <code class="codespan">ldapsearch</code> command.
-              <source>
-% $OPENDS_HOME/bin/ldapsearch --port 636 --useSSL --baseDN "" \
---searchScope base "(objectClass=*)"
-              </source>
-              <p>Type <code class="codespan">yes</code> when you are prompted about whether you want to trust the server's certificate.
-              </p>
-            </li>
-          </ol>
+        
+        <subsection name="Run configure">
+          <p>You will need to run the provided configure script to configure the distribution for building on your system. The configure script accepts many command line options that enable or disable optional software features. Usually the defaults are okay, but you may want to change them. To get a complete list of options that configure accepts, use the --help option.</p>
+       	  <source>./configure --help</source>
+       	  
+       	  <p>However, we'll assume you are okay to just let configure determine what's best.</p>
+       	  <source>./configure</source>
+       	  <p>By default, it will install the package's files in /usr/local/bin.  You can specify an installation prefix other than `/usr/local' by giving `configure' the option `--prefix=PATH'. For example, </p>
+       	  <source>./configure --prefix=YOUR_PATH</source>
         </subsection>
-      </subsection>
+        
+        <subsection name="Build the software">
+          <p>The next step is to build the software. This step has two parts, first we construct dependencies and then we compile the software. Both <i>makes</i> should complete without error.</p>
+          <source>
+make depend
+make
+          </source>
+        </subsection>
+        
+        <subsection name="Test the build">
+          <p>To ensure a correct build, you should run the test suite (it only takes a few minutes):</p>
+	      <source>
+make test
+          </source>
+		  <p>Tests which apply to your configuration will run and they should pass.</p>
+        </subsection>
+        
+        <subsection name="Install the software">
+          <p>You are now ready to install the software; this usually requires super-user privileges:</p>
+          <source>
+su root -c 'make install'
+          </source>
+          <p>Everything should now be installed under /usr/local (or whatever installation prefix was used by configure).</p>
+        </subsection>
+        
+        <subsection name="Edit the configuration file">
+          <p>1. Use your favorite editor to edit the provided <i>slapd.ldif</i> example (usually installed as /usr/local/etc/openldap/slapd.ldif) to contain a MDB database definition of the form:</p>
+          <source>
+dn: cn=config
+objectClass: olcGlobal
+cn: config
+olcReferral: ldap://pdsdev.jpl.nasa.gov:1636
+olcSizeLimit: 10000
 
-      <subsection name="2. Install Application Server">
-        <p>Although other application servers are supported (e.g., GlassFish), <a href="http://tomcat.apache.org/" target="_blank">Apache Tomcat</a> is the preferred application server.
-        </p>
+olcSuffix: dc=pdsdev,dc=jpl,dc=nasa,dc=gov
+olcRootDN: cn=config,dc=pdsdev,dc=jpl,dc=nasa,dc=gov
+# Cleartext passwords, especially for the rootdn, should
+# be avoided.  See slappasswd(8) and slapd-config(5) for details.
+# Use of strong authentication encouraged.
+olcRootPW: {password}
 
-        <ul>
-          <li>Download the appropriate binary package for your platform from <a href="http://tomcat.apache.org/download-60.cgi" target="_blank">http://tomcat.apache.org/download-60.cgi</a>.</li>
-          <li>Install the package so that it operates on port 80. Documentation can be found in the binary distributions and at <a href="http://tomcat.apache.org/tomcat-6.0-doc/" target="_blank">http://tomcat.apache.org/tomcat-6.0-doc/</a>.<br/>
-            <p>Modify the <i>$CATALINA_HOME/bin/catalina.sh</i> file as follows:
-            </p>
-            <source>
-CATALINA_OPTS="-Xms256m -Xmx1024m"
-JAVA_OPTS="-Xmx1024m -XX:MaxPermSize=256m"
-            </source>
-          </li>
-          <li>Startup the server.</li>
-        </ul>
-      </subsection>
+# Define global ACLs to disable default read access.
+#
+olcArgsFile: /home/hyunlee/openldap/var/run/slapd.args
+olcPidFile: /home/hyunlee/openldap/var/run/slapd.pid
+olcLogFile: /home/hyunlee/openldap/var/run/slapd.log
+olcLogLevel: stats2 stats ACL config filter conns
+
+...
+...
+...
+
+#######################################################################
+# LMDB database definitions
+#######################################################################
+dn: olcDatabase=mdb,cn=config
+objectClass: olcMdbConfig
+olcDatabase: mdb
+objectClass: olcDatabaseConfig
+
+olcSuffix: "dc=pdsdev,dc=jpl,dc=nasa,dc=gov"
+olcRootDN: "cn=Manager,dc=pdsdev,dc=jpl,dc=nasa,dc=gov"
+# Cleartext passwords, especially for the rootdn, should
+# be avoided.  See slappasswd(8) and slapd-config(5) for details.
+# Use of strong authentication encouraged.
+olcRootPW: {password}
+
+# The database directory MUST exist prior to running slapd AND 
+# should only be accessible by the slapd and slap tools.
+# Mode 700 recommended.
+olcDbDirectory: /home/hyunlee/openldap/var/openldap-data
+# Indices to maintain
+olcDbIndex: objectClass eq 
+olcDbIndex: cn,sn,uid pres,eq,approx,sub
+          </source>
+          
+          <p>2. Copy <a href="../docs/PDSPerson.schema" target="_blank"><i>PDSPerson.schema</i></a> file to the $OPENLDAP_HOME/etc/openldap/schema. This configuration file specifies the schema for the directory server.</p>
+          
+          <p>3. Edit <i>slapd.conf</i> file to contain following information.</p>
+          <source>
+include         /home/hyunlee/openldap/etc/openldap/schema/core.schema
+include         /home/hyunlee/openldap/etc/openldap/schema/cosine.schema
+include         /home/hyunlee/openldap/etc/openldap/schema/inetorgperson.schema
+include         /home/hyunlee/openldap/etc/openldap/schema/PDSPerson.schema
+
+pidfile         /home/hyunlee/openldap/var/run/slapd.pid
+argsfile        /home/hyunlee/openldap/var/run/slapd.args
+logfile         /home/hyunlee/openldap/var/run/slapd.log
+
+...
+...
+...
+
+#######################################################################
+# MDB database definitions
+#######################################################################
+database        mdb
+maxsize         1073741824
+suffix          "dc=pdsdev,dc=jpl,dc=nasa,dc=gov"
+rootdn          "cn=Manager,dc=pdsdev,dc=jpl,dc=nasa,dc=gov"
+rootpw          {password}
+
+# The database directory MUST exist prior to running slapd AND 
+# should only be accessible by the slapd and slap tools.
+# Mode 700 recommended.
+directory       /home/hyunlee/openldap/var/openldap-data
+# Indices to maintain
+index   objectClass     eq
+
+# allow users to change their password
+access to attrs=userPassword
+        by self write
+        by anonymous auth
+        by users none
+access to * by * read
+          </source>       
+        </subsection>
+        
+        
+        <subsection name="Import the configuration database">
+          <p>You are now ready to import your configration database for use by <i>slapd</i>, by running the commands. </p>
+          <source>
+% setenv LDAPCONF $OPENLDAP_HOME/etc/openldap/slapd.d
+% setenv LDAPRC $OPENLDAP_HOME/etc/openldap/slapd.d     
+% mkdir $OPENLDAP_HOME/etc/openldap/slapd.d
+
+% $OPENLDAP_HOME/sbin/slaptest -F $OPENLDAP_HOME/etc/openldap/slapd.d -f $OPENLDAP_HOME/etc/openldap/slapd.conf -n 0     
+          </source>
+        </subsection>
+        
+        <subsection name="Start the SLAPD">
+          <p>You are now ready to start the Standalone LDAP Daemon, <i>slapd</i>, by running the command.</p>
+		  <source>
+% su root -c $OPENLDAP_HOME/libexec/slapd -F $OPENLDAP_HOME/etc/openldap/slapd.d -h ldap://pdsdev.jpl.nasa.gov:389 -d -1 &amp;
+          </source>
+          
+          <p>To check to see if the server is running and configured correctly, you can run a search against it with <i>ldapsearch</i>. By default, ldapsearch is installed as /usr/local/bin/ldapsearch:</p>
+          <source>
+% $OPENLDAP_HOME/bin/ldapsearch -x -b '' -s base '(objectclass=*)' namingContexts
+          </source>
+        </subsection>
     </section>
 
-    <section name="Configuration">
-      <p>This section details the Directory Sever, the Tomcat Server, and the Tomcat Application configuration.
-      </p>
+
+
+
+    <section name="Populate the Directory">
+      <subsection name="Generate LDIF file(s)">
+      <p>Once OpenLDAP is installed and function, we can populate the information. The following command generates two LDIF file(s) for your LDAP directory.</p>
+      <p><i><b>pds_personnel.ldif</b></i> is for adding the PDS personnel entries into the direcotry server. <i><b>pds_personnel_delete.ldif</b></i> is for deleting the personnel entries from the directory server.</p>
+
+<source>
+% java gov.nasa.pds.security.LDIFGenerator -t {directory of personnel files reside} \
+   -s {host name} -n {port number} -p {password}
+</source>
+      </subsection>
 
       <subsection name="Directory Server Configuration">
         <p>With the software configuration complete, it is time to add groups and users to the directory server. The following configuration files, in the LDAP Data Interchange Format (LDIF), are available for configuring the directory server:
         </p>
 
+
         <ul>
-          <li><a href="../docs/pdspers_schema.ldif" target="_blank">pdspers_schema.ldif</a><br/>
-            This configuration file specifies the schema for the directory server.
-            <p/>
-          </li>
           <li><a href="../docs/pds_groups.ldif" target="_blank">pds_groups.ldif</a><br/>
             This configuration file specifies the PDS group entries for the directory server.
             <p/>
           </li>
-          <li><a href="../docs/pdsops_pers.ldif" target="_blank">pdsops_pers.ldif</a><br/>
+          <li><a href="../docs/pds_personnel.ldif" target="_blank">pds_personnel.ldif</a><br/>
             This configuration file specifies PDS person entries for the directory server. The actual PDS person entries have been removed from this example configuration file since it contains clear text passwords. This file contains an example person entry for the <i>pdsmc</i> account.
           </li>
         </ul>
@@ -252,116 +259,15 @@ JAVA_OPTS="-Xmx1024m -XX:MaxPermSize=256m"
         </p>
 
         <source>
-% $OPEN_DS/bin/ldapmodify -p 389 -h pdsops.jpl.nasa.gov -D "cn=Directory Manager" \
--w &lt;password&gt; -c -a -f pdspers_schema.ldif
-
-% $OPEN_DS/bin/ldapmodify -p 389 -h pdsops.jpl.nasa.gov -D "cn=Directory Manager" \
--w &lt;password&gt; -c -a -f pds_groups.ldif
-
-% $OPEN_DS/bin/ldapmodify -p 389 -h pdsops.jpl.nasa.gov -D "cn=Directory Manager" \
--w &lt;password&gt; -c -a -f pdsops_pers.ldif
+% $OPENLDAP_HOME/bin/ldapadd -x -D "cn=Manager,dc=pdsdev,dc=jpl,dc=nasa,dc=gov" -w {password} \
+    -f /home/hyunlee/openldap/pds_groups.ldif
+    
+% $OPENLDAP_HOME/bin/ldapadd -x -D "cn=Manager,dc=pdsdev,dc=jpl,dc=nasa,dc=gov" -w {password} \
+    -f /home/hyunlee/openldap/pds_personnel.ldif
         </source>
-      </subsection>
-
-      <subsection name="Tomcat Server Configuration">
-        <p>Type following command to generate a self-signed server certificate:
-        </p>
-
-        <source>
-% $JAVA_HOME/bin/keytool -genkey -alias virtualhostname -keyalg RSA \
--keystore /usr/local/tomcat7/.keystore
-        </source> 
-
-        <p>The password you enter in the first password prompt will be the password for the keystore where your server certificate is stored. For the operational system, you may need to purchase a Certificate from a well-known <i>Certificate Authority(CA)</i> such as VeriSign or Thawte.
-        </p>
         
-        <p>After generating the server certificate, edit the Tomcat's server configuration file (<code class="codespan">$CATALINA_HOME/conf/server.xml</code>) to have Tomcat server listening on the port 8080. The <code class="codespan">redirectPort</code> option is the port that will be used when redirecting from <i>http</i> to <i>https</i>.
-        </p> 
-
-        <source>
-&lt;Connector port="8080" protocol="HTTP/1.1" 
-           connectionTimeout="20000" 
-           redirectPort="8443" /&gt;
-        </source> 
- 
-        <p>To make Tomcat listen on the port 8443, with an SSL transport, the following needs to be configured in the <code class="codespan">server.xml</code> file.
-        </p> 
- 
-        <source>
-&lt;Connector port="8443" protocol="HTTP/1.1" SSLEnabled="true"
-          maxThreads="150" scheme="https" secure="true"
-          clientAuth="false" sslProtocol="TLS" 
-          keystoreFile="/usr/local/tomcat7/.keystore"
-          keystorePass="password"/&gt;
-        </source> 
-
-        <p>Add an OpenDS realm to the Tomcat Server to authenticate the users with the Directory Server.
-        </p>
-
-        <source>
-&lt;Realm className="org.apache.catalina.realm.JNDIRealm" debug="99"
-        connectionName="cn=Directory Manager"
-        connectionPassword="password"
-        connectionURL="ldap://pdsdev.jpl.nasa.gov:389"
-        userPattern="uid={0},ou=people,dc=pdsdev,dc=jpl,dc=nasa,dc=gov"
-        roleBase="ou=groups,dc=pdsdev,dc=jpl,dc=nasa,dc=gov"
-        roleName="cn"
-        roleSearch="(uniqueMember={0})"/&gt;
-        </source>
-
-        <p>To enable Single Sign On feature of the Tomcat server, make sure following element is not commented out.
-        </p>
-
-        <source>
-&lt;Valve class="org.apache.catalina.authenticator.SingleSignOn"/&gt;
-        </source>
       </subsection>
-      
-      <subsection name="Tomcat Application Server Configuration">
-        <p>Add the security-constraint, role, and login-config elements to your application's <i>web.xml</i> file as shown below.
-        </p>
 
-        <source>    
-&lt;security-constraint&gt;
-  &lt;web-resource-collection&gt;
-    &lt;web-resource-name&gt;registry&lt;/web-resource-name&gt;
-    &lt;url-pattern&gt;/*&lt;/url-pattern&gt;
-    &lt;http-method&gt;DELETE&lt;/http-method&gt;
-    &lt;http-method&gt;POST&lt;/http-method&gt;
-    &lt;http-method&gt;PUT&lt;/http-method&gt;
-  &lt;/web-resource-collection&gt;
-  &lt;auth-constraint&gt;
-    &lt;role-name&gt;PDS_Affiliate&lt;/role-name&gt;
-  &lt;/auth-constraint&gt;
-&lt;/security-constraint&gt;
-
-&lt;login-config&gt;
-   &lt;auth-method&gt;BASIC&lt;/auth-method&gt;
-   &lt;realm-name&gt;OpenDS&lt;/realm-name&gt;
-&lt;/login-config&gt;      
-        </source>
-
-        <p>Add the following in the your application's web.xml (<code class="codespan">$CATALINA_HOME/webapps/yourapplication/WEB-INF/web.xml</code>) in the <code class="codespan">&lt;security-constraint&gt;</code> tag:
-        </p> 
-
-        <source>
-&lt;user-data-constraint&gt;
-   &lt;transport-guarantee&gt;CONFIDENTIAL&lt;/transport-guarantee&gt;
-&lt;/user-data-constraint&gt;
-        </source> 
-
-        <p>This forces a switch from <i>http</i> to <i>https</i>, using the secure protocol. With this configuration, you can create a Tomcat application that will automatically be secured if accessing it at:
-        </p>
-
-        <p><code class="codespan">http://localhost:8080/registry/extrinsics</code>
-        </p>
-
-        <p>You will be automatically redirected to:
-        </p>
-
-        <p><code class="codespan">https://localhost:8443/registry/extrinsics</code>
-        </p>
-      </subsection>
     </section>
   </body>
 </document>

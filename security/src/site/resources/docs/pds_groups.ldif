@@ -11,13 +11,3 @@ ou: groups
 description: groups
 objectClass: top
 objectClass: organizationalUnit
-
-dn: cn=PDS_Guest,ou=groups,dc=pdsops,dc=jpl,dc=nasa,dc=gov
-objectClass: groupofuniquenames
-objectClass: top
-cn: PDS_Guest
-
-dn: cn=PDS_Affiliate,ou=groups,dc=pdsops,dc=jpl,dc=nasa,dc=gov
-objectClass: groupofuniquenames
-objectClass: top
-cn: PDS_Affiliate
