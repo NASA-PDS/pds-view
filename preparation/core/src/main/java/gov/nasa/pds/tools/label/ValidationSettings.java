@@ -12,4 +12,7 @@ public class ValidationSettings {
 	/** Specifies the type of validation to perform. */
 	public static final String VALIDATION_RULE = "pds.validation.type";
 	
+	/** Specifies the path to the PDS3 Master Data Dictionary. */
+	public static final String PDS3_DICTIONARY_PATH = "pds3.dictionary.path";
+	
 }

@@ -2,6 +2,8 @@ package gov.nasa.pds.tools.validate.rule.pds3;
 
 import gov.nasa.pds.tools.constants.Constants;
 import gov.nasa.pds.tools.label.ExceptionType;
+import gov.nasa.pds.tools.label.ValidationSettings;
+import gov.nasa.pds.tools.util.SettingsManager;
 import gov.nasa.pds.tools.validate.ProblemDefinition;
 import gov.nasa.pds.tools.validate.ProblemType;
 import gov.nasa.pds.tools.validate.Standard;
@@ -89,6 +91,17 @@ public class VolumeValidationRule extends AbstractValidationRule implements Obse
 	public void validateVolume() throws Exception {
 		// get location of the master dictionary
 		URL dictionaryURL = getClass().getResource("masterdd.full"); //$NON-NLS-1$
+		
+		// Allow the user to override the path.
+		String dictionaryPath = SettingsManager.INSTANCE.getString(ValidationSettings.PDS3_DICTIONARY_PATH, null);
+		if (dictionaryPath != null) {
+			File dictionaryFile = new File(dictionaryPath);
+			if (!dictionaryFile.canRead()) {
+				LOG.error("Invalid data dictionary path '{}' - using built-in dictionary", dictionaryPath);
+			} else {
+				dictionaryURL = dictionaryFile.toURI().toURL();
+			}
+		}
 
 		// manually init dictionary since retrieval is different for
 		// applet
