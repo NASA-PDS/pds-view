@@ -66,7 +66,6 @@ public class LDIFGenerator {
 	
 	LDIFGenerator (String[] args) {
 	    ldapHost = "pds-dev";
-		//ldapHost = "pdsdev2.jpl.nasa.gov";
 		ldapPort = 389;
 		ldapUser = "cn=Manager";
 		ldapPass = "adminadmin";
@@ -110,11 +109,11 @@ public class LDIFGenerator {
 		String parent = persFile.getPath();
 
 		if (dir) {
-		   System.out.println("in Parse() method with dir flag=true   parent = " + parent);
+		   //System.out.println("in Parse() method with dir flag=true   parent = " + parent);
 		   File[] listOfFiles = persFile.listFiles();
 		   for (int i=0; i<listOfFiles.length; i++) {
 		      if (listOfFiles[i].isFile()) {
-			     System.out.println("File " + listOfFiles[i].getName());
+			     //System.out.println("File " + listOfFiles[i].getName());
 
 				 String filename = listOfFiles[i].getName();
 
@@ -125,17 +124,17 @@ public class LDIFGenerator {
                  persEntries.add(new PersEntry(label, ""));
 			  }
 			  else {
-			     System.out.println("Direcotry " + listOfFiles[i].getName());
+			     //System.out.println("Direcotry " + listOfFiles[i].getName());
 			  }
 		   }
 		} 
 		else {
-			System.out.println("in else.....parse()....");
+			//System.out.println("in else.....parse()....");
 			String filename = persFile.getAbsolutePath();
 			if (filename.contains("\\"))
 				filename = filename.replace("\\", "/");
 
-			System.out.println("filename = " + filename);
+			//System.out.println("filename = " + filename);
 			File label = new File(filename);
 			if(!label.isAbsolute()) {
 				label = new File(parent, label.toString());
@@ -147,11 +146,11 @@ public class LDIFGenerator {
 
 	void process() throws ParserConfigurationException, SAXException, IOException, XPathExpressionException {
 		XMLExtractor xmlExtractor;
-		System.out.println("in process method");
+		//System.out.println("in process method");
 		ldifFile = new PrintWriter(ldifFilename);
 		for (int i=0; i<persEntries.size(); i++) {
 			File persFile = persEntries.get(i).getFile();
-			System.out.println("file[" + i + "] = " + persFile.getName());
+			//System.out.println("file[" + i + "] = " + persFile.getName());
 			xmlExtractor = new XMLExtractor(persFile);
 			
 			String root = xmlExtractor.getDocNode().getNodeName();
@@ -161,7 +160,7 @@ public class LDIFGenerator {
 				break;
 			}
 			
-			System.out.println("\n******File[" + i + "] = " + persFile);
+			//System.out.println("\n******File[" + i + "] = " + persFile);
 			processPersFile(persFile);	
 		}
 		
@@ -224,7 +223,7 @@ public class LDIFGenerator {
 		for (int j = 0; j < nodeList.getLength(); j++) {
 			Node node = nodeList.item(j);
 			String nodeName = node.getNodeName();
-			System.out.println("node name = " + nodeName);
+			//System.out.println("node name = " + nodeName);
 
 			int count = 1;
 			String name = null;
@@ -252,7 +251,7 @@ public class LDIFGenerator {
 					if (PDS_AFFIL_ATTRS[i].equals("logical_identifier")) {
 						value = value.substring(value.lastIndexOf("personnel.")+10).toLowerCase();
 						dn = new String(LDAP_AFFIL_ATTRS[i] + "=" + value + ",ou=people,dc="+ldapHost+ ",dc=jpl,dc=nasa,dc=gov");
-						System.out.println("dn: " + dn);
+						//System.out.println("dn: " + dn);
 						affilMembers.add(dn);
 						ldifFile.println("dn: " + dn);
 						ldifFile.println("changetype: add");
@@ -260,15 +259,9 @@ public class LDIFGenerator {
 					else if (PDS_AFFIL_ATTRS[i].equals("name")) {
 						name = value;
 					}
-					//System.out.println(PDS_AFFIL_ATTRS[i] + " = " + value + "    : " + LDAP_AFFIL_ATTRS[i]);
-					System.out.println(LDAP_AFFIL_ATTRS[i] + ": " + value);
+					//System.out.println(LDAP_AFFIL_ATTRS[i] + ": " + value);
 					ldifFile.println(LDAP_AFFIL_ATTRS[i] + ": " + value);
 				}
-
-
-				//generate the ldif file with the entries
-				//then use ldapmodify to insert
-				//   % ldapmodify -p 389 -h pdsdev2.jpl.nasa.gov -D "cn=Directory Manager" -w adminadmin -c -a -f <file from above step>
 			}
 			else if (nodeName.equals("PDS_Guest")) {
 				/*
@@ -288,7 +281,7 @@ public class LDIFGenerator {
 					if (PDS_GUEST_ATTRS[i].equals("logical_identifier")) {
 						value = value.substring(value.lastIndexOf("personnel.")+10).toLowerCase();
 						dn = new String(LDAP_AFFIL_ATTRS[i] + "=" + value + ",ou=people,dc="+ldapHost+",dc=jpl,dc=nasa,dc=gov");
-						System.out.println("dn: " + dn);
+						//System.out.println("dn: " + dn);
 						guestMembers.add(dn);
 						ldifFile.println("dn: " + dn);
 						ldifFile.println("changetype: add");
@@ -296,8 +289,7 @@ public class LDIFGenerator {
 					else if (PDS_GUEST_ATTRS[i].equals("name")) {
 						name = value;
 					}
-					//System.out.println(PDS_AFFIL_ATTRS[i] + " = " + value + "    : " + LDAP_AFFIL_ATTRS[i]);
-					System.out.println(LDAP_GUEST_ATTRS[i] + ": " + value);
+					//System.out.println(LDAP_GUEST_ATTRS[i] + ": " + value);
 					ldifFile.println(LDAP_GUEST_ATTRS[i] + ": " + value);
 				}
 			}
@@ -305,7 +297,7 @@ public class LDIFGenerator {
 				continue;
 
 			ldifFile.println("cn: " + name);
-			System.out.println("cn = " + name);
+			//System.out.println("cn = " + name);
 			if (name.contains(" ")) {
 				ldifFile.println("sn: " + name.substring(name.lastIndexOf(" ")+1));
 				ldifFile.println("givenName: " + name.substring(0, name.indexOf(" ")));
@@ -333,13 +325,13 @@ public class LDIFGenerator {
 		 */
 		if (affilMembers.size()==0)
 			return;
-		System.out.println("\n\nAssign to the member PDS_AFFIL");
+		//System.out.println("\n\nAssign to the member PDS_AFFIL");
 		ldifFile.println("dn: cn=PDS_Affiliate,ou=groups,dc="+ldapHost+",dc=jpl,dc=nasa,dc=gov\n" + 
 		    "changetype: add\n" +
 			"objectClass: groupofuniquenames\n" + 
 			"objectClass: top\ncn: PDS_Affiliate");
 		for (int j=0; j<affilMembers.size(); j++) {
-			System.out.println("uniqueMember: " + affilMembers.get(j));
+			//System.out.println("uniqueMember: " + affilMembers.get(j));
 			ldifFile.println("uniqueMember: " + affilMembers.get(j));
 		}
 	}
@@ -354,13 +346,13 @@ public class LDIFGenerator {
 		 */
 		if (guestMembers.size()==0)
 			return;
-		System.out.println("\n\nAssign to the member PDS_Guest");
+		//System.out.println("\n\nAssign to the member PDS_Guest");
 		ldifFile.println("dn: cn=PDS_Guest,ou=groups,dc="+ldapHost+",dc=jpl,dc=nasa,dc=gov\n" +
 		    "changetype: add\n" +
 		    "objectClass: groupofuniquenames\n" +
 		    "objectClass: top\ncn: PDS_Guest");
 		for (int j=0; j<guestMembers.size(); j++) {
-			System.out.println("uniqueMember: " + guestMembers.get(j));
+			//System.out.println("uniqueMember: " + guestMembers.get(j));
 			ldifFile.println("uniqueMember: " + guestMembers.get(j));
 		}
 	}
