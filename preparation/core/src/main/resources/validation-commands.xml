@@ -31,11 +31,13 @@
     <command caption="Find files not labeled" className="gov.nasa.pds.tools.validate.rule.pds4.FindUnreferencedFiles" />
   </chain>
 
-  <command name="pds4.label" caption="PDS4 Label" className="gov.nasa.pds.tools.validate.rule.StandardValidationChain">
+  <command name="pds4.label" caption="PDS4 Label" className="gov.nasa.pds.tools.validate.rule.pds4.LabelValidationChain">
     <command caption="Register targets" className="gov.nasa.pds.tools.validate.rule.RegisterTargets" />
     <command caption="PDS4 label validity" className="gov.nasa.pds.tools.validate.rule.pds4.LabelValidationRule" />
     <command caption="Register file references" className="gov.nasa.pds.tools.validate.rule.pds4.RegisterTargetReferences" />
   </command>
+
+  <command name="pds3.volume" caption="PDS3 Volume" className="gov.nasa.pds.tools.validate.rule.pds3.VolumeValidationRule" />
 
   <!-- The next chain does not use a custom chain class, so will not be
        seen by the rule manager. It exists here for unit testing only. -->  
