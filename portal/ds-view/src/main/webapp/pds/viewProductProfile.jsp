@@ -54,6 +54,9 @@ String getValue(HttpServletRequest req, String param, int len ) {
 <%
 // need to query from Product_Proxy_PDS3
 String name = request.getParameter("identifier");
+if (name == null) {
+   name = request.getParameter("Identifier");
+}
 
 if ((name == null) || (name == "")) {
 %>
