@@ -27,6 +27,11 @@ cp ../../ingest/catalog/target/catalog*bin* .
 cp ../../ingest/harvest/target/harvest*bin* .
 cp ../../ingest/harvest-pdap/target/harvest-pdap*bin* .
 
+echo "Copying the Model packages to the package directory."
+cp ../../model/model-dmdocument/target/model-dmdocument*bin* .
+cp ../../model/model-lddtool/target/model-lddtool*bin* .
+cp ../../model/model-ontology/target/model-ontology*bin* .
+
 echo "Copying the Portal packages to the package directory."
 cp ../../portal/ds-view/target/ds-view*bin* .
 cp ../../portal/filter/target/filter*bin* .

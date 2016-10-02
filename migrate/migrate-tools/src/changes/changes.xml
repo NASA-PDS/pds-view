@@ -23,7 +23,10 @@
   </properties>
 
   <body>
-    <release version="0.1.0" date="TBD" description="TBD">
+    <release version="1.0.0" date="2016-09-30" description="This release of Migrate Tools is a component of the integrated release 7.0.0 of the PDS4 System. This is an operational release of the system components to date.">
+      <action dev="resneck" type="add" issue="PDS-429">
+        Created a script to migrate the search-tools.xml file to Product_Service products.
+      </action>
       <action dev="shardman" type="add">
         Created the Migrate Tools component with the ADS Loader software as the first entry.
       </action>

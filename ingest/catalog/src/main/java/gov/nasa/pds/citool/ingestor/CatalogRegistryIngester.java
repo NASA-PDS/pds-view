@@ -930,7 +930,7 @@ public class CatalogRegistryIngester {
 		tmpVals.add(catObj.getFileObject().getCreationDateTime());
 		slots.add(new Slot("modification_date", tmpVals));
 		slots.add(new Slot("modification_version_id", Arrays.asList(new String[] {"1.0"})));
-		slots.add(new Slot("information_model_version", Arrays.asList(new String[] {"1.6.0.0"})));
+		slots.add(new Slot("information_model_version", Arrays.asList(new String[] {"1.7.0.0"})));
 		product.setSlots(slots);	
 
 		return product;

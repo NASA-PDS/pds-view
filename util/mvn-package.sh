@@ -1,5 +1,5 @@
 #!/bin/sh
-# Copyright 2012-2015, by the California Institute of Technology. 
+# Copyright 2012-2016, by the California Institute of Technology. 
 # ALL RIGHTS RESERVED. United States Government sponsorship acknowledged. 
 # Any commercial use must be negotiated with the Office of Technology Transfer 
 # at the California Institute of Technology. 
@@ -19,16 +19,21 @@ cd ..
 mvn clean
 
 # Install the dependent JARs locally.
+cd model
+mvn --non-recursive install clean
+cd model-dmdocument
+mvn install clean
+cd ../..
+
 cd preparation
 mvn --non-recursive install clean
 cd core
 mvn install clean
 cd ../generate
 mvn install clean
-cd ../pds4-tools/objectAccess
-mvn clean install clean
-mvn package
-cd ../../transform
+cd ../pds4-tools
+mvn install clean
+cd ../transform
 mvn install clean
 cd ../..
 

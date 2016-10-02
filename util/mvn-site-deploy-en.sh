@@ -25,15 +25,21 @@ cd ..
 mvn clean
 
 # Install the dependent JARs locally.
+cd model
+mvn --non-recursive install clean
+cd model-dmdocument
+mvn install clean
+cd ../..
+
 cd preparation
 mvn --non-recursive install clean
 cd core
 mvn install clean
 cd ../generate
 mvn install clean
-cd ../pds4-tools/objectAccess
-mvn clean install clean
-cd ../../transform
+cd ../pds4-tools
+mvn install clean
+cd ../transform
 mvn install clean
 cd ../..
 
@@ -75,6 +81,16 @@ cp -r ingest/harvest/target/site/* $1/ingest/harvest
 mkdir -p $1/ingest/harvest-pdap
 cp -r ingest/harvest-pdap/target/site/* $1/ingest/harvest-pdap
 
+echo "Deploying Model component sites to the deployment directory."
+mkdir -p $1/model
+cp -r model/target/site/* $1/model
+mkdir -p $1/model/model-dmdocument
+cp -r model/model-dmdocument/target/site/* $1/model/model-dmdocument
+mkdir -p $1/model/model-lddtool
+cp -r model/model-lddtool/target/site/* $1/model/model-lddtool
+mkdir -p $1/model/model-ontology
+cp -r model/model-ontology/target/site/* $1/model/model-ontology
+
 echo "Deploying Portal component sites to the deployment directory."
 mkdir -p $1/portal
 cp -r portal/target/site/* $1/portal
@@ -98,8 +114,6 @@ mkdir -p $1/preparation/generate
 cp -r preparation/generate/target/site/* $1/preparation/generate
 mkdir -p $1/preparation/pds4-tools
 cp -r preparation/pds4-tools/target/site/* $1/preparation/pds4-tools
-# mkdir -p $1/preparation/pds4-tools/objectAccess
-# cp -r preparation/pds4-tools/objectAccess/target/site/* $1/preparation/pds4-tools/objectAccess
 mkdir -p $1/preparation/transform
 cp -r preparation/transform/target/site/* $1/preparation/transform
 mkdir -p $1/preparation/validate
@@ -124,7 +138,6 @@ mkdir -p $1/report/report-manager
 cp -r report/report-manager/target/site/* $1/report/report-manager
 mkdir -p $1/report/sawmill
 cp -r report/sawmill/target/site/* $1/report/sawmill
-
 
 echo "Deploying Search component site to the deployment directory."
 mkdir -p $1/search

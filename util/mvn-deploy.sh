@@ -31,9 +31,10 @@ mvn deploy
 cd ../generate
 mvn site
 mvn deploy
-cd ../pds4-tools/objectAccess
-mvn clean deploy
-cd ../../transform
+cd ../pds4-tools
+mvn site
+mvn deploy
+cd ../transform
 mvn site
 mvn deploy
 cd ../validate
@@ -73,6 +74,19 @@ cd ../harvest
 mvn site
 mvn deploy
 cd ../harvest-pdap
+mvn site
+mvn deploy
+cd ../..
+
+cd model
+mvn deploy --non-recursive
+cd model-dmdocument
+mvn site
+mvn deploy
+cd ../model-lddtool
+mvn site
+mvn deploy
+cd ../model-ontology
 mvn site
 mvn deploy
 cd ../..

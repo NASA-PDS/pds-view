@@ -36,7 +36,9 @@
 
   <modules>
     <module>core</module>
+    <!--
     <module>design</module>
+    -->
     <module>generate</module>
     <!--
     <module>lace</module>
@@ -65,15 +67,6 @@
       </roles>
     </developer>
     <developer>
-      <name>Paul Ramirez</name>
-      <id>pramirez</id>
-      <email>Paul.Ramirez@jpl.nasa.gov</email>
-      <organization>NASA Jet Propulsion Laboratory</organization>
-      <roles>
-        <role>Developer</role>
-      </roles>
-    </developer>
-    <developer>
       <name>Michael Cayanan</name>
       <id>mcayanan</id>
       <email>Michael.Cayanan@jpl.nasa.gov</email>
@@ -83,9 +76,9 @@
       </roles>
     </developer>
     <developer>
-      <name>Jordan Padams</name>
-      <id>jpadams</id>
-      <email>Jordan.Padams@jpl.nasa.gov</email>
+      <name>Steven Levoe</name>
+      <id>srlevoe</id>
+      <email>Steven.R.Levoe@jpl.nasa.gov</email>
       <organization>NASA Jet Propulsion Laboratory</organization>
       <roles>
         <role>Developer</role>
@@ -98,6 +91,24 @@
       <organization>NASA Ames Research Center</organization>
       <roles>
         <role>Developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Jordan Padams</name>
+      <id>jpadams</id>
+      <email>Jordan.Padams@jpl.nasa.gov</email>
+      <organization>NASA Jet Propulsion Laboratory</organization>
+      <roles>
+        <role>Former Developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Paul Ramirez</name>
+      <id>pramirez</id>
+      <email>Paul.Ramirez@jpl.nasa.gov</email>
+      <organization>NASA Jet Propulsion Laboratory</organization>
+      <roles>
+        <role>Former Developer</role>
       </roles>
     </developer>
   </developers>

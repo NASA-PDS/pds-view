@@ -36,12 +36,10 @@
 
   <modules>
     <module>ds-view</module>
+    <module>filter</module>
     <module>dd-search</module>
     <module>pb-search</module>
-    <!--
     <module>tool-registry</module>
-    -->
-    <module>filter</module>
   </modules>
 
   <licenses>

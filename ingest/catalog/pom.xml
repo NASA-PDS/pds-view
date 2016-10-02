@@ -26,7 +26,7 @@
 
   <groupId>gov.nasa.pds.2010.ingest</groupId>
   <artifactId>catalog</artifactId>
-  <version>1.12.0-dev</version>
+  <version>1.12.0</version>
   <packaging>jar</packaging>
 
   <name>Catalog Tool</name>
@@ -77,7 +77,7 @@
       <email>Paul.Ramirez@jpl.nasa.gov</email>
       <organization>NASA Jet Propulsion Laboratory</organization>
       <roles>
-        <role>Developer</role>
+        <role>Former Developer</role>
       </roles>
     </developer>
   </developers>

@@ -23,7 +23,10 @@
   </properties>
 
   <body>
-    <release version="1.11.0" date="TBD" description="TBD">
+    <release version="1.11.0" date="2016-09-30" description="This release of the Registry Client is a component of the integrated release 7.0.0 of the PDS4 System. This is an operational release of the system components to date.">
+      <action dev='kelly' type='add' issue='PDS-465'>
+        Added support for Packages.
+      </action>
     </release>
 
     <release version="1.10.0" date="2016-03-31" description="This release of the Registry Client is a component of the integrated release 6.1.0 of the PDS4 System. This is an operational release of the system components to date.">
@@ -33,21 +36,21 @@
     </release>
 
     <release version="1.8.1" date="2015-08-05" description="This release of the Registry Client is a component of the integrated release 5.1.1 of the PDS4 System. This is an operational release of the system components to date.">
-        <action dev='kelly' type='add' issue='PDS-342'>
-          Added support for Associations.
-        </action>
+      <action dev='kelly' type='add' issue='PDS-342'>
+        Added support for Associations.
+      </action>
     </release>
 
     <release version="1.8.0" date="2015-03-31" description="This release of the Registry Client is a component of the integrated release 5.1.0 of the PDS4 System. This is an operational release of the system components to date.">
-        <action dev='kelly' type='add'>
-          Added a convenience method to the Registry Client for retrieving an Extrinsic by LIDVID.
-        </action>
+      <action dev='kelly' type='add'>
+        Added a convenience method to the Registry Client for retrieving an Extrinsic by LIDVID.
+      </action>
     </release>
 
     <release version="1.7.0" date="2014-09-30" description="This release of the Registry Client is a component of the integrated release 5.0.0 of the PDS4 System. This is an operational release of the system components to date.">
-        <action dev='kelly' type='fix'>
-          Fixed a typo in the documentation.
-        </action>
+      <action dev='kelly' type='fix'>
+        Fixed a typo in the documentation.
+      </action>
     </release>
 
     <release version="1.6.1" date="2014-06-02" description="This release of the Registry Client is a component of the integrated release 4.1.1 of the PDS4 System. This is an operational release of the system components to date.">
@@ -57,9 +60,9 @@
     </release>
 
     <release version="1.5.0" date="2013-09-30" description="This release of the Registry Client is a component of the integrated release 4.0.0 of the PDS4 System. This is an operational release of the system components to date.">
-        <action dev='kelly' type='update'>
-          Remove workaround for registry service emitting HTTP 500 for "not found" instead of 404 (PDS-29).  Add implementation for ExtrinsicObject in model and in net.  Replaced old "A and B or C" expressions with safer "B if A else C" expressions.
-        </action>
+      <action dev='kelly' type='update'>
+        Remove workaround for registry service emitting HTTP 500 for "not found" instead of 404 (PDS-29).  Add implementation for ExtrinsicObject in model and in net.  Replaced old "A and B or C" expressions with safer "B if A else C" expressions.
+      </action>
     </release>
 
     <release version="1.4.1" date="2013-06-21" description="This release of the Registry Client is a component of the integrated release 3.1.1 of the PDS4 System. This is an operational release of the system components to date.">
