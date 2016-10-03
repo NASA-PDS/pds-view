@@ -5,10 +5,10 @@ What follows is a history of changes from release to release, along with
 issues addressed and new features in each release.
 
 
-1.11.0 - TBD
+1.11.0 - Packages
 ------------
 
-* Added parameters to retrieve assocations by source or taget UUID (PDS-457)
+* Added parameters to retrieve assocations by source or target UUID (PDS-457)
 * Added support for the Registry Service's "Package" object (PDS-465)
 * Cleaned up __init__ files
 
