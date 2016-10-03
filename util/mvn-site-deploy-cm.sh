@@ -56,5 +56,11 @@ cd storage-service
 mvn install clean
 cd ../..
 
+# Build Registry Service site because WADL generation is failing
+# when executing "mvn site-deploy" from the root.
+cd registry/registry-service
+mvn site
+cd ../..
+
 # Build and deploy each site (recursive).
 mvn site-deploy
