@@ -16,3 +16,12 @@ executed against this project so that they are not applied against the
 child projects or modules. The site can be deployed as follows: 
 
 % mvn site-deploy --non-resursive
+
+Until I find another place for this, here are the commands for generating 
+the distribution package for the Registry Client:
+
+% cd registry-client
+% python bootstrap.py
+% bin/buildout setup . egg_info -Rb "" sdist
+
+The resulting package will be in the ./dist directory.
