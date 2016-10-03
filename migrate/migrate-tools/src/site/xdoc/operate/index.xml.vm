@@ -59,6 +59,8 @@
         <li>ipda-tools-to-product.py<br/>This script queries the IPDA Registry Service for Service entries and outputs a Product_Service label in XML for each of those entries. Those labels can then be ingested in a Registry Service instance.
         </li>
         <li>search-tools-to-product.py<br/>This script reads the Search Service Search Tools XML file that describes the PDS search tools and outputs a Product_Service label in XML for each of those entries. Those labels can then be ingested in a Registry Service instance.
+        </li>
+      </ul>
     </section>
   </body>
 </document>
