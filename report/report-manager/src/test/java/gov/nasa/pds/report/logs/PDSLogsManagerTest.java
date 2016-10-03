@@ -9,6 +9,7 @@ import java.util.Properties;
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -65,6 +66,7 @@ public class PDSLogsManagerTest extends PDSTest{
 	}
 	
 	@Test
+	@Ignore
 	// TODO: We should create a mostly empty test implementation of PDSPull
 	// that we can instantiate with GenericReportServiceObjectFactory and use
 	// here

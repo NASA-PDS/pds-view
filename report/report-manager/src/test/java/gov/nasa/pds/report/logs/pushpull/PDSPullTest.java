@@ -25,6 +25,7 @@ import org.jasypt.util.text.StrongTextEncryptor;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -62,6 +63,7 @@ public class PDSPullTest extends PDSTest {
 	}
 	
 	@Test
+	@Ignore
 	public void testDecrypt() throws Exception {
 		String password = "foobar";
 		
@@ -79,6 +81,7 @@ public class PDSPullTest extends PDSTest {
 	}
 	
 	@Test
+	@Ignore
 	public void testConnect() throws PushPullException {
 		assertTrue(pullImpl.connect(SftpTestConstants.TEST_HOST,
 				SftpTestConstants.TEST_USER, SftpTestConstants.TEST_PASSWORD,
@@ -87,6 +90,7 @@ public class PDSPullTest extends PDSTest {
 	
 	@SuppressWarnings("unchecked")
 	@Test
+	@Ignore
 	public void testPrivateGetFileFileList() throws Exception {
 		
 		// Remove any Date Logs Filters from previous tests
@@ -114,6 +118,7 @@ public class PDSPullTest extends PDSTest {
 
 	@SuppressWarnings("unchecked")
 	@Test
+	@Ignore
 	public void testGetLogs() throws Exception {
 		// Initializing variables
 		String destinationBase = Utility.getAbsolutePath(TestConstants.TEST_DUMP_RELATIVE);

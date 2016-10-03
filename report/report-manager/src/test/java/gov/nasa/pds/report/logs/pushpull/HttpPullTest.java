@@ -12,6 +12,7 @@ import org.jasypt.util.text.StrongTextEncryptor;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -51,6 +52,7 @@ public class HttpPullTest extends PDSTest{
 	}
 	
 	@Test
+	@Ignore
 	public void testGetLog() throws Exception {
 			
 		// Get the hostname because we will use it a few times
