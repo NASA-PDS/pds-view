@@ -1,3 +1,6 @@
-recursive-include src *.cfg *.xml *.json
+# Copyright 2011-2016 California Institute of Technology. ALL RIGHTS
+# RESERVED. U.S. Government Sponsorship acknowledged.
+
+recursive-include src/pds src/pds.registry.egg-info *.cfg *.xml *.json
 recursive-include docs *
 include pom.xml
