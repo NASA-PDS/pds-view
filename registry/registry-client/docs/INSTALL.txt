@@ -9,16 +9,16 @@ Installation
 ============
 
 By far, the easiest way to install pds.registry is to use pip_ or
-easy_install_.  As a privileged user, type::
+easy_install_. As a privileged user, type:
 
-    pip install pds.registry
+    pip install ftp://pds.nasa.gov/pub/toplevel/2010/registry/pds.registry-X.X.X.tar.gz
 
-or::
+or:
 
-    easy_install pds.registry
+    easy_install ftp://pds.nasa.gov/pub/toplevel/2010/registry/pds.registry-X.X.X.tar.gz
 
 The software as well as its dependencies will be downloaded and installed
-automatically.  Of course, you can use it in virtualenvs_ and buildouts_ too.
+automatically. Of course, you can use it in virtualenvs_ and buildouts_ too.
 
 
 Installing from Source

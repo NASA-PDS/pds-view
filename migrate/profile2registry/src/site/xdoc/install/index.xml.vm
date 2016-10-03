@@ -50,7 +50,16 @@ Python 2.7.2
     </section>
 
     <section name="Deploying the Application">
-      <p>Download the package from the PDS <a href="ftp://pds.nasa.gov/pub/toplevel/2010/migrate/" target="_blank">FTP</a> site. Unpack the selected distribution file with the following command:
+      <p>By far, the easiest way to install the Profile-2-Registry (pds.profile2registry) is to use the Python utilities <a href="http://pip.openplans.org/" target="_blank">pip</a> or <a href="http://peak.telecommunity.com/DevCenter/EasyInstall" target="_blank">easy_install</a>. As a privileged user, install the package with one of the following commands:
+      </p>
+
+      <source>
+% pip install ftp://pds.nasa.gov/pub/toplevel/2010/migrate/pds.profile2registry-1.0.1.zip
+or 
+% easy_install ftp://pds.nasa.gov/pub/toplevel/2010/migrate/pds.profile2registry-1.0.1.zip
+      </source>
+
+      <p>The software as well as its dependencies will be downloaded and installed automatically. Of course, you can use it in <a href="http://pypi.python.org/pypi/virtualenv/" target="_blank">virtualenvs</a> and <a href="http://www.buildout.org/" target="_blank">buildouts</a> too. If neither <i>pip</i> nor <i>easy_install</i> are available on your system, just install the package from source. Download the package from the PDS <a href="ftp://pds.nasa.gov/pub/toplevel/2010/migrate/" target="_blank">FTP</a> site. Unpack the selected distribution file with the following command:
       </p>
 
       <source>

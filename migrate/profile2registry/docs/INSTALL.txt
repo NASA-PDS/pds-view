@@ -8,13 +8,13 @@ Installation
 ============
 
 By far, the easiest way to install this is to use pip_ or easy_install_.  As a
-privileged user, type::
+privileged user, type:
 
-    pip install pds.profile2registry
+    pip install ftp://pds.nasa.gov/pub/toplevel/2010/migrate/pds.profile2registry-1.0.1.zip
 
-or::
+or:
 
-    easy_install pds.profile2registry
+    easy_install ftp://pds.nasa.gov/pub/toplevel/2010/migrate/pds.profile2registry-1.0.1.zip
 
 The software as well as its dependencies will be downloaded and installed
 automatically.
