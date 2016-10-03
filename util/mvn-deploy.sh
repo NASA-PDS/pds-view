@@ -23,48 +23,6 @@ mvn clean
 
 mvn deploy --non-recursive
 
-cd preparation
-mvn deploy --non-recursive
-cd core
-mvn site
-mvn deploy
-cd ../generate
-mvn site
-mvn deploy
-cd ../pds4-tools
-mvn site
-mvn deploy
-cd ../transform
-mvn site
-mvn deploy
-cd ../validate
-mvn site
-mvn deploy
-cd ../..
-
-cd registry
-mvn deploy --non-recursive
-cd registry-core
-mvn site
-mvn deploy
-cd ../registry-service
-mvn site
-mvn deploy
-cd ../registry-ui
-mvn site
-mvn deploy
-cd ../..
-
-cd storage
-mvn deploy --non-recursive
-cd product-service
-mvn site
-mvn deploy
-cd ../storage-service
-mvn site
-mvn deploy
-cd ../..
-
 cd ingest
 mvn deploy --non-recursive
 cd catalog
@@ -74,6 +32,13 @@ cd ../harvest
 mvn site
 mvn deploy
 cd ../harvest-pdap
+mvn site
+mvn deploy
+cd ../..
+
+cd migrate
+mvn deploy --non-recursive
+cd migrate-tools
 mvn site
 mvn deploy
 cd ../..
@@ -101,6 +66,41 @@ mvn site
 mvn deploy
 cd ../..
 
+cd preparation
+mvn deploy --non-recursive
+cd core
+mvn site
+mvn deploy
+cd ../generate
+mvn site
+mvn deploy
+cd ../pds4-tools
+mvn site
+mvn deploy
+cd ../transform
+mvn site
+mvn deploy
+cd ../validate
+mvn site
+mvn deploy
+cd ../..
+
+cd registry
+mvn deploy --non-recursive
+cd registry-core
+mvn site
+mvn deploy
+cd ../registry-service
+mvn site
+mvn deploy
+cd ../registry-tools
+mvn site
+mvn deploy
+cd ../registry-ui
+mvn site
+mvn deploy
+cd ../..
+
 cd report
 mvn deploy --non-recursive
 cd report-manager
@@ -123,6 +123,16 @@ cd ../search-service
 mvn site
 mvn deploy
 cd ../search-ui
+mvn site
+mvn deploy
+cd ../..
+
+cd storage
+mvn deploy --non-recursive
+cd product-service
+mvn site
+mvn deploy
+cd ../storage-service
 mvn site
 mvn deploy
 cd ../..
