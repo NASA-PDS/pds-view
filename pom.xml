@@ -52,13 +52,13 @@
 
   <properties>
     <!-- Internal Dependency Version -->
-    <core-version>1.9.0</core-version>
-    <pds4-tools-version>0.7.0-dev</pds4-tools-version>
-    <generate-version>0.10.0</generate-version>
-    <transform-version>1.4.0-dev</transform-version>
-    <registry-version>1.10.0</registry-version>
-    <search-version>1.8.0</search-version>
-    <storage-version>1.1.0</storage-version>
+    <core-version>1.10.0</core-version>
+    <pds4-tools-version>0.7.0</pds4-tools-version>
+    <generate-version>0.11.0</generate-version>
+    <transform-version>1.4.0</transform-version>
+    <registry-version>1.11.0</registry-version>
+    <search-version>1.9.0</search-version>
+    <storage-version>1.2.0</storage-version>
     <!-- External Dependency Versions -->
     <oodt-version>0.12</oodt-version>
     <product-tools-version>3.5.0</product-tools-version>
