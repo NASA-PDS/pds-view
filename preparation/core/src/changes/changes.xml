@@ -27,6 +27,9 @@
       <action dev="mrose" type="add">
         Added support for PDS3 volume validation.
       </action>
+      <action dev="shardman" type="add">
+        Added in the 1700 version of the schema and schematron and set as default for this release.
+      </action>
       <action dev="mrose" type="update">
         Added new features for PDS4 validation.
       </action>
@@ -36,6 +39,9 @@
       <action dev="mcayanan" type="fix" issue="PDS-439">
         Does not properly set the correct location for errors found in the referenced file of an xinclude statement.
       </action>
+      <action dev="shardman" type="add">
+        Added in the 1600 version of the schema and schematron and set as default for this release.
+      </action>
       <action dev="shardman" type="update">
         Updated the JRE requirement to 1.7 in the Installation document.
       </action>
@@ -44,6 +50,9 @@
     <release version="1.8.0" date="2015-09-30" description="This release of the Core Library is a component of the integrated release 6.0.0 of the PDS4 System. This is an operational release of the system components to date.">
       <action dev="mcayanan" type="fix" issue="PDS-375">
         Correct issue where a NullPointerException is thrown when a schema file could not be read.
+      </action>
+      <action dev="shardman" type="add">
+        Added in the 1500 version of the schema and schematron and set as default for this release.
       </action>
     </release>
 
