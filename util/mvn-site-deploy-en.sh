@@ -61,6 +61,14 @@ cd storage-service
 mvn install clean
 cd ../..
 
+# Build Registry Service site because WADL generation is failing
+# when executing "mvn site-deploy" from the root. This is truly a
+# kludge since that site will have to be rebuilt after the fact 
+# using the EN skin.
+cd registry/registry-service
+mvn site
+cd ../..
+
 # Build each site (recursive).
 mvn --file pom-en.xml site
 
@@ -102,6 +110,8 @@ mkdir -p $1/portal/filter
 cp -r portal/filter/target/site/* $1/portal/filter
 mkdir -p $1/portal/pb-search
 cp -r portal/pb-search/target/site/* $1/portal/pb-search
+mkdir -p $1/portal/tool-registry
+cp -r portal/tool-registry/target/site/* $1/portal/tool-registry
 
 echo "Deploying Preparation component sites to the deployment directory."
 mkdir -p $1/preparation
@@ -128,6 +138,8 @@ mkdir -p $1/registry/registry-core
 cp -r registry/registry-core/target/site/* $1/registry/registry-core
 mkdir -p $1/registry/registry-service
 cp -r registry/registry-service/target/site/* $1/registry/registry-service
+mkdir -p $1/registry/registry-tools
+cp -r registry/registry-tools/target/site/* $1/registry/registry-tools
 mkdir -p $1/registry/registry-ui
 cp -r registry/registry-ui/target/site/* $1/registry/registry-ui
 
