@@ -105,9 +105,11 @@
 							<td<s:if test="#attr['section'] == 'home'"> class="active"</s:if>><a href="<s:url action="Home" />"><s:text name="nav.primary.home.label" /></a></td>
 							<td<s:if test="#attr['section'] == 'validation'"> class="active"</s:if>><a href="<s:url action="ValidatorAbout" />"><s:text name="nav.primary.validate.label" /></a></td>
 							<td<s:if test="#attr['section'] == 'slice'"> class="active"</s:if>><a href="<s:url action="TableExplorer" />"><s:text name="nav.primary.slice.label" /></a></td>
+<!--
 							<td<s:if test="#attr['section'] == 'images'"> class="active"</s:if>><a href="<s:text name="url.imageSearch" />"><s:text name="nav.primary.imageSearch.label" /></a></td>
 							<td<s:if test="#attr['section'] == 'lace'"> class="active"</s:if>><a href="<s:text name="url.labelEditor" />"><s:text name="nav.primary.labelEditor.label" /></a></td>
 							<td<s:if test="#attr['section'] == 'resources'"> class="active"</s:if>><a href="<s:url action="Resources" />"><s:text name="nav.primary.resources.label" /></a></td>
+-->
 							<td class="padder">&nbsp;</td>
 						</tr>
 					</table>
