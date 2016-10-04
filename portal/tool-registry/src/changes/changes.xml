@@ -23,6 +23,9 @@
   </properties>
 
   <body>
+    <release version="TBD" date="TBD" description="TBD">
+    </release>
+
     <release version="1.0.0" date="2016-09-30" description="This release of Tool Registry is a component of the integrated release 7.0.0 of the PDS4 System. This is an operational release of the system components to date.">
       <action dev="earevalo" type="add" issue="PDS-430">
         Initial release of the Tool Registry interface that queries the Search Service for Product_Service products and allows the submission of new tools and services.

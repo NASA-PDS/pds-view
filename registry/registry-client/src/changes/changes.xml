@@ -23,6 +23,9 @@
   </properties>
 
   <body>
+    <release version="TBD" date="TBD" description="TBD">
+    </release>
+
     <release version="1.11.0" date="2016-09-30" description="This release of the Registry Client is a component of the integrated release 7.0.0 of the PDS4 System. This is an operational release of the system components to date.">
       <action dev='kelly' type='add' issue='PDS-457'>
         Added parameters to retrieve assocations by source or target UUID.
