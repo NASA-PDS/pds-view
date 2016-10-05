@@ -58,4 +58,19 @@ mysql.db = database name
 mysql.server = host name of the MySQL server  
 
 
-5. Restart tomcat. 
+5. Restart tomcat.
+
+
+Some helpful notes from Mark Rose:
+
+Things to know:
+- If the client user is validating a very large volume, the server may 
+  use a lot of memory. You may want to allocate 512MB or more of heap.
+  
+- If the client has a very large number of errors in their volume, the
+  temporary database usage is very large. We’ve occasionally run out 
+  of space on our database volume. Right now our instance has 1TB of disk,
+  so space has not been an issue. I’ve only seen this problem with some 
+  Magellan image volumes 
+  (which had millions of errors when originally submitted).
+  
