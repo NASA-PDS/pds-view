@@ -1,0 +1,61 @@
+This INSTALL.txt file details how to build and deploy the AMES Tools web app.
+
+
+1. Set up the MySQL database.
+
+The web app defaults to using a database named "amestools". If you would like
+to use a different name, then a configuration file would need to be modified,
+which will be described in a later step.
+
+Also, grant a user all priviliges to this newly created database. The web app
+defaults to user "root" with password "root". This too can be changed in a
+configuration file, which will be described in a later step. 
+
+Next, run the following sql scripts to create the database tables:
+
+$ ./mysql -u root -p amestools < pds_web.sql
+
+$ ./mysql -u root -p amestools < pds_web_version.sql
+
+These scripts can be found under the src/ folder. The commands assume you 
+are using the default values.
+
+
+2. Build the WAR file.
+
+Run the following command to build the WAR file:
+
+%> mvn clean install -DskipTests
+
+At the time of this writing, the "-DskipTests" flag option is needed as the
+build fails if this flag is omitted.
+
+
+3. Copy the WAR file to the tomcat/webapps folder.
+
+
+4. Once the WAR file is unpacked, edit the 
+   webapps/ames-tools/WEB-INF/classes/config.properties file as needed.
+
+The default values are set as follows:
+
+#defaults to root
+mysql.user = root
+mysql.pass = root
+#defaults to 3306
+mysql.port = 3306
+#defaults to pds_web
+mysql.db = amestools
+#defaults to 127.0.0.1
+mysql.server = 127.0.0.1
+
+where,
+
+mysql.user = database user name
+mysql.pass = database user password
+mysql.port = port number to the MySQL server
+mysql.db = database name
+mysql.server = host name of the MySQL server  
+
+
+5. Restart tomcat. 
