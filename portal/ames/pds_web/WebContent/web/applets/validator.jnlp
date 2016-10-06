@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<jnlp spec="1.0+" version="1.0.20">
+<jnlp spec="1.0+" version="1.0.21">
 	<information>
 		<title>PDS3 Volume Validator</title>
 		<vendor>PDS User Centered Design Group</vendor>
