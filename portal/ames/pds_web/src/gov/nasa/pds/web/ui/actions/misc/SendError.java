@@ -89,7 +89,7 @@ public class SendError extends BaseSubmitAction {
 
 		// Setup mail server
 		Properties props = System.getProperties();
-		props.put("mail.smtp.host", "smtp.arc.nasa.gov");
+		props.put("mail.smtp.host", "smtp.jpl.nasa.gov");
 
 		// Get a mail session
 		@SuppressWarnings("hiding")
@@ -97,10 +97,10 @@ public class SendError extends BaseSubmitAction {
 
 		// Define a new mail message
 		Message message = new MimeMessage(session);
-		message.setFrom(new InternetAddress("rich.keller@nasa.gov"));
+		message.setFrom(new InternetAddress("pds_operator@jpl.nasa.gov"));
 		message.addRecipient(Message.RecipientType.TO, new InternetAddress(
-				"rich.keller@nasa.gov"));
-		message.setSubject("PDS Tools Bug Report");
+				"pds_operator@jpl.nasa.gov"));
+		message.setSubject("UCD Tools Bug Report");
 
 		// Create a message part to represent the body text
 		BodyPart messageBodyPart = new MimeBodyPart();

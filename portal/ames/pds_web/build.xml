@@ -2,7 +2,7 @@
 
 <project name="ucd-tools">
 	
-	<property name="applet.codebase" value="pdstools.arc.nasa.gov pdstools-dev.ndc.nasa.gov localhost" />
+	<property name="applet.codebase" value="pds.nasa.gov pds.jpl.nasa.gov pds-prod1.jpl.nasa.gov pds-prod2.jpl.nasa.gov pds-gamma.jpl.nasa.gov localhost" />
 	<property name="tsa.url" value="http://timestamp.digicert.com" />
 	<property name="pdstools.keystore.default" location="${basedir}/.keystore" />
 	<property name="pdstools.keystore.location" location="${pdstools.keystore.default}" />
