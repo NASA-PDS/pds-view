@@ -50,6 +50,7 @@
 							<td id="siteTitle"><s:text name="application.title"/></td>
 							<td id="bannerLinks">
 								<table cellpadding="0" cellspacing="0">
+									<!--
 									<tr>
 										<td>
 											<div>&bull; <a href="http://www.nasa.gov/">NASA Portal</a></div>
@@ -57,8 +58,10 @@
 											<div>&bull; <a href="<s:url action="Contact" />">Feedback</a></div>
 										</td>
 									</tr>
+									-->
 								</table>
 							</td>
+							<!-- Commented out since it is not working.
 							<td id="searchBox">
 								<form id="dummyForm" action="http://pds.jpl.nasa.gov/" method="get"></form>
 								<script type="text/javascript">
@@ -94,6 +97,7 @@
 								</table>
 								</form>
 							</td>
+							-->
 						</tr>
 					</table>
 				</td>
@@ -169,19 +173,21 @@
 				<td id="footer">
 					<table cellpadding="0" cellspacing="0" width="100%">
 						<tr>
+							<!--
 							<td id="footerInfoLinks">
 								<a href="<s:url action="Privacy" />"><s:text name="nav.footer.link.privacy" /></a><br />
 								<a href="<s:url action="Contact" />"><s:text name="nav.footer.link.contact" /></a><br />
 								<a href="<s:text name="url.freedomOfInformation" />">Freedom of Information Act</a>
 							</td>
+							-->
 							<td width="100%">
 								<table cellpadding="0" cellspacing="0" id="footerInfoContainer">
 									<tr>
 										<td><img src="<s:url value="/web/images/meatballLogoSmall.png" />" alt="NASA" /></td>
 										<td id="footerInfo">
-											Webmaster: <a href="mailto:mark.rose@nasa.gov">Mark Rose</a><br />
-											NASA Official: Rich Keller<br />
-											Last updated: June, 2013
+											Webmaster: <a href="mailto:Emily.Law@jpl.nasa.gov">Emily Law</a><br />
+											NASA Official: William Knopf<br />
+											Last updated: October, 2016
 										</td>
 									</tr>
 								</table>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
-<project name="pdsWeb">
+<project name="ucd-tools">
 	
 	<property name="applet.codebase" value="pdstools.arc.nasa.gov pdstools-dev.ndc.nasa.gov localhost" />
 	<property name="tsa.url" value="http://timestamp.digicert.com" />
@@ -18,7 +18,7 @@
 	<property name="junit.dir" value="${test.output.dir}/junit" />
 	
 	<property name="target.base" value="${build.dir}/artifacts" />
-	<property name="webapp.base" value="${target.base}/pdsWeb" />
+	<property name="webapp.base" value="${target.base}/ucd-tools" />
 	<property name="target.dir" value="${target.base}/classes" />
 	<property name="library.dir" value="target/dependency" />
 	<property name="applet.library.dir" value="applet-lib" />
@@ -152,8 +152,8 @@
 				destdir="${target.dir}"
 				classpathref="libraries"
 				debug="true"
-				source="1.6"
-				target="1.6">
+				source="1.7"
+				target="1.7">
 			<src path="${source.dir}" />
 			<classpath>
 				<pathelement location="${build-task-lib.dir}/plugin.jar" />
@@ -228,7 +228,7 @@
 		
 		<!-- TODO: get version number from svn and push to a properties file -->
 		
-		<jar destfile="${dist.dir}/pdsWeb.war" basedir="${webapp.base}" />
+		<jar destfile="${dist.dir}/ucd-tools.war" basedir="${webapp.base}" />
 	</target>
 	
 	<target name="genkey" unless="applet.up-to-date">
@@ -349,8 +349,8 @@
 				encoding="UTF-8"
 				destdir="${applet.dir}"
 				debug="true"
-				source="1.5"
-				target="1.5">
+				source="1.7"
+				target="1.7">
 			
 			<src path="${source.dir}" />
 			

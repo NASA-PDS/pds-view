@@ -15,7 +15,7 @@
 			<div class="content">
 				<s:text name="slicer.versionInfo">
 					<s:param value="appVersionInfo.slicerVersion" />
-					<s:param><s:url action="TableExplorerNotes" /></s:param>
+					<s:param><s:url action="TableExplorerReleaseNotes" /></s:param>
 					<s:param><s:text name="email.dataSlicerDeveloper" /></s:param>
 				</s:text>
 			</div>

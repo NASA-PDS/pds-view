@@ -7,7 +7,7 @@
 		
 		<div class="label"><s:text name="error.label.sendDetails" /></div>
 		<div class="contents">
-			We would appreciate it if you provided some details about the circumstances of this error to <strong><a href="mailto:rich.keller@nasa.gov">rich.keller@nasa.gov</a></strong>: 
+			We would appreciate it if you provided some details about the circumstances of this error to the <strong><a href="mailto:pds_operator@jpl.nasa.gov">PDS Operator</a></strong>: 
 			<ul>
 				<li>The stack trace appearing below</li>
 				<li>The current URL</li>

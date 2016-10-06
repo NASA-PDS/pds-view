@@ -1,5 +1,15 @@
 <%@ taglib prefix="s" uri="/struts-tags" %>
 <div class="defaultWrapper">
+  <div class="title">Version 1.0.21 (October 5, 2016)</div>
+    <div class="basicBox" style="font-size: 12px;">
+        <div class="label">What's New</div>
+        <div class="contents">
+            <ul>
+              <li><strong>Relocate</strong> - The application was relocated from Ames to the Engineering Node at JPL.</li>
+              <li><strong>Updated Data Dictionary</strong> - Updated the PDS Data Dictionary to 1r99.</li>
+            </ul>
+        </div>
+    </div>
 	<div class="title">Version 1.0.20 (January 20, 2015)</div>
     <div class="basicBox" style="font-size: 12px;">
         <div class="label">What's New</div>

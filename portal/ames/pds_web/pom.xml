@@ -1,9 +1,9 @@
 <project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>gov.nasa.arc.pds</groupId>
-	<artifactId>ames-tools</artifactId>
+	<artifactId>ucd-tools</artifactId>
 	<packaging>war</packaging>
-	<version>1.0.20</version>
+	<version>1.0.21</version>
 	<build>
 		<plugins>
 			<plugin>
@@ -11,8 +11,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>2.5.1</version>
 				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
+					<source>1.7</source>
+					<target>1.7</target>
 					<encoding>ISO-8859-1</encoding>
 				</configuration>
 			</plugin>
@@ -70,7 +70,7 @@
 				<artifactId>maven-jetty-plugin</artifactId>
 				<version>6.1.26</version>
 				<configuration>
-					<contextPath>pdsWeb</contextPath>
+					<contextPath>ucd-tools</contextPath>
 					<webAppSourceDirectory>WebContent</webAppSourceDirectory>
 					<webXml>WebContent/WEB-INF/web.xml</webXml>
 				</configuration>
@@ -478,6 +478,6 @@
 		</plugins>
 	</reporting>
 	<properties>
-		<struts.version>2.3.20</struts.version>
+		<struts.version>2.3.12</struts.version>
 	</properties>
 </project>

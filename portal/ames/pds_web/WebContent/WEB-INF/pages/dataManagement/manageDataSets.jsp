@@ -17,7 +17,7 @@
 		    var parameters = {
 		    		jnlp_href: 'web/applets/validator.jnlp',
 		    };
-		    var version = '1.6';
+		    var version = '1.7';
 		    deployJava.runApplet(attributes, parameters, version);
 		</script>
 

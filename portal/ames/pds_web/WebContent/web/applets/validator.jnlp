@@ -5,14 +5,14 @@
 		<title>PDS3 Volume Validator</title>
 		<vendor>PDS User Centered Design Group</vendor>
 		<description>A tool for validating PDS3 volumes for compliance with PDS standards.</description>
-		<homepage>http://pdstools.arc.nasa.gov/</homepage>
+		<homepage>http://pds.nasa.gov/</homepage>
 	</information>
 	<security>
 		<all-permissions />
 	</security>
 	<resources>
 		<j2se version="1.6+" max-heap-size="1024M" />
-		<jar href="/pdsWeb/web/applets/validator-1.0.20.jar" main="true" />
+		<jar href="/ucd-tools/web/applets/validator-1.0.21.jar" main="true" />
 	</resources>
 	<applet-desc main-class="gov.nasa.pds.web.applets.Validator"
 		name="validationAppletNorm" width="200" height="100">

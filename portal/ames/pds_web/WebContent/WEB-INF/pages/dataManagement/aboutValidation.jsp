@@ -9,7 +9,7 @@
 <blockquote><a href="<s:url action="Validator" />">Start the Validator</a></blockquote>
 
 		<h2>About the Project</h2>
-		<div class="contents">The volume validator tests for a variety of issues based on the most recent version of the PDS <a href="http://pds.jpl.nasa.gov/tools/standards-reference.shtml" target="_blank">Standards Reference</a>, <a href="http://starhawk.jpl.nasa.gov/documents/psdd/PSDDmain_1r71.pdf" target="_blank">Data Dictionary Document</a>, and the current version of the <a href="http://starhawk.jpl.nasa.gov/tools/dictionary.shtml" target="_blank">data dictionary</a>. In limited cases where ambiguities exist in these documents, validation has been based on responses from the standards committe and/or practices and findings from senior members of the PDS.</div>
+		<div class="contents">The volume validator tests for a variety of issues based on the most recent version of the PDS <a href="http://pds.nasa.gov/tools/standards-reference.shtml" target="_blank">Standards Reference</a> and the current version of the <a href="https://pds.nasa.gov/tools/dictionary.shtml" target="_blank">PDS Data Dictionary</a>. In limited cases where ambiguities exist in these documents, validation has been based on responses from the standards committe and/or practices and findings from senior members of the PDS.</div>
 		
 		<h2>Validation Parts</h2>
 		<div class="contents">The current validation process is broken into two parts, the first being label validation. This is conducted using the product tools library, a colaborative effort between the User Center Technology team at Ames and the Engineering Node at JPL. All label parsing and validation across EN and UCT tools should be consistent from this point on.</div>
