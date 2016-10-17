@@ -125,7 +125,7 @@ or
         <tr><td>repositoryPath</td><td>The path specification for the staging area where the service write the uploaded files. The default value is <i>/tmp</i>.</td></tr>
       </table>
 
-      <p>To modify the configuration, edit the <i>web.xml</i> file located in the <i>$TOMCAT_HOME/webapps/transport-update/WEB-INF</i> directory. The following block contains the parameter:
+      <p>To modify the configuration, edit the <i>web.xml</i> file located in the <i>$TOMCAT_HOME/webapps/transport-upload/WEB-INF</i> directory. The following block contains the parameter:
       </p>
 
       <source>
