@@ -29,8 +29,38 @@ AjaxSolr.DetailLinkSearchWidget = AjaxSolr.AbstractTextWidget.extend({
         var product = self.manager.response.response.docs[id];
 
         this.setTitle(product);
+        console.log("product", product);
         $("#trDetailContainer").empty();
         $("#trDetailContainer").append(this.template(product));
+
+        if(product.file_ref_url){
+          console.log("exists",product.file_ref_url.length );
+          if(product.file_ref_url.length > 0){
+            console.log("greater than zero");
+            console.log("product.file_ref_url", product.file_ref_url[0]);
+            var wadlUrl = product.file_ref_url[0];
+            $.ajax({
+                type: 'GET',
+                url: wadlUrl,
+                data: { get_param: 'value' },
+                success: function (data) {
+
+                  var xmlReString = "";
+                  if(window.ActiveXObject){
+                    xmlReString = data.xml;
+                  }
+                  else{
+                    var xmlReString = (new XMLSerializer()).serializeToString(data);
+                  }
+
+                  var bxml = vkbeautify.xml(xmlReString);
+                  bxml = bxml.replace(/(?:\r\n|\r|\n)/g, '<br />');
+
+                  $("#trDetailContainer").append('<div class="well wadlContent">' + bxml + '</div>');
+                }
+            });
+          }
+        }
     },
 
     setTitle:function(product){
@@ -91,6 +121,7 @@ AjaxSolr.DetailLinkSearchWidget = AjaxSolr.AbstractTextWidget.extend({
         output += this.createRow("System Requirements", product.service_system_requirements_note);
         output += this.createRow("Citation", product.citation_description);
         output += '</table></div>';
+
 
         /*
         if(type === "Product_Attribute_Definition"){

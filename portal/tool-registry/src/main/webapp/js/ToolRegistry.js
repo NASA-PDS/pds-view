@@ -584,6 +584,7 @@ function init(){
       for(var i = 0; i < urls.length; i++){
         if(urls[i].trim().length < 1 ||
             urls[i].trim().length > 255 ||
+            isInvalidUrl(urls[i].trim()) ||
             isInvalid(urls[i])){
               $("#urlContainer > div:nth-child(" + (i+2) + ")").addClass("has-error has-feedback");
               $("#urlContainer > div:nth-child(" + (i+2) + ")").removeClass("has-success has-feedback");
@@ -777,6 +778,16 @@ function init(){
     function isInvalidEmail(input){
       var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       return !re.test(input);
+    }
+    function isInvalidUrl(input){
+      var re = new RegExp('^(https?:\\/\\/)?'+ // protocol
+        '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.?)+[a-z]{2,}|'+ // domain name
+        '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
+        '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
+        '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
+        '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
+      return !re.test(input);
+
     }
 
     $( "#finishButton" ).click(function(){
@@ -978,10 +989,10 @@ function init(){
 
         //Upload values as file
         var fileName = formatFileName(name, version_id);
-        var file = new File([new Blob([bxml])], "test.xml");
+        var blob = new Blob([bxml], {"type":"text/xml"});
 
         var formData = new FormData();
-        formData.append("file", file, fileName);
+        formData.append("file", blob, fileName);
         formData.append("path", dateString);
 
         $.ajax({
@@ -993,8 +1004,6 @@ function init(){
           contentType: false,
           processData: false
         });
-
-
         //Upload wadl and wsdl files
         for(var i = 0; i < $('#wFileInput')[0].files.length; i++){
           file = $('#wFileInput')[0].files[i];
