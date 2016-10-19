@@ -32,8 +32,8 @@
 			<li>Open to the Safari Preferences dialog.</li>
 			<li>Go to the Security tab.</li>
 			<li>Next to <em>Internet plug-ins</em>, make sure <em>Allow plug-ins</em> is checked.</li>
-			<li>Next to <em>Internet plug-ins</em>, press the Manage Website Settings button.</li>
-			<li>For the website <em>pds-gamma.jpl.nasa.gov</em>, select Run in Unsafe Mode. This allows the Validator to read your data volumes to check them for compliance.</li>
+			<li>Next to <em>Internet plug-ins</em>, press the Manage Website Settings button (in Safari 10, it's the Plug-in Settings button).</li>
+			<li>For the website <em>pds-gamma.jpl.nasa.gov</em>, select Run in Unsafe Mode (in Safari 10, hold down the option key when selecting the pull-down menu and then deselect the Run in Safe Mode option). This allows the Validator to read your data volumes to check them for compliance.</li>
 			<li>Confirm that you want to run the Validator in unsafe mode by clicking Trust.</li>
 			<li>Click Done and then close the Preferences dialog.</li>
 			<li>Reload the page to restart the applet in unsafe mode.</li>
