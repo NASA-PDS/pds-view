@@ -75,8 +75,6 @@
           </li>
           <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-440'>PDS-440</a>] - Tool Registry: Develop a script to migrate the Search Tools list to products
           </li>
-          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-456'>PDS-456</a>] - PDS4-Tools: Add initial support for table Arrays to csv transformations
-          </li>
           <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-465'>PDS-465</a>] - Registry: Update Registry Client to include support for the Package object
           </li>
         </ul>
