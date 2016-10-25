@@ -1,4 +1,4 @@
-//  Copyright 2009-2011, by the California Institute of Technology.
+//  Copyright 2009-2016, by the California Institute of Technology.
 //  ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
 //  Any commercial use must be negotiated with the Office of Technology 
 //  Transfer at the California Institute of Technology.
@@ -62,7 +62,7 @@ public class RegistryResource {
   @GET
   public Response getRegistryResources() {
     Response.ResponseBuilder builder = Response
-        .ok("<html><head><title>Registry Service</title></head><body><table><tr><td><img src=\"images/pds4_logo.png\" alt=\"PDS Logo\" /></td><td><img src=\"images/spacer.gif\" alt=\"Spacer\" width=\"50\"/></td><td><h1>Registry Service</h1></td></tr></table><hr/><p>The Registry Service provides functionality for tracking, auditing, locating, and maintaining artifacts within the system. The service provides a REST-based interface for interacting with the service.</p><ul><li><a href=\"docs\">Service Interface</a></li></ul></body></html>");
+        .ok("<html><head><title>Registry Service</title></head><body><table><tr><td><img src=\"images/pds4_logo.png\" alt=\"PDS Logo\" /></td><td><img src=\"images/spacer.gif\" alt=\"Spacer\" width=\"50\"/></td><td><h1>Registry Service</h1></td></tr></table><hr/><p>The Registry Service provides functionality for tracking, auditing, locating, and maintaining artifacts within the system. The service provides a REST-based interface for interacting with the service.</p><ul><li><a href=\"docs/\">Service Interface</a></li></ul></body></html>");
     String associationsUri = uriInfo.getBaseUriBuilder().clone().path(
         RegistryResource.class).path(RegistryResource.class,
         "getAssociationsResource").build().toString();
