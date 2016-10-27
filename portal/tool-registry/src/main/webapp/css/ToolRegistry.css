@@ -174,6 +174,10 @@ body{
 	padding-right:10px;
 }
 
+.detailWidgetFileListTitle{
+	font-size:medium;
+}
+
 /*validation*/
 input:invalid {
   border: 1px solid red;

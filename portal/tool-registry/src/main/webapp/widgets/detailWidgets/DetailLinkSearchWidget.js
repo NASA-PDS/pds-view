@@ -33,52 +33,30 @@ AjaxSolr.DetailLinkSearchWidget = AjaxSolr.AbstractTextWidget.extend({
         $("#trDetailContainer").empty();
         $("#trDetailContainer").append(this.template(product));
 
-        if(product.file_ref_url){
-          console.log("exists",product.file_ref_url.length );
-          if(product.file_ref_url.length > 0){
-            console.log("greater than zero");
-            console.log("product.file_ref_url", product.file_ref_url[0]);
-            var wadlUrl = product.file_ref_url[0];
-            $.ajax({
-                type: 'GET',
-                url: wadlUrl,
-                data: { get_param: 'value' },
-                success: function (data) {
 
-                  var xmlReString = "";
-                  if(window.ActiveXObject){
-                    xmlReString = data.xml;
-                  }
-                  else{
-                    var xmlReString = (new XMLSerializer()).serializeToString(data);
-                  }
+        if(product.file_name){
+          var fileListDivHtml = '<div class="panel panel-default">' +
+              '<div class="panel-heading detailWidgetFileListTitle">Attached Files</div>' +
+              '<ul class="list-group">';
 
-                  var bxml = vkbeautify.xml(xmlReString);
-                  bxml = bxml.replace(/(?:\r\n|\r|\n)/g, '<br />');
-
-                  $("#trDetailContainer").append('<div class="well wadlContent">' + bxml + '</div>');
+          if(product.file_name.length > 0){
+              var fileName = product.file_name;
+              for(var i = 0; i < product.file_ref_url.length; i++){
+                if(product.file_ref_url[i].endsWith(fileName)){
+                    fileListDivHtml += '<li class="list-group-item"><a href="' + product.file_ref_url[i] + '"  download>' + fileName + '</a></li>';
                 }
-            });
+              }
           }
+
+          fileListDivHtml += '</ul>' + '</div>' + '</div>';
+          $("#trDetailContainer").append(fileListDivHtml);
+
         }
     },
 
     setTitle:function(product){
       $("#trDetailTitle").empty();
       $("#trDetailTitle").append('<span style="font-size:175%;vertical-align: middle;">Tool Detail</span>&nbsp;&nbsp;&nbsp;<button id="returnToSearchButtonTop" type="button" class="btn btn-info btn-sm"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Return To Search</button>');
-        /*
-        var type = product.objectType
-
-        if(type === "Product_Attribute_Definition"){
-            $("#trDetailTitle").empty();
-            $("#trDetailTitle").append('<span style="font-size:175%;vertical-align: middle;">Attribute Detail&nbsp;</span><button id="returnToSearchButtonTop" type="button" class="btn btn-info btn-sm"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Return To Search</button>');
-        }
-        else if(type === "Product_Class_Definition"){
-            $("#trDetailTitle").empty();
-            $("#trDetailTitle").append('<span style="font-size:175%;vertical-align: middle;">Class Detail&nbsp;</span><button id="returnToSearchButtonTop" type="button" class="btn btn-info btn-sm"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Return To Search</button>');
-        }
-        */
-
     },
 
     template: function (product){
@@ -121,32 +99,6 @@ AjaxSolr.DetailLinkSearchWidget = AjaxSolr.AbstractTextWidget.extend({
         output += this.createRow("System Requirements", product.service_system_requirements_note);
         output += this.createRow("Citation", product.citation_description);
         output += '</table></div>';
-
-
-        /*
-        if(type === "Product_Attribute_Definition"){
-            output += '<div class="panel panel-default">'
-            output += '<table class="table table-striped table-condensed"';
-            output += this.attributeSetName(product);
-            output += this.attributeSetTerminologicalEntry(product);
-            output += this.attributeSetValueDomains(product);
-            output += this.attributeSetPermissibleValues(product);
-            output += '</table></div>';
-            return output;
-        }
-        else if(type === "Product_Class_Definition"){
-            output += '<div class="panel panel-default">'
-            output += '<table class="table table-striped table-condensed"';
-            output += this.classSetName(product);
-            output += this.classSetAssociation(product);
-            output += this.classSetTerminologicalEntry(product);
-            //Attribute Reference
-            //Class Reference
-            output += '</table></div>';
-
-            return output;
-        }
-        */
 
         return output;
     },
