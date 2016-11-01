@@ -66,7 +66,7 @@ $(function () {
 
       <source>
 $.ajax(\{
-  url: "http://pds.jpl.nasa.gov/services/transport-upload/upload",
+  url: "https://pds.jpl.nasa.gov/services/transport-upload/upload",
   type: "POST",
   data: formData,
   cache: false,
