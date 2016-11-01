@@ -30,6 +30,9 @@
       <action dev="earevalo" type="add" issue="PDS-430">
         Initial release of the Tool Registry interface that queries the Search Service for Product_Service products and allows the submission of new tools and services.
       </action>
+      <action dev="earevalo" type="add" issue="PDS-468">
+        Added support for verifying URLs and Email addresses as well as listing links for any attached WADL or WSDL files.
+      </action>
     </release>
   </body>
 </document>

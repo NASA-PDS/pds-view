@@ -9,8 +9,7 @@ var Manager;
 
   $(function () {
     Manager = new AjaxSolr.Manager({
-      //solrUrl: 'http://pds-dev.jpl.nasa.gov:8080/search-service/'
-      solrUrl: 'http://pds-gamma.jpl.nasa.gov/services/search/'
+      solrUrl: 'https://pds.jpl.nasa.gov/services/search/'
       //search?product-class=Product_Service&return-type=xml
     });
 
@@ -996,8 +995,7 @@ function init(){
         formData.append("path", dateString);
 
         $.ajax({
-          //url: "http://localhost:8080/transport-upload/upload",
-          url: "http://pds-gamma.jpl.nasa.gov/services/transport-upload/upload",
+          url: "https://pds.jpl.nasa.gov/services/transport-upload/upload",
           type: "POST",
           data: formData,
           cache: false,
@@ -1012,8 +1010,7 @@ function init(){
           formData.append("file", file, file.name);
           formData.append("path", dateString);
           $.ajax({
-            //url: "http://localhost:8080/transport-upload/upload",
-            url: "http://pds-gamma.jpl.nasa.gov/services/transport-upload/upload",
+            url: "https://pds.jpl.nasa.gov/services/transport-upload/upload",
             type: "POST",
             data: formData,
             cache: false,
