@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <add>
   <doc>
-    <field name="description">Use the Planetary Atlas to search for images from the Voyager mission.</field>
+    <field name="description">Use the Planetary Image Atlas to search for images from the Voyager mission.</field>
     <field name="format">XML/RDF</field>
     <field name="node_id">imaging</field>
     <field name="data_product_type">Product_Context_Search_Tool</field>
@@ -76,7 +76,7 @@
     <field name="instrument_type">CAMERA</field>
   </doc>
   <doc>
-    <field name="description">Use the Planetary Atlas to search for images from the Lcross mission.</field>
+    <field name="description">Use the Planetary Image Atlas to search for images from the Lcross mission.</field>
     <field name="format">XML/RDF</field>
     <field name="node_id">imaging</field>
     <field name="data_product_type">Product_Context_Search_Tool</field>
@@ -139,7 +139,7 @@
     <field name="instrument_type">CAMERA</field>
   </doc>
   <doc>
-    <field name="description">Use the Planetary Atlas to search for images from the Chandrayaan-1 mission.</field>
+    <field name="description">Use the Planetary Image Atlas to search for images from the Chandrayaan-1 mission.</field>
     <field name="format">XML/RDF</field>
     <field name="node_id">imaging</field>
     <field name="data_product_type">Product_Context_Search_Tool</field>
@@ -160,7 +160,7 @@
   </doc>
   <doc>
      <field name="instrument_type">CAMERA</field>
-    <field name="description">Use the Planetary Atlas to search for images from the Phoenix mission.</field>
+    <field name="description">Use the Planetary Image Atlas to search for images from the Phoenix mission.</field>
     <field name="format">XML/RDF</field>
     <field name="node_id">imaging</field>
     <field name="data_product_type">Product_Context_Search_Tool</field>
@@ -280,7 +280,7 @@
     <field name="investigation_name">phoenix</field>
   </doc>
   <doc>
-    <field name="description">Use the Planetary Atlas to search for images from the Mars Science Laboratory mission.</field>
+    <field name="description">Use the Planetary Image Atlas to search for images from the Mars Science Laboratory mission.</field>
     <field name="format">XML/RDF</field>
     <field name="node_id">imaging</field>
     <field name="data_product_type">Product_Context_Search_Tool</field>
@@ -326,7 +326,7 @@
     <field name="investigation_name">mars science laboratory</field>
   </doc>
   <doc>
-    <field name="description">Use the Planetary Atlas to search for images from the Mars Express mission.</field>
+    <field name="description">Use the Planetary Image Atlas to search for images from the Mars Express mission.</field>
     <field name="format">XML/RDF</field>
     <field name="node_id">imaging</field>
     <field name="data_product_type">Product_Context_Search_Tool</field>
@@ -353,7 +353,7 @@
     <field name="instrument_type">CAMERA</field>
   </doc>
   <doc>
-    <field name="description">Use the Planetary Atlas to search for images from the Mars Global Surveyor mission.</field>
+    <field name="description">Use the Planetary Image Atlas to search for images from the Mars Global Surveyor mission.</field>
     <field name="format">XML/RDF</field>
     <field name="node_id">imaging</field>
     <field name="data_product_type">Product_Context_Search_Tool</field>
@@ -383,7 +383,7 @@
     <field name="investigation_name">mars global surveyor</field>
   </doc>
   <doc>
-    <field name="description">Use the Planetary Atlas to search for images from the Viking Orbiter mission.</field>
+    <field name="description">Use the Planetary Image Atlas to search for images from the Viking Orbiter mission.</field>
     <field name="format">XML/RDF</field>
     <field name="node_id">imaging</field>
     <field name="data_product_type">Product_Context_Search_Tool</field>
@@ -416,7 +416,7 @@
     <field name="instrument_type">CAMERA</field>
   </doc>
   <doc>
-    <field name="description">Use the Planetary Atlas to search for images from the Mars Pathfinder mission.</field>
+    <field name="description">Use the Planetary Image Atlas to search for images from the Mars Pathfinder mission.</field>
     <field name="format">XML/RDF</field>
     <field name="node_id">imaging</field>
     <field name="data_product_type">Product_Context_Search_Tool</field>
@@ -461,7 +461,7 @@
     <field name="instrument_name">alpha_proton_x-ray_spectrometer</field>
   </doc>
   <doc>
-    <field name="description">Use the Planetary Atlas to search for images from the Messenger mission.</field>
+    <field name="description">Use the Planetary Image Atlas to search for images from the Messenger mission.</field>
     <field name="format">XML/RDF</field>
     <field name="node_id">imaging</field>
     <field name="data_product_type">Product_Context_Search_Tool</field>
@@ -519,7 +519,7 @@
     <field name="instrument_type">camera</field>
   </doc>
   <doc>
-    <field name="description">Use the Planetary Atlas to search for images from the 2001 Mars Odyssey mission.</field>
+    <field name="description">Use the Planetary Image Atlas to search for images from the 2001 Mars Odyssey mission.</field>
     <field name="format">XML/RDF</field>
     <field name="node_id">imaging</field>
     <field name="data_product_type">Product_Context_Search_Tool</field>
@@ -546,7 +546,7 @@
     <field name="instrument_type">CAMERA</field>
   </doc>
   <doc>
-    <field name="description">Use the Planetary Atlas to search for images from the Mars Exploration Rover mission.</field>
+    <field name="description">Use the Planetary Image Atlas to search for images from the Mars Exploration Rover mission.</field>
     <field name="format">XML/RDF</field>
     <field name="node_id">imaging</field>
     <field name="data_product_type">Product_Context_Search_Tool</field>
@@ -614,7 +614,7 @@
     <field name="investigation_name">mars exploration rover</field>
   </doc>
   <doc>
-    <field name="description">Use the Planetary Atlas to search for images from the Cassini mission.</field>
+    <field name="description">Use the Planetary Image Atlas to search for images from the Cassini mission.</field>
     <field name="format">XML/RDF</field>
     <field name="node_id">imaging</field>
     <field name="data_product_type">Product_Context_Search_Tool</field>
@@ -754,7 +754,7 @@
     <field name="instrument_name">visual_and_infrared_mapping_spectrometer</field>
   </doc>
   <doc>
-    <field name="description">Use the Planetary Atlas to search for images from the Galileo mission.</field>
+    <field name="description">Use the Planetary Image Atlas to search for images from the Galileo mission.</field>
     <field name="format">XML/RDF</field>
     <field name="node_id">imaging</field>
     <field name="data_product_type">Product_Context_Search_Tool</field>
@@ -829,7 +829,7 @@
     <field name="data_object_type">TABLE</field>
   </doc>
   <doc>
-    <field name="description">Use the Planetary Atlas to search for images from the Viking Lander mission.</field>
+    <field name="description">Use the Planetary Image Atlas to search for images from the Viking Lander mission.</field>
     <field name="format">XML/RDF</field>
     <field name="node_id">imaging</field>
     <field name="data_product_type">Product_Context_Search_Tool</field>
@@ -859,7 +859,7 @@
     <field name="instrument_name">camera_2</field>
   </doc>
   <doc>
-    <field name="description">Use the Planetary Atlas to search for images from the Magellan mission.</field>
+    <field name="description">Use the Planetary Image Atlas to search for images from the Magellan mission.</field>
     <field name="format">XML/RDF</field>
     <field name="node_id">imaging</field>
     <field name="data_product_type">Product_Context_Search_Tool</field>
@@ -896,7 +896,7 @@
     <field name="instrument_type">RADAR</field>
   </doc>
   <doc>
-    <field name="description">Use the Planetary Atlas to search for images from the Lunar Reconnaissance Orbiter mission.</field>
+    <field name="description">Use the Planetary Image Atlas to search for images from the Lunar Reconnaissance Orbiter mission.</field>
     <field name="format">XML/RDF</field>
     <field name="node_id">imaging</field>
     <field name="data_product_type">Product_Context_Search_Tool</field>
@@ -927,7 +927,7 @@
     <field name="instrument_name">LYMAN ALPHA MAPPING PROJECT</field>
   </doc>
   <doc>
-    <field name="description">Use the Planetary Atlas to search for images from the Clementine mission.</field>
+    <field name="description">Use the Planetary Image Atlas to search for images from the Clementine mission.</field>
     <field name="format">XML/RDF</field>
     <field name="node_id">imaging</field>
     <field name="data_product_type">Product_Context_Search_Tool</field>
@@ -967,7 +967,7 @@
     <field name="instrument_type">IMAGING CAMERA</field>
   </doc>
   <doc>
-    <field name="description">Use the Planetary Atlas to search for images from the Mars Reconnaissance Orbiter mission.</field>
+    <field name="description">Use the Planetary Image Atlas to search for images from the Mars Reconnaissance Orbiter mission.</field>
     <field name="format">XML/RDF</field>
     <field name="node_id">imaging</field>
     <field name="data_product_type">Product_Context_Search_Tool</field>
