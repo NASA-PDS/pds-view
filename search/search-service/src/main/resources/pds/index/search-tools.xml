@@ -3579,7 +3579,7 @@
     <field name="target_name">p/mcnaught-russell 1 (1994 x1)</field>
     <field name="target_name">sl9</field>
     <field name="target_name">dust</field>
-    <field name="resource_link">http://sbn.psi.edu/ferret/</field>
+    <field name="resource_link">http://sbntools.psi.edu/ferret/</field>
     <field name="description">Search for information on small bodies targets using the Data Ferret from the Small Bodies Node Asteroid/Dust Subnode.</field>
     <field name="data_set_name">ANGLO-AUSTRALIAN OBSERVATORY DATA FROM SL9 IMPACTS</field>
     <field name="data_set_name">ARRAY OF ICI COUNTS FOR STEPPED M/Q,V</field>
