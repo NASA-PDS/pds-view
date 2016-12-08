@@ -18,8 +18,13 @@ import java.util.logging.Logger;
  */
 public class CommandLineWorker{
 	
+	// Debug levels
+	public static int DEBUG_NONE = 0;
+	public static int DEBUG_ERRORS = 1;
+	public static int DEBUG_ALWAYS = 2;
+	
 	private String command = null;
-	private boolean debugMode = false;
+	private int debugLevel = DEBUG_NONE;
 	private int timeout = 0;
 	
 	private Logger log = Logger.getLogger(this.getClass().getName());
@@ -30,8 +35,8 @@ public class CommandLineWorker{
 				Constants.COMMANDLINE_TIMEOUT_PROP, "0"));
 	}
 	
-	public void setDebugMode(boolean debug){
-		this.debugMode = debug;
+	public void setDebugMode(int level){
+		this.debugLevel = level;
 	}
 	
 	public int execute(){
@@ -46,8 +51,10 @@ public class CommandLineWorker{
 			ProcessBuilder pb = new ProcessBuilder("/bin/sh", "-c", command);
 			pb.redirectErrorStream(true);
 			p = pb.start();
-			BufferedReader reader = new BufferedReader(
+			BufferedReader outputReader = new BufferedReader(
 					new InputStreamReader(p.getInputStream()));
+			BufferedReader errorReader = new BufferedReader(
+					new InputStreamReader(p.getErrorStream()));
 			watcher = new ProcessWatcher(p);
 			watcher.start();
 			if(this.timeout != 0){
@@ -57,11 +64,11 @@ public class CommandLineWorker{
 			}
 			Integer exitValue = watcher.getExitValue();
 			if(exitValue != null){
-				if(this.debugMode && exitValue.intValue() != 0){
-					for(String line = reader.readLine(); line != null; 
-							line = reader.readLine()){
-						System.out.println("Output from command: " + line);
-					}
+				if(this.debugLevel == DEBUG_ERRORS && exitValue.intValue() != 0){
+					this.printDebug(outputReader, errorReader);
+				}
+				else if(this.debugLevel == DEBUG_ALWAYS){
+					this.printDebug(outputReader, errorReader);
 				}
 				return exitValue.intValue();
 			}else{
@@ -80,6 +87,23 @@ public class CommandLineWorker{
 			return -1;
 		}
 		
+	}
+	
+	private void printDebug(BufferedReader outputReader,
+			BufferedReader errorReader){
+		//System.out.println("Debug output");
+		try{
+			for(String line = outputReader.readLine(); line != null; 
+					line = outputReader.readLine()){
+				System.out.println("Output from command: " + line);
+			}
+			for(String line = errorReader.readLine(); line != null;
+					line = errorReader.readLine()){
+				System.out.println("Error from command: " + line);
+			}
+		}catch(IOException e){
+			log.warning("An I/O error occurred while printing debug output");
+		}
 	}
 	
 	private class ProcessWatcher extends Thread{

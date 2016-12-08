@@ -47,7 +47,7 @@ public class SawmillCommandLineRunner implements SawmillInterface {
 				continue;
 			}
 			CommandLineWorker worker = new CommandLineWorker(cmd);
-			worker.setDebugMode(true);
+			worker.setDebugMode(CommandLineWorker.DEBUG_ERRORS);
 			int exitValue = worker.execute();
 			if(exitValue == -1){
 				log.warning("The Sawmill command '" + cmd + "' timed out");

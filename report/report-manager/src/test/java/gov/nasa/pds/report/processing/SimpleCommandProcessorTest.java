@@ -70,7 +70,7 @@ public class SimpleCommandProcessorTest extends ReportManagerTest{
 		
 		// Configure the processor
 		this.props.setProperty(Constants.NODE_SIMPLE_COMMAND_KEY,
-				"zcat <input> > <output>");
+				"gunzip -c <input> > <output>");
 		try {
 			this.processor.configure(this.props);
 		} catch (ProcessingException e) {
@@ -92,8 +92,10 @@ public class SimpleCommandProcessorTest extends ReportManagerTest{
 				"command processor", this.outputDir.exists());
 		File outputFile = new File(this.outputDir,
 				"access.log-20150430");
-		assertTrue("The test file was not properly unzipped",
+		assertTrue("The unzipped test output cannot be found",
 				outputFile.exists());
+		assertTrue("The unzipped test output is an empty file",
+				outputFile.length() > 0);
 		
 	}
 	

@@ -67,6 +67,8 @@ public class RingsDecryptionProcessorTest extends ReportManagerTest{
 				"rings-pds-rings-apache2.2014-10-01.txt");
 		assertTrue("The test rings tarball was not properly decrypted",
 				outputFile.exists());
+		assertTrue("The unzipped rings tarball is an empty file",
+				outputFile.length() > 0);
 			
 	}
 	

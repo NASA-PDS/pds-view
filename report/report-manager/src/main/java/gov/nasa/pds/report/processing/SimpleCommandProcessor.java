@@ -48,8 +48,6 @@ public class SimpleCommandProcessor implements Processor{
 			"not yet been properly configured.");
 		}
 		
-		log.info("Performing simple command processing");
-		
 		// Get a list of files in the input directory
 		List<File> files = null;
 		try{

@@ -26,7 +26,7 @@ public class CommandLineWorkerTest extends ReportManagerTest{
 	@Test
 	public void testFailedCommand(){
 		
-		CommandLineWorker worker = new CommandLineWorker("false");
+		CommandLineWorker worker = new CommandLineWorker("cat does_not_exist");
 		int exitCode = worker.execute();
 		if(exitCode != 1){
 			fail("Command exited with code other than 1: " + exitCode);
