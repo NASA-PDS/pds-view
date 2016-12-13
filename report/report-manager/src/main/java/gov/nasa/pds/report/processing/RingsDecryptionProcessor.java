@@ -21,8 +21,8 @@ public class RingsDecryptionProcessor extends SimpleCommandProcessor{
 	public static final String OUTPUT_DIR_NAME = "rings_decrypt";
 	
 	private static final String COMMAND = 
-			"dd if=<input> | openssl des3 -d -k FeeFieFoeRings | " +
-			"tar xzvf - -C <output>";
+			"dd if=\"<input>\" | openssl des3 -d -k FeeFieFoeRings | " +
+			"tar xzvf - -C \"<output>\"";
 	
 	private Logger log = Logger.getLogger(this.getClass().getName());
 	

@@ -12,6 +12,7 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import gov.nasa.pds.report.ReportManagerException;
+import gov.nasa.pds.report.constants.Constants;
 import gov.nasa.pds.report.constants.TestConstants;
 import gov.nasa.pds.report.rules.ReportManagerTest;
 import gov.nasa.pds.report.util.Utility;
@@ -37,6 +38,7 @@ public class RingsDecryptionProcessorTest extends ReportManagerTest{
 				new File(TestConstants.TEST_DIR_RELATIVE, 
 				"rings-pds-rings-apache2.2014-10-01.tar.gz"),
 				this.testDir);
+		System.setProperty(Constants.COMMANDLINE_TIMEOUT_PROP, "0");
 		this.outputDir.mkdirs();
 	}
 	

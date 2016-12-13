@@ -40,6 +40,7 @@ public class SimpleCommandProcessorTest extends ReportManagerTest{
 		FileUtils.copyFileToDirectory(
 				new File(TestConstants.TEST_DIR_RELATIVE, 
 				"access.log-20150430.gz"), this.testDir);
+		System.setProperty(Constants.COMMANDLINE_TIMEOUT_PROP, "0");
 		this.outputDir.mkdirs();
 		
 	}
@@ -70,7 +71,7 @@ public class SimpleCommandProcessorTest extends ReportManagerTest{
 		
 		// Configure the processor
 		this.props.setProperty(Constants.NODE_SIMPLE_COMMAND_KEY,
-				"gunzip -c <input> > <output>");
+				"gunzip -c \"<input>\" > \"<output>\"");
 		try {
 			this.processor.configure(this.props);
 		} catch (ProcessingException e) {
