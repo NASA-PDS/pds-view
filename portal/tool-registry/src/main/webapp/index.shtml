@@ -341,10 +341,20 @@
             <div class="addToolHeader">
               <p id="formHeaderInstructions" class="formp">
                 Use this form to submit a new tool to the PDS Tool Registry.
-                </br>
-                </br>
+                <br>
+                <br>
                 All fields with an asterisk <span class="asterisk">*</span> are required.
+                <br>
+                <br>
+                Updating? Prefill using an existing product label XML:&nbsp;
+                <span class="fileUpload btn btn-default btn-xs">
+                  <span>Upload</span>
+                  <input type="file" id="prefillInput" class="upload" />
+                </span>
+                <span class="displayNone uploadPrefillErrorMessage">&nbsp;Invalid File Uploaded</span>
               </p>
+
+
 
               <ol id="steps" class="steps">
                 <li class="current">

@@ -178,7 +178,32 @@ body{
 	font-size:medium;
 }
 
+#prefillInput{
+	margin-top:4px;
+}
+
+.fileUpload {
+	position: relative;
+	overflow: hidden;
+}
+.fileUpload input.upload {
+	position: absolute;
+	top: 0;
+	right: 0;
+	margin: 0;
+	padding: 0;
+	font-size: 20px;
+	cursor: pointer;
+	opacity: 0;
+	filter: alpha(opacity=0);
+}
+
+.uploadPrefillErrorMessage{
+	color:red;
+}
+
 /*validation*/
+/*
 input:invalid {
   border: 1px solid red;
 }
@@ -186,6 +211,7 @@ input:invalid {
 input:valid {
   border: 1px solid green;
 }
+*/
 
 .displayNone{
 	display:none !important;

@@ -48,31 +48,22 @@ var Manager;
 })(jQuery);
 
 function init(){
-  /*
-  //Hide Detail Div
-  $( "#ddDetailDiv" ).hide();
-
-  //Set all radio Buttons to default:
-  $('#sortOrderRadio2Div' ).attr("class", "radio");
-  $('#sortOrderRadio2' ).attr('disabled', false);
-
-  $("#sortOrderRadio1").prop("checked", true);
-  $("#sortOrderRadio2").prop("checked", false);
-
-  $("#objectTypeRadio1").prop("checked", true);
-  $("#objectTypeRadio2").prop("checked", false);
-
-  $("#pdsOrderRadio1").prop("checked", true);
-  $("#pdsOrderRadio2").prop("checked", false);
-  $("#pdsOrderRadio3").prop("checked", false);
-
-  $('html,body').scrollTop(0);
-  */
-
   var wadlInstructions = "If the service interfaces for this software are described by a Web Application Description Language (WADL) file or a Web Service Definition Language (WSDL) file, then that file can be attached and described here.";
   var wadlInstructions = "Use this form to submit a new tool or service to the PDS Tool/Service Registry.";
   var formInstructions = "Use this form to submit a new tool or service to the PDS Tool/Service Registry.";
-  //var formInstructions = "If the service interfaces for this software are described by a Web Application Description Language (WADL) file or a Web Service Definition Language (WSDL) file, then that file can be attached and described here.";
+  var stepOneInstructions = 'Use this form to submit a new tool to the PDS Tool Registry.' +
+      '<br><br>' +
+      'All fields with an asterisk <span class="asterisk">*</span> are required.' +
+      '<br><br>' +
+      'Updating? Prefill using an existing product label XML:&nbsp;' +
+      '<span class="fileUpload btn btn-default btn-xs">' +
+      '<span>Upload</span>' +
+      '<input type="file" id="prefillInput" class="upload" />' +
+      '</span>' +
+      '<span class="displayNone uploadPrefillErrorMessage">' +
+            '&nbsp;Invalid File Uploaded' +
+      '</span>';
+
 
   $( document ).ready(function() {
     //Startup
@@ -92,6 +83,298 @@ function init(){
       maxDate: new Date(2020, 12, 31),
       yearRange: [2000,2020]
     });
+
+    //Setup prefill file input
+    $(document).on('change', '#prefillInput', function(evt) {
+      var file = evt.target.files[0];
+      var reader = new FileReader();
+
+      reader.onload = function(event){
+        console.log(event.target.result);
+        if(event.target.result !== 'fail') {
+            var xmlDom = $.parseXML(event.target.result);
+            prefillToolRegistryInputs(xmlDom);
+        }else{
+          console.log("NOT A VALID FILE");
+          showPrefillFileNotValidMessage();
+        }
+      };
+
+      reader.readAsText(file);
+    });
+
+    function prefillToolRegistryInputs(xmlDom){
+        console.log("xmldom", xmlDom);
+        var name;
+        var abstract_desc;
+        var version_id;
+        var urls;
+        var release_date;
+        var service_type;
+        var interface_type;
+        var category;
+        var software_language;
+        var supported_operating_system_note;
+        var system_requirements_note;
+        var description;
+        var support;
+        var citation;
+
+        var isValid = true;
+
+        support = $(xmlDom).find('Identification_Area').find('logical_identifier');
+        if(support.length > 0) {
+            console.log("support", support);
+            support = $(xmlDom).find('Identification_Area').find('logical_identifier')[0].textContent;
+            console.log("support", support);
+            if(support.indexOf('urn:nasa:pds:context_pds3:service:') > -1){
+              support = "pds3";
+            }
+            else if(support.indexOf('urn:nasa:pds:context:service:') > -1){
+                support = "pds4";
+            }
+            else {
+                support = null;
+                isValid = false;
+            }
+        }else{
+            support = null;
+            isValid = false;
+        }
+
+        name = $(xmlDom).find('Service').find('name');
+        if(name.length > 0) {
+            name = $(xmlDom).find('Service').find('name')[0].textContent;
+        }else{
+          name = null;
+          isValid = false;
+        }
+
+        abstract_desc = $(xmlDom).find('Service').find('abstract_desc');
+        if(abstract_desc.length > 0){
+            abstract_desc = $(xmlDom).find('Service').find('abstract_desc')[0].textContent;
+        }else{
+            abstract_desc = null;
+        }
+
+        version_id = $(xmlDom).find('Service').find('version_id');
+        if(version_id.length > 0){
+            version_id = $(xmlDom).find('Service').find('version_id')[0].textContent;
+        }else{
+            version_id = null;
+        }
+
+        urls = $(xmlDom).find('Service').find('url');
+        if(urls.length > 0){
+            urls = $(xmlDom).find('Service').find('url');
+        }else{
+            urls = null;
+            isValid = false;
+        }
+
+        release_date = $(xmlDom).find('Service').find('release_date');
+        if(release_date.length > 0){
+            release_date = $(xmlDom).find('Service').find('release_date')[0].textContent;
+        }else{
+            release_date = null;
+        }
+
+        service_type = $(xmlDom).find('Service').find('service_type');
+        if(service_type.length > 0){
+            service_type = $(xmlDom).find('Service').find('service_type')[0].textContent;
+        }else{
+            service_type = null;
+            isValid = false;
+        }
+
+        interface_type = $(xmlDom).find('Service').find('interface_type');
+        if(interface_type.length > 0){
+            interface_type = $(xmlDom).find('Service').find('interface_type');
+        }else{
+            interface_type = null;
+            isValid = false;
+        }
+
+        category = $(xmlDom).find('Service').find('category');
+        if(category.length > 0){
+            category = $(xmlDom).find('Service').find('category');
+        }else{
+            category = null;
+            isValid = false;
+        }
+
+        software_language = $(xmlDom).find('Service').find('software_language');
+        if(software_language.length > 0){
+            software_language = $(xmlDom).find('Service').find('software_language');
+        }else{
+            software_language = null;
+        }
+
+        supported_operating_system_note = $(xmlDom).find('Service').find('supported_operating_system_note');
+        if(supported_operating_system_note.length > 0){
+            supported_operating_system_note = $(xmlDom).find('Service').find('supported_operating_system_note')[0].textContent;
+        }else{
+            supported_operating_system_note = null;
+        }
+
+        system_requirements_note = $(xmlDom).find('Service').find('system_requirements_note');
+        if(system_requirements_note.length > 0){
+            system_requirements_note = $(xmlDom).find('Service').find('system_requirements_note')[0].textContent;
+        }else{
+            system_requirements_note = null;
+        }
+
+        description = $(xmlDom).find('Service').find('description');
+        if(description.length > 0){
+            description = $(xmlDom).find('Service').find('description')[0].textContent;
+        }else{
+            description = null;
+        }
+
+        citation = $(xmlDom).find('Identification_Area').find('Citation_Information').find('description');
+        if(citation.length > 0){
+            citation = $(xmlDom).find('Identification_Area').find('Citation_Information').find('description')[0].textContent;
+        }else{
+            citation = null;
+        }
+
+        console.log("support", support);
+        console.log("citation", citation);
+        console.log("name", name);
+        console.log("abstract_desc", abstract_desc);
+        console.log("urls", urls);
+        console.log("release_date", release_date);
+        console.log("service_type", service_type);
+        console.log("interface_type", interface_type);
+        console.log("category", category);
+        console.log("software_language", software_language);//
+        console.log("supported_operating_system_note", supported_operating_system_note);
+        console.log("system_requirements_note", system_requirements_note);
+        console.log("description", description);
+
+        if (isValid) {
+            $(".uploadPrefillErrorMessage").addClass( "displayNone" );
+            clearInputFields();
+            clearValidationMarks();
+
+            if(support){
+                $('#support .radio input[name=supportRadios][value=' + support + ']').prop("checked", true);
+            }
+
+            if (citation) {
+                $('#citationInput').val(citation);
+            }
+
+            if (name) {
+                $('#toolNameInput').val(name);
+            }
+
+            if (abstract_desc) {
+                $('#abstractDescriptionInput').val(abstract_desc);
+            }
+
+            if(urls){
+                $("#urlContainer .urlInput").val("");
+                var urlInputs = $("#urlContainer .urlInput");
+                var urlInputsLength = urlInputs.length;
+                for( var i = urlInputsLength - 1; i > 0; i--){
+                    urlInputs[i].remove();
+                    if(i <= 1 ){
+                        $( "#removeUrlButton" ).hide();
+                    }
+                }
+
+                for(var i = 0; i < urls.length; i++){
+                    if(i === 0){
+                        $("#urlContainer .urlInput")[i].value = urls[i].textContent;
+                    }else {
+                        $("#urlContainer").append('<div class="form-group">' +
+                            '<input type="text" class="form-control urlInput" value="' + urls[i].textContent + '" placeholder="" maxlength="255">' +
+                            '</div>'
+                        );
+
+                        $("#removeUrlButton").show();
+                    }
+                }
+            }
+
+            if (release_date) {
+                $('#releaseDateInput').val(release_date);
+            }
+
+            if (service_type) {
+                $('#toolTypeInput').val(service_type);
+            }
+
+            if (interface_type) {
+                var checkboxes = $('#interfaceType .checkbox input:checkbox');
+                for (var i = 0; i < checkboxes.length; i++) {
+                    $(checkboxes[i]).prop('checked', false);
+                }
+
+                for(var j = 0; j < interface_type.length; j++) {
+                    $('#interfaceType .checkbox input[name=interfaceTypeCheckboxes][value=' + interface_type[j].textContent + ']').prop("checked", true);
+                }
+            }
+
+            if (category) {
+                var checkboxes = $('#category .checkbox input:checkbox');
+                for (var i = 0; i < checkboxes.length; i++) {
+                    $(checkboxes[i]).prop('checked', false);
+                }
+
+                for(var j = 0; j < category.length; j++) {
+                    $('#category .checkbox input[name=categoryCheckboxes][value=' + category[j].textContent + ']').prop("checked", true);
+                }
+            }
+
+            if(software_language){
+                $("#softwareLanguageContainer .softwareLanguageInput").val("");
+                var softwareLanguageInputs = $("#softwareLanguageContainer .form-group");
+                var softwareLanguageInputsLength = softwareLanguageInputs.length;
+                for( var i = softwareLanguageInputsLength - 1; i > 0; i--){
+                    softwareLanguageInputs[i].remove();
+                    if(i <= 1 ){
+                        $( "#removeSoftwareLanguageButton" ).hide();
+                    }
+                }
+
+                for(var i = 0; i < software_language.length; i++) {
+                    $("#softwareLanguageContainer").append('<div class="form-group">' +
+                        '<input type="text" class="form-control softwareLanguageInput" value="' + software_language[i].textContent + '" placeholder="" maxlength="255">' +
+                        '</div>'
+                    );
+
+                    $("#removeSoftwareLanguageButton").show();
+                }
+            }
+
+            if (supported_operating_system_note) {
+                $('#supportedOperatingSystemsInput').val(supported_operating_system_note);
+            }
+
+            if (system_requirements_note) {
+                $('#systemRequirementsInput').val(system_requirements_note);
+            }
+
+            if (description) {
+                $('#descriptionInput').val(description);
+            }
+
+            validateStepOne();
+            validateStepTwo();
+            validateStepThree();
+
+        } else {
+            console.log("NOT A VALID FILE");
+            showPrefillFileNotValidMessage();
+        }
+    };
+
+    function showPrefillFileNotValidMessage(){
+        $(".uploadPrefillErrorMessage").removeClass("displayNone");
+    };
+
     //Setup WASDL/WADL file input
     $(document).on('change', '#wFileInput', function() {
       var x = document.getElementById("wFileInput");
@@ -159,26 +442,18 @@ function init(){
 
     //On tab press
     $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-      // newly activated tab     e.target
-      // previous active tab     e.relatedTarget
       var selected = $(e.target).attr("aria-controls");
       if(selected === "add"){
           $( "#searchContainer" ).fadeOut( "slow", function() {
             $( "#addToolContainer" ).fadeIn( "slow", function() {
             });
           });
-          /*
-          $( "#trSearch" ).fadeOut( "slow", function() {
-          });*/
       }
       if(selected === "searchForTools"){
         $( "#addToolContainer" ).fadeOut( "slow", function() {
           $( "#searchContainer" ).fadeIn( "slow", function() {
           });
         });
-        /*
-        $( "#trSearch" ).fadeIn( "slow", function() {
-        });*/
       }
     });
 
@@ -253,7 +528,7 @@ function init(){
       });
 
       $( "#formHeaderInstructions" ).fadeOut( "slow", function() {
-        $( "#formHeaderInstructions" ).text(formInstructions);
+        $( "#formHeaderInstructions" ).html(stepOneInstructions);
         $( "#formHeaderInstructions" ).fadeIn( "slow", function() {
         });
       });
@@ -450,7 +725,7 @@ function init(){
         });
 
         $( "#formHeaderInstructions" ).fadeOut( "slow", function() {
-          $( "#formHeaderInstructions" ).text(formInstructions);
+          $( "#formHeaderInstructions" ).html(formInstructions);
           $( "#formHeaderInstructions" ).fadeIn( "slow", function() {
           });
         });
@@ -1019,145 +1294,6 @@ function init(){
           });
         }
 
-        function clearInputFields(){
-          $('#toolNameInput').val("");
-
-          var optionValues = [];
-          $('#toolTypeInput option').each(function() {
-              optionValues.push($(this).val());
-          });
-          $("#toolTypeInput").val(optionValues[0]);
-
-          $("#abstractDescriptionInput").val("");
-          $("#descriptionInput").val("");
-          $('#support .radio input[name=supportRadios]').prop("checked", false);
-          $("#category .checkbox input[name=categoryCheckboxes]").prop("checked", false);
-          $("#interfaceType .checkbox input[name=interfaceTypeCheckboxes]").prop("checked", false);
-          $("#versionInput").val("");
-          $("#releaseDateInput").val("");
-
-          $("#softwareLanguageContainer .softwareLanguageInput").val("");
-          var softwareLanguageInputs = $("#softwareLanguageContainer .form-group");
-          var softwareLanguageInputsLength = softwareLanguageInputs.length;
-          for( var i = softwareLanguageInputsLength - 1; i > 0; i--){
-            softwareLanguageInputs[i].remove();
-            if(i <= 1 ){
-              $( "#removeSoftwareLanguageButton" ).hide();
-            }
-          }
-
-          $("#supportedOperatingSystemsInput").val("");
-          $("#systemRequirementsInput").val("");
-          $("#citationInput").val("");
-
-          $("#urlContainer .urlInput").val("");
-          var urlInputs = $("#urlContainer .urlInput");
-          var urlInputsLength = urlInputs.length;
-          for( var i = urlInputsLength - 1; i > 0; i--){
-            urlInputs[i].remove();
-            if(i <= 1 ){
-              $( "#removeUrlButton" ).hide();
-            }
-          }
-
-          var wFileInputs = $("#wFileInput");
-          wFileInputs.replaceWith(wFileInputs.val('').clone(true));
-          serviceInterfaceInformationDescription.innerHTML = "";
-
-          $("#submitterNameInput").val("");
-          $("#submitterInstitutionInput").val("");
-          $("#submitterEmailInput").val("");
-        };
-
-        function clearValidationMarks(){
-          $('#toolNameFormGroup').removeClass("has-error has-feedback");
-          $('#toolNameFormGroup').removeClass("has-success has-feedback");
-          $("#toolNameErrorMessage").addClass("displayNone");
-
-          $('#toolTypeFormGroup').removeClass("has-error has-feedback");
-          $('#toolTypeFormGroup').removeClass("has-success has-feedback");
-          $("#toolTypeErrorMessage").addClass("displayNone");
-
-          $('#abstractDescriptionFormGroup').removeClass("has-error has-feedback");
-          $('#abstractDescriptionFormGroup').removeClass("has-success has-feedback");
-          $("#abstractDescriptionErrorMessage").addClass("displayNone");
-
-          $('#descriptionFormGroup').removeClass("has-error has-feedback");
-          $('#descriptionFormGroup').removeClass("has-success has-feedback");
-          $("#descriptionErrorMessage").addClass("displayNone");
-
-          $('#supportFormGroup').removeClass("has-error has-feedback");
-          $('#supportFormGroup').removeClass("has-success has-feedback");
-          $("#supportErrorMessage").addClass("displayNone");
-
-          $('#categoryFormGroup').removeClass("has-error has-feedback");
-          $('#categoryFormGroup').removeClass("has-success has-feedback");
-          $("#categoryErrorMessage").addClass("displayNone");
-
-          $('#interfaceTypeFormGroup').removeClass("has-error has-feedback");
-          $('#interfaceTypeFormGroup').removeClass("has-success has-feedback");
-          $("#interfaceTypeErrorMessage").addClass("displayNone");
-
-          $('#versionFormGroup').removeClass("has-error has-feedback");
-          $('#versionFormGroup').removeClass("has-success has-feedback");
-          $("#versionErrorMessage").addClass("displayNone");
-
-          $('#releaseDateFormGroup').removeClass("has-error has-feedback");
-          $('#releaseDateFormGroup').removeClass("has-success has-feedback");
-          $("#releaseDateErrorMessage").addClass("displayNone");
-
-          var software_language = $("#softwareLanguageContainer .softwareLanguageInput").map(function() {
-            return this.value;
-          }).get().join(",");
-
-          var software_languages = software_language.split(",");
-          for(var i = 0; i < software_languages.length; i++){
-              $("#softwareLanguageContainer > div:nth-child(" + (i+2) + ")").removeClass("has-error has-feedback");
-              $("#softwareLanguageContainer > div:nth-child(" + (i+2) + ")").removeClass("has-success has-feedback");
-          }
-          $("#softwareLanguageFormGroupLabel").removeClass("has-error has-feedback");
-          $("#softwareLanguageFormGroupLabel").removeClass("has-success has-feedback");
-
-
-          var url = $("#urlContainer .urlInput").map(function() {
-            return this.value;
-          }).get().join(",");
-
-          var urls = url.split(",");
-          for(var i = 0; i < urls.length; i++){
-            $("#urlContainer > div:nth-child(" + (i+2) + ")").removeClass("has-error has-feedback");
-            $("#urlContainer > div:nth-child(" + (i+2) + ")").removeClass("has-success has-feedback");
-          }
-          $("#urlFormGroupLabel").removeClass("has-error has-feedback");
-          $("#urlFormGroupLabel").removeClass("has-success has-feedback");
-
-          $('#supportedOperatingSystemsFormGroup').removeClass("has-error has-feedback");
-          $('#supportedOperatingSystemsFormGroup').removeClass("has-success has-feedback");
-          $("#supportedOperatingSystemsErrorMessage").addClass("displayNone");
-
-          $('#systemRequirementsFormGroup').removeClass("has-error has-feedback");
-          $('#systemRequirementsFormGroup').removeClass("has-success has-feedback");
-          $("#systemRequirementsErrorMessage").addClass("displayNone");
-
-          $('#citationFormGroup').removeClass("has-error has-feedback");
-          $('#citationFormGroup').removeClass("has-success has-feedback");
-          $("#citationErrorMessage").addClass("displayNone");
-
-
-          $('#submitterNameFormGroup').removeClass("has-error has-feedback");
-          $('#submitterNameFormGroup').removeClass("has-success has-feedback");
-          $("#submitterNameErrorMessage").addClass("displayNone");
-
-          $('#submitterInstitutionFormGroup').removeClass("has-error has-feedback");
-          $('#submitterInstitutionFormGroup').removeClass("has-success has-feedback");
-          $("#submitterInstitutionErrorMessage").addClass("displayNone");
-
-          $('#submitterEmailFormGroup').removeClass("has-error has-feedback");
-          $('#submitterEmailFormGroup').removeClass("has-success has-feedback");
-          $("#submitterEmailErrorMessage").addClass("displayNone");
-        }
-
-
         $( "#addToolFormContainer" ).fadeOut( "slow", function() {
           $( "#submissionCompleteContainer" ).fadeIn( "slow", function() {
           });
@@ -1274,7 +1410,7 @@ function init(){
               });
 
               $( "#formHeaderInstructions" ).hide( "fast", function() {
-                $( "#formHeaderInstructions" ).text(formInstructions);
+                $( "#formHeaderInstructions" ).html(formInstructions);
                 $( "#formHeaderInstructions" ).show( "fast", function() {
                 });
               });
@@ -1285,6 +1421,151 @@ function init(){
       });
 
     });
+
+    function clearInputFields(){
+        $('#toolNameInput').val("");
+
+        var optionValues = [];
+        $('#toolTypeInput option').each(function() {
+            optionValues.push($(this).val());
+        });
+        $("#toolTypeInput").val(optionValues[0]);
+
+        $("#abstractDescriptionInput").val("");
+        $("#descriptionInput").val("");
+        $('#support .radio input[name=supportRadios]').prop("checked", false);
+        $("#category .checkbox input[name=categoryCheckboxes]").prop("checked", false);
+        $("#interfaceType .checkbox input[name=interfaceTypeCheckboxes]").prop("checked", false);
+        $("#versionInput").val("");
+        $("#releaseDateInput").val("");
+
+        $("#softwareLanguageContainer .softwareLanguageInput").val("");
+        //var softwareLanguageInputs = $("#softwareLanguageContainer .form-group");
+        var softwareLanguageInputs = $("#softwareLanguageContainer .softwareLanguageInput");
+        var softwareLanguageInputsLength = softwareLanguageInputs.length;
+
+        console.log("softwareLanguageInputsLength", softwareLanguageInputsLength);
+        for( var i = softwareLanguageInputsLength - 1; i > 0; i--){
+            console.log("remove sli:" + i, softwareLanguageInputs[i]);
+            softwareLanguageInputs[i].remove();
+            if(i <= 1 ){
+                $( "#removeSoftwareLanguageButton" ).hide();
+            }
+        }
+
+        $("#supportedOperatingSystemsInput").val("");
+        $("#systemRequirementsInput").val("");
+        $("#citationInput").val("");
+
+        $("#urlContainer .urlInput").val("");
+        var urlInputs = $("#urlContainer .urlInput");
+        var urlInputsLength = urlInputs.length;
+
+        console.log("urlInputsLength", urlInputsLength);
+        for( var i = urlInputsLength - 1; i > 0; i--){
+            console.log("remove url:" + i, urlInputs[i]);
+            urlInputs[i].remove();
+            if(i <= 1 ){
+                $( "#removeUrlButton" ).hide();
+            }
+        }
+
+        var wFileInputs = $("#wFileInput");
+        wFileInputs.replaceWith(wFileInputs.val('').clone(true));
+        serviceInterfaceInformationDescription.innerHTML = "";
+
+        $("#submitterNameInput").val("");
+        $("#submitterInstitutionInput").val("");
+        $("#submitterEmailInput").val("");
+    };
+
+    function clearValidationMarks(){
+        $('#toolNameFormGroup').removeClass("has-error has-feedback");
+        $('#toolNameFormGroup').removeClass("has-success has-feedback");
+        $("#toolNameErrorMessage").addClass("displayNone");
+
+        $('#toolTypeFormGroup').removeClass("has-error has-feedback");
+        $('#toolTypeFormGroup').removeClass("has-success has-feedback");
+        $("#toolTypeErrorMessage").addClass("displayNone");
+
+        $('#abstractDescriptionFormGroup').removeClass("has-error has-feedback");
+        $('#abstractDescriptionFormGroup').removeClass("has-success has-feedback");
+        $("#abstractDescriptionErrorMessage").addClass("displayNone");
+
+        $('#descriptionFormGroup').removeClass("has-error has-feedback");
+        $('#descriptionFormGroup').removeClass("has-success has-feedback");
+        $("#descriptionErrorMessage").addClass("displayNone");
+
+        $('#supportFormGroup').removeClass("has-error has-feedback");
+        $('#supportFormGroup').removeClass("has-success has-feedback");
+        $("#supportErrorMessage").addClass("displayNone");
+
+        $('#categoryFormGroup').removeClass("has-error has-feedback");
+        $('#categoryFormGroup').removeClass("has-success has-feedback");
+        $("#categoryErrorMessage").addClass("displayNone");
+
+        $('#interfaceTypeFormGroup').removeClass("has-error has-feedback");
+        $('#interfaceTypeFormGroup').removeClass("has-success has-feedback");
+        $("#interfaceTypeErrorMessage").addClass("displayNone");
+
+        $('#versionFormGroup').removeClass("has-error has-feedback");
+        $('#versionFormGroup').removeClass("has-success has-feedback");
+        $("#versionErrorMessage").addClass("displayNone");
+
+        $('#releaseDateFormGroup').removeClass("has-error has-feedback");
+        $('#releaseDateFormGroup').removeClass("has-success has-feedback");
+        $("#releaseDateErrorMessage").addClass("displayNone");
+
+        var software_language = $("#softwareLanguageContainer .softwareLanguageInput").map(function() {
+            return this.value;
+        }).get().join(",");
+
+        var software_languages = software_language.split(",");
+        for(var i = 0; i < software_languages.length; i++){
+            $("#softwareLanguageContainer > div:nth-child(" + (i+2) + ")").removeClass("has-error has-feedback");
+            $("#softwareLanguageContainer > div:nth-child(" + (i+2) + ")").removeClass("has-success has-feedback");
+        }
+        $("#softwareLanguageFormGroupLabel").removeClass("has-error has-feedback");
+        $("#softwareLanguageFormGroupLabel").removeClass("has-success has-feedback");
+
+
+        var url = $("#urlContainer .urlInput").map(function() {
+            return this.value;
+        }).get().join(",");
+
+        var urls = url.split(",");
+        for(var i = 0; i < urls.length; i++){
+            $("#urlContainer > div:nth-child(" + (i+2) + ")").removeClass("has-error has-feedback");
+            $("#urlContainer > div:nth-child(" + (i+2) + ")").removeClass("has-success has-feedback");
+        }
+        $("#urlFormGroupLabel").removeClass("has-error has-feedback");
+        $("#urlFormGroupLabel").removeClass("has-success has-feedback");
+
+        $('#supportedOperatingSystemsFormGroup').removeClass("has-error has-feedback");
+        $('#supportedOperatingSystemsFormGroup').removeClass("has-success has-feedback");
+        $("#supportedOperatingSystemsErrorMessage").addClass("displayNone");
+
+        $('#systemRequirementsFormGroup').removeClass("has-error has-feedback");
+        $('#systemRequirementsFormGroup').removeClass("has-success has-feedback");
+        $("#systemRequirementsErrorMessage").addClass("displayNone");
+
+        $('#citationFormGroup').removeClass("has-error has-feedback");
+        $('#citationFormGroup').removeClass("has-success has-feedback");
+        $("#citationErrorMessage").addClass("displayNone");
+
+
+        $('#submitterNameFormGroup').removeClass("has-error has-feedback");
+        $('#submitterNameFormGroup').removeClass("has-success has-feedback");
+        $("#submitterNameErrorMessage").addClass("displayNone");
+
+        $('#submitterInstitutionFormGroup').removeClass("has-error has-feedback");
+        $('#submitterInstitutionFormGroup').removeClass("has-success has-feedback");
+        $("#submitterInstitutionErrorMessage").addClass("displayNone");
+
+        $('#submitterEmailFormGroup').removeClass("has-error has-feedback");
+        $('#submitterEmailFormGroup').removeClass("has-success has-feedback");
+        $("#submitterEmailErrorMessage").addClass("displayNone");
+    }
 }
 
 function formatFileName(fileName, version){
