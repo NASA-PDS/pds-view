@@ -74,12 +74,15 @@
                   <p class="formp"><strong>Browse or search the PDS tool registry. Select a tool below to view the details.</strong></p>
                   <div class="input-group">
                     <div class="input-group-btn">
+                      <button id="trSearchToggleButton" type="button" class="btn btn-success">Search</button>
+                      <!--
                       <button id="trSearchToggleButton" type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Search <span class="caret"></span></button>
                       <ul class="dropdown-menu" role="menu">
                         <li role="presentation" class="dropdown-header">Searching Method:</li>
                         <li id="trToggleSearchingMethodSearch"><a>Search</a></li>
                         <li id="trToggleSearchingMethodMatch"><a>Match</a></li>
                       </ul>
+                      -->
                     </div><!-- /btn-group -->
                     <input type="text" id="trSearchInput" class="form-control" aria-label="...">
                   </div><!-- /input-group -->

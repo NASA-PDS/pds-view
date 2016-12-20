@@ -152,13 +152,12 @@ AjaxSolr.SearchWidget = AjaxSolr.AbstractTextWidget.extend({
 
     var objectName = "";
     var qString = "";
+    var fqString = "";
 
     self.manager.store.addByValue('product-class', 'Product_Service');
 
-    qString = "title:" + "*" + keyword + "*";
-    if (searchToggle === "match"){
-      qString = "title:" + keyword + "*";
-    }
+    qString = "*:*";
+    fqString = "title:(*" + keyword + "*) OR service_abstract_desc:(*" + keyword + "*) OR service_description:(*" + keyword + "*)";
 
     if(sort === 'ascAlpha'){
       self.manager.store.addByValue('sort', 'service_name asc');
@@ -180,7 +179,6 @@ AjaxSolr.SearchWidget = AjaxSolr.AbstractTextWidget.extend({
       qString += " " + "service_interface_type:" + interfaceType;
     }
 
-
     if(category !== "All"){
       qString += " " + "service_category:" + category;
     }
@@ -189,7 +187,19 @@ AjaxSolr.SearchWidget = AjaxSolr.AbstractTextWidget.extend({
 
     if(qString.length > 0){
       console.log("qString", qString);
+
       self.manager.store.addByValue('q', qString);
+    }
+
+    if(fqString.length > 0){
+      console.log("fq", fqString);
+
+      var lastFq = self.manager.store.get('fq');
+      for(var i = 0; i < lastFq.length; i++){
+          self.manager.store.removeByValue(lastFq[i].name, lastFq[i].value);
+      }
+
+      self.manager.store.addByValue('fq', fqString);
     }
 
     //Reset pager widget to start on page 1
