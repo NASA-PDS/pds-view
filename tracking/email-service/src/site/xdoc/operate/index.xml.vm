@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2016, by the California Institute of Technology.
+  Copyright 2016 by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -18,14 +18,156 @@
 
 <document>
   <properties>
-    <title>Operation</title>
+    <title>Development and Operation</title>
     <author email="Sean.Hardman@jpl.nasa.gov">Sean Hardman</author>
+    <author email="Hyun.Lee@jpl.nasa.gov">Hyun Lee</author>
   </properties>
 
   <body>
-    <section name="Operation">
-      <p>TBD
+    <section name="Development and Operation">
+      <p>This document describes how to develop and operate the Email Service.  
+      The Email Service is an interface to integrate with other java application as well as with the javascript-based clients for sending an email to one or multiple recipients.
+      The following topics can be found in this section:
       </p>
+
+      <ul>
+        <li><a href="#Email Service API">Email Service API (Application-Programming Interface)</a></li>
+        <li><a href="#Email Service Web Interface">Email Service Web Interface</a></li>
+      </ul>
+    </section>
+
+    <section name="Email Service API">
+      <p>Following section describes how a user can utilize the Application Program Interface (API) of the Email Service package to send an email to one or multiple recipients from a Java Application.</p>   
+      
+      <p>1. Choose one of Constructors below: </p>
+      <source>
+// default constructor
+public SendEmail()
+
+or
+ 
+// constructor with host and sender's email ID    
+public SendEmail(String host, String from)  
+      
+or
+
+// constructor with host, port, username, and password
+public SendEmail(String host, String port, String user, String pass) 
+      </source>
+
+      <p>2a. Set host &amp; port of the SMTP server:
+      <br/><br/>
+      If it is required to change host name and port number of the e-mail server, then you can set these properties as follows. The default host value is 'smtp.jpl.nasa.gov'. The default port number is '587'.
+      
+      <source>
+se.setHost(host);     // to set the smtp host name
+se.setPort(port);     // to set the smtp port number
+      </source>      
+      </p>
+      
+      <p>2b. Set User Authentication:
+      <br/> <br/>   
+      If it is required to provide user ID and Password to the e-mail server for authentication purpose, then you can set these properties as follows.
+      
+      <source>
+se.setUser(username);     // to set username for the email authentication
+se.setPassword(password); // to set password for the email authentication
+      </source>
+      </p>
+      
+      <p>2c. Set Sender's Email ID: 
+      <br/><br/>
+      If it is required to change the sender's email id, then you can set it as follows.
+      
+      <source>
+se.setFrom(from);     // to set the sender's email id
+      </source>
+      </p>      
+
+
+      <p>3. Call send() method to send a message to one or more recipients. 
+      If you send a message to multiple recipients using bottom send() method, the value of 'toAddress' should be separated by ','.</p>
+      
+      <source>
+public void send(ArrayList&lt;String&gt; listOfEmails, String subject, String msgContent)    
+         
+
+or
+
+         
+public void send(String toAddress, String subject, String msgContent)
+      </source>
+         
+      <subsection name="Testing the Email Service API">
+      <p>To test the Email Service via command line, execute a program with the following command.</p>
+
+      <source>
+% java gov.nasa.pds.tracking.email.SendEmail &lt;host&gt; &lt;port&gt; &lt;username&gt; &lt;password&gt;
+      </source>
+      
+      
+      <table>
+        <tr><th>Command-Line Option</th><th>Description</th></tr>
+        <tr><td>&lt;host&gt;</td><td>Specify a host name of the email server. The default host is <i>smtp.jpl.nasa.gov</i>.</td></tr>
+        <tr><td>&lt;port&gt;</td><td>Specify a port number of the email server. The default port is <i>587</i>.</td></tr>
+        <tr><td>&lt;username&gt;</td><td>Specify a username for authentication with the email server.</td></tr>
+        <tr><td>&lt;password&gt;</td><td>Specify a password associated with the username.</td></tr>
+      </table>
+      
+      </subsection>      
+    </section>
+    
+    
+    <section name="Email Service Web Interface">
+      <p>The Email Service provides functionality to accept email requests from Javascript-based clients (e.g., Feedback Form, Tool Registry, etc.).
+The Email Service is implemented as a servlet wrapper so that it can be called from client interfaces via a POST request. 
+      </p>
+     
+      <p>A sample email form was created with the following content:
+      <source>
+&lt;form action="EmailSendingServlet" method="post"&gt;   
+    &lt;table border="0" width="35%" align="center"&gt;
+        &lt;caption&gt;
+            &lt;h2>Send new e-mail&lt;/h2&gt;
+        &lt;/caption&gt;
+        &lt;tr&gt;
+        &lt;td width="50%">Recipient address&lt;/td&gt;
+            &lt;td&gt;&lt;input type="text" name="recipient" size="50"/&gt;&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;td&gt;Subject&lt;/td&gt;
+            &lt;td&gt;&lt;input type="text" name="subject" size="50"/&gt;&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;td&gt;Content&lt;/td&gt;
+            &lt;td&gt;&lt;textarea rows="10" cols="70" name="content"&gt;&lt;/textarea&gt;&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;td colspan="2" align="center"&gt;&lt;input type="submit" value="Send"/&gt;&lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/table&gt;
+&lt;/form&gt;
+    </source>
+    </p>
+    
+    <p>To invoke the Email Service from Javascript-based clients, use <b><i>'EmailSeningServlet'</i></b> with a <b><i>'POST'</i></b> request.</p>
+    
+    <subsection name="Testing the Email Service Web application">
+     
+    <p>To test the Email Service via web browser, go to http://localhost:8080/${project.artifactId}-${project.version}/, fills out the form and then click 'send' button.  The form will look like this in a web browser:</p>
+     
+    <center>
+        <img alt="Email Form" src="../images/email_form.png" border="3" width="50%" height="50%"/>
+    </center>
+    
+    
+    <p>If you want to send an email to multiple recipients, enter recipients' email separated by ',' in the <b><i>Recipient address</i></b> area as shown below.</p>
+    
+    <center>
+       <img alt="Email to multiple" src="../images/email_multiple.png" border="3" width="50%" height="50%"/>
+    </center>
+    </subsection>
+       
     </section>
   </body>
 </document>

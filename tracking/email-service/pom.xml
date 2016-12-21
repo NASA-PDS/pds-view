@@ -24,7 +24,7 @@
 
   <groupId>gov.nasa.pds.2010.tracking</groupId>
   <artifactId>email-service</artifactId>
-  <packaging>jar</packaging>
+  <packaging>war</packaging>
 
   <name>Email Service</name>
   <description>
@@ -40,7 +40,42 @@
     </license>
   </licenses>
 
-  <build/>
+  <build>
+	<plugins>
+	   <plugin>
+         <groupId>org.apache.maven.plugins</groupId>
+         <artifactId>maven-jar-plugin</artifactId>
+         <executions>
+           <execution>
+             <id>make-a-jar</id>
+			 <phase>compile</phase>
+			 <goals>
+		   	   <goal>jar</goal>
+			 </goals>
+           </execution>
+         </executions>
+       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>bin-release</id>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+            <configuration>
+              <descriptors>
+                <descriptor>src/main/assembly/tar-assembly.xml</descriptor>
+                <descriptor>src/main/assembly/zip-assembly.xml</descriptor>
+              </descriptors>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 
   <repositories>
     <!-- Hosts the PDS and OODT artifacts. -->
@@ -59,7 +94,18 @@
     </repository>
   </repositories>
 
-  <dependencies/>
+  <dependencies>
+	<dependency>
+		<groupId>com.sun.mail</groupId>
+		<artifactId>javax.mail</artifactId>
+		<version>1.5.5</version>
+	</dependency>
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
+      <version>3.1.0</version>
+    </dependency>
+  </dependencies>
 
   <!-- Project Information and Reports inherited from parent. -->
   <reporting/>

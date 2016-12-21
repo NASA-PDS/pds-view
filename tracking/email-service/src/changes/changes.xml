@@ -23,7 +23,10 @@
   </properties>
 
   <body>
-    <release version="0.1.0" date="TBD" description="TBD">
+    <release version="0.1.0" date="2016-12-16" description="This first release of Email Serivce of the Tracking Service.">
+      <action dev="hyunlee" type="add">
+        Added the capability to accept email requests from Java applications and Javascript-based clients. 
+      </action>
     </release>
   </body>
 </document>

@@ -36,7 +36,7 @@
     <menu name="Software Documentation">
       <item name="About Email Service" href="index.html"/>
       <item name="Installation" href="install/index.html"/>
-      <item name="Operation" href="operate/index.html"/>
+      <item name="Development and Operation" href="operate/index.html"/>
     </menu>
 
     <menu name="Download">
