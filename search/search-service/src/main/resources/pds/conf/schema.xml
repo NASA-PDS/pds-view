@@ -666,7 +666,7 @@
 
    <!-- Product_Service fields -->
    <field name="service_name" type="string" indexed="true" stored="true" multiValued="false" />
-   <field name="service_abstract_desc" type="string" indexed="true" stored="true" multiValued="true" />
+   <field name="service_abstract_desc" type="text_general" indexed="true" stored="true" multiValued="true" />
    <field name="service_version_id" type="string" indexed="true" stored="true" multiValued="true" />
    <field name="service_url" type="string" indexed="true" stored="true" multiValued="true" />
    <field name="service_release_date" type="date" indexed="true" stored="true" multiValued="true" />
@@ -676,7 +676,7 @@
    <field name="service_software_language" type="string" indexed="true" stored="true" multiValued="true" />
    <field name="service_supported_operating_system_note" type="string" indexed="true" stored="true" multiValued="true" />
    <field name="service_system_requirements_note" type="string" indexed="true" stored="true" multiValued="true" />
-   <field name="service_description" type="string" indexed="true" stored="true" multiValued="true" />
+   <field name="service_description" type="text_general" indexed="true" stored="true" multiValued="true" />
 
    <field name="start_time" type="date" indexed="true" stored="true" multiValued="true" />
    <field name="stop_time" type="date" indexed="true" stored="true" multiValued="true" />
