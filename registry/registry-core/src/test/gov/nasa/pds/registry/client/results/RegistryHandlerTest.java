@@ -66,6 +66,7 @@ public class RegistryHandlerTest extends RegistryCoreTest {
 
 	@Before
 	public void setUp() throws RegistryHandlerException {
+		System.setProperty("https.protocols", "TLSv1.2");
 		this.handler = new RegistryHandler(
 				Arrays.asList(TestConstants.PDS3_REGISTRY_URL),
 				new ArrayList<String>(), 5);

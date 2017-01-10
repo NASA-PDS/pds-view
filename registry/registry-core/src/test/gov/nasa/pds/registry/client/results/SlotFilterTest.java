@@ -45,6 +45,7 @@ public class SlotFilterTest  extends RegistryCoreTest {
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		try {
+			System.setProperty("https.protocols", "TLSv1.2");
 			ExtrinsicFilter filter = new ExtrinsicFilter.Builder().lid("urn:nasa:pds:context_pds3:data_set:data_set.mer2-m-hazcam-5-mesh-ops-v1.0").build();
 	
 			// Create the query
