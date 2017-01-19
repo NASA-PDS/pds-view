@@ -5,6 +5,12 @@ What follows is a history of changes from release to release, along with
 issues addressed and new features in each release.
 
 
+1.12.0 - TBD
+------------
+
+* Registry Client to include extrinsic replace method (PDS-477)
+
+
 1.11.0 - Packages
 -----------------
 

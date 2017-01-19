@@ -543,7 +543,7 @@ class PDSRegistryClient(object):
             self._callServer('/packages/%s' % package.guid, params=None, json=json, method='PUT')
         else:
             self._callServer('/packages', params=None, json=json, method='POST')
-    def putExtrinsic(self, extrinsic):
+    def putExtrinsic(self, extrinsic, replace=False):
         '''Send ExtrinsicObject ``extrinsic`` into the Registry.
 
         >>> import pds.registry.net.tests.base
@@ -559,8 +559,14 @@ class PDSRegistryClient(object):
         # it to the existing /extrinsics/logicals/lid path. FIXME: Yes, there is a race here.
         json = self._serializeExtrinsic(extrinsic)
         existing = self.getExtrinsicByLID(extrinsic.lid)
+        if replace and existing is None:
+            raise ValueError("Cannot replace extrinsic with lid {} because it wasn't found".format(extrinsic.lid))
         if existing:
-            self._callServer(u'/extrinsics/logicals/{}'.format(extrinsic.lid), params=None, json=json, method='POST')
+            if replace:
+                extrinsic.guid = None
+                self._callServer(u'/extrinsics/logicals/{}'.format(extrinsic.lid), params=None, json=json, method='POST')
+            else:
+                self._callServer(u'/extrinsics/{}'.format(extrinsic.guid), params=None, json=json, method='POST')
         else:
             self._callServer(u'/extrinsics', params=None, json=json, method='POST')
     def putAssociation(self, association):
