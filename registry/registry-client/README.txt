@@ -14,16 +14,16 @@ instructions, license, and history of changes.
 Notable Registies
 -----------------
 
-• PDS: https://pds.nasa.gov/services/registry-pds4
-• IPDA: https://planetarydata.org/registry/packages
+• PDS: https://pds.nasa.gov/services/registry-pds4/
+• IPDA: https://planetarydata.org/registry/
 
 
 .. References:
 .. _ebXML: http://www.oasis-open.org/committees/tc_home.php?wg_abbrev=regrep
 .. _NASA: http://www.nasa.gov/
 .. _PDS: http://pds.nasa.gov/
-.. _Registry: http://pdscm.jpl.nasa.gov/2010/registry/
-.. _EN: http://pds-engnode.jpl.nasa.gov/
+.. _Registry: https://pds-engineering.jpl.nasa.gov/development/pds4/current/registry/
+.. _EN: https://pds-engineering.jpl.nasa.gov/
 .. _JPL: http://www.jpl.nasa.gov/
 
 .. Author:
@@ -32,5 +32,5 @@ Notable Registies
     California Institute of Technology
 
 .. Copyright:
-    Copyright 2011-2016 California Institute of Technology. ALL RIGHTS
+    Copyright 2011-2017 California Institute of Technology. ALL RIGHTS
     RESERVED.  U.S. Government sponsorship acknowledged.

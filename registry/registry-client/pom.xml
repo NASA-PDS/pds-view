@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!--
-  Copyright 2011-2016 by the California Institute of Technology.
+  Copyright 2011-2017 by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology 
   Transfer at the California Institute of Technology.
@@ -61,6 +61,71 @@
       </roles>
     </developer>
   </developers>
+
+  <build>
+    <!--
+      The pds.registry package is built with the following commands:
+      % python bootstrap.py
+      % bin/buildout setup . egg_info -b "" sdist
+    -->
+    <plugins>
+      <!-- Copy the Python package to the target directory. -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>copy-resources</id>
+            <phase>package</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${basedir}/target</outputDirectory>
+              <resources>
+                <resource>
+                  <directory>dist</directory>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <!-- Clean up the Python artifacts. -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-clean-plugin</artifactId>
+        <configuration>
+          <filesets>
+            <fileset>
+              <directory>bin</directory>
+            </fileset>
+            <fileset>
+              <directory>develop-eggs</directory>
+            </fileset>
+            <fileset>
+              <directory>dist</directory>
+            </fileset>
+            <fileset>
+              <directory>eggs</directory>
+            </fileset>
+            <fileset>
+              <directory>parts</directory>
+            </fileset>
+            <fileset>
+              <directory>src/pds.registry.egg-info</directory>
+            </fileset>
+            <fileset>
+              <directory>.</directory>
+              <includes>
+                <include>doc.txt</include>
+              </includes>
+            </fileset>
+          </filesets>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 
   <repositories>
     <!-- Hosts the PDS and OODT artifacts. -->

@@ -1,5 +1,5 @@
 # encoding: utf-8
-# Copyright 2011–2016 California Institute of Technology. ALL RIGHTS
+# Copyright 2011–2017 California Institute of Technology. ALL RIGHTS
 # RESERVED. U.S. Government Sponsorship acknowledged.
 
 from setuptools import setup, find_packages
@@ -30,16 +30,7 @@ _description = _valueFor('description', 'project', pomDoc)
 _url = _valueFor('url', 'project', pomDoc)
 _author = _valueFor('name', 'developer', pomDoc)
 _authorEmail = _valueFor('email', 'developer', pomDoc)
-
-# The version is no longer included in pom.xml, but in ../pom.xml.  Although to be completely
-# Maven-subservient, we should look it up by the parent pom description.  But screw that.
-parentPOM = os.path.join(os.path.dirname(__file__), '..', 'pom.xml')
-if os.path.isfile(parentPOM):
-    pomDoc = xml.dom.minidom.parse(parentPOM)
-    _version = _valueFor('version', 'project', pomDoc)
-else:
-    _version = '1.8.1'
-
+_version = _valueFor('version', 'parent', pomDoc)
 
 # Package data
 # ------------
