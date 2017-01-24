@@ -24,13 +24,6 @@ class IdentifiableTest(unittest.TestCase):
         self.assertEquals('123', a.guid)
         self.assertEquals(u'http://home.com/', a.home)
         self.assertEquals(set(), a.slots)
-    def testReadOnlyAttributes(self):
-        '''Check that the guid element is read-only'''
-        a = Identifiable(guid='123', home=u'http://home.com/', slots=set())
-        try:
-            a.guid = '456'
-            self.fail('Could reassign guid')
-        except AttributeError: pass
     def testComparisons(self):
         '''Make certain comparisons work as expected.'''
         a, b, c = Identifiable('1'), Identifiable('2'), Identifiable('1')
