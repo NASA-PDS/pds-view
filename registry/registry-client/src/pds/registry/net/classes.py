@@ -1,5 +1,5 @@
 # encoding: utf-8
-# Copyright 2011–2016 California Institute of Technology. ALL RIGHTS
+# Copyright 2011–2017 California Institute of Technology. ALL RIGHTS
 # RESERVED. U.S. Government Sponsorship acknowledged.
 
 '''PDS Registry network communication classes'''
@@ -562,7 +562,7 @@ class PDSRegistryClient(object):
         if replace and existing is None:
             raise ValueError("Cannot replace extrinsic with lid {} because it wasn't found".format(extrinsic.lid))
         if existing:
-            if replace:
+            if not replace:
                 extrinsic.guid = None
                 self._callServer(u'/extrinsics/logicals/{}'.format(extrinsic.lid), params=None, json=json, method='POST')
             else:

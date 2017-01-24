@@ -44,6 +44,9 @@ class Identifiable(object):
     def guid(self):
         '''Globally unique and immutable identifier'''
         return self._guid
+    @guid.setter
+    def guid(self, value):
+        self._guid = value
     def __hash__(self):
         '''Hashing uses the globally unique ID only, as it's globally unique and we shouldn't have to look further.'''
         return hash(self.guid)
