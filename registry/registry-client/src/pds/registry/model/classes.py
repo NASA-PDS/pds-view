@@ -1,5 +1,5 @@
 # encoding: utf-8
-# Copyright 2011–2016 California Institute of Technology. ALL RIGHTS
+# Copyright 2011–2017 California Institute of Technology. ALL RIGHTS
 # RESERVED. U.S. Government Sponsorship acknowledged.
 
 '''PDS Registry Client: class implementations.'''
