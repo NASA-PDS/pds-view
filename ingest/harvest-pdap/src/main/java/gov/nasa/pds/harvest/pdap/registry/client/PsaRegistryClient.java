@@ -53,7 +53,7 @@ public class PsaRegistryClient implements PdapRegistryClient {
    * @param baseUrl The base url of the registry.
    */
   public PsaRegistryClient(String baseUrl) {
-    this.baseUrl = baseUrl + "/aio";
+    this.baseUrl = baseUrl;
     dtFormat = DateTimeFormat.forPattern("yyyy-MM-dd'%20'HH:mm:ss.SSS");
   }
 
@@ -70,7 +70,7 @@ public class PsaRegistryClient implements PdapRegistryClient {
   public List<StarTable> getDataSets(DateTime startDateTime,
       DateTime stopDateTime) throws PdapRegistryClientException {
     try {
-      String urlString = baseUrl + "/jsp/metadata.jsp?RETURN_TYPE=VOTABLE";
+      String urlString = baseUrl + "/pdap/metadata?RETURN_TYPE=VOTABLE";
       String query = "";
       if (startDateTime != null) {
         query += "&START_TIME>" + dtFormat.print(startDateTime);
@@ -109,7 +109,7 @@ public class PsaRegistryClient implements PdapRegistryClient {
   @Override
   public StarTable getDataSet(String datasetId) throws PdapRegistryClientException {
     try {
-      URL url = new URL(baseUrl + "/jsp/metadata.jsp/DATA_SET_ID=" + datasetId
+      URL url = new URL(baseUrl + "/pdap/metadata/DATA_SET_ID=" + datasetId
           + "&RETURN_TYPE=VOTABLE");
       StarTableFactory factory = new StarTableFactory();
       StarTable table = factory.makeStarTable(DataSource.makeDataSource(url),
@@ -133,7 +133,7 @@ public class PsaRegistryClient implements PdapRegistryClient {
   @Override
   public URL getResourceLink(String datasetId) throws PdapRegistryClientException {
     try {
-      URL url = new URL(baseUrl + "/jsp/metadata.jsp?DATA_SET_ID=" + datasetId
+      URL url = new URL(baseUrl + "/pdap/metadata?DATA_SET_ID=" + datasetId
         + "&RETURN_TYPE=HTML");
       return url;
     } catch (Exception e) {
@@ -153,11 +153,14 @@ public class PsaRegistryClient implements PdapRegistryClient {
    * the catalog file.
    */
   @Override
-  public Label getCatalogFile(String datasetId, String filename)
+  public Label getCatalogFile(String missionName, String datasetId, 
+      String filename)
   throws PdapRegistryClientException {
     try {
-      URL url = new URL(baseUrl + "/jsp/product.jsp?dataSetID=" + datasetId
-          + "&productID=&path=CATALOG/&fileName=" + filename + "&protocol=HTTP");
+      String encodedMissionName = missionName.replaceAll("\\s", "s");
+      String encodedDatasetId = datasetId.replaceAll("/", "-");
+      URL url = new URL(baseUrl + "/postcards/repo/" + encodedMissionName + "/"
+          + encodedDatasetId + "/CATALOG/" + filename);
       ManualPathResolver resolver = new ManualPathResolver();
       resolver.setBaseURI(ManualPathResolver.getBaseURI(url.toURI()));
       DefaultLabelParser parser = new DefaultLabelParser(false, true, true, resolver);
@@ -180,10 +183,13 @@ public class PsaRegistryClient implements PdapRegistryClient {
    *  the VOLDESC.CAT file.
    *
    */
-  public Label getVoldescFile(String datasetId) throws PdapRegistryClientException {
+  public Label getVoldescFile(String missionName, String datasetId) 
+      throws PdapRegistryClientException {
     try {
-      URL url = new URL(baseUrl + "/jsp/product.jsp?dataSetID=" + datasetId
-          + "&productID=&path=/&fileName=VOLDESC.CAT&protocol=HTTP");
+      String encodedMissionName = missionName.replaceAll("\\s", "s");
+      String encodedDatasetId = datasetId.replaceAll("/", "-");
+      URL url = new URL(baseUrl + "/postcards/repo/" + encodedMissionName + "/"
+          + encodedDatasetId + "/VOLDESC.CAT");
       ManualPathResolver resolver = new ManualPathResolver();
       resolver.setBaseURI(ManualPathResolver.getBaseURI(url.toURI()));
       DefaultLabelParser parser = new DefaultLabelParser(false, true, true, resolver);
@@ -196,7 +202,7 @@ public class PsaRegistryClient implements PdapRegistryClient {
   }
 
   public static void main(String[] args) {
-    PsaRegistryClient client = new PsaRegistryClient("http://psa.esac.esa.int:8000");
+    PsaRegistryClient client = new PsaRegistryClient("http://psa.esa.int");
     try {
       List<StarTable> tables = client.getDataSets();
       for (StarTable st : tables) {

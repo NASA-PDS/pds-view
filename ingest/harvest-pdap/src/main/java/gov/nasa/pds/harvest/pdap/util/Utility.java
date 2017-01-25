@@ -32,6 +32,8 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.LocalDateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
@@ -115,9 +117,13 @@ public class Utility {
      * @throws ParseException
      */
     public static String toISO8601(String timestamp) throws ParseException {
-      DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-      Timestamp ts = Timestamp.valueOf(timestamp);
-      DateTime dateTime = new DateTime(ts.getTime());
-      return dtf.print(dateTime);
+      SimpleDateFormat iso = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+      SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+      if (timestamp.matches("\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}")) {
+        input = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+      }
+      Date date = input.parse(timestamp);
+      String string = iso.format(date);
+      return string;
     }
 }

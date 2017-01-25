@@ -43,8 +43,8 @@ public interface PdapRegistryClient {
   public URL getResourceLink(String datasetId) throws PdapRegistryClientException;
 
   /** Gets the catalog file associated with the given dataset. */
-  public Label getCatalogFile(String datasetId, String filename) throws PdapRegistryClientException;
+  public Label getCatalogFile(String missionName, String datasetId, String filename) throws PdapRegistryClientException;
 
   /** Gets the VOLDESC.CAT file associated with the given dataset. */
-  public Label getVoldescFile(String datasetId) throws PdapRegistryClientException;
+  public Label getVoldescFile(String missionName, String datasetId) throws PdapRegistryClientException;
 }

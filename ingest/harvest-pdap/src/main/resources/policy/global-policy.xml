@@ -23,6 +23,9 @@
       <slot name="node_ref">
         <value>urn:nasa:pds:context_pds3:node:node.psa</value>
       </slot>
+      <slot name="product_class">
+        <value>Product_Data_Set_PDS3</value>
+      </slot>
     </staticMetadata>
     <dynamicMetadata>
       <element name="DATA_SET_ID">

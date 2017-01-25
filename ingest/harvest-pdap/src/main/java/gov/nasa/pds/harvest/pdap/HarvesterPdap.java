@@ -167,7 +167,8 @@ public class HarvesterPdap {
                   + cell));
               if (columnName.equals("TARGET_NAME")
                   || columnName.equals("INSTRUMENT_NAME")
-                  || columnName.equals("INSTRUMENT_ID")) {
+                  || columnName.equals("INSTRUMENT_ID")
+                  || columnName.equals("MISSION_NAME")) {
                 String[] tokens = (cell + ",").split(",");
                 for (String token : Arrays.asList(tokens)) {
                   datasetMet.addMetadata(columnName, token.trim());
@@ -349,8 +350,9 @@ public class HarvesterPdap {
         log.log(new ToolsLogRecord(ToolsLevel.INFO, "Attempting to retrieve "
             +"the catalog file using the file name: " + catalogFilename,
             datasetId));
+        String missionName = datasetMet.getMetadata("MISSION_NAME");
         try {
-          catalog = pdapClient.getCatalogFile(datasetId, catalogFilename);
+          catalog = pdapClient.getCatalogFile(missionName, datasetId, catalogFilename);
         } catch (PdapRegistryClientException e) {
           //If an exception was thrown, let's get the catalog file name from
           //the VOLDESC.CAT
@@ -358,7 +360,7 @@ public class HarvesterPdap {
               + "catalog file using the file name DATASET.CAT", datasetId));
           log.log(new ToolsLogRecord(ToolsLevel.INFO, "Retrieving VOLDESC.CAT "
               + "to look up the data set catalog file name.", datasetId));
-          Label voldesc = pdapClient.getVoldescFile(datasetId);
+          Label voldesc = pdapClient.getVoldescFile(missionName, datasetId);
           catalogFilename = getCatalogFile(voldesc, datasetId);
           log.log(new ToolsLogRecord(ToolsLevel.INFO, "Retrieved the catalog "
               + "file name from the VOLDESC.CAT: " + catalogFilename,
@@ -366,7 +368,7 @@ public class HarvesterPdap {
           log.log(new ToolsLogRecord(ToolsLevel.INFO,
               "Retrieving the catalog file '" + catalogFilename + "'",
               datasetId));
-          catalog = pdapClient.getCatalogFile(datasetId, catalogFilename);
+          catalog = pdapClient.getCatalogFile(missionName, datasetId, catalogFilename);
         }
         if (catalog != null) {
           for (String leftoverElement : elementsToGetCopy) {
