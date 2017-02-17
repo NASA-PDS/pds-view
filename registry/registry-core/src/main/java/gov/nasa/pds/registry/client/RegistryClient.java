@@ -48,6 +48,7 @@ import java.security.cert.X509Certificate;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.KeyManager;
@@ -61,6 +62,12 @@ import javax.net.ssl.X509TrustManager;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
+
+
+// disable Certificate Validation in an HTTPS Connection
+//import java.security.KeyManagementException;
+//import java.security.NoSuchAlgorithmException;
+
 
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
@@ -107,6 +114,8 @@ public class RegistryClient {
 
   public RegistryClient(String baseUrl, SecurityContext securityContext,
       String username, String password) throws RegistryClientException {
+	// fix for PDS-489 (Accessing a registry instance utilizing https fails)
+    System.setProperty("https.protocols", "TLSv1.2");
     ClientConfig config = new DefaultClientConfig();
     config.getClasses().add(JacksonObjectMapperProvider.class);
     config.getClasses().add(JAXBContextResolver.class);
@@ -126,6 +135,31 @@ public class RegistryClient {
             + "the registry client: " + e.getMessage());
       }
     } else {
+/*
+    	// Disabling Certificate Validation in an HTTPS Connection
+    	try {
+            SSLContext sslcontext = SSLContext.getInstance( "SSL" );
+            sslcontext.init( null, null, null );
+            //DefaultClientConfig config = new DefaultClientConfig();
+            Map<String, Object> properties = config.getProperties();
+            HTTPSProperties httpsProperties = new HTTPSProperties(
+            		new HostnameVerifier() {
+            			@Override
+            			public boolean verify( String s, SSLSession sslSession ) {
+            				return true;
+            			}
+            		}, sslcontext
+            		);
+            config.getProperties().put( HTTPSProperties.PROPERTY_HTTPS_PROPERTIES, httpsProperties );
+            //config.getClasses().add( JacksonJsonProvider.class );            
+    	} catch (NoSuchAlgorithmException e) {
+    		throw new RegistryClientException("Error occurred while initializing "
+    				+ "the registry client: " + e.getMessage());
+    	} catch (KeyManagementException e) {
+    		throw new RegistryClientException("Error occurred while initializing "
+    				+ "the registry client: " + e.getMessage());
+    	}
+*/    	
       service = Client.create(config).resource(baseUrl);
     }
 
