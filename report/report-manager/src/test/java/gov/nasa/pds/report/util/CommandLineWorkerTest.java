@@ -2,6 +2,7 @@ package gov.nasa.pds.report.util;
 
 import static org.junit.Assert.*;
 
+import org.junit.After;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -21,6 +22,11 @@ public class CommandLineWorkerTest extends ReportManagerTest{
 			fail("The nominal test command failed");
 		}
 		
+	}
+	
+	@After
+	public void tearDown() {
+		System.setProperty(Constants.COMMANDLINE_TIMEOUT_PROP, "0");
 	}
 	
 	@Test
