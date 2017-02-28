@@ -525,6 +525,9 @@
    <field name="identifier" type="string" indexed="true" stored="true" required="true" />
    <field name="abstract_text" type="text_general" indexed="false" stored="true" multiValued="true" />
    <field name="agency_name" type="lowercase" indexed="true" stored="true" multiValued="true" />
+   <field name="airborne_name" type="text_general" indexed="true" stored="true" multiValued="true" />
+   <field name="airborne_type" type="text_general" indexed="true" stored="true" multiValued="true" />
+   <field name="airborne_description" type="text_general" indexed="true" stored="true" multiValued="true" />
    <field name="alternate_title" type="text_general" indexed="false" stored="true" multiValued="true" />
    <field name="archive_status" type="lowercase" indexed="true" stored="true" multiValued="false" />
      
@@ -689,6 +692,7 @@
    <field name="telescope_latitude" type="float" indexed="true" stored="true" multiValued="true" />
    <field name="telescope_altitude" type="float" indexed="true" stored="true" multiValued="true" />
    <field name="telescope_coordinate_source" type="string" indexed="true" stored="true" multiValued="true" />
+   <field name="telescope_description" type="string" indexed="true" stored="true" multiValued="true" />
    <field name="title" type="text_en_splitting_tight" indexed="true" stored="true" multiValued="false" />
    
    <!-- A few aliases of the fields above, filled in via copyField, below -->

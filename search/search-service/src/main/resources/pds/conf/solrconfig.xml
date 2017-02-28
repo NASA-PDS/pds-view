@@ -766,7 +766,7 @@
       <str name="fq">-archive_status:SUPERSEDED</str>
       <!-- Filter out Observational and Document products and all of the various  -->
       <str name="fq">-data_product_type:Product_Observational AND -data_product_type:Product_Document</str>
-      <str name="fq">-data_product_type:Agency AND -data_product_type:Facility AND -data_product_type:Node AND -data_product_type:Other AND -data_product_type:PDS_Affiliate AND -data_product_type:PDS_Guest AND -data_product_type:Telescope</str>
+      <str name="fq">-data_product_type:Agency AND -data_product_type:Facility AND -data_product_type:Node AND -data_product_type:Other AND -data_product_type:PDS_Affiliate AND -data_product_type:PDS_Guest AND -data_product_type:Telescope AND -data_product_type:Airborne</str>
       <str name="fq">-resource_type:Information.Science_Portal</str>
       <str name="fq">-objectType:Product_Attribute_Definition AND -objectType:Product_Class_Definition</str>
       <str name="bq">data_product_type:Product_Context_Search_Tool^100</str>
