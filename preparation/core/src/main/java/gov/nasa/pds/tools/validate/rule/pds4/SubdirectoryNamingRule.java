@@ -39,7 +39,7 @@ import org.apache.commons.io.filefilter.FalseFileFilter;
  */
 public class SubdirectoryNamingRule extends AbstractValidationRule {
 
-  private static final Pattern BUNDLE_LABEL_PATTERN = Pattern.compile("bundle(_.*)\\.xml", Pattern.CASE_INSENSITIVE);
+  private static final Pattern COLLECTION_LABEL_PATTERN = Pattern.compile("collection(_.*)\\.xml", Pattern.CASE_INSENSITIVE);
 
   private static final String[] ILLEGAL_DIRECTORY_NAMES = {
     "browse",
@@ -84,9 +84,9 @@ public class SubdirectoryNamingRule extends AbstractValidationRule {
     Crawler crawler = getContext().getCrawler();
     try {
       List<Target> children = crawler.crawl(url);
-      // Check for bundle(_.*)?\.xml file.
+      // Check for collection(_.*)?\.xml file.
       for (Target child : children) {
-        Matcher matcher = BUNDLE_LABEL_PATTERN.matcher(FilenameUtils.getName(child.toString()));
+        Matcher matcher = COLLECTION_LABEL_PATTERN.matcher(FilenameUtils.getName(child.toString()));
         if (matcher.matches()) {
           return true;
         }
