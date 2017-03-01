@@ -1,9 +1,28 @@
+// Copyright 2006-2017, by the California Institute of Technology.
+// ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
+// Any commercial use must be negotiated with the Office of Technology Transfer
+// at the California Institute of Technology.
+//
+// This software is subject to U. S. export control laws and regulations
+// (22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software
+// is subject to U.S. export control laws and regulations, the recipient has
+// the responsibility to obtain export licenses or other export authority as
+// may be required before exporting such information to foreign countries or
+// providing access to foreign nationals.
+//
+// $Id$
 package gov.nasa.pds.tools.validate.rule;
 
+import gov.nasa.pds.tools.util.Utility;
+import gov.nasa.pds.tools.validate.Target;
 import gov.nasa.pds.tools.validate.TargetRegistrar;
 import gov.nasa.pds.tools.validate.TargetType;
+import gov.nasa.pds.tools.validate.crawler.Crawler;
+import gov.nasa.pds.tools.validate.crawler.WildcardOSFilter;
 
-import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.util.Arrays;
 
 /**
  * Implements a rule that inserts this target into the target
@@ -12,30 +31,42 @@ import java.io.File;
  */
 public class RegisterTargets extends AbstractValidationRule {
 
-    @Override
-    public boolean isApplicable(String location) {
-        return true;
+  @Override
+  public boolean isApplicable(String location) {
+    return true;
+  }
+
+  @ValidationTest
+  public void registerTargets() {
+    TargetRegistrar registrar = getRegistrar();
+    
+    String targetLocation = getTarget().toString();
+    String parentLocation = getParentTarget();
+    TargetType type = Utility.isDir(getTarget()) ? TargetType.FOLDER : TargetType.FILE;
+
+    if (registrar.getRoot()==null || !registrar.hasTarget(targetLocation)) {
+      registrar.addTarget(parentLocation, type, targetLocation);
     }
 
-    @ValidationTest
-    public void registerTargets() {
-        TargetRegistrar registrar = getRegistrar();
-
-        String targetLocation = getTarget().getAbsolutePath();
-        String parentLocation = getParentTarget();
-        TargetType type = getTarget().isDirectory() ? TargetType.FOLDER : TargetType.FILE;
-
-        if (registrar.getRoot()==null || !registrar.hasTarget(targetLocation)) {
-            registrar.addTarget(parentLocation, type, targetLocation);
+    if (Utility.isDir(getTarget())) {
+      try {
+        Crawler crawler = getContext().getCrawler();
+        WildcardOSFilter fileFilter = getContext().getFileFilters();
+        if (!"PDS4 Directory".equalsIgnoreCase(getContext().getRule().getCaption())) {
+          fileFilter = new WildcardOSFilter(Arrays.asList(new String[] {"*"}));
         }
-
-        if (getTarget().isDirectory()) {
-            for (File child : getTarget().listFiles()) {
-                String childLocation = child.getAbsolutePath();
-                TargetType childType = child.isDirectory() ? TargetType.FOLDER : TargetType.FILE;
-                registrar.addTarget(targetLocation, childType, childLocation);
-            }
+        for (Target child : crawler.crawl(getTarget(), getContext().isRecursive(), fileFilter)) {
+          try {
+            String childLocation = child.getUrl().toURI().normalize().toString();
+            TargetType childType = Utility.isDir(child.getUrl()) ? TargetType.FOLDER : TargetType.FILE;
+            registrar.addTarget(targetLocation, childType, childLocation);
+          } catch (URISyntaxException e) {
+            reportError(GenericProblems.UNCAUGHT_EXCEPTION, getContext().getTarget(), -1, -1, e.getMessage());
+          }
         }
+      } catch (Exception e) {
+        reportError(GenericProblems.UNCAUGHT_EXCEPTION, getContext().getTarget(), -1, -1, e.getMessage());
+      }
     }
-
+  }
 }

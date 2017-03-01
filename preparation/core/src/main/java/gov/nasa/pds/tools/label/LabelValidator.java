@@ -18,6 +18,8 @@ package gov.nasa.pds.tools.label;
 import gov.nasa.pds.tools.label.validate.DefaultDocumentValidator;
 import gov.nasa.pds.tools.label.validate.DocumentValidator;
 import gov.nasa.pds.tools.label.validate.ExternalValidator;
+import gov.nasa.pds.tools.util.LabelParser;
+import gov.nasa.pds.tools.util.Utility;
 import gov.nasa.pds.tools.util.VersionInfo;
 import gov.nasa.pds.tools.util.XMLErrorListener;
 import gov.nasa.pds.tools.util.XMLExtractor;
@@ -154,7 +156,7 @@ public class LabelValidator {
     // as user data properties of the DOM nodes.
     saxParserFactory = SAXParserFactory.newInstance();
     saxParserFactory.setNamespaceAware(true);
-    saxParserFactory.setXIncludeAware(true);
+    saxParserFactory.setXIncludeAware(Utility.supportXincludes());
     saxParserFactory.setValidating(false); // The parser doesn't validate - we use a Validator instead.
 
     // Don't add xml:base attributes to xi:include content, or it messes up
@@ -329,7 +331,7 @@ public class LabelValidator {
       TransformerException, MissingLabelSchemaException {
     List<String> labelSchematronRefs = new ArrayList<String>();
     Document xml = null;
-
+    
     // Are we perfoming schema validation?
     if (performsSchemaValidation()) {
       createParserIfNeeded(exceptionHandler);
@@ -354,7 +356,11 @@ public class LabelValidator {
 
       DOMLocator locator = new DOMLocator(url);
       cachedValidatorHandler.setDocumentLocator(locator);
-      cachedValidatorHandler.setResourceResolver(cachedLSResolver);
+      if (resolver != null) {
+        cachedValidatorHandler.setResourceResolver(resolver);
+      } else {
+        cachedValidatorHandler.setResourceResolver(cachedLSResolver);
+      }
       walkNode(xml, cachedValidatorHandler, locator);
 
       // If validating against the label supplied schema, check
@@ -464,7 +470,7 @@ public class LabelValidator {
     if (!documentValidators.isEmpty()) {
       SAXSource saxSource = new SAXSource(new InputSource(url.toString()));
       saxSource.setSystemId(url.toString());
-      DocumentInfo docInfo = parse(saxSource);
+      DocumentInfo docInfo = LabelParser.parse(saxSource);
       for (DocumentValidator dv : documentValidators) {
         dv.validate(exceptionHandler, docInfo);
       }
@@ -522,7 +528,10 @@ public class LabelValidator {
 
       cachedParser = saxParserFactory.newSAXParser().getXMLReader();
       cachedValidatorHandler = validatingSchema.newValidatorHandler();
-      if (useLabelSchema) {
+      if (resolver != null) {
+        cachedParser.setEntityResolver(resolver);
+        docBuilder.setEntityResolver(resolver);
+      } else if (useLabelSchema) {
         cachedParser.setEntityResolver(cachedEntityResolver);
       }
     } else {
@@ -736,18 +745,6 @@ public class LabelValidator {
         columnNumber
     );
 
-  }
-
-  private DocumentInfo parse(SAXSource source) throws TransformerException {
-    XPathEvaluator xpath = new XPathEvaluator();
-    Configuration configuration = xpath.getConfiguration();
-    configuration.setLineNumbering(true);
-    configuration.setXIncludeAware(true);
-    ParseOptions options = new ParseOptions();
-    options.setErrorListener(new XMLErrorListener());
-    options.setLineNumbering(true);
-    options.setXIncludeAware(true);
-    return configuration.buildDocument(source, options);
   }
 
   public String getModelVersion() {

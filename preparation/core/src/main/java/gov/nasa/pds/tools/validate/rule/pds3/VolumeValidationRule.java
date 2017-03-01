@@ -1,12 +1,29 @@
+// Copyright 2006-2017, by the California Institute of Technology.
+// ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
+// Any commercial use must be negotiated with the Office of Technology Transfer
+// at the California Institute of Technology.
+//
+// This software is subject to U. S. export control laws and regulations
+// (22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software
+// is subject to U.S. export control laws and regulations, the recipient has
+// the responsibility to obtain export licenses or other export authority as
+// may be required before exporting such information to foreign countries or
+// providing access to foreign nationals.
+//
+// $Id$
 package gov.nasa.pds.tools.validate.rule.pds3;
 
 import gov.nasa.pds.tools.constants.Constants;
 import gov.nasa.pds.tools.label.ExceptionType;
 import gov.nasa.pds.tools.label.ValidationSettings;
 import gov.nasa.pds.tools.util.SettingsManager;
+import gov.nasa.pds.tools.util.Utility;
 import gov.nasa.pds.tools.validate.ProblemDefinition;
 import gov.nasa.pds.tools.validate.ProblemType;
 import gov.nasa.pds.tools.validate.Standard;
+import gov.nasa.pds.tools.validate.Target;
+import gov.nasa.pds.tools.validate.crawler.Crawler;
+import gov.nasa.pds.tools.validate.crawler.CrawlerFactory;
 import gov.nasa.pds.tools.validate.rule.AbstractValidationRule;
 import gov.nasa.pds.tools.validate.rule.ValidationTest;
 import gov.nasa.pds.web.ui.containers.StatusContainer;
@@ -18,9 +35,13 @@ import gov.nasa.pds.web.ui.utils.DataSetValidator;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.MessageFormat;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
@@ -28,6 +49,8 @@ import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -70,18 +93,34 @@ public class VolumeValidationRule extends AbstractValidationRule implements Obse
 	
 	@Override
 	public boolean isApplicable(String location) {
-		File f = new File(location);
+   URL url;
+    try {
+      url = new URL(location);
+    } catch (MalformedURLException e) {
+      return false;
+    }
 
-		if (!f.isDirectory()) {
-			return false;
-		}
+    if (!Utility.isDir(url)) {
+      return false;
+    }
 
+    if (!"file".equalsIgnoreCase(url.getProtocol())) {
+      LOG.error("At this time, target must be a local location for pds3 volume validation.");
+      return false;
+    }
+    
+		Crawler crawler = CrawlerFactory.newInstance(url);
 		// Check for AAREADME.TXT file.
-		for (String childName : f.list()) {
-			Matcher matcher = VOLUME_README_PATTERN.matcher(childName);
-			if (matcher.matches()) {
-				return true;
-			}
+		try {
+  		List<Target> children = crawler.crawl(url);
+  		for (Target child : children) {
+  			Matcher matcher = VOLUME_README_PATTERN.matcher(FilenameUtils.getName(child.toString()));
+  			if (matcher.matches()) {
+  				return true;
+  			}
+  		}
+		} catch (IOException io) {
+		  //Ignore
 		}
 
 		return false;
@@ -111,7 +150,7 @@ public class VolumeValidationRule extends AbstractValidationRule implements Obse
 
 		// do validation and post results to db and cache directory
 		// create a validator instance
-		DataSetValidator validator = new DataSetValidator(PROC_ID, getTarget(), status);
+		DataSetValidator validator = new DataSetValidator(PROC_ID, FileUtils.toFile(getTarget()), status);
 		validator.addObserver(this);
 
 		// do validation
@@ -181,8 +220,13 @@ public class VolumeValidationRule extends AbstractValidationRule implements Obse
 		    );
 		    
 			String message = type.toString() + ": " + formatMessage(key, args);
-			
-		    reportError(problemDef, file, lineNumber, -1, message);
+			URL url = null;
+			try {
+			  url = file.toURI().toURL();
+			} catch (Exception e) {
+			  //Should never happen
+			}
+		  reportError(problemDef, url, lineNumber, -1, message);
 		}
 	}
 	

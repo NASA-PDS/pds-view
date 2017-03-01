@@ -1,6 +1,20 @@
+// Copyright 2006-2017, by the California Institute of Technology.
+// ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
+// Any commercial use must be negotiated with the Office of Technology Transfer
+// at the California Institute of Technology.
+//
+// This software is subject to U. S. export control laws and regulations
+// (22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software
+// is subject to U.S. export control laws and regulations, the recipient has
+// the responsibility to obtain export licenses or other export authority as
+// may be required before exporting such information to foreign countries or
+// providing access to foreign nationals.
+//
+// $Id$
 package gov.nasa.pds.tools.validate;
 
 import gov.nasa.pds.tools.label.ExceptionType;
+import gov.nasa.pds.tools.label.LabelException;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -13,27 +27,31 @@ public class ProblemContainer implements ProblemListener {
 
 	private List<ValidationProblem> problems = new ArrayList<ValidationProblem>();
 
-    private int errorCount;
-    private int warningCount;
-    private int infoCount;
+  private int errorCount;
+  private int warningCount;
+  private int infoCount;
 
 	@Override
 	public void addProblem(ValidationProblem problem) {
 		problems.add(problem);
 
-        switch (problem.getProblem().getSeverity()) {
-        case INFO:
-            ++infoCount;
-            break;
-        case WARNING:
-            ++warningCount;
-            break;
-        default:
-            ++errorCount;
-            break;
-        }
+    switch (problem.getProblem().getSeverity()) {
+    case INFO:
+      ++infoCount;
+      break;
+    case WARNING:
+      ++warningCount;
+      break;
+    default:
+      ++errorCount;
+      break;
+    }
 	}
 
+	public void addProblem(LabelException exception) {
+	  //TODO: How to map LabelException to ValidationProblem?
+	}
+	
 	/**
 	 * Gets the problems encountered.
 	 *
@@ -56,68 +74,67 @@ public class ProblemContainer implements ProblemListener {
 	 * Clears all problems.
 	 */
 	public void clear() {
-	    problems.clear();
-	    errorCount = 0;
-	    warningCount = 0;
-	    infoCount = 0;
+    problems.clear();
+    errorCount = 0;
+    warningCount = 0;
+    infoCount = 0;
 	}
 
-    @Override
-    public int getErrorCount() {
-        return errorCount;
+  @Override
+  public int getErrorCount() {
+    return errorCount;
+  }
+
+  @Override
+  public int getWarningCount() {
+    return warningCount;
+  }
+
+  @Override
+  public int getInfoCount() {
+    return infoCount;
+  }
+
+  @Override
+  public Collection<ValidationProblem> getProblemsForLocation(
+          String location, boolean includeChildren) {
+    Collection<ValidationProblem> foundProblems = new ArrayList<ValidationProblem>();
+
+    for (ValidationProblem problem : problems) {
+      if (problem.getTarget().getLocation().equals(location)
+        || (includeChildren && problem.getTarget().getLocation().startsWith(location))) {
+        foundProblems.add(problem);
+      }
     }
 
-    @Override
-    public int getWarningCount() {
-        return warningCount;
+    return foundProblems;
+  }
+
+  @Override
+  public boolean hasProblems(String location, boolean includeChildren) {
+    for (ValidationProblem problem : problems) {
+      if ((includeChildren && problem.getTarget().getLocation().startsWith(location))
+        || problem.getTarget().getLocation().equals(location)) {
+        return true;
+      }
     }
 
-    @Override
-    public int getInfoCount() {
-        return infoCount;
-    }
+    return false;
+  }
 
-    @Override
-    public Collection<ValidationProblem> getProblemsForLocation(
-            String location, boolean includeChildren) {
-        Collection<ValidationProblem> foundProblems = new ArrayList<ValidationProblem>();
+  @Override
+  public ExceptionType getSeverity(String location, boolean includeChildren) {
+    ExceptionType severity = ExceptionType.INFO;
 
-        for (ValidationProblem problem : problems) {
-            if (problem.getTarget().getLocation().equals(location)
-                || (includeChildren && problem.getTarget().getLocation().startsWith(location))) {
-                foundProblems.add(problem);
-            }
+    for (ValidationProblem problem : problems) {
+      if ((includeChildren && problem.getTarget().getLocation().startsWith(location))
+        || problem.getTarget().getLocation().equals(location)) {
+        if (problem.getProblem().getSeverity().compareTo(severity) > 0) {
+          severity = problem.getProblem().getSeverity();
         }
-
-        return foundProblems;
+      }
     }
 
-    @Override
-    public boolean hasProblems(String location, boolean includeChildren) {
-        for (ValidationProblem problem : problems) {
-            if ((includeChildren && problem.getTarget().getLocation().startsWith(location))
-                || problem.getTarget().getLocation().equals(location)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    @Override
-    public ExceptionType getSeverity(String location, boolean includeChildren) {
-    	ExceptionType severity = ExceptionType.INFO;
-
-        for (ValidationProblem problem : problems) {
-            if ((includeChildren && problem.getTarget().getLocation().startsWith(location))
-                || problem.getTarget().getLocation().equals(location)) {
-                if (problem.getProblem().getSeverity().compareTo(severity) > 0) {
-                    severity = problem.getProblem().getSeverity();
-                }
-            }
-        }
-
-        return severity;
-    }
-
+    return severity;
+  }
 }

@@ -69,7 +69,7 @@ public class XMLExtractor {
       this.xpath = new XPathEvaluator(this.xml.getConfiguration());
       Configuration configuration = xpath.getConfiguration();
       configuration.setLineNumbering(true);
-      configuration.setXIncludeAware(true);
+      configuration.setXIncludeAware(Utility.supportXincludes());
       String definedNamespace = getValueFromDoc("namespace-uri(/*)");
       xpath.getStaticContext().setDefaultElementNamespace(definedNamespace);
     }
@@ -89,7 +89,7 @@ public class XMLExtractor {
       xpath = new XPathEvaluator();
       Configuration configuration = xpath.getConfiguration();
       configuration.setLineNumbering(true);
-      configuration.setXIncludeAware(true);
+      configuration.setXIncludeAware(Utility.supportXincludes());
       ParseOptions options = new ParseOptions();
       options.setErrorListener(new XMLErrorListener());
       xml = configuration.buildDocument(new SAXSource(new InputSource(url.toString())),
@@ -103,7 +103,7 @@ public class XMLExtractor {
       xpath = new XPathEvaluator();
       Configuration configuration = xpath.getConfiguration();
       configuration.setLineNumbering(true);
-      configuration.setXIncludeAware(true);
+      configuration.setXIncludeAware(Utility.supportXincludes());
       ParseOptions options = new ParseOptions();
       options.setErrorListener(new XMLErrorListener());
       xml = configuration.buildDocument(new SAXSource(source),

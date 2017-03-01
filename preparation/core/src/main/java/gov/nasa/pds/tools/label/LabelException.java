@@ -1,4 +1,4 @@
-//	Copyright 2009-2014, by the California Institute of Technology.
+//	Copyright 2009-2017, by the California Institute of Technology.
 //	ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
 //	Any commercial use must be negotiated with the Office of Technology
 //	Transfer at the California Institute of Technology.
@@ -27,6 +27,7 @@ public class LabelException extends Exception {
   private String systemId;
   private Integer lineNumber;
   private Integer columnNumber;
+  private String source;
 
   public LabelException(ExceptionType exceptionType, String messageKey,
       String publicId, String systemId, Integer lineNumber, Integer columnNumber) {
@@ -34,8 +35,17 @@ public class LabelException extends Exception {
     this.messageKey = messageKey;
     this.publicId = publicId;
     this.systemId = systemId;
-    this.lineNumber = lineNumber;
-    this.columnNumber = columnNumber;
+    this.source = systemId;
+    if (lineNumber == null) {
+      this.lineNumber = -1;
+    } else {
+      this.lineNumber = lineNumber;
+    }
+    if (columnNumber == null) {
+      this.columnNumber = -1;
+    } else {
+      this.columnNumber = columnNumber;
+    }
   }
 
   public LabelException(ExceptionType exceptionType, String message, String filepath) {
@@ -68,6 +78,10 @@ public class LabelException extends Exception {
   }
 
   public String getSource() {
-    return this.systemId;
+    return this.source;
+  }
+  
+  public void setSource(String source) {
+    this.source = source;
   }
 }

@@ -1,4 +1,4 @@
-// Copyright 2006-2014, by the California Institute of Technology.
+// Copyright 2006-2017, by the California Institute of Technology.
 // ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
 // Any commercial use must be negotiated with the Office of Technology Transfer
 // at the California Institute of Technology.
@@ -22,6 +22,9 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 
 /**
  * Utility class.
@@ -116,5 +119,76 @@ public class Utility {
       url = file.toURI().normalize().toURL();
     }
     return url;
+  }
+  
+  public static boolean isDir(String url) {
+    try {
+      return isDir(new URL(url));
+    } catch (MalformedURLException e) {
+      return false;
+    }
+  }
+  
+  public static boolean isDir(URL url) {
+    File file = FileUtils.toFile(url);
+    if (file != null) {
+      if (file.isDirectory() || 
+          (FilenameUtils.getExtension(file.toString()).length() == 0)) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      if (FilenameUtils.getExtension(url.toString()).length() == 3) {
+        return false;
+      } else {
+        return true;
+      }
+    }
+  }
+  
+  public static URL getParent(URL url) {
+    try {
+      return url.toURI().getPath().endsWith("/") ?
+        url.toURI().resolve("..").toURL() :
+          url.toURI().resolve(".").toURL();
+    } catch (Exception e) {
+      return null;
+    }
+  }
+  
+  public static boolean canRead(URL url) {
+    try {
+      url.openStream().close();
+      return true;
+    } catch (IOException io) {
+      return false;
+    }
+  }
+  
+  public static boolean canRead(String url) {
+    try {
+      return canRead(new URL(url));
+    } catch (MalformedURLException e) {
+      return false;
+    }
+  }
+  
+  public static String removeLastSlash(String url) {
+      if(url.endsWith("/")) {
+          return url.substring(0, url.lastIndexOf("/"));
+      } else {
+          return url;
+      }
+  }
+  
+  /**
+   * Convenience method for disabling xinclude support throughout
+   * the core library.
+   * 
+   * @return
+   */
+  public static boolean supportXincludes() {
+    return false;
   }
 }

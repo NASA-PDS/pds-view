@@ -1,8 +1,19 @@
+// Copyright 2006-2017, by the California Institute of Technology.
+// ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
+// Any commercial use must be negotiated with the Office of Technology Transfer
+// at the California Institute of Technology.
+//
+// This software is subject to U. S. export control laws and regulations
+// (22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software
+// is subject to U.S. export control laws and regulations, the recipient has
+// the responsibility to obtain export licenses or other export authority as
+// may be required before exporting such information to foreign countries or
+// providing access to foreign nationals.
+//
+// $Id$
 package gov.nasa.pds.tools.validate.rule;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -45,15 +56,6 @@ public class ValidationRuleManager {
 				rules.add((ValidationRule) command);
 			}
 		}
-
-		Collections.sort(rules, new Comparator<ValidationRule>() {
-			@Override
-			public int compare(ValidationRule r, ValidationRule s) {
-				return r.getCaption().compareTo(s.getCaption());
-			}
-
-		});
-
 		return rules;
 	}
 
@@ -80,12 +82,12 @@ public class ValidationRuleManager {
 	 * @return the validation rule, or null if no such rule found
 	 */
 	public ValidationRule findRuleByName(String name) {
-        Command cmd = catalog.getCommand(name);
-        if (cmd instanceof ValidationRule) {
-            return (ValidationRule) cmd;
-        }
+    Command cmd = catalog.getCommand(name);
+    if (cmd instanceof ValidationRule) {
+      return (ValidationRule) cmd;
+    }
 
-        return null;
+    return null;
 	}
 
 	/**

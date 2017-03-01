@@ -1,10 +1,24 @@
+// Copyright 2006-2017, by the California Institute of Technology.
+// ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
+// Any commercial use must be negotiated with the Office of Technology Transfer
+// at the California Institute of Technology.
+//
+// This software is subject to U. S. export control laws and regulations
+// (22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software
+// is subject to U.S. export control laws and regulations, the recipient has
+// the responsibility to obtain export licenses or other export authority as
+// may be required before exporting such information to foreign countries or
+// providing access to foreign nationals.
+//
+// $Id$
 package gov.nasa.pds.tools.validate.rule;
 
 import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+
+import gov.nasa.pds.tools.util.Utility;
 
 /**
  * Tests that a file has only legal UTF-8 byte sequences.
@@ -16,10 +30,8 @@ public class UTF8ByteStreamRule extends AbstractValidationRule {
 		BufferedInputStream in = null;
 
 		try {
-			in = new BufferedInputStream(new FileInputStream(getTarget()));
+		  in = new BufferedInputStream(getTarget().openStream());
 			checkUTF8ByteStream(in);
-		} catch (FileNotFoundException e) {
-			System.err.println("Cannot read target: " + getTarget().getAbsolutePath());
 		} catch (IOException e) {
 			reportError(GenericProblems.MALFORMED_UTF8_CHARACTER, getTarget(), -1, -1);
 		} finally {
@@ -92,8 +104,20 @@ public class UTF8ByteStreamRule extends AbstractValidationRule {
 
 	@Override
 	public boolean isApplicable(String location) {
-		File f = new File(location);
-		return f.isFile() && f.canRead();
+		URL url;
+    try {
+      url = new URL(location);
+      boolean isFile = Utility.isDir(url);
+      boolean canRead = true;
+      try {
+        url.openStream().close();
+      } catch (IOException io) {
+        canRead = false;
+      }
+      return isFile && canRead;
+    } catch (MalformedURLException e) {
+      return false;
+    }
 	}
 
 }

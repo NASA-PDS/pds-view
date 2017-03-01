@@ -1,10 +1,32 @@
+// Copyright 2006-2017, by the California Institute of Technology.
+// ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
+// Any commercial use must be negotiated with the Office of Technology Transfer
+// at the California Institute of Technology.
+//
+// This software is subject to U. S. export control laws and regulations
+// (22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software
+// is subject to U.S. export control laws and regulations, the recipient has
+// the responsibility to obtain export licenses or other export authority as
+// may be required before exporting such information to foreign countries or
+// providing access to foreign nationals.
+//
+// $Id$
 package gov.nasa.pds.tools.validate.rule.pds4;
 
+import gov.nasa.pds.tools.util.Utility;
+import gov.nasa.pds.tools.validate.Target;
+import gov.nasa.pds.tools.validate.crawler.Crawler;
+import gov.nasa.pds.tools.validate.crawler.CrawlerFactory;
 import gov.nasa.pds.tools.validate.rule.AbstractValidationChain;
 
-import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.apache.commons.io.FilenameUtils;
 
 /**
  * Implements a validation chain that validates PDS4 collections. It is applicable
@@ -16,19 +38,31 @@ public class CollectionValidationRule extends AbstractValidationChain {
 
 	@Override
 	public boolean isApplicable(String location) {
-		File f = new File(location);
+	  URL url = null;
+    try {
+      url = new URL(location);
+    } catch (MalformedURLException e) {
+      return false;
+    }
 
-		if (!f.isDirectory()) {
-			return false;
-		}
+    if (!Utility.isDir(url)) {
+      return false;
+    }
 
-		// Check for bundle(_.*)?\.xml file.
-		for (String childName : f.list()) {
-			Matcher matcher = COLLECTION_LABEL_PATTERN.matcher(childName);
-			if (matcher.matches()) {
-				return true;
-			}
-		}
+    Crawler crawler = CrawlerFactory.newInstance(url);
+    try {
+      List<Target> children = crawler.crawl(url);
+  		// Check for bundle(_.*)?\.xml file.
+  		for (Target child : children) {
+  			Matcher matcher = COLLECTION_LABEL_PATTERN.matcher(
+  			    FilenameUtils.getName(child.toString()));
+  			if (matcher.matches()) {
+  				return true;
+  			}
+  		}
+    } catch(IOException io) {
+      //Ignore. We'll return false anyways.
+    }
 
 		return false;
 	}

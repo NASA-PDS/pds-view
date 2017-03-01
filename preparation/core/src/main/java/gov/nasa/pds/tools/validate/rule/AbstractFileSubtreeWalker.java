@@ -1,6 +1,26 @@
+// Copyright 2006-2017, by the California Institute of Technology.
+// ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
+// Any commercial use must be negotiated with the Office of Technology Transfer
+// at the California Institute of Technology.
+//
+// This software is subject to U. S. export control laws and regulations
+// (22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software
+// is subject to U.S. export control laws and regulations, the recipient has
+// the responsibility to obtain export licenses or other export authority as
+// may be required before exporting such information to foreign countries or
+// providing access to foreign nationals.
+//
+// $Id$
 package gov.nasa.pds.tools.validate.rule;
 
 import java.io.File;
+import java.net.URL;
+import java.util.List;
+
+import gov.nasa.pds.tools.util.Utility;
+import gov.nasa.pds.tools.validate.Target;
+import gov.nasa.pds.tools.validate.crawler.Crawler;
+import gov.nasa.pds.tools.validate.crawler.CrawlerFactory;
 
 /**
  * Implements a class that walks a file system subtree and performs
@@ -16,10 +36,10 @@ public abstract class AbstractFileSubtreeWalker<T> {
 	 * @param f a file or directory
 	 * @param state the state managed by the caller
 	 */
-	public void walkSubtree(File f, T state) {
-		if (!f.isDirectory()) {
+	public void walkSubtree(URL url, T state) {
+		if (!Utility.isDir(url)) {
 			try {
-				handleFile(f, state);
+				handleFile(url, state);
 			} catch (Exception e) {
 				// TODO Log the exception
 				e.printStackTrace();
@@ -27,9 +47,11 @@ public abstract class AbstractFileSubtreeWalker<T> {
 		} else {
 			T childState;
 			try {
-				childState = handleDirectory(f, state);
-				for (File child : f.listFiles()) {
-					walkSubtree(child, childState);
+				childState = handleDirectory(url, state);
+				Crawler crawler = CrawlerFactory.newInstance(url);
+				List<Target> children = crawler.crawl(url);
+				for (Target child : children) {
+					walkSubtree(child.getUrl(), childState);
 				}
 			} catch (Exception e) {
 				// TODO log the exception
@@ -47,7 +69,7 @@ public abstract class AbstractFileSubtreeWalker<T> {
      * @throws Exception if there is an error processing the directory
 	 * @return the new state for walking children of this directory
 	 */
-	protected abstract T handleDirectory(File dir, T state) throws Exception;
+	protected abstract T handleDirectory(URL dir, T state) throws Exception;
 
 	/**
 	 * Handles encountering a file. Subclasses should
@@ -57,6 +79,6 @@ public abstract class AbstractFileSubtreeWalker<T> {
 	 * @param state the current walking state
 	 * @throws Exception if there is an error processing the file
 	 */
-	protected abstract void handleFile(File f, T state) throws Exception;
+	protected abstract void handleFile(URL f, T state) throws Exception;
 
 }

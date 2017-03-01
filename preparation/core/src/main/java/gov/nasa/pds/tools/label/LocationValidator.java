@@ -1,3 +1,16 @@
+//  Copyright 2009-2017, by the California Institute of Technology.
+//  ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
+//  Any commercial use must be negotiated with the Office of Technology
+//  Transfer at the California Institute of Technology.
+//
+//  This software is subject to U. S. export control laws and regulations
+//  (22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software
+//  is subject to U.S. export control laws and regulations, the recipient has
+//  the responsibility to obtain export licenses or other export authority as
+//  may be required before exporting such information to foreign countries or
+//  providing access to foreign nationals.
+//
+//  $Id$
 package gov.nasa.pds.tools.label;
 
 import gov.nasa.pds.tools.label.validate.DocumentValidator;
@@ -5,6 +18,9 @@ import gov.nasa.pds.tools.util.SettingsManager;
 import gov.nasa.pds.tools.validate.ProblemListener;
 import gov.nasa.pds.tools.validate.TargetRegistrar;
 import gov.nasa.pds.tools.validate.ValidationProblem;
+import gov.nasa.pds.tools.validate.ValidationResourceManager;
+import gov.nasa.pds.tools.validate.crawler.Crawler;
+import gov.nasa.pds.tools.validate.crawler.CrawlerFactory;
 import gov.nasa.pds.tools.validate.rule.RuleContext;
 import gov.nasa.pds.tools.validate.rule.ValidationRule;
 import gov.nasa.pds.tools.validate.rule.ValidationRuleManager;
@@ -14,6 +30,7 @@ import gov.nasa.pds.tools.validate.task.ValidationTask;
 
 import java.io.File;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Collection;
@@ -55,7 +72,7 @@ public class LocationValidator {
 	public LocationValidator() throws TransformerConfigurationException, ParserConfigurationException {
 		settingsManager = SettingsManager.INSTANCE;
 		taskManager = new BlockingTaskManager();
-		labelValidator = new LabelValidator();
+		labelValidator = ValidationResourceManager.INSTANCE.getResource(LabelValidator.class);
 		ruleContext = new RuleContext();
 		
 		ConfigParser parser = new ConfigParser();
@@ -98,29 +115,29 @@ public class LocationValidator {
 	 * @throws URISyntaxException 
 	 */
 	public void validate(ExceptionHandler exceptionHandler, URL url) {
-		File f = null;
-		try {
-			f = new File(url.toURI());
-		} catch (URISyntaxException e) {
-			// Cannot happen - a URL can always be converted to a URI.
-		}
-
 		if (targetRegistrar == null) {
 			System.err.println("Configuration error - targetRegistrar not specified in LocationValidator.validate()");
 			return;
 		}
 
-		ValidationRule rule = getRule(f);
-		String location = url.getFile();
+		ValidationRule rule = getRule(url);
+		String location = url.toString();
 		if (rule == null) {
 			LOG.error("No matching validation rule found for location {}", location);
 		} else {
-			LOG.error("Using validation style '{}' for location {}", rule.getCaption(), location);
+			LOG.info("Using validation style '{}' for location {}", rule.getCaption(), location);
+			if (!rule.isApplicable(location)) {
+			  LOG.error("'{}' validation style is not applicable for location {}", rule.getCaption(), location);
+			  return;
+			}
 			ProblemListener listener = new ListenerExceptionPropagator(exceptionHandler);
 			ValidationTask task = new ValidationTask(listener, ruleContext, targetRegistrar);
 			task.setLocation(location);
 			task.setRule(rule);
 			task.setRuleManager(ruleManager);
+			Crawler crawler = CrawlerFactory.newInstance(url);
+			ruleContext.setCrawler(crawler);
+			ruleContext.setRule(rule);
 			taskManager.submit(task);
 		}
 	}
@@ -143,7 +160,7 @@ public class LocationValidator {
 		this.taskManager = manager;
 	}
 	
-	private ValidationRule getRule(File location) {
+	private ValidationRule getRule(URL location) {
 		String validationType = settingsManager.getString(ValidationSettings.VALIDATION_RULE, null);
 		if (validationRule != null) {
 			validationType = validationRule;
@@ -151,7 +168,13 @@ public class LocationValidator {
 		ValidationRule rule;
 		
 		if (validationType == null) {
-			rule = ruleManager.findApplicableRule(location.getAbsolutePath());
+		  URI uri = null;
+		  try {
+		    uri = location.toURI();
+		  } catch (URISyntaxException e) {
+		    //Can't happen
+		  }
+			rule = ruleManager.findApplicableRule(uri.normalize().toString());
 			if (rule == null) {
 				System.err.println("No validation type specified and no applicable default rules.");
 			}
@@ -206,8 +229,9 @@ public class LocationValidator {
 	}
 
 	public void setForce(boolean force) {
-		// TODO Auto-generated method stub
-		
+    labelValidator.setSchemaCheck(true, force);
+    labelValidator.setSchematronCheck(true, force);
+    ruleContext.setForceLabelSchemaValidation(force);
 	}
 
 	public void setFileFilters(List<String> regExps) {
@@ -216,6 +240,10 @@ public class LocationValidator {
 
 	public void setRecurse(boolean traverse) {
 		ruleContext.setRecursive(traverse);
+	}
+	
+	public void setChecksumManifest(Map<URL, String> checksums) {
+	  ruleContext.setChecksumManifest(checksums);
 	}
 
 	/**
@@ -275,6 +303,19 @@ public class LocationValidator {
 			);
 			handler.addException(ex);
 		}
+		
+    @Override
+    public void addProblem(LabelException exception) {
+      ExceptionType type = exception.getExceptionType();
+      if (ExceptionType.FATAL.equals(type) || ExceptionType.ERROR.equals(type)) {
+        ++errorCount;
+      } else if (ExceptionType.WARNING.equals(type)) {
+        ++warningCount;
+      } else {
+        ++infoCount;
+      }
+      handler.addException(exception); 
+    }
 
 		@Override
 		public int getErrorCount() {
@@ -306,7 +347,6 @@ public class LocationValidator {
 				String location, boolean includeChildren) {
 			return null;
 		}
-		
 	}
 	
 	/**

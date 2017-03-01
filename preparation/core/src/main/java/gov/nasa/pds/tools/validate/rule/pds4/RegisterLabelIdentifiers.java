@@ -1,8 +1,24 @@
+// Copyright 2006-2017, by the California Institute of Technology.
+// ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
+// Any commercial use must be negotiated with the Office of Technology Transfer
+// at the California Institute of Technology.
+//
+// This software is subject to U. S. export control laws and regulations
+// (22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software
+// is subject to U.S. export control laws and regulations, the recipient has
+// the responsibility to obtain export licenses or other export authority as
+// may be required before exporting such information to foreign countries or
+// providing access to foreign nationals.
+//
+// $Id$
 package gov.nasa.pds.tools.validate.rule.pds4;
 
 import gov.nasa.pds.tools.validate.TargetRegistrar;
 import gov.nasa.pds.tools.validate.rule.AbstractValidationRule;
 import gov.nasa.pds.tools.validate.rule.ValidationTest;
+
+import java.net.URI;
+import java.net.URISyntaxException;
 
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.xpath.XPathConstants;
@@ -19,57 +35,62 @@ import org.w3c.dom.NodeList;
  */
 public class RegisterLabelIdentifiers extends AbstractValidationRule {
 
-    private static final String PDS4_NS = "http://pds.nasa.gov/pds4/pds/v1";
+  private static final String PDS4_NS = "http://pds.nasa.gov/pds4/pds/v1";
 
-    private static final String IDENTIFIERS_PATH
-        = "//*:Identification_Area[namespace-uri()='" + PDS4_NS + "']"
-        + "/*:logical_identifier[namespace-uri()='" + PDS4_NS + "']";
+  private static final String IDENTIFIERS_PATH
+      = "//*:Identification_Area[namespace-uri()='" + PDS4_NS + "']"
+      + "/*:logical_identifier[namespace-uri()='" + PDS4_NS + "']";
 
-    private XPathFactory xPathFactory;
+  private XPathFactory xPathFactory;
 
-    /**
-     * Creates a new instance.
-     */
-    public RegisterLabelIdentifiers() {
-        xPathFactory = new net.sf.saxon.xpath.XPathFactoryImpl();
+  /**
+   * Creates a new instance.
+   */
+  public RegisterLabelIdentifiers() {
+    xPathFactory = new net.sf.saxon.xpath.XPathFactoryImpl();
+  }
+
+  @Override
+  public boolean isApplicable(String location) {
+    // The rule is applicable if a label has been parsed.
+    return getContext().containsKey(PDS4Context.LABEL_DOCUMENT);
+  }
+
+  /**
+   * Tests that label identifiers are uniquely defined.
+   *
+   * @throws XPathExpressionException if there is an error processing the XPath to
+   *   the label logical identifier
+   */
+  @ValidationTest
+  public void registerIdentifiers() throws XPathExpressionException {
+    // We have a reference to the current target, since it is a label.
+    getRegistrar().setTargetIsLabel(getTarget().toString(), true);
+
+    Document label = getContext().getContextValue(PDS4Context.LABEL_DOCUMENT, Document.class);
+    DOMSource source = new DOMSource(label);
+
+    NodeList identifiers = (NodeList) xPathFactory.newXPath().evaluate(IDENTIFIERS_PATH, source, XPathConstants.NODESET);
+    for (int i=0; i < identifiers.getLength(); ++i) {
+      Node name = identifiers.item(i);
+      registerIdentifier(name.getTextContent());
     }
+  }
 
-    @Override
-    public boolean isApplicable(String location) {
-        // The rule is applicable if a label has been parsed.
-        return getContext().containsKey(PDS4Context.LABEL_DOCUMENT);
+  private void registerIdentifier(String id) {
+    TargetRegistrar registrar = getRegistrar();
+    URI target = null;
+    try {
+      target = getTarget().toURI();
+    } catch (URISyntaxException e) {
+      //Should never happen
     }
-
-    /**
-     * Tests that label identifiers are uniquely defined.
-     *
-     * @throws XPathExpressionException if there is an error processing the XPath to
-     *   the label logical identifier
-     */
-    @ValidationTest
-    public void registerIdentifiers() throws XPathExpressionException {
-        // We have a reference to the current target, since it is a label.
-        getRegistrar().setTargetIsLabel(getTarget().getAbsolutePath(), true);
-
-        Document label = getContext().getContextValue(PDS4Context.LABEL_DOCUMENT, Document.class);
-        DOMSource source = new DOMSource(label);
-
-        NodeList identifiers = (NodeList) xPathFactory.newXPath().evaluate(IDENTIFIERS_PATH, source, XPathConstants.NODESET);
-        for (int i=0; i < identifiers.getLength(); ++i) {
-            Node name = identifiers.item(i);
-            registerIdentifier(name.getTextContent());
-        }
+    if (registrar.getTargetForIdentifier(id) == null) {
+      registrar.setTargetIdentifier(target.normalize().toString(), id);
+    } else {
+      String message = String.format("Identifier %s already defined (old location: %s)",
+                id, registrar.getTargetForIdentifier(id));
+      reportError(PDS4Problems.DUPLICATE_LOGICAL_IDENTIFIER, getTarget(), -1, -1, message);
     }
-
-    private void registerIdentifier(String id) {
-        TargetRegistrar registrar = getRegistrar();
-        if (registrar.getTargetForIdentifier(id) == null) {
-            registrar.setTargetIdentifier(getTarget().getAbsolutePath(), id);
-        } else {
-            String message = String.format("Identifier %s already defined (old location: %s)",
-                    id, registrar.getTargetForIdentifier(id));
-            reportError(PDS4Problems.DUPLICATE_LOGICAL_IDENTIFIER, getTarget(), -1, -1, message);
-        }
-    }
-
+  }
 }

@@ -11,24 +11,30 @@
 // providing access to foreign nationals.
 //
 // $Id$
-package gov.nasa.pds.tools.validate.rule.pds4;
+package gov.nasa.pds.tools.validate.crawler;
 
-import gov.nasa.pds.tools.util.Utility;
-import gov.nasa.pds.tools.validate.rule.AbstractValidationChain;
-
-import java.util.regex.Pattern;
+import java.net.URL;
 
 /**
- * Implements a rule chain for validating PDS4 directories, but not
- * necessarily bundles or collections.
+ * Factory class to instantiate the different Crawler objects.
+ *
+ * @author mcayanan
+ *
  */
-public class DirectoryValidationRule extends AbstractValidationChain {
+public class CrawlerFactory {
 
-	private static final Pattern LABEL_PATTERN = Pattern.compile(".*\\.xml", Pattern.CASE_INSENSITIVE);
-
-	@Override
-	public boolean isApplicable(String location) {
-	  return Utility.isDir(location);
-	}
-
+  /**
+   * Creates the appropriate Crawler object based on the given inputs.
+   *
+   * @param url The url.
+   *
+   * @return The appropriate Crawler object.
+   */ 
+  public static Crawler newInstance(URL url) {
+    if ("file".equalsIgnoreCase(url.getProtocol())) {
+      return new FileCrawler();
+    } else {
+      return new URLCrawler();
+    }    
+  }
 }

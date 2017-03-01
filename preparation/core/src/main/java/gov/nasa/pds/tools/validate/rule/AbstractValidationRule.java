@@ -1,3 +1,16 @@
+// Copyright 2006-2017, by the California Institute of Technology.
+// ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
+// Any commercial use must be negotiated with the Office of Technology Transfer
+// at the California Institute of Technology.
+//
+// This software is subject to U. S. export control laws and regulations
+// (22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software
+// is subject to U.S. export control laws and regulations, the recipient has
+// the responsibility to obtain export licenses or other export authority as
+// may be required before exporting such information to foreign countries or
+// providing access to foreign nationals.
+//
+// $Id$
 package gov.nasa.pds.tools.validate.rule;
 
 import gov.nasa.pds.tools.validate.ProblemDefinition;
@@ -5,11 +18,12 @@ import gov.nasa.pds.tools.validate.ProblemListener;
 import gov.nasa.pds.tools.validate.TargetRegistrar;
 import gov.nasa.pds.tools.validate.ValidationTarget;
 import gov.nasa.pds.tools.validate.ValidationProblem;
-import gov.nasa.pds.tools.validate.ValidationResourceManager;
 
-import java.io.File;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
 
 import org.apache.commons.chain.Context;
 
@@ -23,7 +37,7 @@ public abstract class AbstractValidationRule implements ValidationRule {
 
 	private RuleContext context;
 	private ProblemListener listener;
-    private String caption;
+  private String caption;
 
 	/**
 	 * {@inheritDoc}
@@ -39,13 +53,14 @@ public abstract class AbstractValidationRule implements ValidationRule {
 	public boolean execute(Context theContext) throws Exception {
 		this.context = (RuleContext) theContext;
 		listener = context.getProblemListener();
-
-		// Run each annotated validation test.
-		for (Method m : getClass().getMethods()) {
-			Annotation a = m.getAnnotation(ValidationTest.class);
-			if (a != null) {
-				m.invoke(this, new Object[0]);
-			}
+		if (isApplicable(getTarget().toString())) {
+  		// Run each annotated validation test.
+  		for (Method m : getClass().getMethods()) {
+  			Annotation a = m.getAnnotation(ValidationTest.class);
+  			if (a != null) {
+  				m.invoke(this, new Object[0]);
+  			}
+  		}
 		}
 
 		return false;
@@ -57,7 +72,7 @@ public abstract class AbstractValidationRule implements ValidationRule {
 	 * @return the context
 	 */
 	protected RuleContext getContext() {
-	    return context;
+	  return context;
 	}
 
 	/**
@@ -66,17 +81,26 @@ public abstract class AbstractValidationRule implements ValidationRule {
 	 *
 	 * @param child the child target
 	 * @return a new rule context for validating the child
+	 * @throws URISyntaxException 
+	 * @throws MalformedURLException 
 	 */
-	protected RuleContext getChildContext(File child) {
-	    RuleContext newContext = new RuleContext();
+	protected RuleContext getChildContext(URL child) 
+	    throws MalformedURLException, URISyntaxException {
+    RuleContext newContext = new RuleContext();
 
-	    newContext.setProblemListener(context.getProblemListener());
-	    newContext.setRuleManager(context.getRuleManager());
-	    newContext.setTargetRegistrar(context.getTargetRegistrar());
-        newContext.setTarget(child);
-        newContext.setRootTarget(false);
+    newContext.setProblemListener(context.getProblemListener());
+    newContext.setRuleManager(context.getRuleManager());
+    newContext.setTargetRegistrar(context.getTargetRegistrar());
+    newContext.setTarget(child);
+    newContext.setRootTarget(false);
+    newContext.setRecursive(context.isRecursive());
+    newContext.setCrawler(context.getCrawler());
+    newContext.setFileFilters(context.getFileFilters());
+    newContext.setChecksumManifest(context.getChecksumManifest());
+    newContext.setForceLabelSchemaValidation(context.isForceLabelSchemaValidation());
+    newContext.setRule(context.getRule());
 
-	    return newContext;
+    return newContext;
 	}
 
 	/**
@@ -84,7 +108,7 @@ public abstract class AbstractValidationRule implements ValidationRule {
 	 *
 	 * @return the validation target
 	 */
-	protected File getTarget() {
+	protected URL getTarget() {
 		return context.getTarget();
 	}
 
@@ -94,64 +118,64 @@ public abstract class AbstractValidationRule implements ValidationRule {
 	 * @return the parent target location, or null if no parent
 	 */
 	protected String getParentTarget() {
-	    return context.getParentTarget();
+	  return context.getParentTarget();
 	}
 
-    /**
-     * Gets the problem listener for this validation rule.
-     *
-     * @return the problem listener
-     */
-    protected ProblemListener getListener() {
-        return listener;
-    }
+  /**
+   * Gets the problem listener for this validation rule.
+   *
+   * @return the problem listener
+   */
+  protected ProblemListener getListener() {
+    return listener;
+  }
 
-    /**
-     * Gets the target registrar for this validation rule.
-     *
-     * @return the target registrar
-     */
-    protected TargetRegistrar getRegistrar() {
-        return context.getTargetRegistrar();
-    }
+  /**
+   * Gets the target registrar for this validation rule.
+   *
+   * @return the target registrar
+   */
+  protected TargetRegistrar getRegistrar() {
+    return context.getTargetRegistrar();
+  }
 
-    /**
-     * Reports an error to the validation listener.
-     *
-     * @param defn the problem definition
-     * @param targetFile the validation target file containing the problem
-     * @param lineNumber the line number, or -1 if no line number applies
-     * @param columnNumber the column number, or -1 if no column number applies
-     */
-    protected void reportError(
-            ProblemDefinition defn,
-            File targetFile,
-            int lineNumber,
-            int columnNumber
-    ) {
-        ValidationProblem problem = new ValidationProblem(defn, new ValidationTarget(targetFile), lineNumber, columnNumber, defn.getMessage());
-        listener.addProblem(problem);
-    }
+  /**
+   * Reports an error to the validation listener.
+   *
+   * @param defn the problem definition
+   * @param targetFile the validation target file containing the problem
+   * @param lineNumber the line number, or -1 if no line number applies
+   * @param columnNumber the column number, or -1 if no column number applies
+   */
+  protected void reportError(
+          ProblemDefinition defn,
+          URL targetUrl,
+          int lineNumber,
+          int columnNumber
+  ) {
+    ValidationProblem problem = new ValidationProblem(defn, new ValidationTarget(targetUrl), lineNumber, columnNumber, defn.getMessage());
+    listener.addProblem(problem);
+  }
 
-    /**
-     * Reports an error to the validation listener with a custom message.
-     *
-     * @param defn the problem definition
-     * @param target the validation target containing the problem
-     * @param lineNumber the line number, or -1 if no line number applies
-     * @param columnNumber the column number, or -1 if no column number applies
-     * @param message the error message to report
-     */
-    protected void reportError(
-            ProblemDefinition defn,
-            File target,
-            int lineNumber,
-            int columnNumber,
-            String message
-    ) {
-        ValidationProblem problem = new ValidationProblem(defn, new ValidationTarget(target), lineNumber, columnNumber, message);
-        listener.addProblem(problem);
-    }
+  /**
+   * Reports an error to the validation listener with a custom message.
+   *
+   * @param defn the problem definition
+   * @param target the validation target containing the problem
+   * @param lineNumber the line number, or -1 if no line number applies
+   * @param columnNumber the column number, or -1 if no column number applies
+   * @param message the error message to report
+   */
+  protected void reportError(
+          ProblemDefinition defn,
+          URL target,
+          int lineNumber,
+          int columnNumber,
+          String message
+  ) {
+    ValidationProblem problem = new ValidationProblem(defn, new ValidationTarget(target), lineNumber, columnNumber, message);
+    listener.addProblem(problem);
+  }
 
 	/**
 	 * Tests whether a rule is applicable to a target location.
@@ -162,18 +186,18 @@ public abstract class AbstractValidationRule implements ValidationRule {
 	@Override
 	public abstract boolean isApplicable(String location);
 
-    @Override
-    public final String getCaption() {
-        return caption;
-    }
+  @Override
+  public final String getCaption() {
+    return caption;
+  }
 
-    /**
-     * Sets the caption for this chain.
-     *
-     * @param caption the new caption string
-     */
-    public final void setCaption(String caption) {
-        this.caption = caption;
-    }
+  /**
+   * Sets the caption for this chain.
+   *
+   * @param caption the new caption string
+   */
+  public final void setCaption(String caption) {
+    this.caption = caption;
+  }
 
 }

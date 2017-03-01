@@ -82,7 +82,8 @@ public class LabelValidatorTest {
 		  }
 		}
 	}
-
+	// Comment out unit test with Xinclude statement as we don't want to support this feature anymore.
+/*
 	@Test
 	public void testXIncludeWithGoodLabel() throws IOException, MalformedURLException, SAXException, ParserConfigurationException, TransformerException, MissingLabelSchemaException {
 		LabelValidator validator = new LabelValidator();
@@ -94,7 +95,7 @@ public class LabelValidatorTest {
 		assertThat(container.hasFatal(), is(false));
 		assertThat(container.hasError(), is(false));
 	}
-
+*/
 	// Test that there is a Schematron error for a collection label
 	// indicating that "comma" is not a valid delimiter.
   @Test
