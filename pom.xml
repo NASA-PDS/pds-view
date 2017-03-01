@@ -52,7 +52,7 @@
 
   <properties>
     <!-- Internal Dependency Version -->
-    <core-version>1.10.0</core-version>
+    <core-version>1.11.0-dev</core-version>
     <pds4-tools-version>0.7.0</pds4-tools-version>
     <generate-version>0.11.0</generate-version>
     <transform-version>1.4.0</transform-version>
