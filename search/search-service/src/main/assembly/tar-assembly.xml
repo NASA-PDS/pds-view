@@ -27,7 +27,14 @@
   </formats>
 
   <fileSets>
-    <fileSet>
+  	<fileSet>
+      <directory>target</directory>
+      <outputDirectory>/</outputDirectory>
+      <includes>
+        <include>${artifact.artifactId}.war</include>
+      </includes>
+    </fileSet>
+    <!--fileSet>
       <directory>target</directory>
       <outputDirectory>lib</outputDirectory>
       <includes>
@@ -35,7 +42,7 @@
       </includes>
       <fileMode>644</fileMode>
       <lineEnding>keep</lineEnding>
-    </fileSet>
+    </fileSet-->
     <fileSet>
       <directory>src/main/resources</directory>
       <excludes>
@@ -79,7 +86,7 @@
     </file>
   </files>
 
-  <dependencySets>
+  <!--dependencySets>
     <dependencySet>
       <outputDirectory>lib</outputDirectory>
       <includes>
@@ -102,6 +109,6 @@
       </includes>
       <outputFileNameMapping>${artifact.artifactId}.war</outputFileNameMapping>
     </dependencySet>
-  </dependencySets>
+  </dependencySets-->
 
 </assembly>

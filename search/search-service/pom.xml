@@ -25,7 +25,7 @@
 
   <groupId>gov.nasa.pds.2010.search</groupId>
   <artifactId>search-service</artifactId>
-  <packaging>jar</packaging>
+  <packaging>war</packaging>
 
   <name>Search Service</name>
   <description>
@@ -66,17 +66,6 @@
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <configuration>
-          <archive>
-            <manifest>
-              <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
-            </manifest>
-          </archive>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-assembly-plugin</artifactId>
         <executions>
           <execution>
@@ -103,7 +92,24 @@
           <wtpversion>1.5</wtpversion>
         </configuration>
       </plugin>
-    </plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <version>2.6</version>
+        <configuration>
+          <warName>search-service</warName>
+          <archive>
+            <manifest>
+              <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+            </manifest>
+          </archive>
+          <packagingExcludes>WEB-INF/classes/pds/**,
+                WEB-INF/classes/experimental/**,
+                WEB-INF/classes/solr.xml,
+                WEB-INF/classes/log4j.properties</packagingExcludes>
+        </configuration>
+      </plugin>
+    </plugins> 
   </build>
 
   <repositories>

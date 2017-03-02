@@ -27,6 +27,9 @@
       <action dev="jpadams" type="update" issue="PDS-475">
         Update search-tools.xml to include updated PDS Imaging Node search references.
       </action>
+      <action dev="hyunlee" type="update" issue="PDS-458">
+        Restructure the search-service package to overlay the Solr WAR.
+      </action>
     </release>
 
     <release version="1.9.0" date="2016-09-30" description="This release of the Search Service is a component of the integrated release 7.0.0 of the PDS4 System. This is an operational release of the system components to date.">

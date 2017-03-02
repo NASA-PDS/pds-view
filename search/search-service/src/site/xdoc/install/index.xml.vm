@@ -101,15 +101,15 @@ or
         <li><b>experimental/</b><br />
           <p>This directory contains the configuration for the experimental core for Solr. This directory is intended for development and testing purposes only, and can be ignored.</p>
         </li>
-        <li><b>lib/</b><br />
+        <!--li><b>lib/</b><br />
           <p>This directory contains the the jars used by the Solr software.</p>
-        </li>
+        </li-->
         <li><b>pds/</b><br />
           <p>This directory contains the configuration for the Solr core for the PDS Search.  This directory path is the SEARCH_HOME referenced in the <a href="../../search-core/operate/index.html">Search Core Operation documentation</a>
           </p>
         </li>
-        <li><b>solr.war</b><br />
-          <p>This WAR file is the Solr software application to be deployed to Tomcat.</p>
+        <li><b>search-service.war</b><br />
+          <p>This WAR file is the Solr software application to be deployed to Tomcat. It also contains the jars used by the Solr software.</p>
         </li>
         <li><b>solr.xml</b><br />
           <p>This XML file provides the basic, initial configuration for the Solr software.</p>
@@ -126,41 +126,6 @@ or
           <li>Create a symbolic link to the Search Service installation directory to provide an easier method of upgrade in the future. The following demonstrates how to create this symbolic link:
             <source>
 ln -s /usr/local/${project.artifactId}-${project.version} /usr/local/${project.artifactId}
-            </source>
-          </li>
-          <li>Create a Tomcat context file <i>${project.artifactId}.xml</i> to refer to the Solr WAR file (found in the $SEARCH_SERVICE_HOME directory) and place it in the <i>$TOMCAT_HOME/conf/Catalina/{hostname}</i> ({hostname} is typically <i>localhost</i>) directory. For Tomcat version 7, the <i>${project.artifactId}.xml</i> file should look something like this, with the paths modified as needed:
-            <source>
-&lt;?xml version="1.0" encoding="utf-8" ?&gt;
-&lt;Context docBase="/usr/local/${project.artifactId}/solr.war" debug="0" 
-      crossContext="true"&gt;
-  &lt;Environment name="solr/home" type="java.lang.String" 
-        value="/usr/local/${project.artifactId}" override="true" /&gt;
-  &lt;Parameter name="javax.xml.transform.TransformerFactory" 
-        type="java.lang.String" value="net.sf.saxon.TransformerFactoryImpl" 
-        override="true"/&gt;
-  &lt;Loader className="org.apache.catalina.loader.VirtualWebappLoader"
-        virtualClasspath="/usr/local/${project.artifactId}/lib/*.jar;\
-        /usr/local/search-service/log4j.properties"/&gt;
-&lt;/Context&gt;
-            </source>
-            <p>For Tomcat version 8, the <i>${project.artifactId}.xml</i> file should look something like this, with the paths modified as needed:
-            </p>
-            <source>
-&lt;?xml version="1.0" encoding="utf-8" ?&gt;
-&lt;Context docBase="/usr/local/${project.artifactId}/solr.war" crossContext="true"&gt;
-  &lt;Environment name="solr/home" type="java.lang.String" 
-    value="/usr/local/${project.artifactId}/" override="true" /&gt;
-  &lt;Parameter name="javax.xml.transform.TransformerFactory" 
-    value="net.sf.saxon.TransformerFactoryImpl"  override="true"/&gt;
-  &lt;Resources className="org.apache.catalina.webresources.StandardRoot"&gt;
-    &lt;PreResources className="org.apache.catalina.webresources.FileResourceSet"
-      base="/usr/local/${project.artifactId}/log4j.properties"
-      webAppMount="/WEB-INF/log4j.properties"/&gt;
-    &lt;PostResources className="org.apache.catalina.webresources.DirResourceSet"
-      base="/usr/local/${project.artifactId}/lib/"
-      webAppMount="/WEB-INF/lib"/&gt;
-  &lt;/Resources&gt;
-&lt;/Context&gt;
             </source>
           </li>
           <li><p>Append to the <i>CATALINA_OPTS</i> and <i>JAVA_OPTS</i> environment variables by adding the following line to the <i>$TOMCAT_HOME/bin/setenv.sh</i> script:</p>
