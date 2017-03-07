@@ -1305,53 +1305,6 @@ function init(){
         clearInputFields();
         clearValidationMarks();
 
-
-        /*
-        var type = $('#toolTypeInput option:selected').text();
-        var abstract_desc = $("#abstractDescriptionInput").val();
-        var description = $("#descriptionInput").val();
-
-        var url = $("#urlContainer .urlInput").map(function() {
-          return this.value;
-        }).get().join(",");
-
-        var user_input_version_id = $("#versionInput").val();
-        var release_date = $("#releaseDateInput").val();
-        var support = $('#support .radio input[name=supportRadios]:checked').val();
-
-        var category = $("#category .checkbox input[name=categoryCheckboxes]:checked").map(function() {
-          return this.value;
-        }).get().join(",");
-
-        var interface_type = $("#interfaceType .checkbox input[name=interfaceTypeCheckboxes]:checked").map(function() {
-          return this.value;
-        }).get().join(",");
-
-        var software_language = $("#softwareLanguageContainer .softwareLanguageInput").map(function() {
-          return this.value;
-        }).get().join(",");
-
-        var supported_operating_systems = $("#supportedOperatingSystemsInput").val();
-        var system_requirements = $("#systemRequirementsInput").val();
-        var citation = $("#citationInput").val();
-        var submitter_name = $("#submitterNameInput").val();
-        var submitter_institution = $("#submitterInstitutionInput").val();
-        var submitter_email = $("#submitterEmailInput").val();
-
-
-        var wFileNames = $("#serviceInterfaceInformationDescription .wFileName").map(function() {
-          return this.value;
-        }).get().join(",");
-        var wFileTypes = $('.wFileType input:checked').map(function() {
-          return this.value;
-        }).get().join(",");
-        var wFileOffsets = $("#serviceInterfaceInformationDescription .wFileOffset").map(function() {
-          return this.value;
-        }).get().join(",");
-        var wFileDescriptions = $("#serviceInterfaceInformationDescription .wFileDescription").map(function() {
-          return this.value;
-        }).get().join(",");
-        */
           $("#finishButton").addClass("btn-success");
           $("#finishButton").removeClass("btn-danger");
         }else{

@@ -157,7 +157,8 @@ AjaxSolr.SearchWidget = AjaxSolr.AbstractTextWidget.extend({
     self.manager.store.addByValue('product-class', 'Product_Service');
 
     qString = "*:*";
-    fqString = "title:(*" + keyword + "*) OR service_abstract_desc:(*" + keyword + "*) OR service_description:(*" + keyword + "*)";
+    //fqString = "product-class:product_service AND title:(*" + keyword + "*) OR service_abstract_desc:(*" + keyword + "*) OR service_description:(*" + keyword + "*)";
+      fqString = "product-class:product_service AND (title:*" + keyword + "* OR service_abstract_desc:*" + keyword + "* OR service_description:*" + keyword + "*)";
 
     if(sort === 'ascAlpha'){
       self.manager.store.addByValue('sort', 'service_name asc');
@@ -170,17 +171,21 @@ AjaxSolr.SearchWidget = AjaxSolr.AbstractTextWidget.extend({
     }
     else if(pdsVersion === "pds3"){
       qString += " " + "pds_model_version:PDS3";
+      fqString += " AND pds_model_version:PDS3";
     }
     else if(pdsVersion === "pds4"){
       qString += " " + "pds_model_version:PDS4";
+      fqString += " AND pds_model_version:PDS4";
     }
 
     if(interfaceType !== "All"){
       qString += " " + "service_interface_type:" + interfaceType;
+      fqString += " AND service_interface_type:" + interfaceType;
     }
 
     if(category !== "All"){
       qString += " " + "service_category:" + category;
+      fqString += " AND service_category:" + category;
     }
 
 
