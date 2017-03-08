@@ -127,14 +127,17 @@ AjaxSolr.SearchWidget = AjaxSolr.AbstractTextWidget.extend({
     var objectName = "";
     var objectType = "";
     var qString = "";
+    var fqString = "";
 
     if(type === "attribute"){
       self.manager.store.addByValue('product-class', 'Product_Attribute_Definition');
 
       //if keyword search:
       qString = "attribute_name:" + "*" + keyword + "*";
+      fqString = "product-class:product_attribute_definition AND (attribute_name:*" + keyword + "*)";
       if (searchToggle === "match"){
         qString = "attribute_name:" + keyword + "*";
+        fqString = "product-class:product_attribute_definition AND (attribute_name:" + keyword + "*)";
       }
 
       objectName = "attribute_name";
@@ -145,8 +148,10 @@ AjaxSolr.SearchWidget = AjaxSolr.AbstractTextWidget.extend({
 
       //if keyword search:
       qString = "class_name:" + "*" + keyword + "*";
+      fqString = "product-class:product_class_definition AND (class_name:*" + keyword + "*)";
       if (searchToggle === "match"){
         qString = "class_name:" + keyword + "*";
+        fqString = "product-class:product_class_definition AND (class_name:" + keyword + "*)";
       }
 
       objectName = "class_name";
@@ -164,13 +169,26 @@ AjaxSolr.SearchWidget = AjaxSolr.AbstractTextWidget.extend({
     }
     else if(pdsVersion === "pds3"){
       qString += " " + objectType + ":PDS3";
+      fqString += " AND " + objectType + ":PDS3";
     }
     else if(pdsVersion === "pds4"){
       qString += " " + objectType + ":PDS4";
+      fqString += " AND " + objectType + ":PDS4";
     }
 
     if(qString.length > 0){
       self.manager.store.addByValue('q', qString);
+    }
+
+    if(fqString.length > 0){
+        console.log("fq", fqString);
+
+        var lastFq = self.manager.store.get('fq');
+        for(var i = 0; i < lastFq.length; i++){
+            self.manager.store.removeByValue(lastFq[i].name, lastFq[i].value);
+        }
+
+        self.manager.store.addByValue('fq', fqString);
     }
 
     //Reset pager widget to start on page 1
