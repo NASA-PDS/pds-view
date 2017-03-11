@@ -820,7 +820,7 @@
  <defaultSearchField>text</defaultSearchField>
 
  <!-- SolrQueryParser configuration: defaultOperator="AND|OR" -->
- <solrQueryParser defaultOperator="AND"/>
+ <solrQueryParser defaultOperator="OR"/>
  
  
   <!-- copyField commands copy one field to another at the time a document

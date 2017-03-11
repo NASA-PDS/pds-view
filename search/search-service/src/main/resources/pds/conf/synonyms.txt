@@ -12,5 +12,8 @@
 
 #-----------------------------------------------------------------------
 
+mer, opportunity, spirit
+mpf, pathfinder, sojourner
+msl, curiosity
 psa, esa
 spectra, spectrum
