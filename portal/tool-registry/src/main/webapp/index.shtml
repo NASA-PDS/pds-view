@@ -46,7 +46,7 @@
   <div id="content">
     <h1>Tool Registry</h1>
     <p class="formp">
-      The registry provides a list of tools, services, and APIs for working with data following the PDS standards. Tools have been submitted from the broad PDS community and multiple institutions, including those from members of the International Planetary Data Alliance (IPDA). This interface allows the user to search for and discover these tools. The interface also allows tool providers to submit their software for inclusion in the registry.
+      This interface enables search and discovery of tools, services, and APIs for working with data following the PDS standards. Tools have been submitted from the broad PDS community and multiple institutions, including those from members of the International Planetary Data Alliance (IPDA). This interface allows the user to search for and discover these tools. The interface also allows tool providers to submit their software for inclusion in the registry.
     </p>
     <div class="tw-bs">
       <div class="pageControl">

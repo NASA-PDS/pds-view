@@ -44,15 +44,17 @@
   <!-- Main content -->
   <div id="content">
     <h1>Data Dictionary Search</h1>
+    <p class="formp">
+      This interface enables search and discovery of the attributes and classes that make up the PDS information model. It supports both PDS3 (keywords and objects from the ODL-based labels) and PDS4 (attributes and classes from the XML-based labels).
+    </p>
     <div class="tw-bs">
-
       <div id="searchDiv">
         <div class="panel panel-default">
           <div class="panel-body">
             <div id="ddSearch"><!--Ajax solr form begin-->
 
               <div class="form-horizontal">
-                <p class="formp"><strong>Browse or search the PDS data dictionary. Discover attributes or classes from both the PDS3 and PDS4 dictionaries. Select an item to view the details.</strong></p>
+                <p class="formp"><strong>Browse or search the PDS data dictionary. Select an item to view the details.</strong></p>
                 <div class="input-group">
                   <div class="input-group-btn">
                     <button id="ddSearchToggleButton" type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Search <span class="caret"></span></button>
