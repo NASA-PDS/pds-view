@@ -32,9 +32,9 @@ public class InMemoryRegistrar implements TargetRegistrar {
   private Map<String, ValidationTarget> targets = new HashMap<String, ValidationTarget>();
   private Map<String, String> references = new HashMap<String, String>();
   private Set<String> referencedTargetLocations = new HashSet<String>();
-  private Map<String, String> identifierDefinitions = new HashMap<String, String>();
-  private Map<String, String> identifierReferenceLocations = new HashMap<String, String>();
-  private Set<String> referencedIdentifiers = new HashSet<String>();
+  private Map<Identifier, String> identifierDefinitions = new HashMap<Identifier, String>();
+  private Map<Identifier, String> identifierReferenceLocations = new HashMap<Identifier, String>();
+  private List<Identifier> referencedIdentifiers = new ArrayList<Identifier>();
 
   @Override
   public ValidationTarget getRoot() {
@@ -107,7 +107,7 @@ public class InMemoryRegistrar implements TargetRegistrar {
   }
 
   @Override
-  public synchronized void setTargetIdentifier(String location, String identifier) {
+  public synchronized void setTargetIdentifier(String location, Identifier identifier) {
     targets.get(location).setIdentifier(identifier);
     identifierDefinitions.put(identifier, location);
   }
@@ -124,21 +124,25 @@ public class InMemoryRegistrar implements TargetRegistrar {
   }
 
   @Override
-  public synchronized void addIdentifierReference(String referenceLocation, String identifier) {
+  public synchronized void addIdentifierReference(String referenceLocation, Identifier identifier) {
     referencedIdentifiers.add(identifier);
     identifierReferenceLocations.put(identifier, referenceLocation);
   }
 
   @Override
-  public synchronized boolean isIdentifierReferenced(String identifier) {
+  public synchronized boolean isIdentifierReferenced(Identifier identifier) {
     return referencedIdentifiers.contains(identifier);
   }
 
   @Override
-  public synchronized String getTargetForIdentifier(String identifier) {
+  public synchronized String getTargetForIdentifier(Identifier identifier) {
     return identifierDefinitions.get(identifier);
   }
 
+  public Map<Identifier, String> getIdentifierDefinitions() {
+    return this.identifierDefinitions;
+  }
+  
   @Override
   public synchronized Collection<String> getUnreferencedTargets() {
     Set<String> unreferencedTargets = new TreeSet<String>();
@@ -153,21 +157,31 @@ public class InMemoryRegistrar implements TargetRegistrar {
   }
 
   @Override
-  public synchronized Collection<String> getUnreferencedIdentifiers() {
-    Set<String> unreferencedIdentifiers = new HashSet<String>();
-    unreferencedIdentifiers.addAll(identifierDefinitions.keySet());
-    unreferencedIdentifiers.removeAll(referencedIdentifiers);
+  public synchronized Collection<Identifier> getUnreferencedIdentifiers() {
+    List<Identifier> unreferencedIdentifiers = new ArrayList<Identifier>();
+    for(Identifier id : identifierDefinitions.keySet()) {     
+      boolean found = false;
+      for (Identifier ri : referencedIdentifiers) {
+        if (ri.equals(id)) {
+          found = true;
+          break;
+        }
+      }
+      if (!found) {
+        unreferencedIdentifiers.add(id);        
+      }
+    }
     return unreferencedIdentifiers;
   }
 
   @Override
   public synchronized Collection<IdentifierReference> getDanglingReferences() {
-    Set<String> undefinedIdentifiers = new HashSet<String>();
+    Set<Identifier> undefinedIdentifiers = new HashSet<Identifier>();
     undefinedIdentifiers.addAll(referencedIdentifiers);
     undefinedIdentifiers.removeAll(identifierDefinitions.keySet());
 
     Set<IdentifierReference> danglingRefs = new TreeSet<IdentifierReference>();
-    for (String identifier : undefinedIdentifiers) {
+    for (Identifier identifier : undefinedIdentifiers) {
       danglingRefs.add(new IdentifierReference(identifierReferenceLocations.get(identifier), identifier));
     }
 

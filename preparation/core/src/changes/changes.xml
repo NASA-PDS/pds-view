@@ -44,7 +44,10 @@
       </action>
       <action dev="mcayanan" type="update" issue="PDS-488">
         Disabled support for xinclude pointers.
-      </action>      
+      </action> 
+      <action dev="mcayanan" type="add" issue="PDS-490">
+        Added integrity checking feature to the pds4.bundle and pds4.collection rules. 
+      </action>     
     </release>
 
     <release version="1.10.0" date="2016-09-30" description="This release of the Core Library is a component of the integrated release 7.0.0 of the PDS4 System. This is an operational release of the system components to date.">

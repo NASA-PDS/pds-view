@@ -13,6 +13,7 @@
 // $Id$
 package gov.nasa.pds.tools.validate.rule.pds4;
 
+import gov.nasa.pds.tools.validate.Identifier;
 import gov.nasa.pds.tools.validate.TargetRegistrar;
 import gov.nasa.pds.tools.validate.rule.AbstractValidationRule;
 import gov.nasa.pds.tools.validate.rule.ValidationTest;
@@ -40,6 +41,10 @@ public class RegisterLabelIdentifiers extends AbstractValidationRule {
   private static final String IDENTIFIERS_PATH
       = "//*:Identification_Area[namespace-uri()='" + PDS4_NS + "']"
       + "/*:logical_identifier[namespace-uri()='" + PDS4_NS + "']";
+  
+  private static final String VERSION_ID_PATH = 
+      "//*:Identification_Area[namespace-uri()='" + PDS4_NS + "']"
+      + "/*:version_id[namespace-uri()='" + PDS4_NS + "']";
 
   private XPathFactory xPathFactory;
 
@@ -71,13 +76,21 @@ public class RegisterLabelIdentifiers extends AbstractValidationRule {
     DOMSource source = new DOMSource(label);
 
     NodeList identifiers = (NodeList) xPathFactory.newXPath().evaluate(IDENTIFIERS_PATH, source, XPathConstants.NODESET);
+    String lid = "";
     for (int i=0; i < identifiers.getLength(); ++i) {
       Node name = identifiers.item(i);
-      registerIdentifier(name.getTextContent());
+      lid = name.getTextContent();
     }
+    NodeList versions = (NodeList) xPathFactory.newXPath().evaluate(VERSION_ID_PATH, source, XPathConstants.NODESET);
+    String vid = "";
+    for (int i=0; i < versions.getLength(); ++i) {
+      Node name = versions.item(i);
+      vid = name.getTextContent();
+    }
+    registerIdentifier(new Identifier(lid, vid));
   }
 
-  private void registerIdentifier(String id) {
+  private void registerIdentifier(Identifier identifier) {
     TargetRegistrar registrar = getRegistrar();
     URI target = null;
     try {
@@ -85,11 +98,11 @@ public class RegisterLabelIdentifiers extends AbstractValidationRule {
     } catch (URISyntaxException e) {
       //Should never happen
     }
-    if (registrar.getTargetForIdentifier(id) == null) {
-      registrar.setTargetIdentifier(target.normalize().toString(), id);
+    if (registrar.getTargetForIdentifier(identifier) == null) {
+      registrar.setTargetIdentifier(target.normalize().toString(), identifier);
     } else {
       String message = String.format("Identifier %s already defined (old location: %s)",
-                id, registrar.getTargetForIdentifier(id));
+                identifier.toString(), registrar.getTargetForIdentifier(identifier));
       reportError(PDS4Problems.DUPLICATE_LOGICAL_IDENTIFIER, getTarget(), -1, -1, message);
     }
   }

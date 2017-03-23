@@ -1,3 +1,16 @@
+// Copyright 2006-2017, by the California Institute of Technology.
+// ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
+// Any commercial use must be negotiated with the Office of Technology Transfer
+// at the California Institute of Technology.
+//
+// This software is subject to U. S. export control laws and regulations
+// (22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software
+// is subject to U.S. export control laws and regulations, the recipient has
+// the responsibility to obtain export licenses or other export authority as
+// may be required before exporting such information to foreign countries or
+// providing access to foreign nationals.
+//
+// $Id$
 package gov.nasa.pds.tools.validate;
 
 /**
@@ -6,7 +19,7 @@ package gov.nasa.pds.tools.validate;
 public class IdentifierReference implements Comparable<IdentifierReference> {
 
     private final String referenceLocation;
-    private final String identifier;
+    private final Identifier identifier;
     private int knownHashCode;
 
     /**
@@ -16,7 +29,7 @@ public class IdentifierReference implements Comparable<IdentifierReference> {
      * @param referenceLocation the location of the target containing the reference
      * @param identifier the identifier referred to
      */
-    public IdentifierReference(String referenceLocation, String identifier) {
+    public IdentifierReference(String referenceLocation, Identifier identifier) {
         this.referenceLocation = referenceLocation;
         this.identifier = identifier;
     }
@@ -35,7 +48,7 @@ public class IdentifierReference implements Comparable<IdentifierReference> {
      *
      * @return the identifier
      */
-    public String getIdentifier() {
+    public Identifier getIdentifier() {
         return identifier;
     }
 
@@ -45,7 +58,7 @@ public class IdentifierReference implements Comparable<IdentifierReference> {
         if (result != 0) {
             return result;
         } else {
-            return identifier.compareTo(other.identifier);
+            return identifier.getLid().compareTo(other.identifier.getLid());
         }
     }
 

@@ -32,7 +32,7 @@ public class ValidationTarget implements Comparable<ValidationTarget> {
   private String name;
   private String location;
   private boolean targetIsLabel;
-  private String identifier;
+  private Identifier identifier;
 
   private int knownHashCode;
 
@@ -152,7 +152,7 @@ public class ValidationTarget implements Comparable<ValidationTarget> {
    *
    * @return the identifier
    */
-  public String getIdentifier() {
+  public Identifier getIdentifier() {
     return identifier;
   }
 
@@ -161,10 +161,10 @@ public class ValidationTarget implements Comparable<ValidationTarget> {
    *
    * @param identifier the identifier
    */
-  public void setIdentifier(String identifier) {
+  public void setIdentifier(Identifier identifier) {
     this.identifier = identifier;
   }
-
+  
   @Override
   public int compareTo(ValidationTarget other) {
     return location.compareTo(other.getLocation());

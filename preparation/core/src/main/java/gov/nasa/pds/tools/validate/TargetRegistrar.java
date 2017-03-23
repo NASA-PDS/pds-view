@@ -1,8 +1,22 @@
+// Copyright 2006-2017, by the California Institute of Technology.
+// ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
+// Any commercial use must be negotiated with the Office of Technology Transfer
+// at the California Institute of Technology.
+//
+// This software is subject to U. S. export control laws and regulations
+// (22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software
+// is subject to U.S. export control laws and regulations, the recipient has
+// the responsibility to obtain export licenses or other export authority as
+// may be required before exporting such information to foreign countries or
+// providing access to foreign nationals.
+//
+// $Id$
 package gov.nasa.pds.tools.validate;
 
 import gov.nasa.pds.tools.validate.ValidationTarget;
 
 import java.util.Collection;
+import java.util.Map;
 
 /**
  * Defines an interface for keeping track of validation targets
@@ -80,7 +94,7 @@ public interface TargetRegistrar {
      * @param location the target location
      * @param identifier the target identifier
      */
-    void setTargetIdentifier(String location, String identifier);
+    void setTargetIdentifier(String location, Identifier identifier);
 
     /**
      * Adds a reference from a label to a target.
@@ -104,7 +118,7 @@ public interface TargetRegistrar {
      * @param referenceLocation the location of the reference
      * @param identifier the target identifier being referenced
      */
-    void addIdentifierReference(String referenceLocation, String identifier);
+    void addIdentifierReference(String referenceLocation, Identifier identifier);
 
     /**
      * Tests whether an identifier was referenced.
@@ -112,7 +126,7 @@ public interface TargetRegistrar {
      * @param identifier the identifier
      * @return true, if the identifier was referenced
      */
-    boolean isIdentifierReferenced(String identifier);
+    boolean isIdentifierReferenced(Identifier identifier);
 
     /**
      * Gets the location where an identifier was defined.
@@ -120,8 +134,16 @@ public interface TargetRegistrar {
      * @param identifier the identifier
      * @return the location where it was defined, or null if not defined
      */
-    String getTargetForIdentifier(String identifier);
+    String getTargetForIdentifier(Identifier identifier);
 
+
+    /**
+     * Gets a mapping of identifiers to their locations.
+     * 
+     * @return a mapping of identifiers to the location where it was defined.
+     */
+    Map<Identifier, String> getIdentifierDefinitions();
+    
     /**
      * Gets a collection of target locations that are never referenced.
      *
@@ -135,7 +157,7 @@ public interface TargetRegistrar {
      *
      * @return a collection of unreferenced identifiers
      */
-    Collection<String> getUnreferencedIdentifiers();
+    Collection<Identifier> getUnreferencedIdentifiers();
 
     /**
      * Gets a collection of identifiers that are referenced but not defined.
