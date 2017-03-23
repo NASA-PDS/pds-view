@@ -67,10 +67,10 @@ public class PDSPullImpl implements PDSPull {
 				this.session.setPassword(password); // set the password for authentication
 			}
 			this.session.connect();
-	
-			Channel channel = this.session.openChannel("sftp"); // Getting the
-																// channel using
-																// sftp
+			
+			// Getting the channel using sftp
+			ChannelSftp channel = (ChannelSftp)this.session.openChannel("sftp"); 
+			
 			channel.connect();
 			this.sftpChannel = (ChannelSftp) channel;
 	
