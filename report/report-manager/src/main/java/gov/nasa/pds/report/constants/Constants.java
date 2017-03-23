@@ -100,7 +100,7 @@ public abstract class Constants {
 			"gov.nasa.pds.report.report.window";
 	
 	// ------------------------------------------------------------------------
-	// Major directories in the directory tree
+	// Major directories in the log storge and processing tree
 	// ------------------------------------------------------------------------
 	
 	public static final String STAGING_DIR = "staging";
