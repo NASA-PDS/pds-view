@@ -32,6 +32,7 @@ import org.apache.commons.io.FileUtils;
 import gov.nasa.pds.report.ReportManagerException;
 import gov.nasa.pds.report.constants.Constants;
 import gov.nasa.pds.report.util.FileUtil;
+import gov.nasa.pds.report.util.ReadWriter;
 import gov.nasa.pds.report.util.Utility;
 
 /**
@@ -171,7 +172,7 @@ public abstract class LogReformatProcessor implements Processor{
 		}
 		
 		// Check that the processor has been configured
-		if(!this.verifyConfiguration()){
+		if(!verifyConfiguration()){
 			throw new ProcessingException("The log reformat processor has " +
 			"not been configured previously");
 		}
@@ -223,7 +224,7 @@ public abstract class LogReformatProcessor implements Processor{
 		}
 		
 		// Check that the processor has been configured
-		if(!this.verifyConfiguration()){
+		if(!verifyConfiguration()){
 			throw new ProcessingException("The log reformat processor has " +
 					"not been configured previously");
 		}
@@ -338,27 +339,15 @@ public abstract class LogReformatProcessor implements Processor{
 	protected void processFile(File in, File outputDir)
 			throws ProcessingException{
 		
-		BufferedReader reader = null;
-		PrintWriter writer = null;
+		ReadWriter rw = null;
 		
-		// Open reader for input file
+		// Create ReadWriter to input and output file
+		File output = new File(outputDir, in.getName());
 		try{
-			reader = new BufferedReader(new FileReader(in));
-		}catch(FileNotFoundException e){
-			throw new ProcessingException("The input log could not be found " +
-					"for reformatting at " + in.getAbsolutePath() + ": " +
-					e.getMessage());
-		}
-		
-		// Open the output writer
-		File out = new File(outputDir, in.getName());
-		try{
-			writer = new PrintWriter(out);
-		}catch(FileNotFoundException e){
-			this.closeReaderWriter(reader, writer);
-			throw new ProcessingException("The output log could not be found " +
-					"for reformatting at " + out.getAbsolutePath() + ": " +
-					e.getMessage());
+			rw = new ReadWriter(in, output);
+		}catch(ReportManagerException e){
+			throw new ProcessingException("An error occurred while opening " +
+					"streams to the input and output files: " + e.getMessage());
 		}
 			
 		// Iterate over each line in the input file, processing it.  This
@@ -366,17 +355,16 @@ public abstract class LogReformatProcessor implements Processor{
 		// specified threshold.
 		boolean keepProcessing = true;
 		boolean keepFile = true;
-		int lineNum = 0;
 		int errors = 0;
 		while(keepProcessing){
 			try{
-				if(!this.processLine(reader, writer)){
+				if(!processLine(rw)){
 					keepProcessing = false;
 				}
 			}catch(ProcessingException e){
 				log.warning("An error occurred while processing line " +
-						lineNum + " in file " + in.getAbsolutePath() + ": " +
-						e.getMessage());
+						rw.getLineNum() + " in file " + in.getAbsolutePath() +
+						": " + e.getMessage());
 				errors++;
 				if(this.errorLinesAllowed != -1 && errors >
 						this.errorLinesAllowed){
@@ -386,34 +374,21 @@ public abstract class LogReformatProcessor implements Processor{
 					keepProcessing = false;
 					keepFile = false;
 				}
-			}catch(IOException e){
-				log.warning("An I/O error occurred while reading from line " +
-						lineNum + " in file " + in.getAbsolutePath() + ": " +
-						e.getMessage());
-				keepProcessing = false;
-				keepFile = false;
 			}
-			lineNum++;
 		}
 		
 		// Close the reader and writer
-		this.closeReaderWriter(reader, writer);
+		rw.close();
 		
 		// Delete the created file if too many errors occurred, or if there was
 		// an I/O error, or if the output file is empty
-		if(keepFile && out.length() == 0){
-			log.warning("Output log " + out.getAbsolutePath() + " will be " +
+		if(keepFile && output.length() == 0){
+			log.warning("Output log " + output.getAbsolutePath() + " will be " +
 					"deleted since it's empty");
 			keepFile = false;
 		}
 		if(!keepFile){
-			try{
-				FileUtils.forceDelete(out);
-			}catch(IOException e){
-				log.warning("An error occurred while cleaning up a " +
-						"potentially erroneous output file " +
-						out.getAbsolutePath() + ": " + e.getMessage());
-			}
+			rw.deleteOutput();
 		}
 		
 	}
@@ -513,19 +488,23 @@ public abstract class LogReformatProcessor implements Processor{
 	 * Use the provided reader to read in a line, reformat it, then write the
 	 * new version of the line using the provided writer.
 	 * 
-	 * @param reader				The reader already initialized to read from
-	 * 								the input file.
-	 * @param writer				A writer already initialized to write to
-	 * 								the output file.
+	 * @param rw					A {@link ReadWriter} that is already
+	 * 								initialized to read and write from the input
+	 * 								and output files.
 	 * @return						True if a line was read from the input
 	 * 								file, otherwise false (indicating EOF).
 	 * @throws ProcessingException	If an error occurs.
 	 */
-	protected boolean processLine(BufferedReader reader, PrintWriter writer)
-			throws ProcessingException, IOException{
+	protected boolean processLine(ReadWriter rw) throws ProcessingException{
 		
 		// Read the line from the file using the reader
-		String line = reader.readLine();
+		String line = null;
+		try{
+			line = rw.readLine();
+		}catch(ReportManagerException e){
+			throw new ProcessingException("An error occurred while reading " +
+					"from the input file: " + e.getMessage());
+		}
 		
 		// Signal if we have reached the end of the file
 		if(line == null){
@@ -545,7 +524,7 @@ public abstract class LogReformatProcessor implements Processor{
 		
 		// Write the reformatted line to the output file
 		if(reformattedLine != null && !reformattedLine.isEmpty()){
-			writer.println(reformattedLine);
+			rw.writeLine(reformattedLine);
 		}
 		
 		// Reset the detail values so that they don't carry over to the
@@ -648,6 +627,7 @@ public abstract class LogReformatProcessor implements Processor{
 	}
 	
 	/**
+	 * TODO: Change this into an actual javadoc
 	 * Using the system properties during execution, determine how many lines
 	 * in an input log can cause errors before the logs is discarded.
 	 */
@@ -905,23 +885,8 @@ public abstract class LogReformatProcessor implements Processor{
 		
 	}
 	
-	private void closeReaderWriter(BufferedReader reader, PrintWriter writer){
-		
-		if(reader != null){
-			try{
-				reader.close();
-			}catch(IOException e){
-				log.warning("An error occurred while closing the reader to " +
-						"the input file: " + e.getMessage());
-			}
-		}
-		
-		if(writer != null){
-			writer.close();
-		}
-			
-	}
-	
+	// This method only exist for the odd scenario which requires debugging by
+	// dumping all values stored in LogDetails
 	private String debugValueDump(){
 		
 		String output = "";

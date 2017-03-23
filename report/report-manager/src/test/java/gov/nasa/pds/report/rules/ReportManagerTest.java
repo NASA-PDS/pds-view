@@ -31,7 +31,7 @@ import org.junit.Ignore;
 public class ReportManagerTest extends PDSTest{
 
 	/** Logger for test classes **/
-	protected static Logger log = Logger.getLogger(PDSTest.class
+	protected static Logger log = Logger.getLogger(ReportManagerTest.class
 			.getName());
 
 	static {

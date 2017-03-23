@@ -238,17 +238,29 @@ public class ProcessingManager{
 		// the name of a log after it has been finished being processed and
 		// check if a processed version of the log already exists and if it has
 		// a modification timestamp than the staged file.
+		log.fine("Found " + stagedFiles.size() + " staged files for " + 
+				"profile " + profileID + " in " + staging.toString());
 		for(File f: stagedFiles){
 			String fileName = f.getName();
+			String originalFileName = fileName;
 			for(Processor p: processors){
 				fileName = p.getOutputFileName(fileName);
 			}
 			File processedFile = new File(sawmillDir, fileName);
 			if(processedFile.exists()){
 				if(f.lastModified() > processedFile.lastModified()){
+					log.finest(originalFileName + " will be processed " +
+							"since the input log (time: " +
+							f.lastModified() + ") is more recent than the " +
+							"existing version (time: " +
+							processedFile.lastModified() + ")");
 					filesToProcess.add(f);
+				}else{
+					log.finest(originalFileName + " will NOT be processed");
 				}
 			}else{
+				log.finest(originalFileName + " will be processed since no "
+						+ "older version exists");
 				filesToProcess.add(f);
 			}
 		}

@@ -140,7 +140,7 @@ public class HttpPull implements PDSPull{
 		
 		// Check if the file already exists at the destination
 		if(localFileList.contains(filename)){
-			this.log.info(filename + " already exists in " + 
+			this.log.fine(filename + " already exists in " + 
 					destination);
 			return;
 		}
