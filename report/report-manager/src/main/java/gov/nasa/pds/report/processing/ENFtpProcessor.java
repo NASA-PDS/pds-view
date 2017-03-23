@@ -88,9 +88,8 @@ public class ENFtpProcessor extends DetailByDetailProcessor{
 		// Perform basic configuration
 		super.configure(props);
 		
-		// TODO: Uncomment this
 		// Tolerate unlimited errors since these logs are in good shape
-		//this.errorLinesAllowed = -1;
+		this.errorLinesAllowed = -1;
 		
 		// Setup the mapping for resources requested in input log entries
 		this.pathMap = new HashMap<String, String>();

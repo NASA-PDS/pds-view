@@ -143,8 +143,8 @@ public abstract class LogReformatProcessor implements Processor{
 	// of errors, so the input file will be processed completely, though the
 	// output file will only contain the output from lines that did not cause
 	// errors.
-	private int errorLinesAllowed;
-	private static String DEFAULT_ERRORS_ALLOWED = "0";
+	protected int errorLinesAllowed;
+	public static final String DEFAULT_ERRORS_ALLOWED = "0";
 	
 	/**
 	 * Read in a log file, reformat it as per configured, and place the output
