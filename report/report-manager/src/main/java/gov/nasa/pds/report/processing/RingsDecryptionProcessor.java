@@ -28,6 +28,7 @@ public class RingsDecryptionProcessor extends SimpleCommandProcessor{
 	
 	public RingsDecryptionProcessor(){
 		this.command = COMMAND;
+		this.useOutputFileName = false;
 	}
 	
 	/**
@@ -52,7 +53,7 @@ public class RingsDecryptionProcessor extends SimpleCommandProcessor{
 	 * @see gov.nasa.pds.report.processing.Processor.getOutputFileName()
 	 */
 	public String getOutputFileName(String inputFileName) {
-		return "";
+		return inputFileName.replace("tar.gz", "txt");
 	}
 	
 	/**

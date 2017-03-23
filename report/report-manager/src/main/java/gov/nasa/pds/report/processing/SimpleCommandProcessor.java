@@ -21,6 +21,7 @@ public class SimpleCommandProcessor implements Processor{
 	public static final String OUTPUT_DIR_NAME = "simple_command";
 	
 	protected String command;
+	protected boolean useOutputFileName = true;
 	
 	private Logger log = Logger.getLogger(this.getClass().getName());
 	
@@ -172,9 +173,14 @@ public class SimpleCommandProcessor implements Processor{
 			// Create the command to run
 			String cmd = this.command.replace("<input>",
 					file.getAbsolutePath());
-			cmd = cmd.replace("<output>",
-					new File(out, this.getOutputFileName(file.getName())).
-					getAbsolutePath());
+			String outputPath = "";
+			if(this.useOutputFileName){
+				outputPath = new File(out, this.getOutputFileName(
+						file.getName())).getAbsolutePath();
+			}else{
+				outputPath = out.getAbsolutePath();
+			}
+			cmd = cmd.replace("<output>", outputPath);
 			log.info("Running simple command: " + cmd + " (" +
 					Integer.toString(i + 1) + "/" + files.size() + ")");
 			
