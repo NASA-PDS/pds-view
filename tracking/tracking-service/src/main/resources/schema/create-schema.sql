@@ -89,10 +89,10 @@ create table resources (
 ) ENGINE=InnoDB;
 
 create table role (
-  logical_identifier varchar(255) not null,
   electronic_mail_address varchar(255) not null,
-  role varchar(255) not null,
-  primary key (logical_identifier, electronic_mail_address)
+  investigation_reference varchar(255),
+  instrument_reference varchar(255),
+  node_reference varchar(255)
 ) ENGINE=InnoDB;
 
 create table submission (
