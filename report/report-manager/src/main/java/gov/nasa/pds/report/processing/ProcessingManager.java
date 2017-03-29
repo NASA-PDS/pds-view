@@ -8,6 +8,7 @@ import gov.nasa.pds.report.util.Utility;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 import java.util.Vector;
@@ -34,7 +35,6 @@ public class ProcessingManager{
 		String profileID = null;
 		File stagingDir = null;
 		File sawmillDir = null;
-		List<File> stagedFiles = null;
 			
 		// Get profile details and File handles needed for processing
 		try{
@@ -48,11 +48,6 @@ public class ProcessingManager{
 					Constants.NODE_STAGING_PATH, false);
 			if(stagingPath != null){
 				stagingDir = new File(stagingPath);
-			}else{
-				// If no staging directory is specified in the profile spec,
-				// use the default directory for the profile
-				stagingDir = FileUtil.getDir(
-						Constants.STAGING_DIR, nodeName, profileID);
 			}
 			sawmillDir = FileUtil.getDir(Constants.SAWMILL_DIR,
 					nodeName, profileID);
@@ -73,26 +68,13 @@ public class ProcessingManager{
 		log.finer("Found " + processors.size() + " processes to run on " +
 				"logs from profile " + profileID);
 		
-		// Get the list of staged logs
-		try{
-			stagedFiles = FileUtil.getFileList(stagingDir);
-		}catch(ReportManagerException e){
-			throw new ProcessingException("An error occurred while preparing " +
-					"the list of staged log files for profile " + profileID + 
-					": " + e.getMessage());
-		}
-		log.fine("Found " + stagedFiles.size() + " staged files for " + 
-				"profile " + profileID + " in " + stagingDir.toString());
-		
 		// Get the list of files that haven't already been processed
 		List<File> filesToProcess = this.getFilesToProcess(processors, 
-				stagedFiles, sawmillDir);
+				nodeName, profileID, stagingDir);
 		if(filesToProcess.isEmpty()){
 			log.info("Found no unprocessed logs from profile " + profileID);
 			return;
 		}
-		log.fine("Found " + filesToProcess.size() + " files to process for " +
-				"profile " + profileID);
 		
 		// A handle on the directory where output from the previous processor
 		// was placed
@@ -202,13 +184,6 @@ public class ProcessingManager{
 		
 	}
 	
-	private void blacklistFiles(List<Processor> processors,
-			List<File> stagedFiles, File sawmillDir){
-		
-		// TODO: Continue here...
-		
-	}
-	
 	/**
 	 * Examine the staged Files pulled with a profile and get a {@link List} of
 	 * those {@link Files} that have need to be processed based on previous
@@ -216,24 +191,55 @@ public class ProcessingManager{
 	 * 
 	 * @param processors			A {@link List} of {@link Processor}s that
 	 * 								will process the staged Files.
-	 * @param stagedFiles			A {@link List} of {@link File}s pointing to
-	 * 								all logs in the specified staging directory.
-	 * @param sawmillDir			A {@link File} pointing to the directory
-	 * 								from which Sawmill will read the logs.
+	 * @param nodeName				The name of the node that produced the
+	 * 								Files.
+	 * @param profileID				The ID of the profile.
 	 * @return						A List of the Files to process.
 	 * @throws ProcessingException	If an error occurs while obtaining a handle
 	 * 								on the staged files or other directory used
 	 * 								in processing.
 	 */
 	private List<File> getFilesToProcess(List<Processor> processors,
-			List<File> stagedFiles, File sawmillDir) throws ProcessingException{
+			String nodeName, String profileID, File stagingDir)
+			throws ProcessingException{
 		
+		File staging = null;
+		File sawmillDir = null;
+		List<File> stagedFiles = null;
 		List<File> filesToProcess = new Vector<File>();
+		
+		// Determine whether to use a provided staging directory or the default
+		if(stagingDir == null){
+			try{
+				staging = FileUtil.getDir(
+						Constants.STAGING_DIR, nodeName, profileID);
+			}catch(ReportManagerException e){
+				throw new ProcessingException("En error occurred while " +
+						"fetching the default staging directory: " +
+						e.getMessage());
+			}
+		}else{
+			staging = stagingDir;
+		}
+		
+		// Get a list of the staged log files and a File object pointing to the
+		// directory from which Sawmill will parse the logs.
+		try{
+			sawmillDir = FileUtil.getDir(Constants.SAWMILL_DIR,
+					nodeName, profileID);
+			stagedFiles = FileUtil.getFileList(staging);
+		}catch(ReportManagerException e){
+			throw new ProcessingException("An error occurred while preparing " +
+					"the list of staged log files for profile " + profileID + 
+					": " + e.getMessage());
+		}
 		
 		// In order to avoid unnecessarily processing logs more than once, find
 		// the name of a log after it has been finished being processed and
 		// check if a processed version of the log already exists and if it has
 		// a modification timestamp than the staged file.
+		log.fine("Found " + stagedFiles.size() + " staged files for " + 
+				"profile " + profileID + " in " + staging.toString());
 		for(File f: stagedFiles){
 			String fileName = f.getName();
 			String originalFileName = fileName;
@@ -258,6 +264,8 @@ public class ProcessingManager{
 				filesToProcess.add(f);
 			}
 		}
+		log.fine("Found " + filesToProcess.size() + " files to process for " +
+				"profile " + profileID);
 		
 		return filesToProcess;
 		
@@ -284,5 +292,6 @@ public class ProcessingManager{
 		}
 		
 	}
+		
 	
 }
