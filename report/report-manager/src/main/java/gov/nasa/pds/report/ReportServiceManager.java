@@ -162,8 +162,9 @@ public class ReportServiceManager {
 					profileID = Utility.getNodePropsString(props,
 							Constants.NODE_ID_KEY, false);
 				}catch(ReportManagerException ex){
-					// This should never happen, since the parameter
-					// designating if the variable is needed is set to false 
+					// This should never happen, since the getNodePropsString() 
+					// parameter designating if the variable is needed is set
+					// to false 
 				}
 				log.severe("An error occurred while pulling log files using " +
 						"profile " + profileID + ": " + e.getMessage());
