@@ -1,4 +1,4 @@
-// Copyright 2006-2015, by the California Institute of Technology.
+// Copyright 2006-2017, by the California Institute of Technology.
 // ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
 // Any commercial use must be negotiated with the Office of Technology Transfer
 // at the California Institute of Technology.
@@ -13,19 +13,20 @@
 // $Id$
 package gov.nasa.pds.harvest.pdap.registry.client;
 
+import gov.nasa.pds.tools.LabelParserException;
 import gov.nasa.pds.tools.label.Label;
 import gov.nasa.pds.tools.label.ManualPathResolver;
 import gov.nasa.pds.tools.label.parser.DefaultLabelParser;
+import gov.nasa.pds.tools.util.MessageUtils;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.oodt.cas.metadata.Metadata;
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 
 import uk.ac.starlink.table.ColumnInfo;
 import uk.ac.starlink.table.RowSequence;
@@ -45,7 +46,7 @@ import uk.ac.starlink.votable.VOTableBuilder;
 public class PsaRegistryClient implements PdapRegistryClient {
   private String baseUrl;
 
-  private DateTimeFormatter dtFormat;
+  private SimpleDateFormat dateFormat;
 
   /**
    * Constructor.
@@ -54,29 +55,26 @@ public class PsaRegistryClient implements PdapRegistryClient {
    */
   public PsaRegistryClient(String baseUrl) {
     this.baseUrl = baseUrl;
-    dtFormat = DateTimeFormat.forPattern("yyyy-MM-dd'%20'HH:mm:ss.SSS");
+    dateFormat = new SimpleDateFormat("yyyyMMdd");
   }
 
   public List<StarTable> getDataSets() throws PdapRegistryClientException {
-    return getDataSets(null, null);
+    return getDataSets(null);
   }
 
   /**
-   * Gets all the datasets.
+   * Gets datasets starting from a given date.
    *
    * @return List of datasets in VOTable format.
    */
   @Override
-  public List<StarTable> getDataSets(DateTime startDateTime,
-      DateTime stopDateTime) throws PdapRegistryClientException {
+  public List<StarTable> getDataSets(Date startDate)
+      throws PdapRegistryClientException {
     try {
       String urlString = baseUrl + "/pdap/metadata?RETURN_TYPE=VOTABLE";
       String query = "";
-      if (startDateTime != null) {
-        query += "&START_TIME>" + dtFormat.print(startDateTime);
-      }
-      if (stopDateTime != null) {
-        query += "&STOP_TIME<" + dtFormat.print(stopDateTime);
+      if (startDate != null) {
+        query += "&DATASET_RELEASE_DATE>='" + dateFormat.format(startDate) + "'";
       }
       if (!query.isEmpty()) {
         urlString = urlString + query;
@@ -159,12 +157,18 @@ public class PsaRegistryClient implements PdapRegistryClient {
     try {
       String encodedMissionName = missionName.replaceAll("\\s", "s");
       String encodedDatasetId = datasetId.replaceAll("/", "-");
-      URL url = new URL(baseUrl + "/postcards/repo/" + encodedMissionName + "/"
+      URL url = new URL(baseUrl + "/pdap/fileaccess?ID=/repo/" + encodedMissionName + "/"
           + encodedDatasetId + "/CATALOG/" + filename);
-      ManualPathResolver resolver = new ManualPathResolver();
-      resolver.setBaseURI(ManualPathResolver.getBaseURI(url.toURI()));
-      DefaultLabelParser parser = new DefaultLabelParser(false, true, true, resolver);
-      Label label = parser.parseLabel(url);
+      Label label = null;
+      try {
+        label = parseLabel(url);
+      } catch (Exception e) {
+        //Some datasets replace the '/' with a '_' in the service endpoint
+        encodedDatasetId = datasetId.replaceAll("/", "_");
+        url = new URL(baseUrl + "/pdap/fileaccess?ID=/repo/" + encodedMissionName + "/"
+            + encodedDatasetId + "/CATALOG/" + filename);
+        label = parseLabel(url);
+      }
       return label;
     } catch (Exception e) {
       throw new PdapRegistryClientException(e.getMessage());
@@ -188,17 +192,48 @@ public class PsaRegistryClient implements PdapRegistryClient {
     try {
       String encodedMissionName = missionName.replaceAll("\\s", "s");
       String encodedDatasetId = datasetId.replaceAll("/", "-");
-      URL url = new URL(baseUrl + "/postcards/repo/" + encodedMissionName + "/"
+      URL url = new URL(baseUrl + "/pdap/fileaccess?ID=/repo/" + encodedMissionName + "/"
           + encodedDatasetId + "/VOLDESC.CAT");
-      ManualPathResolver resolver = new ManualPathResolver();
-      resolver.setBaseURI(ManualPathResolver.getBaseURI(url.toURI()));
-      DefaultLabelParser parser = new DefaultLabelParser(false, true, true, resolver);
-      Label label = parser.parseLabel(url);
+      Label label = null;
+      try {
+        label = parseLabel(url);
+      } catch (Exception e) {
+        //Some datasets replace the '/' with a '_' in the service endpoint.
+        encodedDatasetId = datasetId.replaceAll("/", "_");
+        url = new URL(baseUrl + "/pdap/fileaccess?ID=/repo/" + encodedMissionName + "/"
+            + encodedDatasetId + "/VOLDESC.CAT");
+        label = parseLabel(url);
+      }
       return label;
     } catch (Exception e) {
       throw new PdapRegistryClientException(e.getMessage());
     }
 
+  }
+  
+  private Label parseLabel(URL url) throws Exception {
+    ManualPathResolver resolver = new ManualPathResolver();
+    resolver.setBaseURI(ManualPathResolver.getBaseURI(url.toURI()));
+    DefaultLabelParser parser = new DefaultLabelParser(false, true, true, resolver);
+    try {
+      Label label = parser.parseLabel(url);
+      return label;
+    } catch (LabelParserException lpe) {
+      String message = "";
+      try {
+        message = MessageUtils.getProblemMessage(lpe);
+      } catch (RuntimeException re) {
+        // For now the MessageUtils class seems to be throwing this exception
+        // when it can't find a key. In these cases the actual message seems to
+        // be the key itself.
+        message = lpe.getKey();
+      }
+      throw new Exception ("Error occurred while trying to parse label '"
+          + url.toString() + "': " + message);
+    } catch (IOException io) {
+      throw new Exception ("Error occurred while trying to parse label '"
+          + url.toString() + "': " + io.getMessage());
+    }
   }
 
   public static void main(String[] args) {

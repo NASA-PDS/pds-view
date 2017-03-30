@@ -27,6 +27,9 @@
       <action dev="mcayanan" type="update" issue="PDS-479">
         Updated the service end points being called to conform to the new PSA interface.
       </action>
+      <action dev="mcayanan" type="update" issue="PDS-480">
+        Updated the service end point to allow the querying of data sets from a given date.
+      </action>
       <action dev="mcayanan" type="update">
         Added the product_class slot in the global policy configuration.
       </action>

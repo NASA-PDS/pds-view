@@ -1,4 +1,4 @@
-// Copyright 2006-2015, by the California Institute of Technology.
+// Copyright 2006-2017, by the California Institute of Technology.
 // ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
 // Any commercial use must be negotiated with the Office of Technology Transfer
 // at the California Institute of Technology.
@@ -16,9 +16,8 @@ package gov.nasa.pds.harvest.pdap.registry.client;
 import gov.nasa.pds.tools.label.Label;
 
 import java.net.URL;
+import java.util.Date;
 import java.util.List;
-
-import org.joda.time.DateTime;
 
 import uk.ac.starlink.table.StarTable;
 
@@ -33,8 +32,8 @@ public interface PdapRegistryClient {
   /** Gets all the datasets. */
   public List<StarTable> getDataSets() throws PdapRegistryClientException;
 
-  /** Gets the datasets within a given datetime range. */
-  public List<StarTable> getDataSets(DateTime startDate, DateTime stopDate) throws PdapRegistryClientException;
+  /** Gets the datasets from a given date. */
+  public List<StarTable> getDataSets(Date startDate) throws PdapRegistryClientException;
 
   /** Gets a single dataset. */
   public StarTable getDataSet(String datasetId) throws PdapRegistryClientException;

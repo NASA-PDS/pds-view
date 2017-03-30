@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <!--
-  Copyright 2010-2013, by the California Institute of Technology.
+  Copyright 2010-2017, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology
   Transfer at the California Institute of Technology.
@@ -29,8 +29,7 @@
 <xsd:attribute name="name" type="xsd:string"/>
 <xsd:attribute name="url" type="xsd:string"/>
 <xsd:attribute name="host" type="xsd:string"/>
-<xsd:attribute name="startDateTime" type="xsd:dateTime"/>
-<xsd:attribute name="stopDateTime" type="xsd:dateTime"/>
+<xsd:attribute name="startDate" type="xsd:date"/>
 
 <xsd:attribute name="agency" type="Agency"/>
 <xsd:simpleType name="Agency">
@@ -52,8 +51,7 @@
 <xsd:complexType name="PdapService">
   <xsd:attribute ref="agency" use="required"/>
   <xsd:attribute ref="url" use="required"/>
-  <xsd:attribute ref="startDateTime" use="optional"/>
-  <xsd:attribute ref="stopDateTime" use="optional"/>
+  <xsd:attribute ref="startDate" use="optional"/>
 </xsd:complexType>
 
 <xsd:element name="pdapServices" type="PdapServices"/>

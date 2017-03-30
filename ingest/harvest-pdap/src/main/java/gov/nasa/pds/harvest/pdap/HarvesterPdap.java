@@ -1,4 +1,4 @@
-// Copyright 2006-2015, by the California Institute of Technology.
+// Copyright 2006-2017, by the California Institute of Technology.
 // ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
 // Any commercial use must be negotiated with the Office of Technology Transfer
 // at the California Institute of Technology.
@@ -15,8 +15,10 @@ package gov.nasa.pds.harvest.pdap;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -27,7 +29,6 @@ import java.util.logging.Logger;
 import javax.xml.bind.JAXBException;
 
 import org.apache.oodt.cas.metadata.Metadata;
-import org.joda.time.DateTime;
 
 import uk.ac.starlink.table.RowSequence;
 import uk.ac.starlink.table.StarTable;
@@ -92,6 +93,8 @@ public class HarvesterPdap {
 
   /** UUID generator. */
   private DefaultIdentifierGenerator idGenerator;
+  
+  private SimpleDateFormat dateFormat;
 
   /**
    * Constructor.
@@ -112,6 +115,7 @@ public class HarvesterPdap {
       this.elementsToGet.add(element.getName());
     }
     idGenerator = new DefaultIdentifierGenerator();
+    dateFormat = new SimpleDateFormat("yyyy-MM-dd");
   }
 
   /**
@@ -137,22 +141,13 @@ public class HarvesterPdap {
       pdapClient = new PsaRegistryClient(pdapService.getUrl());
     }
     try {
-      DateTime startDateTime = null;
-      DateTime stopDateTime = null;
-      if (pdapService.getStartDateTime() != null) {
-        startDateTime = new DateTime(pdapService.getStartDateTime().toString());
-        startDateTime = startDateTime.minusSeconds(1);
+      Date startDate = null;
+      if (pdapService.getStartDate() != null) {
+        startDate = dateFormat.parse(pdapService.getStartDate().toString());
         log.log(new ToolsLogRecord(ToolsLevel.INFO,
-            "Querying by start datetime = " + startDateTime.toString()));
+            "Querying data sets from date = " + dateFormat.format(startDate)));
       }
-      if (pdapService.getStopDateTime() != null) {
-        stopDateTime = new DateTime(pdapService.getStopDateTime().toString());
-        stopDateTime = stopDateTime.plusSeconds(1);
-        log.log(new ToolsLogRecord(ToolsLevel.INFO,
-            "Querying by stop datetime = " + stopDateTime.toString()));
-      }
-      List<StarTable> tables = pdapClient.getDataSets(startDateTime,
-          stopDateTime);
+      List<StarTable> tables = pdapClient.getDataSets(startDate);
       for (StarTable table : tables) {
         RowSequence rseq = table.getRowSequence();
         while (rseq.next()) {
