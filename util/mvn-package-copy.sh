@@ -1,5 +1,5 @@
 #!/bin/sh
-# Copyright 2012-2016, by the California Institute of Technology. 
+# Copyright 2012-2017, by the California Institute of Technology. 
 # ALL RIGHTS RESERVED. United States Government sponsorship acknowledged. 
 # Any commercial use must be negotiated with the Office of Technology Transfer 
 # at the California Institute of Technology. 
@@ -47,6 +47,7 @@ cp ../../preparation/transform/target/transform*bin* .
 cp ../../preparation/validate/target/validate*bin* .
 
 echo "Copying the Registry packages to the package directory."
+cp ../../registry/registry-client/target/pds.registry* .
 cp ../../registry/registry-core/target/registry-core*bin* .
 cp ../../registry/registry-service/target/registry-service*bin* .
 cp ../../registry/registry-tools/target/registry-tools*bin* .

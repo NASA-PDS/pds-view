@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2015-2016, by the California Institute of Technology.
+  Copyright 2015-2017, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -22,7 +22,10 @@
     <author email="Sean.Hardman@jpl.nasa.gov">Sean Hardman</author>
   </properties>
   <body>
-    <release version="TBD" date="TBD" description="TBD">
+    <release version="1.4.0" date="2017-03-31" description="This release of Data Dictionary Search is a component of the integrated release 7.1.0 of the PDS4 System. This is an operational release of the system components to date.">
+      <action dev="earevalo" type="update">
+        Modified the query request to support the Search Service change from AND to OR.
+      </action>
     </release>
 
     <release version="1.3.0" date="2016-09-30" description="This release of Data Dictionary Search is a component of the integrated release 7.0.0 of the PDS4 System. This is an operational release of the system components to date.">

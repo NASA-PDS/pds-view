@@ -255,6 +255,14 @@ public class Constants {
 		collectionPds4ToSearch.put("SEARCH/ACCESS DATA",  "resource_ref");
 	}
 	
+  public static final Map<String, String> documentPds4ToSearch = new LinkedHashMap<String, String>();
+  static {
+    documentPds4ToSearch.put("IDENTIFIER", "identifier");
+    documentPds4ToSearch.put("NAME", "title");
+    documentPds4ToSearch.put("DESCRIPTION", "description");
+    documentPds4ToSearch.put("SEARCH/ACCESS DATA",  "resource_ref");
+  }
+  
 	public static final Map<String, String> targetPds4ToRegistry =
 			new LinkedHashMap<String, String>();	
 	static {

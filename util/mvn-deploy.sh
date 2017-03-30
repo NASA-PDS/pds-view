@@ -1,5 +1,5 @@
 #!/bin/sh
-# Copyright 2010-2016, by the California Institute of Technology. 
+# Copyright 2010-2017, by the California Institute of Technology. 
 # ALL RIGHTS RESERVED. United States Government sponsorship acknowledged. 
 # Any commercial use must be negotiated with the Office of Technology Transfer 
 # at the California Institute of Technology. 
@@ -87,7 +87,10 @@ cd ../..
 
 cd registry
 mvn deploy --non-recursive
-cd registry-core
+cd registry-client
+python bootstrap.py
+bin/buildout setup . egg_info -b "" sdist
+cd ../registry-core
 mvn site
 mvn deploy
 cd ../registry-service
