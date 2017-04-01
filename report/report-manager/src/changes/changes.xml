@@ -24,6 +24,24 @@
 
   <body>
     <release version="1.11.0" date="2017-03-31" description="This release of the Report Service Manager is a component of the integrated release 7.1.0 of the PDS4 System. This is an operational release of the system components to date.">
+      <action dev="resneck" type="add">
+        Added profiles to handle all PDS log sources.
+      </action>
+      <action dev="resneck" type="add">
+        Automated downloading and renaming of reports.
+      </action>
+      <action dev="resneck" type="add">
+        Added date filter to determine dates in log filenames in almost every format.
+      </action>
+      <action dev="resneck" type="add">
+        Added command line flags to search nodes and profiles assigned to nodes.
+      </action>
+      <action dev="resneck" type="update">
+        Overhauled reading and writing of log files during processing to avoid issues caused when exceeding memory allowance.
+      </action>
+      <action dev="resneck" type="update">
+        Tweak how EN FTP logs are processed to provide more accurate reports of which tools are downloaded.
+      </action>
     </release>
 
     <release version="1.10.0" date="2016-09-30" description="This release of the Report Service Manager is a component of the integrated release 7.0.0 of the PDS4 System. This is an operational release of the system components to date.">
