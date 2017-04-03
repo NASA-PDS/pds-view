@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Copyright 2011-2016, by the California Institute of Technology.
+  Copyright 2011-2017, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology
   Transfer at the California Institute of Technology.
@@ -206,7 +206,7 @@ set SEARCH_CORE_HOME=C:\Program Files\\${project.artifactId}-${project.version}
       <ol>
         <li>Run the Search Core using the <i>-m</i> flag:
           <source>
-% search-core -H /usr/local/search-service/pds -r http://localhost:8080/registry -m 5
+% search-core -H /usr/local/search-service/pds -p /usr/local/search-core/conf/defaults/pds/pds4/core.properties -m 5
           </source>
         </li>
         <li>Go to <a href="../operate/index.html#Basic_Index_Generation">Basic Index Generation</a> section of the <a href="../operate/index.html">Operation Guide</a> for the procedure to run the script and see the results in the Search Service.
