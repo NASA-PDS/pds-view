@@ -22,6 +22,9 @@
          metadata-complete="true"
 >
 
+  <display-name>Search Service</display-name>
+  <description>The Search Service provides the search capability for the PDS search index generated through the Search Core software. The core functionality for this service is satisfied by Apache Solr.</description>
+
   <!-- Uncomment if you are trying to use a Resin version before 3.0.19.
     Their XML implementation isn't entirely compatible with Xerces.
     Below are the implementations to use with Sun's JVM.
