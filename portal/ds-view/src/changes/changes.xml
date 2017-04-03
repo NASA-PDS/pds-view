@@ -23,8 +23,8 @@
   </properties>
   <body>
     <release version="2.9.0" date="2017-03-31" description="This release of Data Set View is a component of the integrated release 7.1.0 of the PDS4 System. This is an operational release of the system components to date.">
-      <action dev="shardman" type="add">
-        Added support for Product_Document products..
+      <action dev="shardman" type="add" issue="PDS-494">
+        Added support for Product_Document to be returned in search results.
       </action>
     </release>
 

@@ -27,6 +27,9 @@
       <action dev="hyunlee" type="update" issue="PDS-492">
         Updated to improve the appearance of Archive Page products in search results.
       </action>
+      <action dev="shardman" type="add" issue="PDS-494">
+        Added support for Product_Document to be returned in search results.
+      </action>
     </release>
 
     <release version="1.9.0" date="2016-09-30" description="This release of Search Core is a component of the integrated release 7.0.0 of the PDS4 System. This is an operational release of the system components to date.">

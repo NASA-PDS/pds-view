@@ -30,6 +30,9 @@
       <action dev="jpadams" type="update" issue="PDS-475">
         Update search-tools.xml to include updated PDS Imaging Node search references.
       </action>
+      <action dev="shardman" type="add" issue="PDS-494">
+        Added support for Product_Document to be returned in search results.
+      </action>
       <action dev="shardman" type="update">
         Changed the default query operator from AND to OR and added a few aliases for MER, MPF and MSL.
       </action>
