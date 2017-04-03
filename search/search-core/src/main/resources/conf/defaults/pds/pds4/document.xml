@@ -32,6 +32,9 @@
     <field name="description" type="required">
       <registryPath>citation_description</registryPath>
     </field>
+    <field name="resLocation" type="required">
+      <outputString format="url">/ds-view/pds/viewDocument.jsp?identifier={lid}&amp;version={version_id}</outputString>
+    </field>
     <field name="data_product_type" type="string">
       <outputString format="text">Document</outputString>
     </field>

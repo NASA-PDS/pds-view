@@ -61,7 +61,7 @@
          }
          else{ 
             for (SolrDocument doc: documentObjs) {
-               Document<Object> values = doc.getFieldValues("identifier");
+               Collection<Object> values = doc.getFieldValues("identifier");
                //out.println("vales.size() = " + values.size());
                for (Object value: values) {
                   String val = (String) value;

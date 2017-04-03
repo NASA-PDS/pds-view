@@ -15,6 +15,7 @@
   <category name="product bundle" caption="bundle" />
   <category name="product collection" caption="collection" />
   <category name="product observational" caption="observational" />
+  <category name="product document" caption="document" />
   <category name="product context search tool" caption="search tool" />
 
 </facets>

@@ -1,4 +1,4 @@
-// Copyright 2012-2013, by the California Institute of Technology.
+// Copyright 2012-2017, by the California Institute of Technology.
 // ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
 // Any commercial use must be negotiated with the Office of Technology Transfer
 // at the California Institute of Technology.
@@ -159,7 +159,41 @@ public class PDS4Search {
 		return solrResults;
 	}
 
+	public SolrDocumentList getDocuments() throws MalformedURLException,
+			SolrServerException {
+		SolrServer solr = new CommonsHttpSolrServer(solrServerUrl);
 
+		ModifiableSolrParams params = new ModifiableSolrParams();
+
+		params.add("q", "");
+		params.set("wt", "xml");
+		//params.set("fq", "facet_object_type:\"1,product_document\"");
+		params.set("fq", "facet_type:\"1,product_document\"");
+		
+		System.out.println("params = " + params.toString());
+		QueryResponse response = solr.query(params,
+				org.apache.solr.client.solrj.SolrRequest.METHOD.GET);
+
+		if (response==null) 
+			return null;
+		
+		SolrDocumentList solrResults = response.getResults();
+		System.out.println("numFound = " + solrResults.getNumFound());
+		
+		Iterator<SolrDocument> itr = solrResults.iterator();
+		int idx = 0;
+		while (itr.hasNext()) {
+			SolrDocument doc = itr.next();
+			System.out.println("*****************  idx = " + (idx++));
+			// System.out.println(doc.toString());
+
+			for (Map.Entry<String, Object> entry : doc.entrySet()) {
+				System.out.println("Key = " + entry.getKey()
+						+ "       Value = " + entry.getValue());
+			}
+		}
+		return solrResults;
+	}
 	
 	public SolrDocument getContext(String identifier) throws MalformedURLException, SolrServerException {
 		SolrServer solr = new CommonsHttpSolrServer(solrServerUrl);

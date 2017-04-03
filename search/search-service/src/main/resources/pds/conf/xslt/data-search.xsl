@@ -214,7 +214,7 @@
 
       <ul class="results" style="padding-top: 1em;">
       <div style="margin-top: 1em; margin-bottom: .5em; padding: .25em; font-size: 100%; border: 1px solid #E0E000; background: #FFFFE0;">Data Sets and Information</div>
-        <xsl:apply-templates select="response/result/doc[(arr|str)[@name='data_product_type']!='Resource' and (arr|str)[@name='data_product_type']!='Product_Context_Search_Tool' and (arr|str)[@name='data_product_type']!='Product_Document']"/>
+        <xsl:apply-templates select="response/result/doc[(arr|str)[@name='data_product_type']!='Resource' and (arr|str)[@name='data_product_type']!='Product_Context_Search_Tool']"/>
         
       </ul>
 

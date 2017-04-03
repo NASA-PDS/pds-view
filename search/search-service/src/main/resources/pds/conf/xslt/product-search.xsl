@@ -211,8 +211,8 @@
     </xsl:if>
 	
       <ul class="results" style="padding-top: 1em;">
-      <div style="margin-top: 1em; margin-bottom: .5em; padding: .25em; font-size: 100%; border: 1px solid #E0E000; background: #FFFFE0;">Products</div>
-        <xsl:apply-templates select="response/result/doc[(arr|str)[@name='data_product_type']!='Product_Collection' and (arr|str)[@name='data_product_type']!='Product_Bundle' and (arr|str)[@name='data_product_type']!='Resource' and (arr|str)[@name='data_product_type']!='Product_Document']"/>
+      <div style="margin-top: 1em; margin-bottom: .5em; padding: .25em; font-size: 100%; border: 1px solid #E0E000; background: #FFFFE0;">Products and Documents</div>
+        <xsl:apply-templates select="response/result/doc[(arr|str)[@name='data_product_type']!='Product_Collection' and (arr|str)[@name='data_product_type']!='Product_Bundle' and (arr|str)[@name='data_product_type']!='Resource']"/>
       </ul>
 
       <xsl:if test="response/result/@numFound &gt; count(response/result/doc)">
