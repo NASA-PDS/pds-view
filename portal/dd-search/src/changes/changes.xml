@@ -22,6 +22,9 @@
     <author email="Sean.Hardman@jpl.nasa.gov">Sean Hardman</author>
   </properties>
   <body>
+    <release version="1.5.0" date="TBD" description="TBD">
+    </release>
+
     <release version="1.4.0" date="2017-03-31" description="This release of Data Dictionary Search is a component of the integrated release 7.1.0 of the PDS4 System. This is an operational release of the system components to date.">
       <action dev="earevalo" type="update">
         Modified the query request to support the Search Service change from AND to OR.
