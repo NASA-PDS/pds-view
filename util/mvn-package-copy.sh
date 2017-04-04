@@ -31,9 +31,9 @@ echo "Copying the Migrate packages to the package directory."
 cp ../../migrate/migrate-tools/target/migrate-tools*bin* .
 
 echo "Copying the Model packages to the package directory."
-cp ../../model/model-dmdocument/target/model-dmdocument*bin* .
+#cp ../../model/model-dmdocument/target/model-dmdocument*bin* .
 cp ../../model/model-lddtool/target/lddtool*bin* .
-cp ../../model/model-ontology/target/model-ontology*bin* .
+#cp ../../model/model-ontology/target/model-ontology*bin* .
 
 echo "Copying the Portal packages to the package directory."
 cp ../../portal/ds-view/target/ds-view*bin* .
@@ -47,7 +47,7 @@ cp ../../preparation/transform/target/transform*bin* .
 cp ../../preparation/validate/target/validate*bin* .
 
 echo "Copying the Registry packages to the package directory."
-cp ../../registry/registry-client/target/pds.registry* .
+cp ../../registry/registry-client/dist/pds.registry* .
 cp ../../registry/registry-core/target/registry-core*bin* .
 cp ../../registry/registry-service/target/registry-service*bin* .
 cp ../../registry/registry-tools/target/registry-tools*bin* .

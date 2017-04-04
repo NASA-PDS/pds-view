@@ -1,5 +1,5 @@
 #!/bin/sh
-# Copyright 2010-2016, by the California Institute of Technology. 
+# Copyright 2010-2017, by the California Institute of Technology. 
 # ALL RIGHTS RESERVED. United States Government sponsorship acknowledged. 
 # Any commercial use must be negotiated with the Office of Technology Transfer 
 # at the California Institute of Technology. 
@@ -118,8 +118,6 @@ mkdir -p $1/preparation
 cp -r preparation/target/site/* $1/preparation
 mkdir -p $1/preparation/core
 cp -r preparation/core/target/site/* $1/preparation/core
-mkdir -p $1/preparation/design
-cp -r preparation/design/target/site/* $1/preparation/design
 mkdir -p $1/preparation/generate
 cp -r preparation/generate/target/site/* $1/preparation/generate
 mkdir -p $1/preparation/pds4-tools
