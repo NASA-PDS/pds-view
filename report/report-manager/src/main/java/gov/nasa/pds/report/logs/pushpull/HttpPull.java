@@ -183,6 +183,7 @@ public class HttpPull implements PDSPull{
 					destination);
 			fos.getChannel().transferFrom(Channels.newChannel(
 					conn.getInputStream()), 0, Long.MAX_VALUE);
+			fos.close();
 			
 		}catch(IOException e){
 			throw new PushPullException("An error occurred while " +
