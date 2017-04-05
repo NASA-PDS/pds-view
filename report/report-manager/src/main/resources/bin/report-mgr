@@ -63,6 +63,7 @@ fi
 	${RPT_MGR_FLAGS} \
 	-Djava.util.logging.config.file=${LOG_PROPS} \
 	-Xmx1024m \
+	-Dhttps.protocols=TLSv1.2 \
 	-jar ${REPORT_MGR_JAR} "$@"
 
 if [ -f report-mgr-sawmill ]; then
