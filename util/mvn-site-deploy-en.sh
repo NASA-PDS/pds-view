@@ -67,6 +67,7 @@ cd ../..
 # using the EN skin.
 cd registry/registry-service
 mvn site
+rm -r target/site
 cd ../..
 
 # Build each site (recursive).
