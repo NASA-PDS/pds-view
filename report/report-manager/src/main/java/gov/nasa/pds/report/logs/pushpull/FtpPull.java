@@ -1,5 +1,6 @@
 package gov.nasa.pds.report.logs.pushpull;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -126,7 +127,20 @@ public class FtpPull implements PDSPull {
 					continue;
 				}
 				try{
+					
+					// Get the log
 					this.client.retrieveFile(remoteFilePath, output);
+					
+					// Validate the log file
+					File logFile = new File(localFilePath);
+					if(!logFile.exists()){
+						log.warning("The log at " + localFilePath +
+								" did not download");
+					}else if(logFile.length() == 0){
+						log.warning("The log at " + localFilePath +
+								" is empty and will be deleted");
+						FileUtils.forceDelete(logFile);
+					}
 				}catch(IOException e){
 					log.severe("An error occurred while pulling file " + 
 							remoteFilePath + " from " + this.host + ": " + 

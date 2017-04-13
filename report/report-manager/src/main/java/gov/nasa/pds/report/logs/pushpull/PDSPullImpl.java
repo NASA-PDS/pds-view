@@ -1,11 +1,14 @@
 package gov.nasa.pds.report.logs.pushpull;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 import java.util.logging.Logger;
 
+import org.apache.commons.io.FileUtils;
 import org.jasypt.util.text.StrongTextEncryptor;
 
 import com.jcraft.jsch.Channel;
@@ -176,14 +179,35 @@ public class PDSPullImpl implements PDSPull {
 			List<String> array = getFileList(path);
 			for (String filename : array) {
 				if (!localFileList.contains(filename)) {
+					
+					// Get the log
+					String remoteFilePath = dirPath + File.separator + filename;
 					this.log.info("Transferring: "
-							+ dirPath + "/" + filename + " to " + destination);
+							+ remoteFilePath + " to " + destination);
 					// TODO: Consider using an implementation of this method
 					// that leverages a progress monitor, perhaps when the
 					// given file is over a certain threshold in size
 					// (see PDS-305)
-					this.sftpChannel
-							.get(dirPath + "/" + filename, destination);
+					this.sftpChannel.get(remoteFilePath, destination);
+					
+					// Validate the log file
+					String localFilePath = destination + File.separator +
+							filename;
+					File logFile = new File(localFilePath);
+					if(!logFile.exists()){
+						log.warning("The log at " + localFilePath +
+								" did not download");
+					}else if(logFile.length() == 0){
+						log.warning("The log at " + localFilePath +
+								" is empty and will be deleted");
+						try{
+							FileUtils.forceDelete(logFile);
+						}catch(IOException e){
+							log.fine("An error occurred while attempting to " +
+									"delete an empty log: " + e.getMessage());
+						}
+					}
+					
 				} else {
 					this.log.info(dirPath + "/" + filename
 							+ " already exists in " + destination);

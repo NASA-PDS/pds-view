@@ -177,13 +177,24 @@ public class HttpPull implements PDSPull{
 			conn.setReadTimeout(readTimeout);
 			
 			// Read from the connection and stream it into the file
-			FileOutputStream fos = new FileOutputStream(destination +
-					File.separator + filename);
+			String filePath = destination + File.separator + filename;
+			FileOutputStream fos = new FileOutputStream(filePath);
 			this.log.info("Transferring: " + url.toString() + " to " + 
 					destination);
 			fos.getChannel().transferFrom(Channels.newChannel(
 					conn.getInputStream()), 0, Long.MAX_VALUE);
 			fos.close();
+			
+			// Validate the downloaded file
+			File logFile = new File(filePath);
+			if(!logFile.exists()){
+				log.warning("The log at " + filePath +
+						" did not download");
+			}else if(logFile.length() == 0){
+				log.warning("The log at " + filePath +
+						" is empty and will be deleted");
+				FileUtils.forceDelete(logFile);
+			}
 			
 		}catch(IOException e){
 			throw new PushPullException("An error occurred while " +
