@@ -108,7 +108,7 @@
    &lt;pdapServices&gt;
      &lt;!-- Currently, the only valid value for 'agency' is 'esa'. --&gt;
      &lt;!-- Can optionally specify a 'startDate' to only get back data sets from the given date. --&gt;
-     &lt;pdapService agency="esa" url="http://psa.esac.esa.int:8000"/&gt;
+     &lt;pdapService agency="esa" url="https://archives.esac.esa.int/psa"/&gt;
    &lt;/pdapServices&gt;
    &lt;productMetadata&gt;
      &lt;!--
@@ -150,14 +150,14 @@
 
       <table>
         <tr><th>Element Name</th><th>Description</th></tr>
-        <tr><td>pdapService</td><td>Specify the PDAP service endpoint by populating the two required attributes. The attributes are named <i>agency</i> and <i>url</i>. The only valid value for <i>agency</i> at this time is "esa" with the corresponding <i>url</i> value of "http://psa.esac.esa.int:8000".</td></tr>
+        <tr><td>pdapService</td><td>Specify the PDAP service endpoint by populating the two required attributes. The attributes are named <i>agency</i> and <i>url</i>. The only valid value for <i>agency</i> at this time is "esa" with the corresponding <i>url</i> value of "https://archives.esac.esa.int/psa".</td></tr>
       </table>
 
       <p>An optional atrribute can be specified within the <i>pdapService</i> element to fine tune the query: <i>startDate</i>. This attribute represents the date at which the data set was released to the public. The format of the date value should be <i>YYYY-MM-DD</i> As an example, the following specification will return ESA data sets starting from 2015-01-01:
       </p>
 
       <source>
-&lt;pdapService agency="esa" url="http://psa.esac.esa.int:8000" startDate="2015-01-01"/&gt;
+&lt;pdapService agency="esa" url="https://archives.esac.esa.int/psa" startDate="2015-01-01"/&gt;
       </source>
 
       <p><b><i>productMetadata</i></b></p>
@@ -214,12 +214,12 @@ PDS Harvest-PDAP Tool Log
 Version                     Version 0.1.1
 Time                        Sun, Jun 09 2013 at 01:40:00 PM
 Severity Level              INFO
-PDAP Target(s)              [http://psa.esac.esa.int:8000]
+PDAP Target(s)              [https://archives.esac.esa.int/psa]
 Registry Location           http://localhost:8080/registry-psa
 Registry Package Name       Harvest-PDAP Package
 Registration Package GUID   urn:uuid:c554631c-a353-4b0f-9643-4796a921d523
 
-INFO:   Connecting to PDAP Service: http://psa.esac.esa.int:8000
+INFO:   Connecting to PDAP Service: https://archives.esac.esa.int/psa
 ** AdaptiveByteStore default memory limit = 986M * 0.125 = 123M **
 ** malloc 2778306 bytes **
 INFO:   [AIRUB-C-PHOTOCAM-2-EDR-HALLEY-1986-V1.0] \
