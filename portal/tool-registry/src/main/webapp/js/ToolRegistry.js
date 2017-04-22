@@ -1032,8 +1032,6 @@ function init(){
     function isInvalid(input){
       if(input.indexOf("<") > -1
         || input.indexOf(">") > -1
-        || input.indexOf("\"") > -1
-        || input.indexOf("\'") > -1
         || input.indexOf("&") > -1
         || !isAsciiOnly(input)){
           return true
