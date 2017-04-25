@@ -668,7 +668,7 @@
    <field name="search_engine_type" type="text_general" indexed="true" stored="true" multiValued="true" />
 
    <!-- Product_Service fields -->
-   <field name="service_name" type="string" indexed="true" stored="true" multiValued="false" />
+   <field name="service_name" type="text_sortable" indexed="true" stored="true" multiValued="false" />
    <field name="service_abstract_desc" type="text_general" indexed="true" stored="true" multiValued="true" />
    <field name="service_version_id" type="string" indexed="true" stored="true" multiValued="true" />
    <field name="service_url" type="string" indexed="true" stored="true" multiValued="true" />

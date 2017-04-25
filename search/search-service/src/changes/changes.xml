@@ -39,6 +39,9 @@
       <action dev="shardman" type="update">
         Changed the default query operator from AND to OR and added a few aliases for MER, MPF and MSL.
       </action>
+      <action dev="hyunlee" type="update">
+        Modified to keep the Product_Service products from showing up in the Search UI results. Changed the Solr type for service_name to text_sortable to resolve sorting issue.
+      </action>
     </release>
 
     <release version="1.9.0" date="2016-09-30" description="This release of the Search Service is a component of the integrated release 7.0.0 of the PDS4 System. This is an operational release of the system components to date.">
