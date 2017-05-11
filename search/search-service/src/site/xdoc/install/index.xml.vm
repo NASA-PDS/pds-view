@@ -129,7 +129,8 @@ or
             </source>
           </li>
           <li>
-            <p>Append to the <i>CATALINA_OPTS</i> and <i>JAVA_OPTS</i> environment variables by adding the following line to the <i>$TOMCAT_HOME/bin/setenv.sh</i> script:</p>
+            <p>Append to the <i>CATALINA_OPTS</i> and <i>JAVA_OPTS</i> environment variables by adding the following line to the script specified below: </p>
+            <p><b>Unix or Linux:</b> <i>$TOMCAT_HOME/bin/setenv.sh</i></p>
             <source>
 CATALINA_OPTS="${CATALINA_OPTS} \
               -Dsolr.pds.home=/usr/local/${project.artifactId}"
@@ -140,13 +141,21 @@ JAVA_OPTS="${JAVA_OPTS} -Dlog4j.debug=true"
             </source>
             <p>For more information on the <i>$TOMCAT_HOME/bin/setenv.sh</i> script, see the General Configuration / Environment Configuration section of the <a href="../../../release/index-tomcat.html#General_Configuration">Tomcat Deployment</a> document. If viewing this document from the ${project.artifactId} package, view the <a href="http://pds-engineering.jpl.nasa.gov/development/pds4/current/release/index-tomcat.html#General_Configuration" target="_blank">Tomcat Deployment</a> document from the Engineering Node site.
             </p>
+            <p><b>Windows:</b> <i>$TOMCAT_HOME\bin\setenv.bat</i></p>
+            <source>
+set CATALINA_OPTS=%CATALINA_OPTS% -Dsolr.pds.home=C:\Users\local\\${project.artifactId}
+
+set JAVA_OPTS=%JAVA_OPTS% -Dlog4j.configuration=file:///Users/local/${project.artifactId}/log4j.properties
+set JAVA_OPTS=%JAVA_OPTS% -Dlog4j.debug=true
+            </source>
+           
           </li>
           <li>Restart Tomcat Server</li>
           <li>
             <p>Copy the WAR file to the <i>$TOMCAT_HOME/webapps</i> directory. To copy the WAR file directly, perform the following command:
             </p>
             <source>
-% cp /usr/local/${project.artifactId}${project.artifactId}.war $TOMCAT_HOME/webapps
+% cp /usr/local/${project.artifactId}/${project.artifactId}.war $TOMCAT_HOME/webapps
             </source>
           </li>
           <li>Test installation by pointing your browser to http://localhost:8080/${project.artifactId}/ (<i>Domain and port will vary according to Tomcat configuration</i>)</li>
