@@ -1,4 +1,4 @@
-// Copyright 2006-2015, by the California Institute of Technology.
+// Copyright 2006-2018, by the California Institute of Technology.
 // ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
 // Any commercial use must be negotiated with the Office of Technology Transfer
 // at the California Institute of Technology.
@@ -19,8 +19,11 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.net.URI;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -166,11 +169,30 @@ import org.w3c.dom.ls.LSResourceResolver;
         InputStream in = null;
         URLConnection conn = null;
         try {
+          URL url = null;
           URL base = new URL(baseURI);
-          base = base.toURI().getPath().endsWith("/") ?
-              base.toURI().resolve("..").toURL() :
-                base.toURI().resolve(".").toURL();
-          URL url = new URL(base, systemId);
+          //If we have a jar URL, we need to resolve this differently
+          if ("jar".equals(base.getProtocol())) {
+            URL jarBase = new URL(base.getPath());
+            base = jarBase.toURI().getPath().endsWith("/") ?
+                    jarBase.toURI().resolve("..").toURL() :
+                      jarBase.toURI().resolve(".").toURL();
+            if (systemId.startsWith("jar")) {
+              URL s = new URL(systemId);
+              URL systemPath = new URL(s.getPath());
+              url = base.toURI().resolve(systemPath.toURI()).toURL();
+            } else {
+              url = new URL(base, systemId);
+            }
+            if (url.toString().contains("!")) {
+              url = new URL("jar:" + url.toString());
+            }
+          } else {
+            base = base.toURI().getPath().endsWith("/") ?
+                base.toURI().resolve("..").toURL() :
+                  base.toURI().resolve(".").toURL();    
+            url = new URL(base, systemId);
+          }
           conn = url.openConnection();
           in = Utility.openConnection(conn);
           entity = IOUtils.toByteArray(in);
