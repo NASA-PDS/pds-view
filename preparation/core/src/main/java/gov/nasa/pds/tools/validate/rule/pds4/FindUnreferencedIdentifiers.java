@@ -52,13 +52,18 @@ public class FindUnreferencedIdentifiers extends AbstractValidationRule {
         if (matcher.matches()) {
           memberType = "bundle";
         }
-        getListener().addProblem(new LabelException(ExceptionType.WARNING,
-            "Identifier '" + identifier.toString() + "' is not a member of any "
-                + memberType + " within the given target", 
-            location,
-            location,
-            null,
-            null)); 
+        // Don't print out messages if were validating using collection rules and 
+        // the identifier in question is a collection
+        if ( !("bundle".equals(memberType) && 
+            getContext().getRule().getCaption().equals("PDS4 Collection")) ) {
+          getListener().addProblem(new LabelException(ExceptionType.WARNING,
+              "Identifier '" + identifier.toString() + "' is not a member of any "
+                  + memberType + " within the given target", 
+              location,
+              location,
+              null,
+              null));
+        }
       }
     }
   }
