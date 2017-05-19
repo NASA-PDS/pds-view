@@ -34,7 +34,7 @@ import org.apache.commons.io.FilenameUtils;
  */
 public class CollectionValidationRule extends AbstractValidationChain {
 
-	private static final Pattern COLLECTION_LABEL_PATTERN = Pattern.compile("collection(_.*)\\.xml", Pattern.CASE_INSENSITIVE);
+	private static final Pattern COLLECTION_LABEL_PATTERN = Pattern.compile("collection(_.*)?\\.xml", Pattern.CASE_INSENSITIVE);
 
 	@Override
 	public boolean isApplicable(String location) {

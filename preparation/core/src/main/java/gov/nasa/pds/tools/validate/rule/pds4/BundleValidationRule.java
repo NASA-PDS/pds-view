@@ -34,7 +34,7 @@ import org.apache.commons.io.FilenameUtils;
  */
 public class BundleValidationRule extends AbstractValidationChain {
 
-	private static final Pattern BUNDLE_LABEL_PATTERN = Pattern.compile("bundle(_.*)\\.xml", Pattern.CASE_INSENSITIVE);
+	private static final Pattern BUNDLE_LABEL_PATTERN = Pattern.compile("bundle(_.*)?\\.xml", Pattern.CASE_INSENSITIVE);
 
 	@Override
 	public boolean isApplicable(String location) {
