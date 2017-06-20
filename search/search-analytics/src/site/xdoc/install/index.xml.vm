@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2016, by the California Institute of Technology.
+  Copyright 2016-2017, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -90,8 +90,35 @@ or
     </section>
 
     <section name="Configuring the Application">
-      <p>By default, the Search Analytics web application comes with a dashboard configuration intended to be used with a Search Service populated with PDS Context products (<i>pds-context.json</i>). The application also includes a dashboard configuration intended to be used with PDS Data products (<i>pds-data.json</i>). To modify the configuration for PDS Data product content, copy the <i>pds-data.json</i> file located in the <i>$TOMCAT_HOME/webapps/${project.artifactId}/app/dashboards</i> directory to <i>default.json</i> and then refresh the page in your browser.
+      <p>
       </p>
+
+      <subsection name="Search Service Configuration">
+        <p>By default, the Search Analytics web application is configured to access the Search Service at <i>/search-service/</i> on the localhost. This works great in development and test environments but should be modified for an operations environment. For example to modify the configuration for the EN operations environment, edit the <i>$TOMCAT_HOME/webapps/${project.artifactId}/config.js</i> file as follows:
+        </p>
+
+        <source>
+Replace:
+    solr: "/search-service/",
+With:
+    solr: "https://pds.nasa.gov/services/search/",
+        </source>
+
+        <p>In addition, edit the <i>$TOMCAT_HOME/webapps/${project.artifactId}/app/dashboard/default.json</i> file as follows:
+        </p>
+
+        <source>
+Replace:
+    "server": "/search-service/",
+With:
+    "server": "https://pds.nasa.gov/services/search/",
+        </source>
+      </subsection>
+
+      <subsection name="Dashboard Configuration">
+        <p>By default, the Search Analytics web application comes with a dashboard configuration intended to be used with a Search Service populated with PDS Context products (<i>pds-context.json</i>). The application also includes a dashboard configuration intended to be used with PDS Data products (<i>pds-data.json</i>). To modify the configuration for PDS Data product content, copy the <i>pds-data.json</i> file located in the <i>$TOMCAT_HOME/webapps/${project.artifactId}/app/dashboards</i> directory to <i>default.json</i> and then refresh the page in your browser. If you changed the Search Service Configuration in the section above, you will need to do it again for the newly copied <i>default.json</i> file.
+        </p>
+      </subsection>
     </section>
   </body>
 </document>
