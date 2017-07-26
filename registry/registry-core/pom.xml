@@ -48,7 +48,7 @@
     <!-- These properties support the application. -->
     <jersey-version>1.18.3</jersey-version>
     <junit-version>4.8.1</junit-version>
-    <xerces-version>2.11.0</xerces-version>
+    <xerces-version>2.10.0</xerces-version>
     <jaxb-version>2.2</jaxb-version>
     <woodstox-version>3.2.3</woodstox-version>
     <spring.version>3.0.2.RELEASE</spring.version>
