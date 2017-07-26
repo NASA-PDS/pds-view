@@ -46,7 +46,7 @@
     <!-- These properties support the application. -->
     <jersey-version>1.18.3</jersey-version>
     <junit-version>4.8.1</junit-version>
-    <xerces-version>2.10.0</xerces-version>
+    <xerces-version>2.11.0</xerces-version>
     <jaxb-version>2.2</jaxb-version>
     <woodstox-version>3.2.3</woodstox-version>
     <spring.version>3.0.2.RELEASE</spring.version>
@@ -147,6 +147,14 @@
             <phase>compile</phase>
           </execution>
         </executions>
+        <!-- Resolves an issue building with the Java 1.8. -->
+        <dependencies>
+          <dependency>
+            <groupId>xerces</groupId>
+            <artifactId>xercesImpl</artifactId>
+            <version>2.11.0</version>
+          </dependency>
+        </dependencies>
         <configuration>
           <wadlFile>${project.build.outputDirectory}/application.wadl</wadlFile>
           <formatWadlFile>true</formatWadlFile>
