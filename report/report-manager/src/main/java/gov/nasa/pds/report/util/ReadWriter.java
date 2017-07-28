@@ -47,7 +47,7 @@ public class ReadWriter{
 	private File readerFile;
 	private PrintWriter writer;
 	private File writerFile;
-	private int lineNum;
+	private int lineNum = 0;
 	
 	public ReadWriter(File readerFile, File writerFile) throws ReportManagerException{
 		
@@ -86,9 +86,12 @@ public class ReadWriter{
 					"initialized before use.");
 		}
 		
-		this.lineNum++;
 		try{
-			return this.reader.readLine();
+			String line = this.reader.readLine();
+			if(line != null){
+				this.lineNum++;
+			}
+			return line;
 		}catch(IOException e){
 			throw new ReportManagerException("An IOException occurred while " +
 					"reading line " + this.lineNum + " from file " +
@@ -100,6 +103,7 @@ public class ReadWriter{
 	public void writeLine(String line){
 		
 		this.writer.println(line);
+		this.writer.flush();
 		
 	}
 	

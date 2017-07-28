@@ -30,6 +30,9 @@
       <action dev="resneck" type="update">
         A log will be deleted after downloading if it is empty.
       </action>
+      <action dev="resneck" type="fix">
+        ReadWriter utility will now flush more reliably.
+      </action>
     </release>
 
     <release version="1.11.0" date="2017-03-31" description="This release of the Report Service Manager is a component of the integrated release 7.1.0 of the PDS4 System. This is an operational release of the system components to date.">
