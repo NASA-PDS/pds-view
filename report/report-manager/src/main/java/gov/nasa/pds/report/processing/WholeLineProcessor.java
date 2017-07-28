@@ -166,9 +166,8 @@ public class WholeLineProcessor extends LogReformatProcessor{
 		
 	}
 	
-	@Override
 	/**
-	 * @see gov.nasa.pds.report.processing.LogReformatProcessor.getOutputFileName()
+	 * @see gov.nasa.pds.report.processing.Processor.getOutputFileName()
 	 */
 	public String getOutputFileName(String inputFileName) {
 		return inputFileName;

@@ -25,7 +25,6 @@ public class SimpleCommandProcessor implements Processor{
 	
 	private Logger log = Logger.getLogger(this.getClass().getName());
 	
-	@Override
 	/**
 	 * @see gov.nasa.pds.report.processing.Processor.process()
 	 */

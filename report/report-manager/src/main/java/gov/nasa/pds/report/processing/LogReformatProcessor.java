@@ -359,7 +359,7 @@ public abstract class LogReformatProcessor implements Processor{
 		while(keepProcessing){
 			try{
 				if(!processLine(rw)){
-					keepProcessing = false;
+					keepProcessing = false;	// EOF found
 				}
 			}catch(ProcessingException e){
 				log.warning("An error occurred while processing line " +
