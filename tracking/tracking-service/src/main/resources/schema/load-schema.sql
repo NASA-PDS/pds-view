@@ -19,82 +19,271 @@
 */
 
 /*
-** product
+** product/reference
 */
 
 /* Juno Gravity Data Sets */
 
 /*
-insert into product (logical_identifier, version_id, title, type, alternate_id, investigation_reference, instrument_reference, node_reference) values ('urn:nasa:pds:context_pds3:data_set:data_set.juno-e-rss-1-eagr-v1.0', '1.0', 'JUNO-E-RSS-1-EAGR-V1.0', 'Product_Data_Set_PDS3', 'JUNO-E-RSS-1-EAGR-V1.0', 'urn:nasa:pds:context_pds3:investigation:mission.juno', 'urn:nasa:pds:context_pds3:instrument:gravity.jno', 'urn:nasa:pds:context_pds3:node:node.atmos');
+insert into product (logical_identifier, version_id, title, type, alternate_id) values ('urn:nasa:pds:context_pds3:data_set:data_set.juno-e-rss-1-eagr-v1.0', '1.0', 'JUNO-E-RSS-1-EAGR-V1.0', 'PDS3-Data-Set', 'JUNO-E-RSS-1-EAGR-V1.0');
+
+insert into reference (logical_identifier, reference, type) values ('urn:nasa:pds:context_pds3:data_set:data_set.juno-e-rss-1-eagr-v1.0', 'urn:nasa:pds:context_pds3:investigation:mission.juno', 'Investigation');
+
+insert into reference (logical_identifier, reference, type) values ('urn:nasa:pds:context_pds3:data_set:data_set.juno-e-rss-1-eagr-v1.0', 'urn:nasa:pds:context_pds3:instrument:gravity.jno', 'Instrument');
+
+insert into reference (logical_identifier, reference, type) values ('urn:nasa:pds:context_pds3:data_set:data_set.juno-e-rss-1-eagr-v1.0', 'urn:nasa:pds:context_pds3:node:node.atmos', 'Node');
 */
 
-insert into product (logical_identifier, version_id, title, type, alternate_id, investigation_reference, instrument_reference, node_reference) values ('urn:nasa:pds:context_pds3:data_set:data_set.juno-e-rss-1-eagr-v1.0', '1.0', 'JUNO-E-RSS-1-EAGR-V1.0', 'Product_Data_Set_PDS3', 'JUNO-E-RSS-1-EAGR-V1.0', 'Juno', 'Gravity', 'Atmospheres');
 
-insert into product (logical_identifier, version_id, title, type, alternate_id, investigation_reference, instrument_reference, node_reference) values ('urn:nasa:pds:context_pds3:data_set:data_set.juno-j-rss-1-ocru-v1.0', '1.0', 'JUNO-J-RSS-1-OCRU-V1.0', 'Product_Data_Set_PDS3', 'JUNO-J-RSS-1-OCRU-V1.0', 'Juno', 'Gravity', 'Atmospheres');
+insert into product (logical_identifier, version_id, title, type, alternate_id) values ('urn:nasa:pds:context_pds3:data_set:data_set.juno-e-rss-1-eagr-v1.0', '1.0', 'JUNO-E-RSS-1-EAGR-V1.0', 'PDS3-Data-Set', 'JUNO-E-RSS-1-EAGR-V1.0');
 
-insert into product (logical_identifier, version_id, title, type, alternate_id, investigation_reference, instrument_reference, node_reference) values ('urn:nasa:pds:context_pds3:data_set:data_set.juno-j-rss-1-jugr-v1.0', '1.0', 'JUNO-J-RSS-1-JUGR-V1.0', 'Product_Data_Set_PDS3', 'JUNO-J-RSS-1-JUGR-V1.0', 'Juno', 'Gravity', 'Atmospheres');
+insert into reference (logical_identifier, reference, type) values ('urn:nasa:pds:context_pds3:data_set:data_set.juno-e-rss-1-eagr-v1.0', 'Juno', 'Investigation');
+
+insert into reference (logical_identifier, reference, type) values ('urn:nasa:pds:context_pds3:data_set:data_set.juno-e-rss-1-eagr-v1.0', 'Gravity', 'Instrument');
+
+insert into reference (logical_identifier, reference, type) values ('urn:nasa:pds:context_pds3:data_set:data_set.juno-e-rss-1-eagr-v1.0', 'Atmospheres', 'Node');
+
+
+insert into product (logical_identifier, version_id, title, type, alternate_id) values ('urn:nasa:pds:context_pds3:data_set:data_set.juno-j-rss-1-ocru-v1.0', '1.0', 'JUNO-J-RSS-1-OCRU-V1.0', 'PDS3-Data-Set', 'JUNO-J-RSS-1-OCRU-V1.0');
+
+insert into reference (logical_identifier, reference, type) values ('urn:nasa:pds:context_pds3:data_set:data_set.juno-j-rss-1-ocru-v1.0', 'Juno', 'Investigation');
+
+insert into reference (logical_identifier, reference, type) values ('urn:nasa:pds:context_pds3:data_set:data_set.juno-j-rss-1-ocru-v1.0', 'Gravity', 'Instrument');
+
+insert into reference (logical_identifier, reference, type) values ('urn:nasa:pds:context_pds3:data_set:data_set.juno-j-rss-1-ocru-v1.0', 'Atmospheres', 'Node');
+
+
+insert into product (logical_identifier, version_id, title, type, alternate_id) values ('urn:nasa:pds:context_pds3:data_set:data_set.juno-j-rss-1-jugr-v1.0', '1.0', 'JUNO-J-RSS-1-JUGR-V1.0', 'PDS3-Data-Set', 'JUNO-J-RSS-1-JUGR-V1.0');
+
+insert into reference (logical_identifier, reference, type) values ('urn:nasa:pds:context_pds3:data_set:data_set.juno-j-rss-1-jugr-v1.0', 'Juno', 'Investigation');
+
+insert into reference (logical_identifier, reference, type) values ('urn:nasa:pds:context_pds3:data_set:data_set.juno-j-rss-1-jugr-v1.0', 'Gravity', 'Instrument');
+
+insert into reference (logical_identifier, reference, type) values ('urn:nasa:pds:context_pds3:data_set:data_set.juno-j-rss-1-jugr-v1.0', 'Atmospheres', 'Node');
 
 /* Juno JIRAM Data Sets */
 
-insert into product (logical_identifier, version_id, title, type, alternate_id, investigation_reference, instrument_reference, node_reference) values ('urn:nasa:pds:context_pds3:data_set:data_set.juno-l-jiram-2-edr-v1.0', '1.0', 'JUNO-L-JIRAM-2-EDR-V1.0', 'Product_Data_Set_PDS3', 'JUNO-L-JIRAM-2-EDR-V1.0', 'Juno', 'JIRAM', 'Atmospheres');
+insert into product (logical_identifier, version_id, title, type, alternate_id) values ('urn:nasa:pds:context_pds3:data_set:data_set.juno-l-jiram-2-edr-v1.0', '1.0', 'JUNO-L-JIRAM-2-EDR-V1.0', 'PDS3-Data-Set', 'JUNO-L-JIRAM-2-EDR-V1.0');
 
-insert into product (logical_identifier, version_id, title, type, alternate_id, investigation_reference, instrument_reference, node_reference) values ('urn:nasa:pds:context_pds3:data_set:data_set.juno-l-jiram-3-rdr-v1.0', '1.0', 'JUNO-L-JIRAM-3-RDR-V1.0', 'Product_Data_Set_PDS3', 'JUNO-L-JIRAM-3-RDR-V1.0', 'Juno', 'JIRAM', 'Atmospheres');
+insert into reference (logical_identifier, reference, type) values ('urn:nasa:pds:context_pds3:data_set:data_set.juno-l-jiram-2-edr-v1.0', 'Juno', 'Investigation');
 
-insert into product (logical_identifier, version_id, title, type, alternate_id, investigation_reference, instrument_reference, node_reference) values ('urn:nasa:pds:context_pds3:data_set:data_set.juno-j-jiram-2-edr-v1.0', '1.0', 'JUNO-J-JIRAM-2-EDR-V1.0', 'Product_Data_Set_PDS3', 'JUNO-J-JIRAM-2-EDR-V1.0', 'Juno', 'JIRAM', 'Atmospheres');
+insert into reference (logical_identifier, reference, type) values ('urn:nasa:pds:context_pds3:data_set:data_set.juno-l-jiram-2-edr-v1.0', 'JIRAM', 'Instrument');
 
-insert into product (logical_identifier, version_id, title, type, alternate_id, investigation_reference, instrument_reference, node_reference) values ('urn:nasa:pds:context_pds3:data_set:data_set.juno-j-jiram-3-rdr-v1.0', '1.0', 'JUNO-J-JIRAM-3-RDR-V1.0', 'Product_Data_Set_PDS3', 'JUNO-J-JIRAM-3-RDR-V1.0', 'Juno', 'JIRAM', 'Atmospheres');
+insert into reference (logical_identifier, reference, type) values ('urn:nasa:pds:context_pds3:data_set:data_set.juno-l-jiram-2-edr-v1.0', 'Atmospheres', 'Node');
+
+
+insert into product (logical_identifier, version_id, title, type, alternate_id) values ('urn:nasa:pds:context_pds3:data_set:data_set.juno-l-jiram-3-rdr-v1.0', '1.0', 'JUNO-L-JIRAM-3-RDR-V1.0', 'PDS3-Data-Set', 'JUNO-L-JIRAM-3-RDR-V1.0');
+
+insert into reference (logical_identifier, reference, type) values ('urn:nasa:pds:context_pds3:data_set:data_set.juno-l-jiram-3-rdr-v1.0', 'Juno', 'Investigation');
+
+insert into reference (logical_identifier, reference, type) values ('urn:nasa:pds:context_pds3:data_set:data_set.juno-l-jiram-3-rdr-v1.0', 'JIRAM', 'Instrument');
+
+insert into reference (logical_identifier, reference, type) values ('urn:nasa:pds:context_pds3:data_set:data_set.juno-l-jiram-3-rdr-v1.0', 'Atmospheres', 'Node');
+
+
+insert into product (logical_identifier, version_id, title, type, alternate_id) values ('urn:nasa:pds:context_pds3:data_set:data_set.juno-j-jiram-2-edr-v1.0', '1.0', 'JUNO-J-JIRAM-2-EDR-V1.0', 'PDS3-Data-Set', 'JUNO-J-JIRAM-2-EDR-V1.0');
+
+insert into reference (logical_identifier, reference, type) values ('urn:nasa:pds:context_pds3:data_set:data_set.juno-j-jiram-2-edr-v1.0', 'Juno', 'Investigation');
+
+insert into reference (logical_identifier, reference, type) values ('urn:nasa:pds:context_pds3:data_set:data_set.juno-j-jiram-2-edr-v1.0', 'JIRAM', 'Instrument');
+
+insert into reference (logical_identifier, reference, type) values ('urn:nasa:pds:context_pds3:data_set:data_set.juno-j-jiram-2-edr-v1.0', 'Atmospheres', 'Node');
+
+
+insert into product (logical_identifier, version_id, title, type, alternate_id) values ('urn:nasa:pds:context_pds3:data_set:data_set.juno-j-jiram-3-rdr-v1.0', '1.0', 'JUNO-J-JIRAM-3-RDR-V1.0', 'PDS3-Data-Set', 'JUNO-J-JIRAM-3-RDR-V1.0');
+
+insert into reference (logical_identifier, reference, type) values ('urn:nasa:pds:context_pds3:data_set:data_set.juno-j-jiram-3-rdr-v1.0', 'Juno', 'Investigation');
+
+insert into reference (logical_identifier, reference, type) values ('urn:nasa:pds:context_pds3:data_set:data_set.juno-j-jiram-3-rdr-v1.0', 'JIRAM', 'Instrument');
+
+insert into reference (logical_identifier, reference, type) values ('urn:nasa:pds:context_pds3:data_set:data_set.juno-j-jiram-3-rdr-v1.0', 'Atmospheres', 'Node');
 
 /* Juno MWR Data Sets */
 
-insert into product (logical_identifier, version_id, title, type, alternate_id, investigation_reference, instrument_reference, node_reference) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-mwr-2-edr-cruise-v1.0', '1.0', 'JNO-J-MWR-2-EDR-cruise-V1.0', 'Product_Data_Set_PDS3', 'JNO-J-MWR-2-EDR-cruise-V1.0', 'Juno', 'MWR', 'Atmospheres');
+insert into product (logical_identifier, version_id, title, type, alternate_id) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-mwr-2-edr-cruise-v1.0', '1.0', 'JNO-J-MWR-2-EDR-cruise-V1.0', 'PDS3-Data-Set', 'JNO-J-MWR-2-EDR-cruise-V1.0');
 
-insert into product (logical_identifier, version_id, title, type, alternate_id, investigation_reference, instrument_reference, node_reference) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-mwr-3-irdr-cruise-v1.0', '1.0', 'JNO-J-MWR-3-IRDR-cruise-V1.0', 'Product_Data_Set_PDS3', 'JNO-J-MWR-3-IRDR-cruise-V1.0', 'Juno', 'MWR', 'Atmospheres');
+insert into reference (logical_identifier, reference, type) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-mwr-2-edr-cruise-v1.0', 'Juno', 'Investigation');
 
-insert into product (logical_identifier, version_id, title, type, alternate_id, investigation_reference, instrument_reference, node_reference) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-mwr-3-grdr-cruise-v1.0', '1.0', 'JNO-J-MWR-3-GRDR-cruise-V1.0', 'Product_Data_Set_PDS3', 'JNO-J-MWR-3-GRDR-cruise-V1.0', 'Juno', 'MWR', 'Atmospheres');
+insert into reference (logical_identifier, reference, type) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-mwr-2-edr-cruise-v1.0', 'MWR', 'Instrument');
 
-insert into product (logical_identifier, version_id, title, type, alternate_id, investigation_reference, instrument_reference, node_reference) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-mwr-2-edr-orbit-v1.0', '1.0', 'JNO-J-MWR-2-EDR-orbit-V1.0', 'Product_Data_Set_PDS3', 'JNO-J-MWR-2-EDR-orbit-V1.0', 'Juno', 'MWR', 'Atmospheres');
+insert into reference (logical_identifier, reference, type) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-mwr-2-edr-cruise-v1.0', 'Atmospheres', 'Node');
 
-insert into product (logical_identifier, version_id, title, type, alternate_id, investigation_reference, instrument_reference, node_reference) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-mwr-3-irdr-orbit-v1.0', '1.0', 'JNO-J-MWR-3-IRDR-orbit-V1.0', 'Product_Data_Set_PDS3', 'JNO-J-MWR-3-IRDR-orbit-V1.0', 'Juno', 'MWR', 'Atmospheres');
 
-insert into product (logical_identifier, version_id, title, type, alternate_id, investigation_reference, instrument_reference, node_reference) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-mwr-3-grdr-orbit-v1.0', '1.0', 'JNO-J-MWR-3-GRDR-orbit-V1.0', 'Product_Data_Set_PDS3', 'JNO-J-MWR-3-GRDR-orbit-V1.0', 'Juno', 'MWR', 'Atmospheres');
+insert into product (logical_identifier, version_id, title, type, alternate_id) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-mwr-3-irdr-cruise-v1.0', '1.0', 'JNO-J-MWR-3-IRDR-cruise-V1.0', 'PDS3-Data-Set', 'JNO-J-MWR-3-IRDR-cruise-V1.0');
+
+insert into reference (logical_identifier, reference, type) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-mwr-3-irdr-cruise-v1.0', 'Juno', 'Investigation');
+
+insert into reference (logical_identifier, reference, type) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-mwr-3-irdr-cruise-v1.0', 'MWR', 'Instrument');
+
+insert into reference (logical_identifier, reference, type) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-mwr-3-irdr-cruise-v1.0', 'Atmospheres', 'Node');
+
+
+insert into product (logical_identifier, version_id, title, type, alternate_id) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-mwr-3-grdr-cruise-v1.0', '1.0', 'JNO-J-MWR-3-GRDR-cruise-V1.0', 'PDS3-Data-Set', 'JNO-J-MWR-3-GRDR-cruise-V1.0');
+
+insert into reference (logical_identifier, reference, type) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-mwr-3-grdr-cruise-v1.0', 'Juno', 'Investigation');
+
+insert into reference (logical_identifier, reference, type) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-mwr-3-grdr-cruise-v1.0', 'MWR', 'Instrument');
+
+insert into reference (logical_identifier, reference, type) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-mwr-3-grdr-cruise-v1.0', 'Atmospheres', 'Node');
+
+
+insert into product (logical_identifier, version_id, title, type, alternate_id) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-mwr-2-edr-orbit-v1.0', '1.0', 'JNO-J-MWR-2-EDR-orbit-V1.0', 'PDS3-Data-Set', 'JNO-J-MWR-2-EDR-orbit-V1.0');
+
+insert into reference (logical_identifier, reference, type) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-mwr-2-edr-orbit-v1.0', 'Juno', 'Investigation');
+
+insert into reference (logical_identifier, reference, type) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-mwr-2-edr-orbit-v1.0', 'MWR', 'Instrument');
+
+insert into reference (logical_identifier, reference, type) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-mwr-2-edr-orbit-v1.0', 'Atmospheres', 'Node');
+
+
+insert into product (logical_identifier, version_id, title, type, alternate_id) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-mwr-3-irdr-orbit-v1.0', '1.0', 'JNO-J-MWR-3-IRDR-orbit-V1.0', 'PDS3-Data-Set', 'JNO-J-MWR-3-IRDR-orbit-V1.0');
+
+insert into reference (logical_identifier, reference, type) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-mwr-3-irdr-orbit-v1.0', 'Juno', 'Investigation');
+
+insert into reference (logical_identifier, reference, type) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-mwr-3-irdr-orbit-v1.0', 'MWR', 'Instrument');
+
+insert into reference (logical_identifier, reference, type) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-mwr-3-irdr-orbit-v1.0', 'Atmospheres', 'Node');
+
+
+insert into product (logical_identifier, version_id, title, type, alternate_id) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-mwr-3-grdr-orbit-v1.0', '1.0', 'JNO-J-MWR-3-GRDR-orbit-V1.0', 'PDS3-Data-Set', 'JNO-J-MWR-3-GRDR-orbit-V1.0');
+
+insert into reference (logical_identifier, reference, type) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-mwr-3-grdr-orbit-v1.0', 'Juno', 'Investigation');
+
+insert into reference (logical_identifier, reference, type) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-mwr-3-grdr-orbit-v1.0', 'MWR', 'Instrument');
+
+insert into reference (logical_identifier, reference, type) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-mwr-3-grdr-orbit-v1.0', 'Atmospheres', 'Node');
 
 /* Juno UVS Data Sets */
 
-insert into product (logical_identifier, version_id, title, type, alternate_id, investigation_reference, instrument_reference, node_reference) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-uvs-2-edr-v1.0', '1.0', 'JNO-J-UVS-2-EDR-V1.0', 'Product_Data_Set_PDS3', 'JNO-J-UVS-2-EDR-V1.0', 'Juno', 'UVS', 'Atmospheres');
+insert into product (logical_identifier, version_id, title, type, alternate_id) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-uvs-2-edr-v1.0', '1.0', 'JNO-J-UVS-2-EDR-V1.0', 'PDS3-Data-Set', 'JNO-J-UVS-2-EDR-V1.0');
 
-insert into product (logical_identifier, version_id, title, type, alternate_id, investigation_reference, instrument_reference, node_reference) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-uvs-2-rdr-v1.0', '1.0', 'JNO-J-UVS-2-RDR-V1.0', 'Product_Data_Set_PDS3', 'JNO-J-UVS-2-RDR-V1.0', 'Juno', 'UVS', 'Atmospheres');
+insert into reference (logical_identifier, reference, type) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-uvs-2-edr-v1.0', 'Juno', 'Investigation');
+
+insert into reference (logical_identifier, reference, type) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-uvs-2-edr-v1.0', 'UVS', 'Instrument');
+
+insert into reference (logical_identifier, reference, type) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-uvs-2-edr-v1.0', 'Atmospheres', 'Node');
+
+
+insert into product (logical_identifier, version_id, title, type, alternate_id) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-uvs-2-rdr-v1.0', '1.0', 'JNO-J-UVS-2-RDR-V1.0', 'PDS3-Data-Set', 'JNO-J-UVS-2-RDR-V1.0');
+
+insert into reference (logical_identifier, reference, type) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-uvs-2-rdr-v1.0', 'Juno', 'Investigation');
+
+insert into reference (logical_identifier, reference, type) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-uvs-2-rdr-v1.0', 'UVS', 'Instrument');
+
+insert into reference (logical_identifier, reference, type) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-uvs-2-rdr-v1.0', 'Atmospheres', 'Node');
 
 /* Juno JADE Data Sets */
 
-insert into product (logical_identifier, version_id, title, type, alternate_id, investigation_reference, instrument_reference, node_reference) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-sw-jad-2-uncalibrated-v1.0', '1.0', 'JNO-SW-JAD-2-UNCALIBRATED-V1.0', 'Product_Data_Set_PDS3', 'JNO-SW-JAD-2-UNCALIBRATED-V1.0', 'Juno', 'JADE', 'PPI');
+insert into product (logical_identifier, version_id, title, type, alternate_id) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-sw-jad-2-uncalibrated-v1.0', '1.0', 'JNO-SW-JAD-2-UNCALIBRATED-V1.0', 'PDS3-Data-Set', 'JNO-SW-JAD-2-UNCALIBRATED-V1.0');
 
-insert into product (logical_identifier, version_id, title, type, alternate_id, investigation_reference, instrument_reference, node_reference) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-sw-jad-2-uncalibrated-v1.0', '1.0', 'JNO-J/SW-JAD-2-UNCALIBRATED-V1.0', 'Product_Data_Set_PDS3', 'JNO-J/SW-JAD-2-UNCALIBRATED-V1.0', 'Juno', 'JADE', 'PPI');
+insert into reference (logical_identifier, reference, type) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-sw-jad-2-uncalibrated-v1.0', 'Juno', 'Investigation');
 
-insert into product (logical_identifier, version_id, title, type, alternate_id, investigation_reference, instrument_reference, node_reference) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-sw-jad-3-calibrated-v1.0', '1.0', 'JNO-J/SW-JAD-3-CALIBRATED-V1.0', 'Product_Data_Set_PDS3', 'JNO-J/SW-JAD-3-CALIBRATED-V1.0', 'Juno', 'JADE', 'PPI');
+insert into reference (logical_identifier, reference, type) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-sw-jad-2-uncalibrated-v1.0', 'JADE', 'Instrument');
 
-insert into product (logical_identifier, version_id, title, type, alternate_id, investigation_reference, instrument_reference, node_reference) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-sw-jad-5-pad-v1.0', '1.0', 'JNO-J/SW-JAD-5-PAD-V1.0', 'Product_Data_Set_PDS3', 'JNO-J/SW-JAD-5-PAD-V1.0', 'Juno', 'JADE', 'PPI');
+insert into reference (logical_identifier, reference, type) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-sw-jad-2-uncalibrated-v1.0', 'Atmospheres', 'Node');
 
-insert into product (logical_identifier, version_id, title, type, alternate_id, investigation_reference, instrument_reference, node_reference) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-sw-jad-5-plasma-v1.0', '1.0', 'JNO-J/SW-JAD-5-PLASMA-V1.0', 'Product_Data_Set_PDS3', 'JNO-J/SW-JAD-5-PLASMA-V1.0', 'Juno', 'JADE', 'PPI');
 
-insert into product (logical_identifier, version_id, title, type, alternate_id, investigation_reference, instrument_reference, node_reference) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-sw-jad-5-mom-v1.0', '1.0', 'JNO-J/SW-JAD-5-MOM-V1.0', 'Product_Data_Set_PDS3', 'JNO-J/SW-JAD-5-MOM-V1.0', 'Juno', 'JADE', 'PPI');
+insert into product (logical_identifier, version_id, title, type, alternate_id) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-sw-jad-2-uncalibrated-v1.0', '1.0', 'JNO-J/SW-JAD-2-UNCALIBRATED-V1.0', 'PDS3-Data-Set', 'JNO-J/SW-JAD-2-UNCALIBRATED-V1.0');
+
+insert into reference (logical_identifier, reference, type) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-sw-jad-2-uncalibrated-v1.0', 'Juno', 'Investigation');
+
+insert into reference (logical_identifier, reference, type) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-sw-jad-2-uncalibrated-v1.0', 'JADE', 'Instrument');
+
+insert into reference (logical_identifier, reference, type) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-sw-jad-2-uncalibrated-v1.0', 'Atmospheres', 'Node');
+
+
+insert into product (logical_identifier, version_id, title, type, alternate_id) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-sw-jad-3-calibrated-v1.0', '1.0', 'JNO-J/SW-JAD-3-CALIBRATED-V1.0', 'PDS3-Data-Set', 'JNO-J/SW-JAD-3-CALIBRATED-V1.0');
+
+insert into reference (logical_identifier, reference, type) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-sw-jad-3-calibrated-v1.0', 'Juno', 'Investigation');
+
+insert into reference (logical_identifier, reference, type) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-sw-jad-3-calibrated-v1.0', 'JADE', 'Instrument');
+
+insert into reference (logical_identifier, reference, type) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-sw-jad-3-calibrated-v1.0', 'Atmospheres', 'Node');
+
+
+insert into product (logical_identifier, version_id, title, type, alternate_id) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-sw-jad-5-pad-v1.0', '1.0', 'JNO-J/SW-JAD-5-PAD-V1.0', 'PDS3-Data-Set', 'JNO-J/SW-JAD-5-PAD-V1.0');
+
+insert into reference (logical_identifier, reference, type) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-sw-jad-5-pad-v1.0', 'Juno', 'Investigation');
+
+insert into reference (logical_identifier, reference, type) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-sw-jad-5-pad-v1.0', 'JADE', 'Instrument');
+
+insert into reference (logical_identifier, reference, type) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-sw-jad-5-pad-v1.0', 'Atmospheres', 'Node');
+
+
+insert into product (logical_identifier, version_id, title, type, alternate_id) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-sw-jad-5-plasma-v1.0', '1.0', 'JNO-J/SW-JAD-5-PLASMA-V1.0', 'PDS3-Data-Set', 'JNO-J/SW-JAD-5-PLASMA-V1.0');
+
+insert into reference (logical_identifier, reference, type) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-sw-jad-5-plasma-v1.0', 'Juno', 'Investigation');
+
+insert into reference (logical_identifier, reference, type) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-sw-jad-5-plasma-v1.0', 'JADE', 'Instrument');
+
+insert into reference (logical_identifier, reference, type) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-sw-jad-5-plasma-v1.0', 'Atmospheres', 'Node');
+
+
+insert into product (logical_identifier, version_id, title, type, alternate_id) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-sw-jad-5-mom-v1.0', '1.0', 'JNO-J/SW-JAD-5-MOM-V1.0', 'PDS3-Data-Set', 'JNO-J/SW-JAD-5-MOM-V1.0');
+
+insert into reference (logical_identifier, reference, type) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-sw-jad-5-mom-v1.0', 'Juno', 'Investigation');
+
+insert into reference (logical_identifier, reference, type) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-sw-jad-5-mom-v1.0', 'JADE', 'Instrument');
+
+insert into reference (logical_identifier, reference, type) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-sw-jad-5-mom-v1.0', 'Atmospheres', 'Node');
 
 /* Juno JEDI Data Sets */
 
 /* Juno FGM Data Sets */
 
-insert into product (logical_identifier, version_id, title, type, alternate_id, investigation_reference, instrument_reference, node_reference) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-sw-3-fgm-cal-v1.0', '1.0', 'JNO-SW-3-FGM-CAL-V1.0', 'Product_Data_Set_PDS3', 'JNO-SW-3-FGM-CAL-V1.0', 'Juno', 'FGM', 'PPI');
+insert into product (logical_identifier, version_id, title, type, alternate_id) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-sw-3-fgm-cal-v1.0', '1.0', 'JNO-SW-3-FGM-CAL-V1.0', 'PDS3-Data-Set', 'JNO-SW-3-FGM-CAL-V1.0');
 
-insert into product (logical_identifier, version_id, title, type, alternate_id, investigation_reference, instrument_reference, node_reference) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-3-fgm-cal-v1.0', '1.0', 'JNO-J-3-FGM-CAL-V1.0', 'Product_Data_Set_PDS3', 'JNO-J-3-FGM-CAL-V1.0', 'Juno', 'FGM', 'PPI');
+insert into reference (logical_identifier, reference, type) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-sw-3-fgm-cal-v1.0', 'Juno', 'Investigation');
 
-insert into product (logical_identifier, version_id, title, type, alternate_id, investigation_reference, instrument_reference, node_reference) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-2-fgm-n-v1.0', '1.0', 'JNO-J-2-FGM-N-V1.0', 'Product_Data_Set_PDS3', 'JNO-J-2-FGM-N-V1.0', 'Juno', 'FGM', 'PPI');
+insert into reference (logical_identifier, reference, type) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-sw-3-fgm-cal-v1.0', 'FGM', 'Instrument');
+
+insert into reference (logical_identifier, reference, type) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-sw-3-fgm-cal-v1.0', 'Atmospheres', 'Node');
+
+
+insert into product (logical_identifier, version_id, title, type, alternate_id) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-3-fgm-cal-v1.0', '1.0', 'JNO-J-3-FGM-CAL-V1.0', 'PDS3-Data-Set', 'JNO-J-3-FGM-CAL-V1.0');
+
+insert into reference (logical_identifier, reference, type) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-3-fgm-cal-v1.0', 'Juno', 'Investigation');
+
+insert into reference (logical_identifier, reference, type) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-3-fgm-cal-v1.0', 'FGM', 'Instrument');
+
+insert into reference (logical_identifier, reference, type) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-3-fgm-cal-v1.0', 'Atmospheres', 'Node');
+
+
+insert into product (logical_identifier, version_id, title, type, alternate_id) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-2-fgm-n-v1.0', '1.0', 'JNO-J-2-FGM-N-V1.0', 'PDS3-Data-Set', 'JNO-J-2-FGM-N-V1.0');
+
+insert into reference (logical_identifier, reference, type) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-2-fgm-n-v1.0', 'Juno', 'Investigation');
+
+insert into reference (logical_identifier, reference, type) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-2-fgm-n-v1.0', 'FGM', 'Instrument');
+
+insert into reference (logical_identifier, reference, type) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-2-fgm-n-v1.0', 'Atmospheres', 'Node');
 
 /* Juno Waves Data Sets */
 
-insert into product (logical_identifier, version_id, title, type, alternate_id, investigation_reference, instrument_reference, node_reference) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-e-j-ss-wav-2-edr-v1.0', '1.0', 'JNO-E/J/SS-WAV-2-EDR-V1.0', 'Product_Data_Set_PDS3', 'JNO-E/J/SS-WAV-2-EDR-V1.0', 'Juno', 'Waves', 'PPI');
+insert into product (logical_identifier, version_id, title, type, alternate_id) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-e-j-ss-wav-2-edr-v1.0', '1.0', 'JNO-E/J/SS-WAV-2-EDR-V1.0', 'PDS3-Data-Set', 'JNO-E/J/SS-WAV-2-EDR-V1.0');
 
-insert into product (logical_identifier, version_id, title, type, alternate_id, investigation_reference, instrument_reference, node_reference) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-e-j-ss-wav-3-cdr-srvfull-v1.0', '1.0', 'JNO-E/J/SS-WAV-3-CDR-SRVFULL-V1.0', 'Product_Data_Set_PDS3', 'JNO-E/J/SS-WAV-3-CDR-SRVFULL-V1.0', 'Juno', 'Waves', 'PPI');
+insert into reference (logical_identifier, reference, type) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-e-j-ss-wav-2-edr-v1.0', 'Juno', 'Investigation');
 
-insert into product (logical_identifier, version_id, title, type, alternate_id, investigation_reference, instrument_reference, node_reference) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-e-j-ss-wav-3-cdr-bstfull-v1.0', '1.0', 'JNO-E/J/SS-WAV-3-CDR-BSTFULL-V1.0', 'Product_Data_Set_PDS3', 'JNO-E/J/SS-WAV-3-CDR-BSTFULL-V1.0', 'Juno', 'Waves', 'PPI');
+insert into reference (logical_identifier, reference, type) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-e-j-ss-wav-2-edr-v1.0', 'Waves', 'Instrument');
+
+insert into reference (logical_identifier, reference, type) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-e-j-ss-wav-2-edr-v1.0', 'Atmospheres', 'Node');
+
+
+insert into product (logical_identifier, version_id, title, type, alternate_id) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-e-j-ss-wav-3-cdr-srvfull-v1.0', '1.0', 'JNO-E/J/SS-WAV-3-CDR-SRVFULL-V1.0', 'PDS3-Data-Set', 'JNO-E/J/SS-WAV-3-CDR-SRVFULL-V1.0');
+
+insert into reference (logical_identifier, reference, type) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-e-j-ss-wav-3-cdr-srvfull-v1.0', 'Juno', 'Investigation');
+
+insert into reference (logical_identifier, reference, type) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-e-j-ss-wav-3-cdr-srvfull-v1.0', 'Waves', 'Instrument');
+
+insert into reference (logical_identifier, reference, type) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-e-j-ss-wav-3-cdr-srvfull-v1.0', 'Atmospheres', 'Node');
+
+
+insert into product (logical_identifier, version_id, title, type, alternate_id) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-e-j-ss-wav-3-cdr-bstfull-v1.0', '1.0', 'JNO-E/J/SS-WAV-3-CDR-BSTFULL-V1.0', 'PDS3-Data-Set', 'JNO-E/J/SS-WAV-3-CDR-BSTFULL-V1.0');
+
+insert into reference (logical_identifier, reference, type) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-e-j-ss-wav-3-cdr-bstfull-v1.0', 'Juno', 'Investigation');
+
+insert into reference (logical_identifier, reference, type) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-e-j-ss-wav-3-cdr-bstfull-v1.0', 'Waves', 'Instrument');
+
+insert into reference (logical_identifier, reference, type) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-e-j-ss-wav-3-cdr-bstfull-v1.0', 'Atmospheres', 'Node');
 
 /* Juno JunoCam Data Sets */
 
@@ -186,72 +375,72 @@ insert into delivery (logical_identifier, version_id, name, start_date_time, sto
 
 /* Juno Investigation Team */
 
-insert into role (electronic_mail_address, investigation_reference) values ('sbolton@swri.edu', 'Juno');
-insert into role (electronic_mail_address, investigation_reference) values ('william-kurth@uiowa.edu', 'Juno');
-insert into role (electronic_mail_address, investigation_reference) values ('dgell@swri.edu', 'Juno');
-insert into role (electronic_mail_address, investigation_reference) values ('pmokashi@swri.edu', 'Juno');
+insert into role (electronic_mail_address, reference) values ('sbolton@swri.edu', 'Juno');
+insert into role (electronic_mail_address, reference) values ('william-kurth@uiowa.edu', 'Juno');
+insert into role (electronic_mail_address, reference) values ('dgell@swri.edu', 'Juno');
+insert into role (electronic_mail_address, reference) values ('pmokashi@swri.edu', 'Juno');
 
 /* Juno Gravity Instrument Team */
 
-insert into role (electronic_mail_address, instrument_reference) values ('sami.w.asmar@jpl.nasa.gov', 'Gravity');
-insert into role (electronic_mail_address, instrument_reference) values ('dustin.r.buccino@jpl.nasa.gov', 'Gravity');
+insert into role (electronic_mail_address, reference) values ('sami.w.asmar@jpl.nasa.gov', 'Gravity');
+insert into role (electronic_mail_address, reference) values ('dustin.r.buccino@jpl.nasa.gov', 'Gravity');
 
 /* Juno JIRAM Instrument Team */
 
-insert into role (electronic_mail_address, instrument_reference) values ('alberto.adriani@ifsi-roma.inaf.it', 'JIRAM');
-insert into role (electronic_mail_address, instrument_reference) values ('raffaella.noschese@iaps.inaf.it', 'JIRAM');
+insert into role (electronic_mail_address, reference) values ('alberto.adriani@ifsi-roma.inaf.it', 'JIRAM');
+insert into role (electronic_mail_address, reference) values ('raffaella.noschese@iaps.inaf.it', 'JIRAM');
 
 /* Juno MWR Instrument Team */
 
-insert into role (electronic_mail_address, instrument_reference) values ('michael.a.janssen@jpl.nasa.gov', 'MWR');
-insert into role (electronic_mail_address, instrument_reference) values ('edwin.sarkissian@jpl.nasa.gov', 'MWR');
+insert into role (electronic_mail_address, reference) values ('michael.a.janssen@jpl.nasa.gov', 'MWR');
+insert into role (electronic_mail_address, reference) values ('edwin.sarkissian@jpl.nasa.gov', 'MWR');
 
 /* Juno JADE Instrument Team */
 
-insert into role (electronic_mail_address, instrument_reference) values ('philip.valek@swri.org', 'JADE');
-insert into role (electronic_mail_address, instrument_reference) values ('rob.wilson@lasp.colorado.edu', 'JADE');
+insert into role (electronic_mail_address, reference) values ('philip.valek@swri.org', 'JADE');
+insert into role (electronic_mail_address, reference) values ('rob.wilson@lasp.colorado.edu', 'JADE');
 
 /* Juno JEDI Instrument Team */
 
-insert into role (electronic_mail_address, instrument_reference) values ('barry.mauk@jhuapl.edu', 'JEDI');
-insert into role (electronic_mail_address, instrument_reference) values ('chris.paranicas@jhuapl.edu', 'JEDI');
+insert into role (electronic_mail_address, reference) values ('barry.mauk@jhuapl.edu', 'JEDI');
+insert into role (electronic_mail_address, reference) values ('chris.paranicas@jhuapl.edu', 'JEDI');
 
 /* Juno FGM Instrument Team */
 
-insert into role (electronic_mail_address, instrument_reference) values ('jack.connerney@nasa.gov', 'FGM');
-insert into role (electronic_mail_address, instrument_reference) values ('patricia.j.lawton.1@gsfc.nasa.gov', 'FGM');
+insert into role (electronic_mail_address, reference) values ('jack.connerney@nasa.gov', 'FGM');
+insert into role (electronic_mail_address, reference) values ('patricia.j.lawton.1@gsfc.nasa.gov', 'FGM');
 
 /* Juno Waves Instrument Team */
 
-insert into role (electronic_mail_address, instrument_reference) values ('william-kurth@uiowa.edu', 'Waves');
-insert into role (electronic_mail_address, instrument_reference) values ('patricia.j.lawton.1@gsfc.nasa.gov', 'Waves');
+insert into role (electronic_mail_address, reference) values ('william-kurth@uiowa.edu', 'Waves');
+insert into role (electronic_mail_address, reference) values ('patricia.j.lawton.1@gsfc.nasa.gov', 'Waves');
 
 /* Juno JunoCam Instrument Team */
 
-insert into role (electronic_mail_address, instrument_reference) values ('cjhansen@psi.edu', 'JunoCam');
-insert into role (electronic_mail_address, instrument_reference) values ('lipkaman@msss.com', 'JunoCam');
+insert into role (electronic_mail_address, reference) values ('cjhansen@psi.edu', 'JunoCam');
+insert into role (electronic_mail_address, reference) values ('lipkaman@msss.com', 'JunoCam');
 
 /* Juno Radiation Instrument Team */
 
-insert into role (electronic_mail_address, instrument_reference) values ('heidi.n.becker@jpl.nasa.gov', 'Radiation');
-insert into role (electronic_mail_address, instrument_reference) values ('ingrid.daubar@jpl.nasa.gov', 'Radiation');
+insert into role (electronic_mail_address, reference) values ('heidi.n.becker@jpl.nasa.gov', 'Radiation');
+insert into role (electronic_mail_address, reference) values ('ingrid.daubar@jpl.nasa.gov', 'Radiation');
 
 /* Atmospheres Node Team */
 
-insert into role (electronic_mail_address, node_reference) values ('lhuber@nmsu.edu', 'Atmospheres');
-insert into role (electronic_mail_address, node_reference) values ('rbeebe@nmsu.edu', 'Atmospheres');
+insert into role (electronic_mail_address, reference) values ('lhuber@nmsu.edu', 'Atmospheres');
+insert into role (electronic_mail_address, reference) values ('rbeebe@nmsu.edu', 'Atmospheres');
 
 /* PPI Node Team */
 
-insert into role (electronic_mail_address, node_reference) values ('jmafi@igpp.ucla.edu', 'PPI');
+insert into role (electronic_mail_address, reference) values ('jmafi@igpp.ucla.edu', 'PPI');
 
 /* Imaging Node Team */
 
-insert into role (electronic_mail_address, node_reference) values ('rafael.alanis@jpl.nasa.gov', 'Imaging');
+insert into role (electronic_mail_address, reference) values ('rafael.alanis@jpl.nasa.gov', 'Imaging');
 
 /* Engineering (Admin) Node Team */
 
-insert into role (electronic_mail_address, node_reference) values ('sean.hardman@jpl.nasa.gov', 'Engineering');
+insert into role (electronic_mail_address, reference) values ('sean.hardman@jpl.nasa.gov', 'Engineering');
 
 /*
 ** user

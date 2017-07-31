@@ -21,10 +21,11 @@
 delete from archive_status;
 delete from certification_status;
 delete from delivery;
+delete from doi;
 delete from nssdca_status;
 delete from product;
+delete from reference;
 delete from releases;
-delete from resources;
 delete from role;
 delete from submission;
 delete from submission_status;

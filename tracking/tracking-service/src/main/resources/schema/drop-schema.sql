@@ -21,10 +21,11 @@
 drop table archive_status;
 drop table certification_status;
 drop table delivery;
+drop table doi;
 drop table nssdca_status;
 drop table product;
+drop table reference;
 drop table releases;
-drop table resources;
 drop table role;
 drop table submission;
 drop table submission_status;

@@ -49,6 +49,17 @@ create table delivery (
   primary key (delivery_identifier)
 ) ENGINE=InnoDB;
 
+create table doi (
+  logical_identifier varchar(255) not null,
+  version_id varchar(255) not null,
+  doi varchar(255) not null,
+  registration_date varchar(24) not null,
+  site_url varchar(255) not null,
+  electronic_mail_address varchar(255) not null,
+  comment varchar(1024),
+  primary key (logical_identifier, version_id)
+) ENGINE=InnoDB;
+
 create table nssdca_status (
   logical_identifier varchar(255) not null,
   version_id varchar(255) not null,
@@ -65,11 +76,14 @@ create table product (
   title varchar(255) not null,
   type varchar(255) not null,
   alternate_id varchar(255),
-  investigation_reference varchar(255),
-  instrument_reference varchar(255),
-  node_reference varchar(255),
-  doi varchar(255),
   primary key (logical_identifier, version_id)
+) ENGINE=InnoDB;
+
+create table reference (
+  logical_identifier varchar(255) not null,
+  reference varchar(255) not null,
+  type varchar(255) not null,
+  primary key (logical_identifier, reference)
 ) ENGINE=InnoDB;
 
 create table releases (
@@ -82,17 +96,9 @@ create table releases (
   comment varchar(1024)
 ) ENGINE=InnoDB;
 
-create table resources (
-  logical_identifier varchar(255) not null,
-  resource_reference varchar(255) not null,
-  primary key (logical_identifier, resource_reference)
-) ENGINE=InnoDB;
-
 create table role (
   electronic_mail_address varchar(255) not null,
-  investigation_reference varchar(255),
-  instrument_reference varchar(255),
-  node_reference varchar(255)
+  reference varchar(255) not null
 ) ENGINE=InnoDB;
 
 create table submission (
