@@ -1,5 +1,6 @@
-The Email Service provides functionality ... 
-The software is packaged as a WAR file.
+The Email Service provides functionality to accept email requests from a 
+Java application as well as Javascript-based clients. The software is 
+packaged as a WAR file.
 
 The software can be packaged with the "mvn package" command. The 
 documentation including release notes, installation and operation of the 

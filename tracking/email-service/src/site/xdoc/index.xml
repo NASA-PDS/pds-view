@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2016, by the California Institute of Technology.
+  Copyright 2016-2017, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology 
   Transfer at the California Institute of Technology.
@@ -24,7 +24,7 @@
 
   <body>
     <section name="About Email Service">
-      <p>The Email Service provides functionality to accept email requests from Java application as well as Javascript-based clients (e.g., Feedback Form, Tool Registry, etc.). The service provides two interfaces: API and Web interface for interacting with the service. The Email Service accepts a list of email addresses, along with the subject and message content, etc. 
+      <p>The Email Service provides functionality to accept email requests from a Java application as well as Javascript-based clients (e.g., Feedback Form, Tool Registry, etc.). The service provides two interfaces: API and Web interface for interacting with the service. The Email Service accepts a list of email addresses, along with the subject and message content.
       </p>
 
       <p>Please send comments, change requests and bug reports to the <a href="mailto:pds_operator@jpl.nasa.gov">PDS Operator</a> at pds_operator@jpl.nasa.gov.

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2016 by the California Institute of Technology.
+  Copyright 2016-2017 by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -67,7 +67,7 @@ Java HotSpot(TM) 64-Bit Server VM (build 24.72-b04, mixed mode)
         </p>
       </subsection>
     </section>
-    
+
     <section name="Unpacking the Package">
       <p>Download the <i>${project.artifactId}</i> package from the PDS <a href="ftp://pds.nasa.gov/pub/toplevel/2010/tracking/email-service" target="_blank">FTP</a> site. The binary distribution is available in identical zip or tar/gzip packages. The installation directory may vary from environment to environment but in UNIX-based environments it is typical to install software packages in the <i>/usr/local</i> directory and in Windows-based environments it is typical to install software packages in the <i>C:\Program Files</i> directory. Unpack the selected binary distribution file with one of the following commands:
       </p>
@@ -93,80 +93,77 @@ or
           <p>The copyright notice from the <a href="http://www.caltech.edu/" target="_blank">California Institute of Technology</a> detailing the restrictions regarding the use and distribution of this software. Although the license is strictly worded, the software has been classified as Technology and Software Publicly Available (TSPA) and is available for <i>anyone</i> to download and use.
           </p>
         </li>
-        <li><b>${project.artifactId}-${project.version}.war</b><br/>
+        <li><b>${project.artifactId}.war</b><br/>
           <p>
             The Web ARchive file (WAR) containing the Email Service application, which will need to be deployed to Apache Tomcat.
           </p>
         </li>
         <li><b>lib/</b><br/>
           <p>
-            This directory contains the dependent jar files for the Email Service along with the executable jar file (${project.artifactId}-${project.version}.jar) containing the Email Service library. 
+            This directory contains the dependent JAR files for the Email Service along with the executable jar file (${project.artifactId}-${project.version}.jar) containing the Email Service library. 
           </p>
         </li>
       </ul>
     </section>
-    
+
     <section name="Deploying the Application">
       <p>The Email Service web application is packaged as a WAR file and is intended for installation under a standard Java Application Server. For a Tomcat server deployment, the WAR file is normally copied directly to the <i>webapps</i> directory within the Tomcat installation or installed via the Manager interface. Once this step is complete, the application is ready for configuration.
       </p>
     </section>
-    
-    
+
     <section name="Configuring the SMTP Server">
-        <p>The preferred method to configure the SMTP server for the Email service is to manually edit the application configuration files.
-        </p>
+      <p>The preferred method to configure the SMTP server for the Email service is to manually edit the application configuration files.
+      </p>
 
-        <p>
-        Edit the file $TOMCAT_HOME/webapps/${project.artifactId}-${project.version}/WEB-INF/web.xml, which is included in the war distribution, 
-        and change the setting of the SMTP server.
-        </p>
-        
-<source>
+      <p>Edit the file $TOMCAT_HOME/webapps/${project.artifactId}/WEB-INF/web.xml, which is included in the war distribution, and change the setting of the SMTP server.
+      </p>
+      
+      <source>
 &lt;context-param&gt;
-    &lt;param-name>host&lt;/param-name&gt;
-    &lt;param-value>smtp.jpl.nasa.gov&lt;/param-value&gt;
+  &lt;param-name&gt;host&lt;/param-name&gt;
+  &lt;param-value&gt;smtp.jpl.nasa.gov&lt;/param-value&gt;
 &lt;/context-param&gt;
 
 &lt;context-param&gt;
-    &lt;param-name>port&lt;/param-name&gt;
-    &lt;param-value>587&lt;/param-value&gt;
+  &lt;param-name&gt;port&lt;/param-name&gt;
+  &lt;param-value&gt;587&lt;/param-value&gt;
 &lt;/context-param&gt;
 
 &lt;context-param&gt;
-    &lt;param-name>user&lt;/param-name&gt;
-    &lt;param-value>user&lt;/param-value&gt;
+  &lt;param-name&gt;user&lt;/param-name&gt;
+  &lt;param-value&gt;username&lt;/param-value&gt;
 &lt;/context-param&gt;
 
 &lt;context-param&gt;
-    &lt;param-name>pass&lt;/param-name&gt;
-    &lt;param-value>password&lt;/param-value&gt;
+  &lt;param-name&gt;pass&lt;/param-name&gt;
+  &lt;param-value&gt;password&lt;/param-value&gt;
 &lt;/context-param&gt;
-</source>
-        
-        <p>To set the maximum mail size to chunks the provided email recipients, modify a value of 'max_msg_nums' as shown below. The default value is '200'.
-        </p>
-<source>
+      </source>
+      
+      <p>To set the maximum mail size to chunks the provided email recipients, modify a value of 'max_msg_nums' as shown below. The default value is '200'.
+      </p>
+
+      <source>
 &lt;context-param&gt;
-	&lt;param-name&gt;max_msg_nums&lt;/param-name&gt;
-	&lt;param-value&gt;200&lt;/param-value&gt;
+  &lt;param-name&gt;max_msg_nums&lt;/param-name&gt;
+  &lt;param-value&gt;200&lt;/param-value&gt;
 &lt;/context-param>
-</source>
-        <p>
-        Then, restart Tomcat server to load the configuration changes.
-        </p>
+      </source>
+
+      <p>Then, restart Tomcat server to load the configuration changes.
+      </p>
     </section>
-    
-    
+
     <section name="Testing">
-      <p>You should test the Email Service web application is up and running. 
-          To do so, type the following URL in your browser:
-          <source>
-http://localhost:8080/${project.artifactId}-${project.version}/
-          </source>
-          The above URL assumes that your Tomcat is running on the default port 8080 on localhost - if not, please adjust the URL accordingly.
-          A form is displayed for entering message details. 
-          <br/>
-       </p>
+      <p>You should test the Email Service web application is up and running. To do so, type the following URL in your browser:
+      </p>
+
+      <source>
+http://localhost:8080/${project.artifactId}/
+      </source>
+
+      <p>The above URL assumes that your Tomcat is running on the default port 8080 on localhost - if not, please adjust the URL accordingly. A form is displayed for entering message details. 
+      </p>
     </section>
   </body>
 </document>

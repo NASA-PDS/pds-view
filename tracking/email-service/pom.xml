@@ -1,5 +1,5 @@
 <!--
-  Copyright 2016, by the California Institute of Technology.
+  Copyright 2016-2017, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology
   Transfer at the California Institute of Technology.
@@ -28,7 +28,7 @@
 
   <name>Email Service</name>
   <description>
-    The Email Service provides functionality ...
+    The Email Service provides functionality to accept email requests from a Java application as well as Javascript-based clients (e.g., Feedback Form, Tool Registry, etc.). The service provides two interfaces: API and Web interface for interacting with the service. The Email Service accepts a list of email addresses, along with the subject and message content.
   </description>
   <url>https://pds-cm.jpl.nasa.gov/pds4/tracking/email-service</url>
 
@@ -41,20 +41,33 @@
   </licenses>
 
   <build>
-	<plugins>
-	   <plugin>
-         <groupId>org.apache.maven.plugins</groupId>
-         <artifactId>maven-jar-plugin</artifactId>
-         <executions>
-           <execution>
-             <id>make-a-jar</id>
-			 <phase>compile</phase>
-			 <goals>
-		   	   <goal>jar</goal>
-			 </goals>
-           </execution>
-         </executions>
-       </plugin>
+  <plugins>
+     <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>make-a-jar</id>
+            <phase>compile</phase>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <version>2.6</version>
+        <configuration>
+          <warName>email-service</warName>
+          <archive>
+            <manifest>
+              <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+            </manifest>
+          </archive>
+        </configuration>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-assembly-plugin</artifactId>
@@ -95,18 +108,28 @@
   </repositories>
 
   <dependencies>
-	<dependency>
-		<groupId>com.sun.mail</groupId>
-		<artifactId>javax.mail</artifactId>
-		<version>1.5.5</version>
-	</dependency>
+    <dependency>
+      <groupId>com.sun.mail</groupId>
+      <artifactId>javax.mail</artifactId>
+      <version>1.5.5</version>
+      <scope>compile</scope>
+    </dependency>
     <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>javax.servlet-api</artifactId>
       <version>3.1.0</version>
+      <scope>provided</scope>
     </dependency>
   </dependencies>
 
   <!-- Project Information and Reports inherited from parent. -->
-  <reporting/>
+  <reporting>
+    <!-- Project Reports not inherited from parent. -->
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </reporting>
 </project>
