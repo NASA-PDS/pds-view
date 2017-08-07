@@ -258,13 +258,13 @@ public class SendEmail
 		if (args.length<4)
 			System.err.println("Usage: java gov.nasa.pds.tracking.email.SendEmail <host> <port> <username> <password>");
 		else {
-			//System.out.println("args[0] = " + args[0] + "    args[1] = " + args[1] + "    args[2] = " + args[2] +
+			//System.out.println("args.length = " + args.length + "  args[0] = " + args[0] + "    args[1] = " + args[1] + "    args[2] = " + args[2] +
 			//	   "   args[3] = " + args[3]);
 
 			SendEmail sm = new SendEmail(args[0], args[1], args[2], args[3]);
 
 			int maxMsgNums = 2;
-			if (args[4]!=null)
+			if (args.length==5 && args[4]!=null)
 				maxMsgNums = Integer.parseInt(args[4]);
 
 			sm.setMaxMsgNums(maxMsgNums);
