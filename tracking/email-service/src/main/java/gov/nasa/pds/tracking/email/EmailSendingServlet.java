@@ -1,4 +1,4 @@
-// Copyright 2016, by the California Institute of Technology.
+// Copyright 2016-2017, by the California Institute of Technology.
 // ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
 // Any commercial use must be negotiated with the Office of Technology Transfer
 // at the California Institute of Technology.
@@ -36,52 +36,52 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/EmailSendingServlet")
 public class EmailSendingServlet extends HttpServlet {
 
-	private String host;
-	private String port;
-	private String user;
-	private String pass;
-	private int maxMsgNums = 200;
+  private String host;
+  private String port;
+  private String user;
+  private String pass;
+  private int maxMsgNums = 200;
 
-	public void init() {
-		// reads SMTP server setting from web.xml file
-		ServletContext context = getServletContext();
-		host = context.getInitParameter("host");
-		port = context.getInitParameter("port");
-		user = context.getInitParameter("user");
-		pass = context.getInitParameter("pass");
-		maxMsgNums = Integer.parseInt(context.getInitParameter("max_msg_nums"));
-	}
+  public void init() {
+    // reads SMTP server setting from web.xml file
+    ServletContext context = getServletContext();
+    host = context.getInitParameter("host");
+    port = context.getInitParameter("port");
+    user = context.getInitParameter("user");
+    pass = context.getInitParameter("pass");
+    maxMsgNums = Integer.parseInt(context.getInitParameter("max_msg_nums"));
+  }
 
-	public void doPost(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
-		PrintWriter out = response.getWriter();
+  public void doPost(HttpServletRequest request,
+      HttpServletResponse response) throws ServletException, IOException {
+    PrintWriter out = response.getWriter();
 
-		String to=request.getParameter("recipient");  
-		String subject=request.getParameter("subject");  
-		String msg=request.getParameter("content");
+    String to=request.getParameter("recipient");  
+    String subject=request.getParameter("subject");  
+    String msg=request.getParameter("content");
 
-		SendEmail mailer;
-		if (user!=null && pass!=null)
-			mailer = new SendEmail(host, port, user, pass);
-		else
-			mailer = new SendEmail();
+    SendEmail mailer;
+    if (user!=null && pass!=null)
+      mailer = new SendEmail(host, port, user, pass);
+    else
+      mailer = new SendEmail(host, port);
 
-		mailer.setMaxMsgNums(maxMsgNums);
+    mailer.setMaxMsgNums(maxMsgNums);
 
-		if (mailer!=null) {
-			ArrayList<String> addressList;
-			if (to.contains(",")) {
-				addressList = new ArrayList<String>(Arrays.asList(to.split(",")));
-				mailer.send(addressList, subject, msg);
-			}
-			else 
-				mailer.send(to, subject, msg);  
+    if (mailer!=null) {
+      ArrayList<String> addressList;
+      if (to.contains(",")) {
+        addressList = new ArrayList<String>(Arrays.asList(to.split(",")));
+        mailer.send(addressList, subject, msg);
+      }
+      else 
+        mailer.send(to, subject, msg);  
 
-			out.print("A message has been sent successfully....");  
-		}
-		else {
-			out.println("Having an issue to instantiate SendEmail class....");
-		}
-		out.close();  
-	}
+      out.print("A message has been sent successfully....");  
+    }
+    else {
+      out.println("Having an issue to instantiate SendEmail class....");
+    }
+    out.close();  
+  }
 }
