@@ -16,8 +16,11 @@ package gov.nasa.pds.tracking.email;
 
 import java.io.IOException;
 import java.io.PrintWriter; 
+import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.Arrays;
+//import java.util.List;
+//import java.nio.charset.StandardCharsets;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -36,52 +39,107 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/EmailSendingServlet")
 public class EmailSendingServlet extends HttpServlet {
 
-  private String host;
-  private String port;
-  private String user;
-  private String pass;
-  private int maxMsgNums = 200;
+	private String host;
+	private String port;
+	private String user;
+	private String pass;
+	private int maxMsgNums = 200;
 
-  public void init() {
-    // reads SMTP server setting from web.xml file
-    ServletContext context = getServletContext();
-    host = context.getInitParameter("host");
-    port = context.getInitParameter("port");
-    user = context.getInitParameter("user");
-    pass = context.getInitParameter("pass");
-    maxMsgNums = Integer.parseInt(context.getInitParameter("max_msg_nums"));
-  }
+	public void init() {
+		// reads SMTP server setting from web.xml file
+		ServletContext context = getServletContext();
+		host = context.getInitParameter("host");
+		port = context.getInitParameter("port");
+		user = context.getInitParameter("user");
+		pass = context.getInitParameter("pass");
+		maxMsgNums = Integer.parseInt(context.getInitParameter("max_msg_nums"));
+	}
 
-  public void doPost(HttpServletRequest request,
-      HttpServletResponse response) throws ServletException, IOException {
-    PrintWriter out = response.getWriter();
+	static String extractPostRequestBody(HttpServletRequest request) throws IOException {
+		if ("POST".equalsIgnoreCase(request.getMethod())) {
+			Scanner s = new Scanner(request.getInputStream(), "UTF-8").useDelimiter("\\A");
+			return s.hasNext() ? s.next() : "";
+		}
+		return "";
+	}
 
-    String to=request.getParameter("recipient");  
-    String subject=request.getParameter("subject");  
-    String msg=request.getParameter("content");
+	public void doPost(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		response.setContentType("text/html");  
+		//PrintWriter out = response.getWriter();
+		String to = "", subject = "", msg = "";
 
-    SendEmail mailer;
-    if (user!=null && pass!=null)
-      mailer = new SendEmail(host, port, user, pass);
-    else
-      mailer = new SendEmail(host, port);
+		String reqBody = extractPostRequestBody(request);	
+		String[] items = reqBody.split("&");
+		for (int i=0; i<items.length; i++) {
+			if (items[i].startsWith("recipients")) {
+				to = items[i].substring(items[i].indexOf("=")+1);
+				to = to.replace("%40", "@");
+				to = to.replace("+", "");
+			}
+			if (items[i].startsWith("subject")) {
+				subject = items[i].substring(items[i].indexOf("=")+1);
+				subject = subject.replace("+", " ");
+			}
+			if (items[i].startsWith("content")) {
+				msg = items[i].substring(items[i].indexOf("=")+1);
+				msg = msg.replace("+", " ");
+			}
+		}
+		//System.out.println("recipient = '" + to + "'    subject = " + subject + "    msg = " + msg);
 
-    mailer.setMaxMsgNums(maxMsgNums);
+		String resultMessage = "";
+		try {
+			SendEmail mailer;
+			
+			System.out.println("username = *" + user + "*      password = *" + pass + "*");
+			if (user.equals("") && pass.equals("")) {
+				mailer = new SendEmail(host, port);
+				System.out.println("set mailer with host, port...");
+			} 
+			else {
+				if (user!=null && pass!=null) {
+					mailer = new SendEmail(host, port, user, pass);
+					System.out.println("set mailer with host, port, user, pass...");
+				}
+				else { 
+					mailer = new SendEmail(host, port);
+					System.out.println("set mailer with host, port...");
+				}
+			}
+			mailer.setMaxMsgNums(maxMsgNums);
 
-    if (mailer!=null) {
-      ArrayList<String> addressList;
-      if (to.contains(",")) {
-        addressList = new ArrayList<String>(Arrays.asList(to.split(",")));
-        mailer.send(addressList, subject, msg);
-      }
-      else 
-        mailer.send(to, subject, msg);  
+			if (mailer!=null) {
+				ArrayList<String> addressList;
+				if (to.contains(",") || to.contains("%2C")) {
+					if (to.contains("%2C")) {
+						to = to.replace("%2C",",");
+					}
+					addressList = new ArrayList<String>(Arrays.asList(to.split(",")));
+					mailer.send(addressList, subject, msg);
+					System.out.println("mailing to multiple users....");
+				}
+				else {
+					mailer.send(to, subject, msg);  
+					System.out.println("mailing to one user....");
+				}
 
-      out.print("A message has been sent successfully....");  
-    }
-    else {
-      out.println("Having an issue to instantiate SendEmail class....");
-    }
-    out.close();  
-  }
+				resultMessage = "The e-mail was sent successfully";
+				System.out.println("A message has been sent successfully....");  
+			}
+			else {
+				System.out.println("Having an issue to instantiate SendEmail class....");
+				resultMessage = "There is an error to instantiate SendEmail().";
+			}
+			//out.close();  
+
+		}catch (Exception ex) {
+			ex.printStackTrace();
+			resultMessage = "There were an error: " + ex.getMessage();
+		} finally {
+			request.setAttribute("Message", resultMessage);
+			getServletContext().getRequestDispatcher("/Result.jsp").forward(
+					request, response);
+		}
+	}
 }

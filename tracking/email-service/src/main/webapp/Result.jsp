@@ -8,6 +8,16 @@
 <title>Result</title>
 </head>
 <body>
+    <table>
+      <tr>
+        <td><img src="images/pds4_logo.png" alt="PDS Logo" /></td>
+        <td><img src="images/spacer.gif" alt="Spacer" width="50"/></td>
+        <td><h1>Email Service Result</h1></td>
+      </tr>
+    </table>
+
+    <hr/>
+    
 	<center>
 		<h3><%=request.getAttribute("Message")%></h3>
 	</center>

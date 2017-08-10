@@ -1,10 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
   pageEncoding="ISO-8859-1"%>
+<!--%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
   <head>
     <title>Email Service</title>
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <!--meta http-equiv="Content-Type" content="text/html; charset=UTF-8"-->
   </head>
   <body>
     <table>
@@ -20,12 +22,14 @@
     <p>The Email Service provides functionality to accept email requests from a Java application as well as Javascript-based clients (e.g., Feedback Form, Tool Registry, etc.). The service provides two interfaces: API and Web interface for interacting with the service. The Email Service accepts a list of email addresses, along with the subject and message content. The service can also be exercised with the form below:
     </p>
 
-    <!--form action="EmailSendingServlet" method="post" enctype="multipart/form-data"-->
     <form action="EmailSendingServlet" method="post">   
       <table border="0" width="35%" align="center">
+        <!--tr>
+          <td><input type="hidden" name="param1" value="foo"/></td>
+        </tr-->
         <tr>
           <td width="50%">Recipient Address(es)</td>
-          <td><input type="text" name="recipient" size="50" /></td>
+          <td><input type="text" name="recipients" size="50" multiple=true required /></td>
         </tr>
         <tr>
           <td>Subject</td>
@@ -35,10 +39,6 @@
           <td>Content</td>
           <td><textarea rows="10" cols="70" name="content"></textarea></td>
         </tr>
-        <!--tr>
-          <td>Attach file </td>
-          <td><input type="file" name="file" size="50" /></td>
-        </tr-->
         <tr>
           <td colspan="2" align="center"><input type="submit"
             value="Send" /></td>

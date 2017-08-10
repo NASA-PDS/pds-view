@@ -120,7 +120,8 @@
     <dependency>
       <groupId>com.sun.mail</groupId>
       <artifactId>javax.mail</artifactId>
-      <version>1.5.5</version>
+      <!--version>1.5.5</version-->
+      <version>1.6.0</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
