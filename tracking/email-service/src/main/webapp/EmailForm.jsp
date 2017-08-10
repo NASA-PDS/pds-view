@@ -1,12 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
   pageEncoding="ISO-8859-1"%>
-<!--%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
   <head>
     <title>Email Service</title>
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-    <!--meta http-equiv="Content-Type" content="text/html; charset=UTF-8"-->
   </head>
   <body>
     <table>
@@ -24,9 +22,6 @@
 
     <form action="EmailSendingServlet" method="post">   
       <table border="0" width="35%" align="center">
-        <!--tr>
-          <td><input type="hidden" name="param1" value="foo"/></td>
-        </tr-->
         <tr>
           <td width="50%">Recipient Address(es)</td>
           <td><input type="text" name="recipients" size="50" multiple=true required /></td>
