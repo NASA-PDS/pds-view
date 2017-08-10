@@ -100,7 +100,7 @@ public class SendEmail
 		else {
 			properties.put("mail.smtp.auth", "true");
 			properties.put("mail.smtp.starttls.enable", "true");
-			properties.put("mail.smtp.debug", "true");
+			//properties.put("mail.smtp.debug", "true");
 
 			// creates a new session with an authenticator
 			Authenticator auth = new Authenticator() {
@@ -112,7 +112,7 @@ public class SendEmail
 			//System.out.println("*****With username and password....session is with authenticator....");
 			session = Session.getInstance(properties, auth);
 		}
-		session.setDebug(true);
+		//session.setDebug(true);
 	}
 
 	public void setFrom(String from) {
