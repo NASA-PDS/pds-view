@@ -112,31 +112,28 @@ or
     </section>
 
     <section name="Configuring the SMTP Server">
-      <p>The preferred method to configure the SMTP server for the Email service is to manually edit the application configuration files.
-      </p>
-
-      <p>Edit the file $TOMCAT_HOME/webapps/${project.artifactId}/WEB-INF/web.xml, which is included in the war distribution, and change the setting of the SMTP server.
+      <p>The preferred method to configure the SMTP server for the Email Service is to manually edit the application configuration file (<i>web.xml</i>). The configuration defaults to accessing the SMTP server on the <i>localhost</i> at port <i>25</i> without a username and password. Edit the file <i>$TOMCAT_HOME/webapps/${project.artifactId}/WEB-INF/web.xml</i> and modify the following parameters to correspond with the SMTP server of choice:
       </p>
       
       <source>
 &lt;context-param&gt;
   &lt;param-name&gt;host&lt;/param-name&gt;
-  &lt;param-value&gt;smtp.jpl.nasa.gov&lt;/param-value&gt;
+  &lt;param-value&gt;localhost&lt;/param-value&gt;
 &lt;/context-param&gt;
 
 &lt;context-param&gt;
   &lt;param-name&gt;port&lt;/param-name&gt;
-  &lt;param-value&gt;587&lt;/param-value&gt;
+  &lt;param-value&gt;25&lt;/param-value&gt;
 &lt;/context-param&gt;
 
 &lt;context-param&gt;
   &lt;param-name&gt;user&lt;/param-name&gt;
-  &lt;param-value&gt;username&lt;/param-value&gt;
+  &lt;param-value&gt;&lt;/param-value&gt;
 &lt;/context-param&gt;
 
 &lt;context-param&gt;
   &lt;param-name&gt;pass&lt;/param-name&gt;
-  &lt;param-value&gt;password&lt;/param-value&gt;
+  &lt;param-value&gt;&lt;/param-value&gt;
 &lt;/context-param&gt;
       </source>
       

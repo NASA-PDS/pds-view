@@ -42,12 +42,12 @@
 &lt;form action="EmailSendingServlet" method="post"&gt;   
     &lt;table border="0" width="35%" align="center"&gt;
         &lt;tr&gt;
-        &lt;td width="50%"&gt;Recipient address&lt;/td&gt;
-            &lt;td&gt;&lt;input type="text" name="recipient" size="50"/&gt;&lt;/td&gt;
+        &lt;td width="50%"&gt;Recipient Address(es)&lt;/td&gt;
+            &lt;td&gt;&lt;input type="text" name="recipients" size="50" multiple=true required /&gt;&lt;/td&gt;
         &lt;/tr&gt;
         &lt;tr&gt;
             &lt;td&gt;Subject&lt;/td&gt;
-            &lt;td&gt;&lt;input type="text" name="subject" size="50"/&gt;&lt;/td&gt;
+            &lt;td&gt;&lt;input type="text" name="subject" size="50" /&gt;&lt;/td&gt;
         &lt;/tr&gt;
         &lt;tr&gt;
             &lt;td&gt;Content&lt;/td&gt;
@@ -65,7 +65,7 @@
 
       <table>
         <tr><th>Parameter</th><th>Description</th></tr>
-        <tr><td>recipient</td><td>One or more electronic mail addresses separated by a comma.</td></tr>
+        <tr><td>recipients</td><td>One or more electronic mail addresses separated by a comma.</td></tr>
         <tr><td>subject</td><td>The subject of the electronic mail message.</td></tr>
         <tr><td>content</td><td>The body of the electronic mail message.</td></tr>
       </table>
@@ -76,16 +76,11 @@
       </p>
        
       <center>
-        <img alt="Email Form" src="../images/email_form.png" border="3" width="50%" height="50%"/>
+        <img alt="Email Form" src="../images/email_form.jpg" border="3" width="50%" height="50%" style="border:1px solid black"/>
       </center>
       
-      
-      <p>If you want to send an email to multiple recipients, enter recipient's email addresses separated by a ',' in the <b><i>Recipient Address</i></b> area as shown below:
+      <p>If you want to send an email to multiple recipients, enter the recipient's email addresses separated by a ',' in the <b><i>Recipient Address(es)</i></b> text box above.
       </p>
-      
-      <center>
-        <img alt="Email to multiple recipients" src="../images/email_multiple.png" border="3" width="50%" height="50%"/>
-      </center>
     </section>
   </body>
 </document>

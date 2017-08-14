@@ -19,8 +19,6 @@ import java.io.PrintWriter;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.Arrays;
-//import java.util.List;
-//import java.nio.charset.StandardCharsets;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -92,7 +90,7 @@ public class EmailSendingServlet extends HttpServlet {
 		try {
 			SendEmail mailer;
 			
-			System.out.println("username = *" + user + "*      password = *" + pass + "*");
+			//System.out.println("username = *" + user + "*      password = *" + pass + "*");
 			if (user.equals("") && pass.equals("")) {
 				mailer = new SendEmail(host, port);
 				System.out.println("set mailer with host, port...");

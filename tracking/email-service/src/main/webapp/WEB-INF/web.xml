@@ -10,12 +10,12 @@
   <!-- SMTP settings -->
   <context-param>
     <param-name>host</param-name>
-    <param-value>smtp.jpl.nasa.gov</param-value>
+    <param-value>localhost</param-value>
   </context-param>
 
   <context-param>
     <param-name>port</param-name>
-    <param-value>587</param-value>
+    <param-value>25</param-value>
   </context-param>
 
   <context-param>
