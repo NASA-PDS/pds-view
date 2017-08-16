@@ -71,18 +71,15 @@
     <field name="external_reference_text" type="string">
       <registryPath>external_reference_text</registryPath>
     </field>
-    <!-- Archive Information -->
-    <field name="resource_name" type="string">
-      <registryPath>resource_name</registryPath>
+    <!-- Airborne Fields -->
+    <field name="airborne_name" type="string">
+      <registryPath>airborne_name</registryPath>
     </field>
-    <field name="resource_type" type="string">
-      <registryPath>resource_type</registryPath>
+    <field name="airborne_type" type="string">
+      <registryPath>airborne_type</registryPath>
     </field>
-    <field name="resource_url" type="string">
-      <registryPath>resource_url</registryPath>
-    </field>
-    <field name="resource_description" type="string">
-      <registryPath>resource_description</registryPath>
+    <field name="airborne_description" type="string">
+      <registryPath>airborne_description</registryPath>
     </field>
     <!-- Facility Fields -->
     <field name="facility_name" type="float">
@@ -143,7 +140,7 @@
     <field name="instrument_host_serial_number" type="string">
       <registryPath>instrument_host_serial_number</registryPath>
     </field>
-    <!-- Investigation -->
+    <!-- Investigation Fields -->
     <field name="investigation_ref" type="string">
       <registryPath>investigation_ref</registryPath>
     </field>
@@ -166,7 +163,7 @@
     <field name="target_ref" type="string">
       <registryPath>target_ref</registryPath>
     </field>
-    <!-- PDS Affiliate-->
+    <!-- PDS Affiliate Fields -->
     <field name="person_name" type="string">
       <registryPath>person_name</registryPath>
     </field>
@@ -203,7 +200,20 @@
     <field name="person_description" type="string">
       <registryPath>person_description</registryPath>
     </field>
-    <!-- Target -->
+    <!-- Resource Fields -->
+    <field name="resource_name" type="string">
+      <registryPath>resource_name</registryPath>
+    </field>
+    <field name="resource_type" type="string">
+      <registryPath>resource_type</registryPath>
+    </field>
+    <field name="resource_url" type="string">
+      <registryPath>resource_url</registryPath>
+    </field>
+    <field name="resource_description" type="string">
+      <registryPath>resource_description</registryPath>
+    </field>
+    <!-- Target Fields -->
     <field name="target_name" type="string">
       <registryPath>target_name</registryPath>
       <registryPath>target_ref.target_name</registryPath>
@@ -213,6 +223,25 @@
     </field>
     <field name="target_description" type="string">
       <registryPath>target_description</registryPath>
+    </field>
+    <!-- Telescope Fields -->
+    <field name="telescope_aperture" type="string">
+      <registryPath>telescope_aperture</registryPath>
+    </field>
+    <field name="telescope_longitude" type="string">
+      <registryPath>telescope_longitude</registryPath>
+    </field>
+    <field name="telescope_latitude" type="string">
+      <registryPath>telescope_latitude</registryPath>
+    </field>
+    <field name="telescope_altitude" type="string">
+      <registryPath>telescope_altitude</registryPath>
+    </field>
+    <field name="telescope_coordinate_source" type="string">
+      <registryPath>telescope_coordinate_source</registryPath>
+    </field>
+    <field name="telescope_description" type="string">
+      <registryPath>telescope_description</registryPath>
     </field>
     <!-- Miscellaneous Fields -->
     <field name="associate_ref" type="string">

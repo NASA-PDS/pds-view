@@ -38,8 +38,9 @@
     <field name="resLocation" type="required">
       <registryPath>resource_url</registryPath>
     </field>
+    <!-- PDS-492 -->
     <field name="data_product_type" type="string">
-      <registryPath>Archive_Information</registryPath>
+      <registryPath>data_class</registryPath>
     </field>
     <field name="data_class" type="string">
       <registryPath>data_class</registryPath>
