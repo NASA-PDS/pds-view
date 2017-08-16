@@ -465,10 +465,9 @@ class PDSRegistryClient(object):
             # by lid (without /earliest or /latest) returns a JSON dict with 'start' set to null, "numFound" set
             # to null, and a one-item sequence "results" that contains the extrinsic.
             if earliest:
-                answer = self._callServer(u'/extrinsics/logicals/{}/earliest'.format(lid))
+                answer = self._callServer(u'/extrinsics/logicals/%s/earliest' % lid)
             else:
-                answer = self._callServer(u'/extrinsics/logicals/{}'.format(lid))
-                answer = answer['results'][0]
+                answer = self._callServer(u'/extrinsics/logicals/%s/latest' % lid)
             return self._createExtrinsic(answer)
         except HTTPError, ex:
             if ex.code == httplib.NOT_FOUND:
@@ -560,13 +559,13 @@ class PDSRegistryClient(object):
         json = self._serializeExtrinsic(extrinsic)
         existing = self.getExtrinsicByLID(extrinsic.lid)
         if replace and existing is None:
-            raise ValueError("Cannot replace extrinsic with lid {} because it wasn't found".format(extrinsic.lid))
+            raise ValueError("Cannot replace extrinsic with lid %s because it wasn't found" % extrinsic.lid)
         if existing:
             if not replace:
                 extrinsic.guid = None
-                self._callServer(u'/extrinsics/logicals/{}'.format(extrinsic.lid), params=None, json=json, method='POST')
+                self._callServer(u'/extrinsics/logicals/%s' % extrinsic, params=None, json=json, method='POST')
             else:
-                self._callServer(u'/extrinsics/{}'.format(extrinsic.guid), params=None, json=json, method='POST')
+                self._callServer(u'/extrinsics/%s' % extrinsic.guid, params=None, json=json, method='POST')
         else:
             self._callServer(u'/extrinsics', params=None, json=json, method='POST')
     def putAssociation(self, association):

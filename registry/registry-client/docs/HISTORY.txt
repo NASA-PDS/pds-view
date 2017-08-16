@@ -5,6 +5,13 @@ What follows is a history of changes from release to release, along with
 issues addressed and new features in each release.
 
 
+1.13.0 — TBD
+------------
+
+* Use %s string interpolation for Python 2.6 compatibility
+* Use /extrinsics/logicals/LID/latest to get an extrinsic
+
+
 1.12.0
 ------
 
