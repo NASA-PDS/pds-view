@@ -563,7 +563,7 @@ class PDSRegistryClient(object):
         if existing:
             if not replace:
                 extrinsic.guid = None
-                self._callServer(u'/extrinsics/logicals/%s' % extrinsic, params=None, json=json, method='POST')
+                self._callServer(u'/extrinsics/logicals/%s' % extrinsic.lid, params=None, json=json, method='POST')
             else:
                 self._callServer(u'/extrinsics/%s' % extrinsic.guid, params=None, json=json, method='POST')
         else:
