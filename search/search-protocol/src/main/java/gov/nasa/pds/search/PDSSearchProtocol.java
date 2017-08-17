@@ -10,7 +10,7 @@
 //	may be required before exporting such information to foreign countries or 
 //	providing access to foreign nationals.
 //	
-//	$Id$
+//	$Id: PDSSearchProtocol.java 11492 2013-03-26 23:53:26Z jpadams $
 //
 
 package gov.nasa.pds.search;

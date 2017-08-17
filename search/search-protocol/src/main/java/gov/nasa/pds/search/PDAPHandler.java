@@ -10,7 +10,7 @@
 //	may be required before exporting such information to foreign countries or 
 //	providing access to foreign nationals.
 //	
-//	$Id$
+//	$Id: PDAPHandler.java 12889 2014-03-22 16:24:17Z shardman $
 //
 
 package gov.nasa.pds.search;

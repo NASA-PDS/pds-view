@@ -16,12 +16,15 @@ public class XSLTResponseWriter extends
 			throws IOException {
 		Transformer transformer = super.getTransformer(arg0);
 
+		//System.out.println("********* XSLTResponseWriter     arg0 = " + arg0 +  "        transformer = " + transformer );
 		// Set up standard transform parameters
 		if (transformer != null
 				&& transformer.getParameter(SOLR_HOME_PARAMETER) == null) {
 			transformer.setParameter(SOLR_HOME_PARAMETER,
 					System.getProperty("solr.pds.home") + "/pds");
 		}
+		
+		//System.out.println("********* XSLTResponseWriter.....SOLR_HOME_PARAMETER = " + transformer.getParameter(SOLR_HOME_PARAMETER));
 		return transformer;
 	}
 
