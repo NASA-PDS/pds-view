@@ -48,14 +48,14 @@ public class XymonFilterProcessor implements Processor{
 		
 		if(in == null){
 			throw new ProcessingException("No input directory provided to " +
-					"simple command processor");
+					"Xymon filter processor");
 		}
 		if(out == null){
 			throw new ProcessingException("No output directory provided to " +
-					"simple command processor");
+					"Xymon filter processor");
 		}else if(!out.exists()){
-			throw new ProcessingException("The output directory for simple " +
-					"command processor does not exist: " +
+			throw new ProcessingException("The output directory for Xymon " +
+					"filter processor does not exist: " +
 					out.getAbsolutePath());
 		}
 		
@@ -80,14 +80,14 @@ public class XymonFilterProcessor implements Processor{
 		
 		if(in == null){
 			throw new ProcessingException("No input file list provided to " +
-					"log reformat processor");
+					"Xymon filter processor");
 		}
 		if(out == null){
 			throw new ProcessingException("No output directory provided to " +
-					"log reformat processor");
+					"Xymon filter processor");
 		}else if(!out.exists()){
-			throw new ProcessingException("The output directory for log " +
-					"reformatting does not exist: " + out.getAbsolutePath());
+			throw new ProcessingException("The output directory for Xymon " +
+					"filter does not exist: " + out.getAbsolutePath());
 		}
 		
 		this.processFileList(in, out);
