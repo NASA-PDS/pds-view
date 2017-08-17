@@ -10,6 +10,7 @@ issues addressed and new features in each release.
 
 * Use %s string interpolation for Python 2.6 compatibility
 * Use /extrinsics/logicals/LID/latest to get an extrinsic
+* Another attempt PDS-477
 
 
 1.12.0
