@@ -16,7 +16,9 @@
   $Id$
 -->
 
-<project>
+<project  xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>gov.nasa.pds.2010</groupId>
@@ -26,13 +28,14 @@
 
   <groupId>gov.nasa.pds.2010.tracking</groupId>
   <artifactId>tracking-service</artifactId>
-  <packaging>jar</packaging>
+  <packaging>war</packaging>
+  <!-- <packaging>jar</packaging>  -->
 
   <name>Tracking Service</name>
   <description>
     The Tracking Service provides functionality for tracking status and other aspects pertaining to PDS products that are not captured in the Registry Service.
   </description>
-  <url>https://pds-cm.jpl.nasa.gov/pds4/tracking/tracking-service</url>
+  <url>https://pds-cm.jpl.nasa.gov/pds4/tracking/tracking-service/</url>
 
   <licenses>
     <license>
@@ -41,7 +44,7 @@
       <distribution>repo</distribution>
     </license>
   </licenses>
-
+    
   <!-- Add developers if different from the list in the parent POM. -->
   <developers/>
 
@@ -49,7 +52,21 @@
   <contributors/>
 
   <build>
-    <plugins>
+	<plugins>
+	   <plugin>
+         <groupId>org.apache.maven.plugins</groupId>
+         <artifactId>maven-jar-plugin</artifactId>
+         <version>3.0.2</version>
+         <executions>
+           <execution>
+             <id>make-a-jar</id>
+			 <phase>compile</phase>
+			 <goals>
+		   	   <goal>jar</goal>
+			 </goals>
+           </execution>
+         </executions>
+       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-assembly-plugin</artifactId>
@@ -68,6 +85,27 @@
             </configuration>
           </execution>
         </executions>
+      </plugin>
+      <plugin>
+           <artifactId>maven-war-plugin</artifactId>
+           <version>2.6</version>
+           <configuration>
+           	   <warName>services</warName>
+               <warSourceDirectory>src/main/webapp</warSourceDirectory>
+               <failOnMissingWebXml>false</failOnMissingWebXml>
+           </configuration>
+       </plugin>
+       <!-- 
+        Configuration for deploying to a local Tomcat server. Provide the 
+        username and password for the Manager interface in your settings.xml.
+      -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>tomcat-maven-plugin</artifactId>
+        <version>1.1</version>
+        <configuration>
+          <server>tomcat-local</server>
+        </configuration>
       </plugin>
     </plugins>
   </build>
@@ -90,8 +128,39 @@
   </repositories>
 
   <!-- Add dependencies as required. -->
-  <dependencies/>
-
+  <dependencies>
+    <dependency>
+		<groupId>com.sun.mail</groupId>
+		<artifactId>javax.mail</artifactId>
+		<version>1.5.5</version>
+	</dependency>
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
+      <version>3.1.0</version>
+    </dependency>
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <version>5.1.41</version>
+    </dependency>
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+      <version>1.2.17</version>
+    </dependency>
+    <dependency>
+        <groupId>org.glassfish.jersey.containers</groupId>
+        <artifactId>jersey-container-servlet</artifactId>
+        <version>2.22.1</version>
+    </dependency>
+    <dependency>
+        <groupId>org.json</groupId>
+        <artifactId>json</artifactId>
+        <version>20151123</version>
+    </dependency>
+  </dependencies>
+  
   <!-- Project Information and Reports inherited from parent. -->
   <reporting>
     <!-- Project Reports not inherited from parent. -->
