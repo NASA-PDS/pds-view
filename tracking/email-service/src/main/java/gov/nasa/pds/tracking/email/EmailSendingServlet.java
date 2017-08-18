@@ -19,6 +19,7 @@ import java.io.PrintWriter;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.net.URLDecoder;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -26,6 +27,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+//import org.apache.commons.lang3.StringEscapeUtils; // to decode HTML special chars
 
 /**
  * A servlet that takes message details from user and send it as a new e-mail
@@ -42,6 +45,7 @@ public class EmailSendingServlet extends HttpServlet {
 	private String user;
 	private String pass;
 	private int maxMsgNums = 200;
+	final static String encType = "UTF-8";
 
 	public void init() {
 		// reads SMTP server setting from web.xml file
@@ -55,7 +59,7 @@ public class EmailSendingServlet extends HttpServlet {
 
 	static String extractPostRequestBody(HttpServletRequest request) throws IOException {
 		if ("POST".equalsIgnoreCase(request.getMethod())) {
-			Scanner s = new Scanner(request.getInputStream(), "UTF-8").useDelimiter("\\A");
+			Scanner s = new Scanner(request.getInputStream(), encType).useDelimiter("\\A");
 			return s.hasNext() ? s.next() : "";
 		}
 		return "";
@@ -64,24 +68,24 @@ public class EmailSendingServlet extends HttpServlet {
 	public void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/html");  
-		//PrintWriter out = response.getWriter();
 		String to = "", subject = "", msg = "";
 
 		String reqBody = extractPostRequestBody(request);	
 		String[] items = reqBody.split("&");
 		for (int i=0; i<items.length; i++) {
 			if (items[i].startsWith("recipients")) {
+				// TODO TODO: do we need to trim the string????
 				to = items[i].substring(items[i].indexOf("=")+1);
-				to = to.replace("%40", "@");
-				to = to.replace("+", "");
+				// Decode HTML encoded special characters back to normal characters
+				to = URLDecoder.decode(to, encType);
 			}
 			if (items[i].startsWith("subject")) {
 				subject = items[i].substring(items[i].indexOf("=")+1);
-				subject = subject.replace("+", " ");
+				subject = URLDecoder.decode(subject, encType);
 			}
 			if (items[i].startsWith("content")) {
 				msg = items[i].substring(items[i].indexOf("=")+1);
-				msg = msg.replace("+", " ");
+				msg = URLDecoder.decode(msg, encType); 
 			}
 		}
 		//System.out.println("recipient = '" + to + "'    subject = " + subject + "    msg = " + msg);
@@ -122,15 +126,16 @@ public class EmailSendingServlet extends HttpServlet {
 					System.out.println("mailing to one user....");
 				}
 
-				resultMessage = "The e-mail was sent successfully";
+				resultMessage = "The e-mail was sent successfully";			
+				//resultMessage += "\nTO: " + to
+				//		      + "\nSUBJECT: " + subject 
+				//		      + "\nMessage: " + msg + "\n";
 				System.out.println("A message has been sent successfully....");  
 			}
 			else {
 				System.out.println("Having an issue to instantiate SendEmail class....");
 				resultMessage = "There is an error to instantiate SendEmail().";
 			}
-			//out.close();  
-
 		}catch (Exception ex) {
 			ex.printStackTrace();
 			resultMessage = "There were an error: " + ex.getMessage();
