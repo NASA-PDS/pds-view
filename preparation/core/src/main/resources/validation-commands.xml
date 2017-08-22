@@ -14,6 +14,7 @@
     <command caption="Validate file references in label" className="gov.nasa.pds.tools.validate.rule.pds4.FileReferenceValidationRule" />
     <command caption="Register file references" className="gov.nasa.pds.tools.validate.rule.pds4.RegisterTargetReferences" />
     <command caption="Register label identifiers" className="gov.nasa.pds.tools.validate.rule.pds4.RegisterLabelIdentifiers" />
+    <command caption="Data Content matches table descriptions in label" className="gov.nasa.pds.tools.validate.rule.pds4.TableDataContentValidationRule" />
   </command>   
 
   <chain name="pds4.bundle" caption="PDS4 Bundle" className="gov.nasa.pds.tools.validate.rule.pds4.BundleValidationRule">

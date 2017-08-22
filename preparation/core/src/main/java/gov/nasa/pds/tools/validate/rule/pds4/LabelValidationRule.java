@@ -27,6 +27,7 @@ import gov.nasa.pds.tools.validate.rule.AbstractValidationRule;
 import gov.nasa.pds.tools.validate.rule.GenericProblems;
 import gov.nasa.pds.tools.validate.rule.ValidationTest;
 import net.sf.saxon.tinytree.TinyNodeImpl;
+import net.sf.saxon.trans.XPathException;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -147,10 +148,17 @@ public class LabelValidationRule extends AbstractValidationRule {
       }
 		} catch (SAXException | IOException | ParserConfigurationException
 				| TransformerException | MissingLabelSchemaException e) {
-		  // Don't need to report SAXParseException messages as they have already 
-		  // been reported by the LabelValidator's error handler
-		  if (!(e instanceof SAXParseException)) {
-		    reportError(GenericProblems.UNCAUGHT_EXCEPTION, getTarget(), -1, -1, e.getMessage());
+		  if (e instanceof XPathException) {
+		    XPathException xe = (XPathException) e;
+		    if (!xe.hasBeenReported()) {
+          reportError(GenericProblems.UNCAUGHT_EXCEPTION, getTarget(), -1, -1, e.getMessage());		      
+		    }
+		  } else {
+  		  // Don't need to report SAXParseException messages as they have already 
+  		  // been reported by the LabelValidator's error handler
+  		  if (!(e instanceof SAXParseException)) {
+  		    reportError(GenericProblems.UNCAUGHT_EXCEPTION, getTarget(), -1, -1, e.getMessage());
+  		  }
 		  }
 		}
 	}
