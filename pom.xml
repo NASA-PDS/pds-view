@@ -37,6 +37,7 @@
   <inceptionYear>2010</inceptionYear>
 
   <modules>
+    <module>email</module>
     <module>ingest</module>
     <module>migrate</module>
     <module>model</module>
@@ -53,12 +54,13 @@
   <properties>
     <!-- Internal Dependency Version -->
     <core-version>1.12.0-dev</core-version>
-    <pds4-tools-version>0.9.0-dev</pds4-tools-version>
+    <email-version>0.1.0-dev</email-version>
     <generate-version>0.13.0-dev</generate-version>
-    <transform-version>1.6.0-dev</transform-version>
+    <pds4-tools-version>0.9.0-dev</pds4-tools-version>
     <registry-version>1.13.0-dev</registry-version>
     <search-version>1.11.0-dev</search-version>
     <storage-version>1.3.0-dev</storage-version>
+    <transform-version>1.6.0-dev</transform-version>
     <!-- External Dependency Versions -->
     <oodt-version>0.12</oodt-version>
     <product-tools-version>3.6.0-dev</product-tools-version>
@@ -141,10 +143,10 @@
       </roles>
     </developer>
     <developer>
-      <name>Mark Rose</name>
-      <id>mrose</id>
-      <email>Mark.Rose@nasa.gov</email>
-      <organization>NASA Ames Research Center</organization>
+      <name>Dan Yu</name>
+      <id>danyu</id>
+      <email>Dan.Yu@jpl.nasa.gov</email>
+      <organization>NASA Jet Propulsion Laboratory</organization>
       <roles>
         <role>Developer</role>
       </roles>
@@ -193,6 +195,15 @@
       <roles>
         <role>Former Developer</role>
         <role>Former System Design Working Group Member</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Mark Rose</name>
+      <id>mrose</id>
+      <email>Mark.Rose@nasa.gov</email>
+      <organization>NASA Ames Research Center</organization>
+      <roles>
+        <role>Former Developer</role>
       </roles>
     </developer>
   </developers>
