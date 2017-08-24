@@ -35,13 +35,6 @@
       </includes>
     </fileSet>
     <fileSet>
-      <directory>target</directory>
-      <outputDirectory>/</outputDirectory>
-      <includes>
-        <include>*.war</include>
-      </includes>
-    </fileSet>
-    <fileSet>
       <directory>target/site</directory>
       <outputDirectory>doc</outputDirectory>
       <fileMode>644</fileMode>

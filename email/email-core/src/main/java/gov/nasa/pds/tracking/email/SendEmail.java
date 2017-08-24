@@ -12,7 +12,7 @@
 //
 // $Id: $
 
-package gov.nasa.pds.tracking.email;
+package gov.nasa.pds.email;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,13 +36,13 @@ public class SendEmail
 	private String from = "pds_operator@jpl.nasa.gov";
 
 	// Assuming you are sending email from localhost
-	private String host = "smtp.jpl.nasa.gov";
+	private String host = "localhost";
 
 	// Recipient's email ID needs to be mentioned
 	private String toAddress;
 	private ArrayList<String> toAddressList;
 
-	private String port = "587";
+	private String port = "25";
 	private String user;
 	private String pass;
 	private int maxMsgNums = 200;

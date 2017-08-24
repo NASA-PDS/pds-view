@@ -25,7 +25,7 @@
 
   <body>
     <section name="Development">
-      <p>This document describes how a user can utilize the Application Program Interface (API) of the <i>${project.artifactId}</i> package to develop their own interface to the Email Service. The following topics can be found in this document:
+      <p>This document describes how a user can utilize the Application Program Interface (API) of the <i>${project.artifactId}</i> package to develop their own interface to a SMTP server. The following topics can be found in this document:
       </p>
 
       <ul>
@@ -35,27 +35,27 @@
     </section>
 
     <section name="API Entry Points">
-      <p>Following section describes how a user can utilize the Application Program Interface (API) of the Email Service package to send an email to one or multiple recipients from a Java Application. Additional information is also available from the <a href="../apidocs/index.html">JavaDocs</a> documentation for this project.</p>   
+      <p>Following section describes how a user can utilize the Application Program Interface (API) of the Email Core package to send an email to one or multiple recipients from a Java Application. Additional information is also available from the <a href="../apidocs/index.html">JavaDocs</a> documentation for this project.</p>   
       
       <p>1. Choose one of Constructors below: </p>
       <source>
-// default constructor
+// Default constructor
 public SendEmail()
 
 or
  
-// constructor with host and sender's email ID    
-public SendEmail(String host, String from)  
+// Constructor with host and port for SMTP server    
+public SendEmail(String host, String port)  
       
 or
 
-// constructor with host, port, username, and password
+// Constructor with host, port, username, and password for SMTP server
 public SendEmail(String host, String port, String user, String pass) 
       </source>
 
       <p>2a. Set host and port for the SMTP server:
       <br/><br/>
-      If it is required to change host name and port number of the e-mail server, then you can set these properties as follows. The default host value is 'smtp.jpl.nasa.gov'. The default port number is '587'.
+      If it is required to change host name and port number of the e-mail server, then you can set these properties as follows. The default host value is 'localhost'. The default port number is '25'.
       
       <source>
 se.setHost(host);     // to set the smtp host name
@@ -95,18 +95,19 @@ public void send(String toAddress, String subject, String msgContent)
     </section>
 
     <section name="Test Executable JAR">
-      <p>To test the Email Service via command line, execute a program with the following command:</p>
+      <p>To test the Email Core via command line, execute a program with the following command:</p>
 
       <source>
-% java gov.nasa.pds.tracking.email.SendEmail &lt;host&gt; &lt;port&gt; &lt;username&gt; &lt;password&gt;
+% java gov.nasa.pds.tracking.email.SendEmail &lt;recipient&gt; &lt;host&gt; &lt;port&gt; &lt;username&gt; &lt;password&gt;
       </source>
 
       <table>
         <tr><th>Command-Line Option</th><th>Description</th></tr>
-        <tr><td>&lt;host&gt;</td><td>Specify a host name of the email server. The default host is <i>smtp.jpl.nasa.gov</i>.</td></tr>
-        <tr><td>&lt;port&gt;</td><td>Specify a port number of the email server. The default port is <i>587</i>.</td></tr>
-        <tr><td>&lt;username&gt;</td><td>Specify a username for authentication with the email server.</td></tr>
-        <tr><td>&lt;password&gt;</td><td>Specify a password associated with the username.</td></tr>
+        <tr><td>&lt;recipient&gt;</td><td>Specify an email address to receive the test email.</td></tr>
+        <tr><td>&lt;host&gt;</td><td>Specify a host name of the email server. The default host is <i>localhost</i>.</td></tr>
+        <tr><td>&lt;port&gt;</td><td>Specify a port number of the email server. The default port is <i>25</i>.</td></tr>
+        <tr><td>&lt;username&gt;</td><td>Specify a username for authentication with the email server. This argument is optional.</td></tr>
+        <tr><td>&lt;password&gt;</td><td>Specify a password associated with the username. This argument is optional.</td></tr>
       </table>
     </section>
   </body>

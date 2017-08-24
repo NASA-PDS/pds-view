@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2016, by the California Institute of Technology.
+  Copyright 2016-2017, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -23,9 +23,9 @@
   </properties>
 
   <body>
-    <release version="0.1.0" date="2016-12-16" description="This first release of Email Serivce of the Tracking Service.">
+    <release version="0.1.0" date="TBD" description="TBD">
       <action dev="hyunlee" type="add">
-        Added the capability to accept email requests from Java applications and Javascript-based clients. 
+        Added the capability to accept email requests from Java applications. 
       </action>
     </release>
   </body>
