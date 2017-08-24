@@ -167,6 +167,11 @@
       <artifactId>tika-core</artifactId>
       <version>1.12</version>
     </dependency>
+    <dependency>
+      <groupId>gov.nasa.pds.2010.email</groupId>
+      <artifactId>email-core</artifactId>
+      <version>${email-version}</version>
+    </dependency>
   </dependencies>
 
   <!-- Project Information and Reports inherited from parent. -->

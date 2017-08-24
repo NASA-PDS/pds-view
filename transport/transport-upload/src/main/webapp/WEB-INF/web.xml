@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!-- 
-  Copyright 2016, by the California Institute of Technology.
+  Copyright 2016-2017, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology 
   Transfer at the California Institute of Technology.
@@ -31,6 +31,22 @@
     <init-param>
       <param-name>repositoryPath</param-name>
       <param-value>/tmp</param-value>
+    </init-param>
+    <init-param>
+      <param-name>emailFlag</param-name>
+      <param-value>False</param-value>
+    </init-param>
+    <init-param>
+      <param-name>emailFrom</param-name>
+      <param-value>pds_operator@jpl.nasa.gov</param-value>
+    </init-param>
+    <init-param>
+      <param-name>emailTo</param-name>
+      <param-value>pds_operator@jpl.nasa.gov</param-value>
+    </init-param>
+    <init-param>
+      <param-name>emailSubject</param-name>
+      <param-value>File Uploaded</param-value>
     </init-param>
     -->
   </servlet>

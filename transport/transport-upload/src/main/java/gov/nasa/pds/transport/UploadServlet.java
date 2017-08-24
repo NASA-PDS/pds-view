@@ -1,4 +1,4 @@
-// Copyright 2016, by the California Institute of Technology.
+// Copyright 2016-2017, by the California Institute of Technology.
 // ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
 // Any commercial use must be negotiated with the Office of Technology Transfer
 // at the California Institute of Technology.
@@ -32,6 +32,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
+import gov.nasa.pds.email.SendEmail;
+
 /**
  * Servlet that supports uploading a file. Based on the Java 6 EE
  * file upload servlet example.
@@ -45,6 +47,11 @@ public class UploadServlet extends HttpServlet {
   private final static Logger LOGGER = Logger.getLogger(UploadServlet.class.getCanonicalName());
   /** The path for storing the uploaded files. */
   private String repositoryPath;
+  /** Email related variables. */
+  private String emailFlag;
+  private String emailFrom;
+  private String emailTo;
+  private String emailSubject;
 
   /**
    * Constructor for the upload servlet.
@@ -72,6 +79,28 @@ public class UploadServlet extends HttpServlet {
     repositoryPath = servletConfig.getInitParameter("repositoryPath");
     if (repositoryPath == null) {
       repositoryPath = "/tmp";
+    }
+
+    // Grab the emailFlag parameter from the servlet config.
+    emailFlag = servletConfig.getInitParameter("emailFlag");
+    if (emailFlag == null) {
+      emailFlag = "False";
+    }
+
+    // Grab the other email parameters from the servlet config.
+    if (emailFlag.equals("True")) {
+      emailFrom = servletConfig.getInitParameter("emailFrom");
+      if (emailFrom == null) {
+        emailFrom = "pds_operator@jpl.nasa.gov";
+      }
+      emailTo = servletConfig.getInitParameter("emailTo");
+      if (emailTo == null) {
+        emailTo = "pds_operator@jpl.nasa.gov";
+      }
+      emailSubject = servletConfig.getInitParameter("emailSubject");
+      if (emailSubject == null) {
+        emailSubject = "File Uploaded";
+      }
     }
   }
 
@@ -161,6 +190,20 @@ public class UploadServlet extends HttpServlet {
       if (writer != null) {
         writer.close();
       }
+    }
+
+    // Send an email about the file upload.
+    try {
+      if (emailFlag.equals("True")) {
+        // Use the default localhost:25 SMTP server.
+        SendEmail sm = new SendEmail();
+        sm.setFrom(emailFrom);
+        sm.send(emailTo, emailSubject, "File " + fileName + " uploaded to " + fileSpec.getPath() + ".");
+      }
+    } catch (Exception e) {
+      String message = "An error occurred sending an email: " + e.getMessage();
+      writer.println(message);
+      LOGGER.log(Level.WARNING, message);
     }
   }
 

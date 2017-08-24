@@ -123,25 +123,48 @@ or
       <table>
         <tr><th>Parameter</th><th>Description</th></tr>
         <tr><td>repositoryPath</td><td>The path specification for the staging area where the service writes the uploaded files. The default value is <i>/tmp</i>.</td></tr>
+        <tr><td>emailFlag</td><td>A flag indicating whether the service will send an email upon a successful file upload. The valid values are <i>True</i> or <i>False</i> with a default value of <i>False</i>.</td></tr>
+        <tr><td>emailFrom</td><td>The sender's email address. The default value is <i>pds_operator@jpl.nasa.gov</i>.</td></tr>
+        <tr><td>emailTo</td><td>The recipient's email address. The default value is <i>pds_operator@jpl.nasa.gov</i>.</td></tr>
+        <tr><td>emailSubject</td><td>The subject of the email message. The default value is <i>File Uploaded</i>.</td></tr>
       </table>
 
-      <p>To modify the configuration, edit the <i>web.xml</i> file located in the <i>$TOMCAT_HOME/webapps/transport-upload/WEB-INF</i> directory. The following block contains the parameter:
+      <p>To modify the configuration, edit the <i>web.xml</i> file located in the <i>$TOMCAT_HOME/webapps/transport-upload/WEB-INF</i> directory. The following block contains the parameters:
       </p>
 
       <source>
 &lt;servlet&gt;
-  &lt;servlet-name&gt;product&lt;/servlet-name&gt;
-  &lt;servlet-class&gt;gov.nasa.pds.portal.product.ProductServlet&lt;/servlet-class&gt;
+  &lt;servlet-name&gt;upload&lt;/servlet-name&gt;
+  &lt;display-name&gt;Upload&lt;/display-name&gt;
+  &lt;description&gt;
+  &lt;/description&gt;
+  &lt;servlet-class&gt;gov.nasa.pds.transport.UploadServlet&lt;/servlet-class&gt;
   &lt;!-- All parameters are optional and default to the values below.
   &lt;init-param&gt;
     &lt;param-name&gt;repositoryPath&lt;/param-name&gt;
     &lt;param-value&gt;/tmp&lt;/param-value&gt;
   &lt;/init-param&gt;
+  &lt;init-param&gt;
+    &lt;param-name&gt;emailFlag&lt;/param-name&gt;
+    &lt;param-value&gt;False&lt;/param-value&gt;
+  &lt;/init-param&gt;
+  &lt;init-param&gt;
+    &lt;param-name&gt;emailFrom&lt;/param-name&gt;
+    &lt;param-value&gt;pds_operator@jpl.nasa.gov&lt;/param-value&gt;
+  &lt;/init-param&gt;
+  &lt;init-param&gt;
+    &lt;param-name&gt;emailTo&lt;/param-name&gt;
+    &lt;param-value&gt;pds_operator@jpl.nasa.gov&lt;/param-value&gt;
+  &lt;/init-param&gt;
+  &lt;init-param&gt;
+    &lt;param-name&gt;emailSubject&lt;/param-name&gt;
+    &lt;param-value&gt;File Uploaded&lt;/param-value&gt;
+  &lt;/init-param&gt;
   --&gt;
 &lt;/servlet&gt;
       </source>
 
-      <p>If the staging location was changed above, remember to uncomment the block in order for the changes to take effect.
+      <p>If the parameters above were modified, remember to uncomment the block in order for the changes to take effect.
       </p>
     </section>
 
