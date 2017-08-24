@@ -23,6 +23,16 @@ mvn clean
 
 mvn deploy --non-recursive
 
+cd email
+mvn deploy --non-recursive
+cd email-core
+mvn site
+mvn deploy
+cd ../email-service
+mvn site
+mvn deploy
+cd ../..
+
 cd ingest
 mvn deploy --non-recursive
 cd catalog

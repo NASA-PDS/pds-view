@@ -22,6 +22,10 @@ cd target/packages
 
 # Selectively copy the artifacts.
 
+echo "Copying the Email packages to the package directory."
+cp ../../email/email-core/target/email-core*bin* .
+cp ../../email/email-service/target/email-service*bin* .
+
 echo "Copying the Ingest packages to the package directory."
 cp ../../ingest/catalog/target/catalog*bin* .
 cp ../../ingest/harvest/target/harvest*bin* .

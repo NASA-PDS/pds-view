@@ -25,6 +25,12 @@ cd ..
 mvn clean
 
 # Install the dependent JARs locally.
+cd email
+mvn --non-recursive install clean
+cd email-core
+mvn install clean
+cd ../..
+
 cd model
 mvn --non-recursive install clean
 cd model-dmdocument

@@ -1,5 +1,5 @@
 #!/bin/sh
-# Copyright 2010-2016, by the California Institute of Technology. 
+# Copyright 2010-2017, by the California Institute of Technology. 
 # ALL RIGHTS RESERVED. United States Government sponsorship acknowledged. 
 # Any commercial use must be negotiated with the Office of Technology Transfer 
 # at the California Institute of Technology. 
@@ -20,6 +20,12 @@ cd ..
 mvn clean
 
 # Install the dependent JARs locally.
+cd email
+mvn --non-recursive install clean
+cd email-core
+mvn install clean
+cd ../..
+
 cd model
 mvn --non-recursive install clean
 cd model-dmdocument
