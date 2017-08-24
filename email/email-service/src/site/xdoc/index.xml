@@ -24,7 +24,7 @@
 
   <body>
     <section name="About Email Service">
-      <p>The Email Service provides functionality to accept email requests from a Java application as well as Javascript-based clients (e.g., Feedback Form, Tool Registry, etc.). The service provides two interfaces: API and Web interface for interacting with the service. The Email Service accepts a list of email addresses, along with the subject and message content.
+      <p>The Email Service provides functionality to accept electronic mail requests via a REST-based service request and send those requests to the target recipients via a configured SMTP server.
       </p>
 
       <p>Please send comments, change requests and bug reports to the <a href="mailto:pds_operator@jpl.nasa.gov">PDS Operator</a> at pds_operator@jpl.nasa.gov.

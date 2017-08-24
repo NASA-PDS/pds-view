@@ -12,7 +12,7 @@
 //
 // $Id: $
 
-package gov.nasa.pds.tracking.email;
+package gov.nasa.pds.email;
 
 import java.io.IOException;
 import java.io.PrintWriter; 
@@ -28,7 +28,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-//import org.apache.commons.lang3.StringEscapeUtils; // to decode HTML special chars
+import gov.nasa.pds.email.SendEmail;
 
 /**
  * A servlet that takes message details from user and send it as a new e-mail

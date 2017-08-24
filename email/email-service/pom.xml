@@ -28,9 +28,9 @@
 
   <name>Email Service</name>
   <description>
-    The Email Service provides functionality to accept email requests from a Java application as well as Javascript-based clients (e.g., Feedback Form, Tool Registry, etc.). The service provides two interfaces: API and Web interface for interacting with the service. The Email Service accepts a list of email addresses, along with the subject and message content.
+    The Email Service provides functionality to accept electronic mail requests via a REST-based service request and send those requests to the target recipients via a configured SMTP server.
   </description>
-  <url>https://pds-cm.jpl.nasa.gov/pds4/email/email-service</url>
+  <url>https://pds-cm.jpl.nasa.gov/pds4/email/email-service/</url>
 
   <licenses>
     <license>
@@ -41,29 +41,7 @@
   </licenses>
 
   <build>
-  <plugins>
-     <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <configuration>
-          <archive>
-            <manifest>
-              <mainClass>gov.nasa.pds.tracking.email.SendEmail</mainClass>
-              <addClasspath>true</addClasspath>
-              <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
-            </manifest>
-          </archive>
-        </configuration>
-        <executions>
-          <execution>
-            <id>make-a-jar</id>
-            <phase>compile</phase>
-            <goals>
-              <goal>jar</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
+    <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-war-plugin</artifactId>
@@ -118,10 +96,9 @@
 
   <dependencies>
     <dependency>
-      <groupId>com.sun.mail</groupId>
-      <artifactId>javax.mail</artifactId>
-      <!--version>1.5.5</version-->
-      <version>1.6.0</version>
+      <groupId>gov.nasa.pds.2010.email</groupId>
+      <artifactId>email-core</artifactId>
+      <version>${email-version}</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
