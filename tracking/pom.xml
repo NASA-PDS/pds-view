@@ -37,7 +37,6 @@
 
   <modules>
     <module>tracking-service</module>
-    <module>email-service</module>
   </modules>
 
   <licenses>
@@ -48,11 +47,45 @@
     </license>
   </licenses>
 
-  <!-- Add developers if different from the list in the parent POM. -->
-  <developers/>
+  <developers>
+    <developer>
+      <name>Sean Hardman</name>
+      <id>shardman</id>
+      <email>Sean.Hardman@jpl.nasa.gov</email>
+      <organization>NASA Jet Propulsion Laboratory</organization>
+      <roles>
+        <role>Development Lead</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Dan Yu</name>
+      <id>danyu</id>
+      <email>Dan.Yu@jpl.nasa.gov</email>
+      <organization>NASA Jet Propulsion Laboratory</organization>
+      <roles>
+        <role>Developer</role>
+      </roles>
+    </developer>
+  </developers>
 
-  <!-- Add contributors if different from the list in the parent POM. -->
-  <contributors/>
+  <contributors>
+    <contributor>
+      <name>Steve Hughes</name>
+      <email>John.S.Hughes@jpl.nasa.gov</email>
+      <organization>NASA Jet Propulsion Laboratory</organization>
+      <roles>
+        <role>System Engineering Lead</role>
+      </roles>
+    </contributor>
+    <contributor>
+      <name>Ron Joyner</name>
+      <email>Ronald.Joyner@jpl.nasa.gov</email>
+      <organization>NASA Jet Propulsion Laboratory</organization>
+      <roles>
+        <role>System Engineer</role>
+      </roles>
+    </contributor>
+  </contributors>
 
   <repositories>
     <!-- Hosts the PDS and OODT artifacts. -->

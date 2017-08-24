@@ -29,7 +29,6 @@
   <groupId>gov.nasa.pds.2010.tracking</groupId>
   <artifactId>tracking-service</artifactId>
   <packaging>war</packaging>
-  <!-- <packaging>jar</packaging>  -->
 
   <name>Tracking Service</name>
   <description>
@@ -45,28 +44,21 @@
     </license>
   </licenses>
     
-  <!-- Add developers if different from the list in the parent POM. -->
-  <developers/>
-
-  <!-- Add contributors if different from the list in the parent POM. -->
-  <contributors/>
-
   <build>
-	<plugins>
-	   <plugin>
-         <groupId>org.apache.maven.plugins</groupId>
-         <artifactId>maven-jar-plugin</artifactId>
-         <version>3.0.2</version>
-         <executions>
-           <execution>
-             <id>make-a-jar</id>
-			 <phase>compile</phase>
-			 <goals>
-		   	   <goal>jar</goal>
-			 </goals>
-           </execution>
-         </executions>
-       </plugin>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>make-a-jar</id>
+            <phase>compile</phase>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-assembly-plugin</artifactId>
@@ -87,15 +79,15 @@
         </executions>
       </plugin>
       <plugin>
-           <artifactId>maven-war-plugin</artifactId>
-           <version>2.6</version>
-           <configuration>
-           	   <warName>services</warName>
-               <warSourceDirectory>src/main/webapp</warSourceDirectory>
-               <failOnMissingWebXml>false</failOnMissingWebXml>
-           </configuration>
-       </plugin>
-       <!-- 
+        <artifactId>maven-war-plugin</artifactId>
+        <version>2.6</version>
+        <configuration>
+          <warName>tricking-service</warName>
+          <warSourceDirectory>src/main/webapp</warSourceDirectory>
+          <failOnMissingWebXml>false</failOnMissingWebXml>
+        </configuration>
+      </plugin>
+      <!-- 
         Configuration for deploying to a local Tomcat server. Provide the 
         username and password for the Manager interface in your settings.xml.
       -->
@@ -130,10 +122,10 @@
   <!-- Add dependencies as required. -->
   <dependencies>
     <dependency>
-		<groupId>com.sun.mail</groupId>
-		<artifactId>javax.mail</artifactId>
-		<version>1.5.5</version>
-	</dependency>
+    <groupId>com.sun.mail</groupId>
+    <artifactId>javax.mail</artifactId>
+    <version>1.5.5</version>
+  </dependency>
     <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>javax.servlet-api</artifactId>
