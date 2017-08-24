@@ -28,7 +28,7 @@
 
   <name>Email Core</name>
   <description>
-    The Email Core provides functionality to accept electronic mail requests via Java API and send those request to the target recipients via a configured SMTP server.
+    The Email Core provides functionality to accept electronic mail requests via a Java API and send those requests to the target recipients via a configured SMTP server.
   </description>
   <url>https://pds-cm.jpl.nasa.gov/pds4/email/email-core/</url>
 
