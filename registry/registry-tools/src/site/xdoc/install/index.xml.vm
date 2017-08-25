@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2016 by the California Institute of Technology.
+  Copyright 2016-2017 by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -35,19 +35,29 @@
     </section>
 
     <section name="System Requirements">
-      <p>The Registry Tools software was developed using Python and will run on any platform with a supported Python environment. It is compatible with Python 2.6 or 2.7. It is not compatible with Python 2.5 or earlier versions, nor with Python 3 or later versions. The following commands test the local Python installation in a UNIX-based environment:
+      <p>This section details the system requirements for installing and operating the Registry Tools software.
       </p>
 
-      <source>
+      <subsection name="Python">
+        <p>The Registry Tools software was developed using Python and will run on any platform with a supported Python environment. It is compatible with Python 2.6 or 2.7. It is not compatible with Python 2.5 or earlier versions, nor with Python 3 or later versions. The following commands test the local Python installation in a UNIX-based environment:
+        </p>
+
+        <source>
 % which python
 /usr/bin/python
 
 % python --version
 Python 2.7.2
-      </source>
+        </source>
 
-      <p>The first command above checks whether the <i>python</i> executable is in the environment's path and the second command reports the version. If Python is not installed or the version is not 2.6 or 2.7, Python will need to be downloaded and installed in the current environment. Consult the local system administrator for installation of this software.
-      </p>
+        <p>The first command above checks whether the <i>python</i> executable is in the environment's path and the second command reports the version. If Python is not installed or the version is not 2.6 or 2.7, Python will need to be downloaded and installed in the current environment. Consult the local system administrator for installation of this software.
+        </p>
+      </subsection>
+
+      <subsection name="Registry Client">
+        <p>The Registry Tools software has a dependency on the Registry Client software package. Follow the instructions in the Registry Client <a href="../../registry-client/install/index.html">Installation</a> document to install that package in your environment. If viewing this document from the ${project.artifactId} package, view the Registry Client <a href="https://pds-engineering.jpl.nasa.gov/development/pds4/current/registry/registry-client/install/index.html" target="_blank">Installation</a> document from the Engineering Node site.
+        </p>
+      </subsection>
     </section>
 
     <section name="Unpacking the Package">
@@ -81,10 +91,6 @@ or
         </li>
         <li><b>doc/</b><br/>
           <p>This directory contains a local web site with the Registry Tools documentation and other configuration management related information. Just point the desired web browser to the <i>index.html</i> file in this directory.
-          </p>
-        </li>
-        <li><b>resources/</b><br/>
-          <p>This directory contains associated support files for the Python scripts in the <i>bin</i> directory.
           </p>
         </li>
       </ul>

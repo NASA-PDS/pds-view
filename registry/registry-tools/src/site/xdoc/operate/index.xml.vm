@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2016, by the California Institute of Technology.
+  Copyright 2016-2017, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -24,28 +24,75 @@
 
   <body>
     <section name="Operation">
-      <p>This document describes how to operate the Registry Tools. The following topics can be found in this document:
+      <p>This document describes how to operate the Registry Tools software. The following topics can be found in this document:
       </p>
 
       <ul>
-        <li><a href="#List_Extrinsics">List Extrinsics</a></li>
+        <li><a href="#Tool Execution">Tool Execution</a></li>
       </ul>
 
-      <p>Note: The command-line examples in this section have been broken into multiple lines for readability. The commands should be reassembled into a single line prior to execution.
+      <p>Note: The command-line examples in this section may have been broken into multiple lines for readability. The commands should be reassembled into a single line prior to execution.
       </p>
     </section>
 
-    <section name="List Extrinsics">
-      <p>This software queries a registry service instance for a list of extrinsics. This software does have a dependency on the <i>pds.registry</i> package which must be deployed to the local Python environment prior to operation of this software. The List Extrinsics software consists of one Python script:
+    <section name="Tool Execution">
+      <p>This software package consists of a set of Python scripts for interacting with a Registry Service instance. This software does have a dependency on the <i>pds.registry</i> package which must be deployed to the local Python environment prior to operation of this software.
       </p>
 
-      <ul>
-        <li>list-extrinsics.py<br/>This script queries a registry service instance for a list of extrinsics filtered by Object Type and LID wildcard. The extrinsics are listed in CSV format to standard out with fields: lid, version_id, name and status.
-        </li>
-      </ul>
+      <subsection name="list-extrinsics.py">
+        <p>This script queries a registry service instance for a list of extrinsics filtered optionally by Object Type and LID wildcard. The extrinsics are listed in CSV format to standard out with fields: lid, version_id, name and status.
+        </p>
 
-      <p>The script referenced above can be found in the <i>bin/list-extrinsics</i> directory.
-      </p>
+        <source>
+% python list-extrinsics.py &lt;registry-url&gt; [&lt;object-type&gt; [&lt;lid-prefix&gt;]]
+        </source>
+
+        <p>The following table describes the command-line options available:
+        </p>
+
+        <table>
+          <tr><th>Command-Line Option</th><th>Description</th></tr>
+          <tr><td>registry-url</td><td>The URL of the Registry Service instance (e.g., http://localhost:8080/registry). This option is required.</td></tr>
+          <tr><td>object-type</td><td>The object type of the extrinsics to be queried (e.g., Product_Collection, Product_Observational, etc.). This option is optional.</td></tr>
+          <tr><td>lid-prefix</td><td>A portion of the logical identifier (e.g., urn:nasa:pds:example) to further filter the results. This option is optional.</td></tr>
+        </table>
+      </subsection>
+
+      <subsection name="report-extrinsics.py">
+        <p>This script queries a registry service instance and generates a report of the extrinsics registered with that instance. 
+        </p>
+
+        <source>
+% python report-extrinsics.py &lt;registry-url&gt;
+        </source>
+
+        <p>The following table describes the command-line options available:
+        </p>
+
+        <table>
+          <tr><th>Command-Line Option</th><th>Description</th></tr>
+          <tr><td>registry-url</td><td>The URL of the Registry Service instance (e.g., http://localhost:8080/registry). This option is required.</td></tr>
+        </table>
+
+      </subsection>
+
+      <subsection name="test-extrinsics.py">
+        <p>This script tests the various aspects of creating, putting, retrieving and deleting extrinsics. 
+        </p>
+
+        <source>
+% python test-extrinsics.py &lt;registry-url&gt;
+        </source>
+
+        <p>The following table describes the command-line options available:
+        </p>
+
+        <table>
+          <tr><th>Command-Line Option</th><th>Description</th></tr>
+          <tr><td>registry-url</td><td>The URL of the Registry Service instance (e.g., http://localhost:8080/registry). This option is required.</td></tr>
+        </table>
+
+      </subsection>
     </section>
   </body>
 </document>
