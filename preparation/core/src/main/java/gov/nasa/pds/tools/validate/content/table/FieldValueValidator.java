@@ -65,6 +65,7 @@ public class FieldValueValidator {
   /** Container to capture messages. */
   private ProblemListener listener;
   
+  private Pattern formatPattern;
   
   /**
    * Constructor.
@@ -74,6 +75,7 @@ public class FieldValueValidator {
    */
   public FieldValueValidator(ProblemListener listener) {
     this.listener = listener;
+    this.formatPattern = Pattern.compile("%([\\+,-])?([0-9]+)(\\.([0-9]+))?([doxfeEs])");
   }
   
   /**
@@ -402,8 +404,7 @@ public class FieldValueValidator {
    */
   private void checkFormat(String value, String format, int fieldIndex, 
       RecordLocation recordLocation) {
-    Pattern pattern = Pattern.compile("%([\\+,-])?([0-9]+)(\\.([0-9]+))?([doxfeEs])");
-    Matcher matcher = pattern.matcher(format);
+    Matcher matcher = formatPattern.matcher(format);
     int precision = -1;
     boolean isValid = true;
     if (matcher.matches()) {

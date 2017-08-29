@@ -126,7 +126,8 @@ public class LabelValidationRule extends AbstractValidationRule {
               schemaValidator.getCachedLSResolver());
           validator.setLabelSchematrons(labelSchematrons);
           // By logging this INFO message, it will allow us to be able to report if a file passed validation.
-          getListener().addProblem(new LabelException(ExceptionType.INFO, "Processing target", getTarget().toString()));
+          //getListener().addProblem(new LabelException(ExceptionType.INFO, "Processing target", getTarget().toString()));
+          getListener().addLocation(getTarget().toString());
           document = validator.parseAndValidate(processor, getTarget());
         } else {
           // Print any label problems that occurred during schema and schematron
@@ -140,7 +141,8 @@ public class LabelValidationRule extends AbstractValidationRule {
         }
       } else {
         // By logging this INFO message, it will allow us to be able to report if a file passed validation.
-        getListener().addProblem(new LabelException(ExceptionType.INFO, "Processing target", getTarget().toString()));
+        //getListener().addProblem(new LabelException(ExceptionType.INFO, "Processing target", getTarget().toString()));
+        getListener().addLocation(getTarget().toString());
         document = validator.parseAndValidate(processor, getTarget());
       }
       if (document != null) {

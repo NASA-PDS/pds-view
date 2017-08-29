@@ -52,6 +52,10 @@ public class ProblemContainer implements ProblemListener {
 	  //TODO: How to map LabelException to ValidationProblem?
 	}
 	
+	public void addLocation(String location) {
+	  //TODO
+	}
+	
 	/**
 	 * Gets the problems encountered.
 	 *

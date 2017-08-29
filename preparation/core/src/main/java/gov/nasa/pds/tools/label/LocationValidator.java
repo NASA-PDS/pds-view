@@ -114,7 +114,7 @@ public class LocationValidator {
 	 * @param url the URL to validate
 	 * @throws URISyntaxException 
 	 */
-	public void validate(ExceptionHandler exceptionHandler, URL url) {
+	public void validate(ValidateExceptionHandler exceptionHandler, URL url) {
 		if (targetRegistrar == null) {
 			System.err.println("Configuration error - targetRegistrar not specified in LocationValidator.validate()");
 			return;
@@ -266,12 +266,12 @@ public class LocationValidator {
 	
 	private class ListenerExceptionPropagator implements ProblemListener {
 		
-		private ExceptionHandler handler;
+		private ValidateExceptionHandler handler;
 		int errorCount;
 		int warningCount;
 		int infoCount;
 
-		public ListenerExceptionPropagator(ExceptionHandler handler) {
+		public ListenerExceptionPropagator(ValidateExceptionHandler handler) {
 			this.handler = handler;
 		}
 
@@ -303,6 +303,8 @@ public class LocationValidator {
 			);
 			handler.addException(ex);
 		}
+		
+		
 		
     @Override
     public void addProblem(LabelException exception) {
@@ -347,6 +349,11 @@ public class LocationValidator {
 				String location, boolean includeChildren) {
 			return null;
 		}
+
+    @Override
+    public void addLocation(String location) {
+      handler.addLocation(location);
+    }
 	}
 	
 	/**
@@ -354,7 +361,7 @@ public class LocationValidator {
 	 * @author merose
 	 *
 	 */
-	private class SimpleExceptionHandler implements ExceptionHandler {
+	private class SimpleExceptionHandler implements ValidateExceptionHandler {
 
 		@Override
 		public void addException(LabelException exception) {
@@ -378,7 +385,12 @@ public class LocationValidator {
 			}
 			System.err.println(buf.toString());
 		}
-		
+
+    @Override
+    public void addLocation(String location) {
+      // TODO Auto-generated method stub
+      
+    }
 	}
 
 }

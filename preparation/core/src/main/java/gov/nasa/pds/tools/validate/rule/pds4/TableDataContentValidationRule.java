@@ -207,8 +207,9 @@ public class TableDataContentValidationRule extends AbstractValidationRule {
         // We have either a character or delimited table
         try {
           if (table instanceof TableBinary) {
-            record = reader.readNext();
-            fieldValueValidator.validate(record, reader.getFields());
+            while ( (record = reader.readNext()) != null ) {
+              fieldValueValidator.validate(record, reader.getFields());
+            }
           } else {
             String line = null;       
             boolean manuallyParseRecord = false;
@@ -261,6 +262,12 @@ public class TableDataContentValidationRule extends AbstractValidationRule {
                           tableIndex,
                           reader.getCurrentRow());
                 }
+              }
+              // Need to manually parse the line if we're past the defined
+              // number of records. The PDS4-Tools library won't let us
+              // read past the defined number of records.
+              if (reader.getCurrentRow() > definedNumRecords) {
+                manuallyParseRecord = true;
               }
               try {
                 if (manuallyParseRecord && !(table instanceof TableDelimited)) {

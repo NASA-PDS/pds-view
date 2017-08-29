@@ -16,7 +16,6 @@ package gov.nasa.pds.tools.validate;
 import gov.nasa.pds.tools.label.ExceptionType;
 import gov.nasa.pds.tools.label.LabelException;
 
-import java.net.URL;
 import java.util.Collection;
 
 /**
@@ -37,6 +36,13 @@ public interface ProblemListener {
    * @param exception the label exception encountered.
    */
 	void addProblem(LabelException exception);
+	
+  /**
+   * Adds a location to the listener.
+   *
+   * @param location the location of the label being validated.
+   */
+	void addLocation(String location);
 	
 	/**
 	 * Gets the number of error problems encountered.

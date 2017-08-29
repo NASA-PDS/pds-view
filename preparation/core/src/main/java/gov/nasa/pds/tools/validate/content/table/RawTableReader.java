@@ -159,7 +159,9 @@ public class RawTableReader extends TableReader {
    */
   public TableRecord readNext() throws IOException {
     TableRecord record = super.readNext();
-    record.setLocation(getLocation());
+    if (record != null) {
+      record.setLocation(getLocation());
+    }
     return record;
   }
   
