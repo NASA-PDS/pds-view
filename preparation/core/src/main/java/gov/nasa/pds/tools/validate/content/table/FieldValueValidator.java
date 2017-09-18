@@ -13,6 +13,7 @@
 // $Id$
 package gov.nasa.pds.tools.validate.content.table;
 
+import java.math.BigInteger;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
@@ -248,7 +249,7 @@ public class FieldValueValidator {
       String pattern = "[0-1]{1,255}";
       if (value.matches(pattern)) {
         try {
-          Integer.parseInt(value, 2);
+          new BigInteger(value, 2);
         } catch (NumberFormatException e) {
           throw new Exception("Could not convert to a base-2 integer: " + value);
         }
@@ -259,7 +260,7 @@ public class FieldValueValidator {
       String pattern = "[0-7]{1,255}";
       if (value.matches(pattern)) {
         try {
-          Integer.parseInt(value, 8);
+          new BigInteger(value, 8);
         } catch (NumberFormatException e) {
           throw new Exception("Could not convert to a base-8 integer: " + value);
         }
@@ -270,7 +271,7 @@ public class FieldValueValidator {
       String pattern = "[0-9a-fA-F]{1,255}";
       if (value.matches(pattern)) {
         try {
-          Integer.parseInt(value, 16);
+          new BigInteger(value, 16);
         } catch (NumberFormatException e) {
           throw new Exception("Could not convert to a base-16 integer: " + value);
         }
@@ -281,7 +282,7 @@ public class FieldValueValidator {
       String pattern = "[0-9a-fA-F]{32}";
       if (value.matches(pattern)) {
         try {
-          Integer.parseInt(value, 16);
+          new BigInteger(value, 16);
         } catch (NumberFormatException e) {
           throw new Exception("Could not convert to a base-16 integer: " + value);
         }
