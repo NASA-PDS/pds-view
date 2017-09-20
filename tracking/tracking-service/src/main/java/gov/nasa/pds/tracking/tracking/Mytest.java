@@ -6,9 +6,14 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import gov.nasa.pds.tracking.tracking.db.ArchiveStatus;
+import gov.nasa.pds.tracking.tracking.db.CertificationStatus;
 import gov.nasa.pds.tracking.tracking.db.Delivery;
+import gov.nasa.pds.tracking.tracking.db.Doi;
+import gov.nasa.pds.tracking.tracking.db.NssdcaStatus;
 import gov.nasa.pds.tracking.tracking.db.Product;
 import gov.nasa.pds.tracking.tracking.db.Reference;
+import gov.nasa.pds.tracking.tracking.db.Releases;
 import gov.nasa.pds.tracking.tracking.db.Role;
 import gov.nasa.pds.tracking.tracking.db.Submission;
 import gov.nasa.pds.tracking.tracking.db.SubmissionStatus;
@@ -202,224 +207,317 @@ public class Mytest {
 	public static void main(String[] args) {
 		try {
 			Mytest test = new Mytest();
-/*
-			// ************************************** Delivery Queries *************************
-			 User QueryQuery – Query the user table for a list of users.
 
-			Input: N/A
-			Output: electronic_mail_address, name
-			SQL:
-			SELECT electronic_mail_address, name
-			FROM user
-			ORDER BY electronic_mail_address
-
+			// ************************************** 9.2 Delivery Queries *************************
+			/**********************************************************
+			 User Query – Query the user table for a list of users.
+			 Input: N/A
+			 Output: electronic_mail_address, name
+			***********************************************************/
 			test.getUsers();
 			
-			 User Role Query – Query the user and role tables for a list of roles for a given user.
-
+			/**********************************************************
+			User Role Query – Query the user and role tables for a list of roles for a given user.
 			Input: electronic_mail_address (required)
 			Output: electronic_mail_address, name, reference
-			SQL:
-			SELECT u.electronic_mail_address, u.name, r.reference
-			FROM user u, role r
-			WHERE u.electronic_mail_address = ‘<electronic_mail_address>’ AND u.electronic_mail_address = r.electronic_mail_address
-			ORDER BY reference
- 
-			test.getUserRoles("sean.hardman@jpl.nasa.gov");
-			test.getUserRoles("rafael.alanis@jpl.nasa.gov");
+			***********************************************************/
+			//test.getUserRoles("sean.hardman@jpl.nasa.gov");
+			//test.getUserRoles("rafael.alanis@jpl.nasa.gov");
 			
+			/**********************************************************
 			 Delivery Query – Query the delivery table for a list of deliveries for a given product.
-
 			Input: logical_identifier (required), version_id (required)
 			Output: delivery_identifier, logical_identifier, version_id, name, start_date_time, stop_date_time, source, target, due_date
-			SQL:
-			SELECT delivery_identifier, logical_identifier, version_id, name, start_date_time, stop_date_time, source, target, due_date
-			FROM delivery
-			WHERE logical_identifier = ‘<logical_identifier>’
-			AND version_id = ‘<version_id>’
-			ORDER BY due_date
- 			*/
-			test.getProductDeliveries("urn:nasa:pds:context_pds3:data_set:data_set.juno-j-rss-1-jugr-v1.0", "1.0");
-			/*
+			***********************************************************/
+			//test.getProductDeliveries("urn:nasa:pds:context_pds3:data_set:data_set.juno-j-rss-1-jugr-v1.0", "1.0");
+			
+			/**********************************************************
 			 Delivery Status Query – Query the submission_status table for the status progression of a delivery for a given product.
-
 			Input: delivery_identifier (required)
 			Output: delivery_identifier, submission_date_time, status_date_time, status, electronic_mail_address, comment
-			SQL:
-			SELECT delivery_identifier, submission_date_time, status_date_time, status, electronic_mail_address, comment
-			FROM submission_status
-			WHERE delivery_identifier = ‘<delivery_identifier>’
-			ORDER BY status_date_time
+			***********************************************************/
+			//test.getDeliveryStatus("31");
 			
-			test.getDeliveryStatus("31");
-			
+			/**********************************************************
 			 Product Query – Query the product table for a list of products by type.
-
 			Input: type (optional)
 			Output: logical_identifier, version_id, title, type, alternate_id
-			SQL:
-			SELECT logical_identifier, version_id, title, type, alternate_id
-			FROM product
-			WHERE type = ‘<type>’
-			ORDER BY title
+			***********************************************************/
+			//test.getProducts(null);
+			//test.getProducts("PDS3-Data-Set");
 			
-			test.getProducts(null);
-			test.getProducts("PDS3-Data-Set");
-			
+			/**********************************************************
 			 Product Reference Query Query – Query the reference table for a list of product references.
-
 			Input: logical_identifier (required)
 			Output: logical_identifier, reference, type
-			SQL:
-			SELECT logical_identifier, reference, type
-			FROM reference
-			WHERE logical_identifier = ‘<logical_identifier>’
-			ORDER BY type
+			***********************************************************/
+			//test.getProductReferences("urn:nasa:pds:context_pds3:data_set:data_set.juno-j-rss-1-jugr-v1.0");
 			
-			test.getProductReferences("urn:nasa:pds:context_pds3:data_set:data_set.juno-j-rss-1-jugr-v1.0");
-			
-			 Product Role Query– Query the product, reference, role and user tables for a list of users with the Investigation role for a product.
-			
+			/**********************************************************
+			 Product Role Query– Query the product, reference, role and user tables for a list of users with the Investigation role for a product.			
 			Input: logical_identifier (required), type (required)
 			Output: electronic_mail_address, name
-			SQL:
-			SELECT u.electronic_mail_address, u.name, re.type
-			FROM product p, reference re, role ro, user u
-			WHERE p.logical_identifier = ‘<logical_identifier>’
-			AND p.logical_identifier = re.logical_identifier
-			AND re.type = ‘<type>’
-			AND re.reference = ro.reference
-			AND ro.electronic_mail_address = u.electronic_mail_address
-			ORDER BY electronic_mail_address
-			*/
+			***********************************************************/			
 			//test.getProductRoleUsers("urn:nasa:pds:context_pds3:data_set:data_set.juno-j-rss-1-jugr-v1.0", "Investigation");
 			
-			// ************************************ Delivery Inserts/Updates **************************
-
-			/* Delivery Insert – Insert a delivery record into the delivery table for a given product.
-
+			
+			// ************************************ 9.1 Delivery Inserts/Updates **************************
+			/**********************************************************
+			Delivery Insert – Insert a delivery record into the delivery table for a given product.
 			Input: logical_identifier (required), version_id (required), name (required), start_date_time (required), stop_date_time (required), source (required), target (required), due_date (required)
 			Output: delivery_identifier
-			SQL:
-			INSERT INTO delivery (logical_identifier, version_id, name, start_date_time, stop_date_time, source, target, due_date) VALUES (‘<logical_identifier>’, ‘<version_id>’, ‘<name>’, ‘<start_date_time>’, ‘<stop_date_time>’, ‘<source>’, ‘<target>’, ‘<due_date>’)
-			*/
-			
+			***********************************************************/
 			//int delIdentifier = test.InsertDelivery("urn:nasa:pds:context_pds3:data_set:data_set.jno-e-j-ss-wav-3-cdr-bstfull-v1.0", "1.0", "dany test", "2016-10-20T00:00:00", "2017-02-02T23:59:59", "JSOC", "PPI Node", "2017-08-31");
 			//logger.info("delivery identifier of the inserted delivery: " + delIdentifier);
 			
-			/* Delivery Update – Update a delivery record in the delivery table for a given product.
-
+			/**********************************************************
+			Delivery Update – Update a delivery record in the delivery table for a given product.
 			Input: delivery_identifier (required), name (required), start_date_time (required), stop_date_time (required), source (required), target (required), due_date (required)
 			Output: N/A
-			SQL:
-			UPDATE delivery SET name = ‘<name>’, start_date_time = ‘<start_date_time>’, stop_date_time = ‘<stop_date_time>’, source = ‘<source>’, target = ‘<target>’, due_date = ‘<due_date>’
-			WHERE delivery_identifier = ‘<delivery_identifier>’
-			*/
-			
+			***********************************************************/
 			//test.updateDelivery("Dan Yu test", "2016-10-20T00:00:00", "2017-02-02T23:59:59", "JSOC", "PPI Node", "2017-09-31", "32");
-			
-			/* Product Insert – Insert a product record into the product table for a given product.
-
+			/**********************************************************
+			Product Insert – Insert a product record into the product table for a given product.
 			Input: logical_identifier (required), version_id (required), title (required), type (required), alternate_id (optional)
-			Output:N/A
-			SQL:
-			INSERT INTO product (logical_identifier, version_id, title, type, alternate_id) VALUES (‘<logical_identifier>’, ‘<version_id>’, ‘<title>’, ‘<type>’, ‘<alternate_id>’)
-			*/
-			
+			***********************************************************/
 			//test.InsertProduct("urn:nasa:pds:context_pds3:data_set:data_set.juno-j-jiram-3-rdr-v1.0", "test 1.0", "dany_JUNO-J-JIRAM-3-RDR-V1.0", "PDS3-Data-Set", "JUNO-J-JIRAM-3-RDR-V1.0");
 			//test.InsertProduct("urn:nasa:pds:context_pds3:data_set:data_set.juno-j-jiram-3-rdr-v1.0", "test 2.0", "dany_noAltId_JUNO-J-JIRAM-3-RDR-V1.0", "PDS3-Data-Set", null);
 			
-			/* Product Update –Update a product record in the product table for a given product.
-
+			/**********************************************************
+			Product Update –Update a product record in the product table for a given product.
 			Input:logical_identifier (required), version_id (required), title (required), type (required), alternate_id (optional)
 			Output:N/A
-			SQL:
-			UPDATE product SET title = ‘<title>’, type = ‘<type>’, alternate_id = ‘<alternate_id>’
-			WHERE logical_identifier = ‘<logical_identifier>’
-			AND version_id = ‘<version_id>’
-			*/
-			
+			***********************************************************/
 			//test.updateProduct("urn:nasa:pds:context_pds3:data_set:data_set.juno-j-jiram-3-rdr-v1.0", "test 1.0", "danyUpdate_JUNO-J-JIRAM-3-RDR-V1.0", "PDS3-Data-Set", "JUNO-J-JIRAM-3-RDR-V1.0");
 			//test.updateProduct("urn:nasa:pds:context_pds3:data_set:data_set.juno-j-jiram-3-rdr-v1.0", "test 2.0", "danyUpdate_noAltId_JUNO-J-JIRAM-3-RDR-V1.0", "PDS3-Data-Set", null);
 			
-			/* Reference Insert – Insert a reference record into the reference table for a given product.
-
+			/**********************************************************
+			Reference Insert – Insert a reference record into the reference table for a given product.
 			Input: logical_identifier (required), reference (required), type (required)
-			Output: N/A
-			SQL:
-			INSERT INTO reference (logical_identifier, reference, type) VALUES (‘<logical_identifier>’, ‘<reference>’, ‘<type>’)
-			*/
-			
+			***********************************************************/
 			//test.insertReference("urn:nasa:pds:context_pds3:data_set:data_set.jno-e-j-ss-wav-2-edr-v1.0", "DanY_Atmospheres", "danyu test");
-			
-			/* Reference Update – Update a reference record into the reference table for a given product.
 
+			/**********************************************************
+			Reference Update – Update a reference record into the reference table for a given product.
 			Input: logical_identifier (required), reference (required), type (required)
 			Output: N/A
-			SQL:
-			UPDATE reference SET type = ‘<type>’
-			WHERE logical_identifier = ‘<logical_identifier>’
-			AND reference = ‘<reference>’
-			*/
-			
+			***********************************************************/
 			//test.updateReference("urn:nasa:pds:context_pds3:data_set:data_set.jno-e-j-ss-wav-2-edr-v1.0", "DanY_Atmospheres", "danyu update test");
 			
-			/* Role Insert – Insert a role record into the role table for a given user.
-
+			/**********************************************************
+			Role Insert – Insert a role record into the role table for a given user.
 			Input: electronic_mail_address (required), reference (required)
-			Output: N/A
-			SQL:
-			INSERT INTO role (electronic_mail_address, reference) VALUES (‘<electronic_mail_address>’, ‘<reference>’)
-			*/
-			
+			***********************************************************/
 			//test.insertRole("danyu@jpl.nasa.gov", "DanY_Atmospheres");
 			
-			/* Submission Insert – Insert a submission record into the submission and submission_status tables for a given delivery.
-
+			/**********************************************************
+			Submission Insert – Insert a submission record into the submission and submission_status tables for a given delivery.
 			Input: delivery_identifier (required), status_date_time (required), status (required), electronic_mail_address (required), comment (optional)
 			Output: N/A
-			SQL:
-			INSERT INTO submission (delivery_identifier, submission_date_time) VALUES (‘<delivery_identifier>’, ‘<current_date_time>’)
-
-			INSERT INTO submission_status (delivery_identifier, submission_date_time, status_date_time, status, electronic_mail_address, comment) VALUES (‘<delivery_identifier>’, ‘<current_date_time from first insert>’, ‘<status_date_time>’, ‘<status>’, ‘<electronic_mail_address>’, ‘<comment>’)
-			*/
+			***********************************************************/			
 			//test.insertSubmission(31, "2017-08-17T11:23:59");
 			//test.insertSubmissionStatus(31, "2017-08-17T11:23:59", "2017-08-17T11:24:59", "Test", "danyu@jpl.nasa.gov", "test Dan Yu");
 			//test.insertSubmission(32, "2017-08-17T11:25:59");
 			//test.insertSubmissionStatus(32, "2017-08-17T11:25:59", "2017-08-17T11:26:59", "Test", "danyu@jpl.nasa.gov", null);
 			
-			/* Submission Update – Update a submission record in the submission_status table for a given delivery.
-
+			/**********************************************************
+			Submission Update – Update a submission record in the submission_status table for a given delivery.
 			Input: delivery_identifier (required), submission_date_time (required), status_date_time (required), status (required), electronic_mail_address (required), comment (optional)
 			Output: N/A
-			SQL:
-			UPDATE submission_status SET status_date_time = ‘<status_date_time>’, status = ‘<status>’, electronic_mail_address = ‘<electronic_mail_address>’, comment = ‘<comment>’
-			WHERE delivery_identifier = ‘<delivery_identifier>’
-			AND submission_date_time = ‘<submission_date_time>’
-			*/
+			***********************************************************/
+			//test.updateSubmissionStatus(31, "2017-08-17T11:23:59", "2017-08-18T11:24:59", "Test update", "danyu@jpl.nasa.gov", "update test Dan Yu");
+			//test.updateSubmissionStatus(32, "2017-08-17T11:25:59", "2017-08-18T11:26:59", "Test update", "danyu@jpl.nasa.gov", null);
 			
-			test.updateSubmissionStatus(31, "2017-08-17T11:23:59", "2017-08-18T11:24:59", "Test update", "danyu@jpl.nasa.gov", "update test Dan Yu");
-			test.updateSubmissionStatus(32, "2017-08-17T11:25:59", "2017-08-18T11:26:59", "Test update", "danyu@jpl.nasa.gov", null);
-			
-			/*
+			/**********************************************************
 			User Insert – Insert a user record into the user table for a given user.
-
 			Input: electronic_mail_address (required), name (required)
 			Output: N/A
-			SQL"
-			INSERT INTO user (electronic_mail_address, name) VALUES (‘<electronic_mail_address>’, ‘<name>’)
-			*/
+			***********************************************************/
 			//test.insertUser("danyu@jpl.nasa.gov", "Da Yu");
 			
-			/* User Update – Update a user record into the user table for a given user.
-
+			/**********************************************************
+			User Update – Update a user record into the user table for a given user.
 			Input: electronic_mail_address (required), name (required)
 			Output: N/A
-			SQL:
-			UPDATE user SET name = ‘<name>’
-			WHERE electronic_mail_address = ‘<electronic_mail_address >’
-			*/
+			***********************************************************/
 			//test.updateUser("danyu@jpl.nasa.gov", "Dan Yu");
+			
+			
+			// ************************************ 9.3	Status Inserts/Updates **************************
+			/**********************************************************
+			Archive Status Insert – Insert an archive status record into the archive_status table for a given product.
+			Input: logical_identifier (required), version_id (required), status (required), electronic_mail_address (required), comment (optional)
+			Output: N/A
+			***********************************************************/
+			//ArchiveStatus as = new ArchiveStatus();
+			//as.insertArchiveStatus("logical_identifier", "version", "date", "status", "mail", "comment");
+			//as.insertArchiveStatus("logical_identifier", "version", "date", "status", "mail", null);
+			
+			/**********************************************************			
+			Certification Status Insert – Insert a certification status record into the certification_status table for a given product.
+			Input: logical_identifier (required), version_id (required), status (required), electronic_mail_address (required), comment (optional)
+			Output: N/A
+			***********************************************************/
+			//CertificationStatus cs = new CertificationStatus();
+			//cs.insertCertificationStatus("logical_identifier", "version", "date", "status", "mail", "comment");
+			//cs.insertCertificationStatus("logical_identifier", "version", "date", "status", "mail", null);
+			
+			/**********************************************************			
+			DOI Insert – Insert a DOI status record into the doi table for a given product.
+			Input: logical_identifier (required), version_id (required), doi (required), registration_date (required), site_url (required), electronic_mail_address (required), comment (optional)
+			Output: N/A
+			***********************************************************/
+			//Doi doi = new Doi();
+			//doi.insertDOI("logical_identifier", "ver", "doi", "date", "url", "email", "comment");
+			//doi.insertDOI("logical_identifier", "ver", "doi", "date", "url", "email", null);
+			
+			/**********************************************************
+			DOI Update – Update a DOI status record (site_url) in the doi table for a given product.
+			Input: logical_identifier (required), version_id (required), site_url (required)
+			Output: N/A
+			***********************************************************/
+			//doi.update("logical_identifier", "ver", "url");
+			
+			/**********************************************************
+			NSSDCA Status Insert – Insert a NSSDCA status record into the nssdca_status table for a given product.
+			Input: logical_identifier (required), version_id (required), nssdca_identifier (required), electronic_mail_address (required), comment (optional)
+			Output: N/A
+			***********************************************************/
+			//NssdcaStatus ns = new NssdcaStatus();
+			//ns.insertNssdcaStatus("logical_identifier", "ver", "date", "nssdca_identifier", "mail", "comment");
+			//ns.insertNssdcaStatus("logical_identifier", "ver", "date", "nssdca_identifier", "mail", null);
+			
+			/**********************************************************
+			Release Insert – Insert a release record into the releases table for a given product.
+			Input: logical_identifier (required), version_id (required), release_date_time (required), name (required), description (required), electronic_mail_address (required), comment (optional)
+			Output: N/A
+			***********************************************************/
+			//Releases rl = new Releases();
+			//rl.insesrtReleases("logical_identifier", "ver", "date", "name", "descrip", "email", "comment");
+			//rl.insesrtReleases("logical_identifier", "ver", "date", "name", "descrip", "email", null);
+			
+			// ************************************ 9.4	Status Queries **************************
+			/**********************************************************
+			Archive Status Query – Query the archive_status table for the latest archive status of a given product.
+			Input: logical_identifier (required), version_id (required)
+			Output: status_date_time, status, electronic_mail_address, comment
+			***********************************************************/
+			//ArchiveStatus latestAS;
+			//latestAS = ArchiveStatus.getLatestArchiveStatus("logical_identifier", "ver");
+			//logger.info("Archive Status: " + latestAS.getStatus());
+			//logger.info("Email: " + latestAS.getEmail());
+			//logger.info("Comment: " + latestAS.getComment());
+			//logger.info("Date: " + latestAS.getDate());
+			
+			/**********************************************************
+			Archive Status List Query – Query the archive_status table for the archive status progression of a given product.
+			Input: logical_identifier (required), version_id (required)
+			Output: status_date_time, status, electronic_mail_address, comment
+			***********************************************************/
+			//List<ArchiveStatus> asList;
+			//asList = ArchiveStatus.getArchiveStatusList("logical_identifier", "ver");
+			
+			//Iterator<ArchiveStatus> itrAS = asList.iterator();
+			//int countAS = 1;
+			//while (itrAS.hasNext()) {
+			//	ArchiveStatus s = itrAS.next();
+			//	logger.info("Archive Status " + countAS + ":\n " + s.getStatus() + " : " + s.getDate()
+			//	 + " : " + s.getEmail() + " : " + s.getComment());
+			//	countAS++;
+			//}
+			
+			/**********************************************************
+			Certification Status Query – Query the certification_status table for the latest certification status of a given product.
+			Input: logical_identifier (required), version_id (required)
+			Output: status_date_time, status, electronic_mail_address, comment
+			***********************************************************/
+			//CertificationStatus latestCS;
+			//latestCS = CertificationStatus.getLatestCertificationStatus("logical_identifier", "ver");
+			//logger.info("Certification Status: " + latestCS.getStatus());
+			//logger.info("Email: " + latestCS.getEmail());
+			//logger.info("Comment: " + latestAS.getComment());
+			//logger.info("Date: " + latestCS.getDate());
+			
+			/**********************************************************
+			Certification Status List Query – Query the certification_status table for the certification status progression of a given product.
+			Input: logical_identifier (required), version_id (required)
+			Output: status_date_time, status, electronic_mail_address, comment
+			***********************************************************/
+			//List<CertificationStatus> csList;
+			//csList = CertificationStatus.getCertificationStatusList("logical_identifier", "ver");
+			
+			//Iterator<CertificationStatus> itrCS = csList.iterator();
+			//int countCS = 1;
+			//while (itrCS.hasNext()) {
+			//	CertificationStatus s = itrCS.next();
+			//	logger.info("Certification Status " + countCS + ":\n " + s.getStatus() + " : " + s.getDate()
+			//	 + " : " + s.getEmail() + " : " + s.getComment());
+			//	countCS++;
+			//}
+			
+			/**********************************************************
+			DOI Query – Query the doi table for the DOI and associated information of a given product.
+			Input: logical_identifier (required), version_id (required)
+			Output: doi, registration_date, site_url, electronic_mail_address, comment
+			***********************************************************/
+			//List<Doi> doiList;
+			//doiList = Doi.getDOIList("logical_identifier", "ver");
+			
+			//Iterator<Doi> itrDOI = doiList.iterator();
+			//int countDOI = 1;
+			//while (itrDOI.hasNext()) {
+			//	Doi d = itrDOI.next();
+			//	logger.info("DOI " + countDOI + ":\n " + d.getDoi() + " : " + d.getDate()
+			//	 + " : " + d.getUrl() + " : " + d.getEmail()+ " : " + d.getComment());
+			//	countDOI++;
+			//}
+			
+			/**********************************************************
+			NSSDCA Query – Query the nssdca table for the NSSDCA information of a given product.
+			Input: logical_identifier (required), version_id (required)
+			Output: status_date_time, nssdca_identifier, electronic_mail_address, comment
+			***********************************************************/
+			//List<NssdcaStatus> nssdcaList;
+			//nssdcaList = NssdcaStatus.getNssdcaStatusList("logical_identifier", "ver");
+			
+			//Iterator<NssdcaStatus> itrNssdca = nssdcaList.iterator();
+			//int countNssdca = 1;
+			//while (itrNssdca.hasNext()) {
+			//	NssdcaStatus n = itrNssdca.next();
+			//	logger.info("Nssdca Status " + countNssdca + ":\n " + n.getDate() + " : " + n.getNssdca()
+			//	  + " : " + n.getEmail()+ " : " + n.getComment());
+			//	countNssdca++;
+			//}
+			
+			/**********************************************************
+			Release Query – Query the releases table for the latest release of a given product.
+			Input: logical_identifier (required), version_id (required)
+			Output: release_date_time, name, description, electronic_mail_address, comment
+			***********************************************************/
+			//Releases rel;
+			//rel = Releases.getLatestReleases("logical_identifier", "ver");
+			//logger.info("Date: " + rel.getDate());
+			//logger.info("Name: " + rel.getName());
+			//logger.info("Description: " + rel.getDescription());
+			//logger.info("Email: " + rel.getEmail());
+			//logger.info("Comment: " + rel.getComment());
+			
+			/**********************************************************
+			Release List Query – Query the releases table for the release progression of a given product.
+			Input: logical_identifier (required), version_id (required)
+			Output: release_date_time, name, description, electronic_mail_address, comment
+			***********************************************************/
+			//List<Releases> relList;
+			//relList = Releases.getReleasesList("logical_identifier", "ver");
+			
+			//Iterator<Releases> itrRel = relList.iterator();
+			//int countRel = 1;
+			//while (itrRel.hasNext()) {
+			//	Releases r = itrRel.next();
+			//	logger.info("Releases " + countRel + ":\n " + r.getDate() + " : " + r.getName()
+			//	 + " : " + r.getDescription() + " : " + r.getEmail() + " : " + r.getComment());
+			//	countRel++;
+			//}
 
 			
 		} catch (Exception e) {

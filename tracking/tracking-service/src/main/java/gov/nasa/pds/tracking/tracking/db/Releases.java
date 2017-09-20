@@ -1,3 +1,6 @@
+/**
+ * Copyright 2010-2017, by the California Institute of Technology.
+ */
 package gov.nasa.pds.tracking.tracking.db;
 
 import java.sql.Connection;
@@ -11,17 +14,22 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-public class CertificationStatus extends DBConnector {
-	
-	public static Logger logger = Logger.getLogger(CertificationStatus.class);
+/**
+ * @author danyu dan.yu@jpl.nasa.gov
+ *
+ */
+public class Releases extends DBConnector {
 
-	private static final String TABLENAME = "certification_status";
+	public static Logger logger = Logger.getLogger(NssdcaStatus.class);
+
+	private static final String TABLENAME = "releases";
 	private static final String PRODUCTTABLENAME= "product";
-
+  	  
 	public static final String LOGIDENTIFIERCOLUME = "logical_identifier";
 	public static final String VERSIONCOLUME = "version_id";
-	public static final String DATECOLUME = "status_date_time";
-	public static final String STATUSCOLUME = "status";
+	public static final String DATECOLUME = "release_date_time";
+	public static final String NAMECOLUME = "name";
+	public static final String DESCCOLUME = "description";
 	public static final String EMAILCOLUME = "electronic_mail_address";
 	public static final String COMMENTCOLUME = "comment";
 
@@ -33,9 +41,11 @@ public class CertificationStatus extends DBConnector {
 	private String logIdentifier = null;
 	private String version = null;
 	private String date = null;
-	private String status = null;
+	private String name = null;
+	private String description = null;
 	private String email = null;
 	private String comment = null;
+	
 	
 	/**
 	 * @return the logIdentifier
@@ -43,97 +53,93 @@ public class CertificationStatus extends DBConnector {
 	public String getLogIdentifier() {
 		return logIdentifier;
 	}
-
 	/**
 	 * @param logIdentifier, the logIdentifier to set
 	 */
 	public void setLogIdentifier(String logIdentifier) {
 		this.logIdentifier = logIdentifier;
 	}
-
 	/**
 	 * @return the version
 	 */
 	public String getVersion() {
 		return version;
 	}
-
 	/**
 	 * @param version, the version to set
 	 */
 	public void setVersion(String version) {
 		this.version = version;
 	}
-
 	/**
 	 * @return the date
 	 */
 	public String getDate() {
 		return date;
 	}
-
 	/**
 	 * @param date, the date to set
 	 */
 	public void setDate(String date) {
 		this.date = date;
 	}
-
 	/**
-	 * @return the status
+	 * @return the name
 	 */
-	public String getStatus() {
-		return status;
+	public String getName() {
+		return name;
 	}
-
 	/**
-	 * @param status, the status to set
+	 * @param name, the name to set
 	 */
-	public void setStatus(String status) {
-		this.status = status;
+	public void setName(String name) {
+		this.name = name;
 	}
-
+	/**
+	 * @return the description
+	 */
+	public String getDescription() {
+		return description;
+	}
+	/**
+	 * @param description, the description to set
+	 */
+	public void setDescription(String description) {
+		this.description = description;
+	}
 	/**
 	 * @return the email
 	 */
 	public String getEmail() {
 		return email;
 	}
-
 	/**
 	 * @param email, the email to set
 	 */
 	public void setEmail(String email) {
 		this.email = email;
 	}
-
 	/**
 	 * @return the comment
 	 */
 	public String getComment() {
 		return comment;
 	}
-
 	/**
 	 * @param comment, the comment to set
 	 */
 	public void setComment(String comment) {
 		this.comment = comment;
 	}
-	
-	public CertificationStatus() throws ClassNotFoundException, SQLException {
+	/**
+	 * @throws ClassNotFoundException
+	 * @throws SQLException
+	 */
+	public Releases() throws ClassNotFoundException, SQLException {
 		// TODO Auto-generated constructor stub
 	}
 	
-	/**
-	 * @param logical_identifier
-	 * @param version
-	 * @param date
-	 * @param status
-	 * @param mail
-	 * @param comment
-	 */
-	public void insertCertificationStatus(String logical_identifier, String version, String date, String status, String mail, String comment) {
+	public void insesrtReleases(String logical_identifier, String ver, String date, String name, String description, String email, String comment) {
 		try {
 			// Setup the connection with the DB
 			connect = DriverManager.getConnection(db_url, db_user, db_pwd);
@@ -143,20 +149,22 @@ public class CertificationStatus extends DBConnector {
 													+ LOGIDENTIFIERCOLUME + ", " 
 													+ VERSIONCOLUME + ", "
 													+ DATECOLUME + ", "
-													+ STATUSCOLUME + ", "
+													+ NAMECOLUME + ", "
+													+ DESCCOLUME + ", "
 													+ EMAILCOLUME + ", "
-													+ COMMENTCOLUME + ") VALUES (?, ?, ?, ?, ?, ?)");
+													+ COMMENTCOLUME + ") VALUES (?, ?, ?, ?, ?, ?, ?)");
 			prepareStm.setString(1, logical_identifier);
-			prepareStm.setString(2, version);
+			prepareStm.setString(2, ver);
 			prepareStm.setString(3, date);
-			prepareStm.setString(4, status);
-			prepareStm.setString(5, email);
-			prepareStm.setString(6, comment);
+			prepareStm.setString(4, name);
+			prepareStm.setString(5, description);
+			prepareStm.setString(6, email);
+			prepareStm.setString(7, comment);
 			
 			prepareStm.executeUpdate();
 			
 			connect.commit();
-			logger.info("The Certification Status status " + status + " for the product: " + logical_identifier + ", has been added.");
+			logger.info("The releases " + name + " for the product: " + logical_identifier + ", has been added.");
 			
 		} catch (Exception e) {
 			logger.error(e);
@@ -179,49 +187,9 @@ public class CertificationStatus extends DBConnector {
 	 * @return
 	 */
 	@SuppressWarnings("finally")
-	public static CertificationStatus getLatestCertificationStatus(String logical_identifier, String ver) {
+	public static Releases getLatestReleases(String logical_identifier, String ver) {
 
-		CertificationStatus certifStatus = null;
-		try {
-			// Setup the connection with the DB
-			connect = DriverManager.getConnection(db_url, db_user, db_pwd);
-
-			statement = connect.createStatement();
-			
-			resultSet = statement.executeQuery("select * from " + TABLENAME 
-					+ " where " + LOGIDENTIFIERCOLUME + " = '" + logical_identifier + "' and "
-					+ VERSIONCOLUME + " = '" + ver + "' order by " + DATECOLUME);
-
-			if (resultSet.next()){
-				certifStatus = new CertificationStatus();
-
-				certifStatus.setLogIdentifier(resultSet.getString(LOGIDENTIFIERCOLUME));
-				certifStatus.setVersion(resultSet.getString(VERSIONCOLUME));
-				certifStatus.setStatus(resultSet.getString(STATUSCOLUME));
-				certifStatus.setEmail(resultSet.getString(EMAILCOLUME));
-				certifStatus.setComment(resultSet.getString(COMMENTCOLUME));
-				certifStatus.setDate(resultSet.getString(DATECOLUME));
-				
-			}	
-
-		} catch (Exception e) {
-			logger.error(e);
-		} finally {
-			close(statement);
-			return certifStatus;
-		}
-	}
-	
-	/**
-	 * @param logical_identifier
-	 * @param ver
-	 * @return
-	 */
-	@SuppressWarnings("finally")
-	public static List<CertificationStatus> getCertificationStatusList(String logical_identifier, String ver) {
-		
-		List<CertificationStatus> certifStatuses = new ArrayList<CertificationStatus>();
-		CertificationStatus certifStatus = null;
+		Releases rel = null;
 		try {
 			// Setup the connection with the DB
 			connect = DriverManager.getConnection(db_url, db_user, db_pwd);
@@ -232,26 +200,69 @@ public class CertificationStatus extends DBConnector {
 					+ " where " + LOGIDENTIFIERCOLUME + " = '" + logical_identifier + "' and "
 					+ VERSIONCOLUME + " = '" + ver + "' order by " + DATECOLUME + " DESC");
 
-			while (resultSet.next()){
-				certifStatus = new CertificationStatus();
-
-				certifStatus.setLogIdentifier(resultSet.getString(LOGIDENTIFIERCOLUME));
-				certifStatus.setVersion(resultSet.getString(VERSIONCOLUME));
-				certifStatus.setStatus(resultSet.getString(STATUSCOLUME));
-				certifStatus.setEmail(resultSet.getString(EMAILCOLUME));
-				certifStatus.setComment(resultSet.getString(COMMENTCOLUME));
-				certifStatus.setDate(resultSet.getString(DATECOLUME));
+			if (resultSet.next()){
+				rel = new Releases();
 				
-				certifStatuses.add(certifStatus);
+				rel.setLogIdentifier(resultSet.getString(LOGIDENTIFIERCOLUME));
+				rel.setVersion(resultSet.getString(VERSIONCOLUME));
+				rel.setName(resultSet.getString(NAMECOLUME));
+				rel.setDescription(resultSet.getString(Releases.DESCCOLUME));
+				rel.setEmail(resultSet.getString(EMAILCOLUME));
+				rel.setComment(resultSet.getString(COMMENTCOLUME));
+				rel.setDate(resultSet.getString(DATECOLUME));
+				
 			}	
 
 		} catch (Exception e) {
 			logger.error(e);
 		} finally {
 			close(statement);
-			return certifStatuses;
+			return rel;
 		}
 	}
+	
+	/**
+	 * @param logical_identifier
+	 * @param ver
+	 * @return
+	 */
+	@SuppressWarnings("finally")
+	public static List<Releases> getReleasesList(String logical_identifier, String ver) {
+		
+		List<Releases> rels = new ArrayList<Releases>();
+		Releases rel = null;
+		try {
+			// Setup the connection with the DB
+			connect = DriverManager.getConnection(db_url, db_user, db_pwd);
+
+			statement = connect.createStatement();
+			
+			resultSet = statement.executeQuery("select * from " + TABLENAME 
+					+ " where " + LOGIDENTIFIERCOLUME + " = '" + logical_identifier + "' and "
+					+ VERSIONCOLUME + " = '" + ver + "' order by " + DATECOLUME);
+
+			while (resultSet.next()){
+				rel = new Releases();
+
+				rel.setLogIdentifier(resultSet.getString(LOGIDENTIFIERCOLUME));
+				rel.setVersion(resultSet.getString(VERSIONCOLUME));
+				rel.setName(resultSet.getString(NAMECOLUME));
+				rel.setDescription(resultSet.getString(Releases.DESCCOLUME));
+				rel.setEmail(resultSet.getString(EMAILCOLUME));
+				rel.setComment(resultSet.getString(COMMENTCOLUME));
+				rel.setDate(resultSet.getString(DATECOLUME));
+				
+				rels.add(rel);
+			}	
+
+		} catch (Exception e) {
+			logger.error(e);
+		} finally {
+			close(statement);
+			return rels;
+		}
+	}
+	
 	
 	/**
 	 * @param stm

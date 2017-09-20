@@ -12,7 +12,7 @@ import javax.ws.rs.Produces;
 import org.apache.log4j.Logger;
 
 import gov.nasa.pds.tracking.tracking.db.DBConnector;
-import gov.nasa.pds.tracking.tracking.db.Status;
+import gov.nasa.pds.tracking.tracking.db.ArchiveStatus;
 import gov.nasa.pds.tracking.tracking.utils.HtmlConstants;
 
 @Path("/tracking/archivestatus")
@@ -46,23 +46,18 @@ public class HTMLBasedArchiveStatus  extends DBConnector {
     			  "<table border=\"1\" style=\"width: 90%;border-spacing: 0; font:normal; font-size: 12\" >" +
     			  tableTiltes);
 
-    	Status aStatus;
-		try {
-			String tableName = null;
-			
-			if (appConsts.containsKey(ARCHIVE_STATUS_TABLE_NAME)) {
-				tableName = appConsts.getProperty(ARCHIVE_STATUS_TABLE_NAME);
-	        
-				aStatus = new Status(tableName);
+    	ArchiveStatus aStatus;
+		try {	        
+				aStatus = new ArchiveStatus();
 				
-				List<Status> aStatuses = aStatus.getStatusOrderByVersion();
+				List<ArchiveStatus> aStatuses = aStatus.getArchiveStatusOrderByVersion();
 				
 				logger.info("number of Archive Status: "  + aStatuses.size());
 				
-				Iterator<Status> itr = aStatuses.iterator();
+				Iterator<ArchiveStatus> itr = aStatuses.iterator();
 	
 				while(itr.hasNext()) {
-					Status as = itr.next();
+					ArchiveStatus as = itr.next();
 			         
 			         sb.append("<tr>" +
 			    			  "<td>" + as.getDate() + "</td>"+
@@ -74,9 +69,6 @@ public class HTMLBasedArchiveStatus  extends DBConnector {
 			    			  "<tr>");
 	
 			    }
-			}else{
-				logger.error("Please check the properties file and give the table name of archive status.");
-			}
 			
 		} catch (ClassNotFoundException e) {
 			logger.error(e);
@@ -105,22 +97,18 @@ public class HTMLBasedArchiveStatus  extends DBConnector {
     			  "<table border=\"1\" style=\"width: 90%;border-spacing: 0; font:normal; font-size: 12\" >" +
     			  tableTiltes);
 
-    	Status aStatus;
+    	ArchiveStatus aStatus;
 		try {
-			String tableName = null;
-			
-			if (appConsts.containsKey(ARCHIVE_STATUS_TABLE_NAME)) {
-				tableName = appConsts.getProperty(ARCHIVE_STATUS_TABLE_NAME);
-				aStatus = new Status(tableName);
+				aStatus = new ArchiveStatus();
 				
-				List<Status> aStatuses = aStatus.getStatusOrderByVersion(realTitle);
+				List<ArchiveStatus> aStatuses = aStatus.getArchiveStatusOrderByVersion(realTitle);
 				
 				logger.info("number of Archive Status: "  + aStatuses.size());
 				
-				Iterator<Status> itr = aStatuses.iterator();
+				Iterator<ArchiveStatus> itr = aStatuses.iterator();
 	
 				while(itr.hasNext()) {
-					Status as = itr.next();
+					ArchiveStatus as = itr.next();
 			         
 			         sb.append("<tr>" +
 			    			  "<td>" + as.getDate() + "</td>"+
@@ -130,11 +118,8 @@ public class HTMLBasedArchiveStatus  extends DBConnector {
 				              "<td>" + as.getComment() + "</td>" +
 				              "<td>" + as.getLogIdentifier() + "</td>" +			              
 			    			  "<tr>");
+				}
 	
-			    }
-			}else{
-				logger.error("Please check the properties file and give the table name of archive status.");
-			}	
 		} catch (ClassNotFoundException e) {
 			logger.error(e);
 		} catch (SQLException e) {
