@@ -18,11 +18,16 @@ import gov.nasa.pds.tools.validate.Target;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.filefilter.IOFileFilter;
@@ -53,6 +58,13 @@ public class URLCrawler extends Crawler {
    * @throws IOException
    */
   public List<Target> crawl(URL url, boolean getDirectories, IOFileFilter fileFilter) throws IOException {
+    try {
+      SSLContext context = SSLContext.getInstance("TLSv1.2");
+      context.init(null, null, new java.security.SecureRandom());
+      HttpsURLConnection.setDefaultSSLSocketFactory(context.getSocketFactory());
+    } catch (Exception e) {
+      throw new IOException ("Error while setting SSLSocket connection to TLSv1.2: " + e.getMessage());
+    }
     Document doc = Jsoup.connect(url.toString()).get();
     Set<Target> results = new LinkedHashSet<Target>();
     for (Element file : doc.select("a")) {
