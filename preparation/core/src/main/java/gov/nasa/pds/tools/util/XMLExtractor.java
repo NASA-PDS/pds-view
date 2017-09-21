@@ -14,7 +14,9 @@
 package gov.nasa.pds.tools.util;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -92,10 +94,14 @@ public class XMLExtractor {
       configuration.setXIncludeAware(Utility.supportXincludes());
       ParseOptions options = new ParseOptions();
       options.setErrorListener(new XMLErrorListener());
-      xml = configuration.buildDocument(new SAXSource(new InputSource(url.toString())),
-          options);
-      String definedNamespace = getValueFromDoc("namespace-uri(/*)");
-      xpath.getStaticContext().setDefaultElementNamespace(definedNamespace);
+      try {
+        xml = configuration.buildDocument(new SAXSource(Utility.openConnection(url)),
+            options);
+        String definedNamespace = getValueFromDoc("namespace-uri(/*)");
+        xpath.getStaticContext().setDefaultElementNamespace(definedNamespace);
+      } catch (IOException io) {
+        throw new XPathException("Error while reading input: " + io.getMessage());
+      }
     }
 
     public XMLExtractor(InputSource source) throws XPathException,

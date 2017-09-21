@@ -347,12 +347,7 @@ public class LabelValidator {
       // Finally parse and validate the file
       xml = docBuilder.newDocument();
       cachedParser.setContentHandler(new DocumentCreator(xml));
-      try {
-        cachedParser.parse(url.toURI().toString());
-      } catch (URISyntaxException e) {
-        // should never get here, since the URL generated was from
-        // File.toURI().toURL().
-      }
+      cachedParser.parse(Utility.openConnection(url));
 
       DOMLocator locator = new DOMLocator(url);
       cachedValidatorHandler.setDocumentLocator(locator);
@@ -468,7 +463,7 @@ public class LabelValidator {
 
     // Perform any additional checks that were added
     if (!documentValidators.isEmpty()) {
-      SAXSource saxSource = new SAXSource(new InputSource(url.toString()));
+      SAXSource saxSource = new SAXSource(Utility.openConnection(url));
       saxSource.setSystemId(url.toString());
       DocumentInfo docInfo = LabelParser.parse(saxSource);
       for (DocumentValidator dv : documentValidators) {
