@@ -33,10 +33,10 @@ public class Releases extends DBConnector {
 	public static final String EMAILCOLUME = "electronic_mail_address";
 	public static final String COMMENTCOLUME = "comment";
 
-	private static Connection connect = null;
-	private static Statement statement = null;
-	private static PreparedStatement prepareStm = null;
-	private static ResultSet resultSet = null;
+	private Connection connect = null;
+	private Statement statement = null;
+	private PreparedStatement prepareStm = null;
+	private ResultSet resultSet = null;
 
 	private String logIdentifier = null;
 	private String version = null;
@@ -142,7 +142,7 @@ public class Releases extends DBConnector {
 	public void insesrtReleases(String logical_identifier, String ver, String date, String name, String description, String email, String comment) {
 		try {
 			// Setup the connection with the DB
-			connect = DriverManager.getConnection(db_url, db_user, db_pwd);
+			connect = getConnection();
 			connect.setAutoCommit(false);
 			
 			prepareStm = connect.prepareStatement("INSERT INTO " + TABLENAME + " (" 
@@ -187,12 +187,12 @@ public class Releases extends DBConnector {
 	 * @return
 	 */
 	@SuppressWarnings("finally")
-	public static Releases getLatestReleases(String logical_identifier, String ver) {
+	public Releases getLatestReleases(String logical_identifier, String ver) {
 
 		Releases rel = null;
 		try {
 			// Setup the connection with the DB
-			connect = DriverManager.getConnection(db_url, db_user, db_pwd);
+			connect = getConnection();
 
 			statement = connect.createStatement();
 			
@@ -212,7 +212,9 @@ public class Releases extends DBConnector {
 				rel.setDate(resultSet.getString(DATECOLUME));
 				
 			}	
-
+			else{
+				logger.info("Can not find any Releases!");
+			}
 		} catch (Exception e) {
 			logger.error(e);
 		} finally {
@@ -227,13 +229,13 @@ public class Releases extends DBConnector {
 	 * @return
 	 */
 	@SuppressWarnings("finally")
-	public static List<Releases> getReleasesList(String logical_identifier, String ver) {
+	public List<Releases> getReleasesList(String logical_identifier, String ver) {
 		
 		List<Releases> rels = new ArrayList<Releases>();
 		Releases rel = null;
 		try {
 			// Setup the connection with the DB
-			connect = DriverManager.getConnection(db_url, db_user, db_pwd);
+			connect = getConnection();
 
 			statement = connect.createStatement();
 			
@@ -267,7 +269,7 @@ public class Releases extends DBConnector {
 	/**
 	 * @param stm
 	 */
-	private static void close(Statement stm) {
+	private void close(Statement stm) {
 		try {
 			if (resultSet != null) {
 				resultSet.close();

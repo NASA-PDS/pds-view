@@ -33,10 +33,10 @@ public class ArchiveStatus extends DBConnector {
 	public static final String EMAILCOLUME = "electronic_mail_address";
 	public static final String COMMENTCOLUME = "comment";
 
-	private static Connection connect = null;
-	private static Statement statement = null;
-	private static PreparedStatement prepareStm = null;
-	private static ResultSet resultSet = null;
+	private Connection connect = null;
+	private Statement statement = null;
+	private PreparedStatement prepareStm = null;
+	private ResultSet resultSet = null;
 
 	private String logIdentifier = null;
 	private String version = null;
@@ -149,7 +149,7 @@ public class ArchiveStatus extends DBConnector {
 		ArchiveStatus archStatus = null;
 		try {
 			// Setup the connection with the DB
-			connect = DriverManager.getConnection(db_url, db_user, db_pwd);
+			connect = getConnection();
 
 			statement = connect.createStatement();
 
@@ -190,7 +190,7 @@ public class ArchiveStatus extends DBConnector {
 		ArchiveStatus archStatus = null;
 		try {
 			// Setup the connection with the DB
-			connect = DriverManager.getConnection(db_url, db_user, db_pwd);
+			connect = getConnection();
 
 			statement = connect.createStatement();
 
@@ -228,12 +228,12 @@ public class ArchiveStatus extends DBConnector {
 	 * @return
 	 */
 	@SuppressWarnings("finally")
-	public static ArchiveStatus getLatestArchiveStatus(String logical_identifier, String ver) {
+	public ArchiveStatus getLatestArchiveStatus(String logical_identifier, String ver) {
 
 		ArchiveStatus archStatus = null;
 		try {
 			// Setup the connection with the DB
-			connect = DriverManager.getConnection(db_url, db_user, db_pwd);
+			connect = getConnection();
 
 			statement = connect.createStatement();
 			
@@ -250,9 +250,10 @@ public class ArchiveStatus extends DBConnector {
 				archStatus.setEmail(resultSet.getString(EMAILCOLUME));
 				archStatus.setComment(resultSet.getString(COMMENTCOLUME));
 				archStatus.setDate(resultSet.getString(DATECOLUME));
-				
 			}	
-
+			else{
+				logger.info("Can not find any Archive Status!");
+			}
 		} catch (Exception e) {
 			logger.error(e);
 		} finally {
@@ -267,13 +268,13 @@ public class ArchiveStatus extends DBConnector {
 	 * @return
 	 */
 	@SuppressWarnings("finally")
-	public static List<ArchiveStatus> getArchiveStatusList(String logical_identifier, String ver) {
+	public List<ArchiveStatus> getArchiveStatusList(String logical_identifier, String ver) {
 		
 		List<ArchiveStatus> archStatuses = new ArrayList<ArchiveStatus>();
 		ArchiveStatus archStatus = null;
 		try {
 			// Setup the connection with the DB
-			connect = DriverManager.getConnection(db_url, db_user, db_pwd);
+			connect = getConnection();
 
 			statement = connect.createStatement();
 			
@@ -310,10 +311,10 @@ public class ArchiveStatus extends DBConnector {
 	 * @param mail
 	 * @param comment
 	 */
-	public void insertArchiveStatus(String logical_identifier, String version, String date, String status, String mail, String comment) {
+	public void insertArchiveStatus(String logical_identifier, String version, String date, String status, String email, String comment) {
 		try {
 			// Setup the connection with the DB
-			connect = DriverManager.getConnection(db_url, db_user, db_pwd);
+			connect = getConnection();
 			connect.setAutoCommit(false);
 			
 			prepareStm = connect.prepareStatement("INSERT INTO " + TABLENAME + " (" 
@@ -353,7 +354,7 @@ public class ArchiveStatus extends DBConnector {
 	/**
 	 * @param stm
 	 */
-	private static void close(Statement stm) {
+	private void close(Statement stm) {
 		try {
 			if (resultSet != null) {
 				resultSet.close();

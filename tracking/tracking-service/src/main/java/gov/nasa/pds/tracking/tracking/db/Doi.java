@@ -32,10 +32,10 @@ public class Doi extends DBConnector {
 	private final static String EMAILCOLUME  = "electronic_mail_address";
 	private final static String COMMENTCOLUME = "comment";
 	
-	private static Connection connect = null;
-	private static Statement statement = null;
-	private static PreparedStatement prepareStm = null;
-	private static ResultSet resultSet = null;
+	private Connection connect = null;
+	private Statement statement = null;
+	private PreparedStatement prepareStm = null;
+	private ResultSet resultSet = null;
 	
 	private String log_identifier = null;
 	private String version = null;
@@ -178,7 +178,7 @@ public class Doi extends DBConnector {
 	public void insertDOI(String logical_identifier, String ver, String doi, String date, String url, String email, String comment) {
 		try {
 			// Setup the connection with the DB
-			connect = DriverManager.getConnection(db_url, db_user, db_pwd);
+			connect = getConnection();
 			connect.setAutoCommit(false);
 			
 			prepareStm = connect.prepareStatement("INSERT INTO " + TABLENAME + " (" 
@@ -190,7 +190,7 @@ public class Doi extends DBConnector {
 													+ EMAILCOLUME + ", "
 													+ COMMENTCOLUME + ") VALUES (?, ?, ?, ?, ?, ?, ?)");
 			prepareStm.setString(1, logical_identifier);
-			prepareStm.setString(2, version);
+			prepareStm.setString(2, ver);
 			prepareStm.setString(3, doi);
 			prepareStm.setString(4, date);
 			prepareStm.setString(5, url);
@@ -222,17 +222,21 @@ public class Doi extends DBConnector {
 	 * @param ver
 	 * @param url
 	 */
-	public void update(String logical_identifier, String ver, String url) {
+	public void update(String logical_identifier, String ver, String url, String email, String comment) {
 		try {
 			// Setup the connection with the DB
-			connect = DriverManager.getConnection(db_url, db_user, db_pwd);
+			connect = getConnection();
 			connect.setAutoCommit(false);
 			
-			prepareStm = connect.prepareStatement("UPDATE " + TABLENAME + " SET " + URLCOLUME + " = ? WHERE " 
-															+ LOG_IDENTIFIERCOLUME + " = ? AND " + VERSIONCOLUME + " = ?");
+			prepareStm = connect.prepareStatement("UPDATE " + TABLENAME + " SET " + URLCOLUME + " = ?, " 
+																				  + EMAILCOLUME + " = ?, " 
+																				  + COMMENTCOLUME + " = ? WHERE " 
+																				  + LOG_IDENTIFIERCOLUME + " = ? AND " + VERSIONCOLUME + " = ?");
 			prepareStm.setString(1, url);
-			prepareStm.setString(2, logical_identifier);
-			prepareStm.setString(3, ver);
+			prepareStm.setString(2, email);
+			prepareStm.setString(3, comment);
+			prepareStm.setString(4, logical_identifier);
+			prepareStm.setString(5, ver);
 
 			
 			prepareStm.executeUpdate();
@@ -262,13 +266,13 @@ public class Doi extends DBConnector {
 	 * @return
 	 */
 	@SuppressWarnings("finally")
-	public static List<Doi> getDOIList(String logical_identifier, String ver) {
+	public List<Doi> getDOIList(String logical_identifier, String ver) {
 		
 		List<Doi> DOIList = new ArrayList<Doi>();
 		Doi doi = null;
 		try {
 			// Setup the connection with the DB
-			connect = DriverManager.getConnection(db_url, db_user, db_pwd);
+			connect = getConnection();
 
 			statement = connect.createStatement();
 			
@@ -301,7 +305,7 @@ public class Doi extends DBConnector {
 	/**
 	 * @param stm
 	 */
-	private static void close(Statement stm) {
+	private void close(Statement stm) {
 		try {
 			if (resultSet != null) {
 				resultSet.close();

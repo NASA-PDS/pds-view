@@ -188,7 +188,7 @@ public class Status extends DBConnector {
 		Status status = null;
 		try {
 			// Setup the connection with the DB
-			connect = DriverManager.getConnection(db_url, db_user, db_pwd);
+			connect = getConnection();
 
 			statement = connect.createStatement();
 
@@ -229,7 +229,7 @@ public class Status extends DBConnector {
 		Status status = null;
 		try {
 			// Setup the connection with the DB
-			connect = DriverManager.getConnection(db_url, db_user, db_pwd);
+			connect = getConnection();
 
 			statement = connect.createStatement();
 

@@ -4,7 +4,6 @@
 package gov.nasa.pds.tracking.tracking.db;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -114,8 +113,7 @@ public class User extends DBConnector {
 		User user = null;
 		try {
 			// Setup the connection with the DB
-			connect = DriverManager.getConnection(db_url, db_user, db_pwd);
-
+			connect = getConnection();
 			statement = connect.createStatement();
 			resultSet = statement.executeQuery("select * from " + TABLENAME + " order by " + EMAILCOLUME);
 			
@@ -144,8 +142,7 @@ public List<User> getUserRole(String email){
 	User user = null;
 	try {
 		// Setup the connection with the DB
-		connect = DriverManager.getConnection(db_url, db_user, db_pwd);
-
+		connect = getConnection();
 		statement = connect.createStatement();
 		resultSet = statement.executeQuery("SELECT u." + EMAILCOLUME + ", u." + NAMECOLUME + ", r." + Role.REFERENCECOLUME +
 										" FROM " + TABLENAME + " u, " + ROLETABLENAME + " r" +
@@ -181,7 +178,7 @@ public List<User> getProductRoleUsers(String log_identifer, String type) {
 	
 	try {
 		// Setup the connection with the DB
-		connect = DriverManager.getConnection(db_url, db_user, db_pwd);
+		connect = getConnection();
 
 		statement = connect.createStatement();
 		
@@ -216,7 +213,7 @@ public List<User> getProductRoleUsers(String log_identifer, String type) {
 public void updateUser(String email, String name) {
 	try {
 		// Setup the connection with the DB
-		connect = DriverManager.getConnection(db_url, db_user, db_pwd);
+		connect = getConnection();
 		connect.setAutoCommit(false);
 		
 		prepareStm = connect.prepareStatement("UPDATE " + TABLENAME + " SET " + NAMECOLUME + " = ? WHERE " + EMAILCOLUME + " = ?");
@@ -250,7 +247,7 @@ public void updateUser(String email, String name) {
 public void insertUser(String email, String name) {
 	try {
 		// Setup the connection with the DB
-		connect = DriverManager.getConnection(db_url, db_user, db_pwd);
+		connect = getConnection();
 		connect.setAutoCommit(false);
 		
 		prepareStm = connect.prepareStatement("INSERT INTO " + TABLENAME + " (" + EMAILCOLUME + ", " + NAMECOLUME + ") VALUES (?, ?)");

@@ -4,7 +4,6 @@
 package gov.nasa.pds.tracking.tracking.db;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -145,7 +144,7 @@ public class SubmissionStatus extends DBConnector {
 		SubmissionStatus status = null;
 		try {
 			// Setup the connection with the DB
-			connect = DriverManager.getConnection(db_url, db_user, db_pwd);
+			connect = getConnection();
 
 			statement = connect.createStatement();
 
@@ -211,7 +210,7 @@ public class SubmissionStatus extends DBConnector {
 			String status, String email, String comment) {
 		try {
 			// Setup the connection with the DB
-			connect = DriverManager.getConnection(db_url, db_user, db_pwd);
+			connect = getConnection();
 			connect.setAutoCommit(false);
 			
 			prepareStm = connect.prepareStatement("INSERT INTO " + TABLENAME + " (" + DEL_IDENTIFIERCOLUME + ", " 
@@ -260,7 +259,7 @@ public class SubmissionStatus extends DBConnector {
 			String status, String email, String comment) {
 		try {
 			// Setup the connection with the DB
-			connect = DriverManager.getConnection(db_url, db_user, db_pwd);
+			connect = getConnection();
 			connect.setAutoCommit(false);
 			prepareStm = connect.prepareStatement("UPDATE " + TABLENAME + " SET " 
 																		+ STATUSDATECOLUME + " = ?, "

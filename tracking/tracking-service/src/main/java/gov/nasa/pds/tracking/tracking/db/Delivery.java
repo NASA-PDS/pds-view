@@ -201,7 +201,7 @@ public class Delivery extends DBConnector {
 		Delivery  del = null;
 		try {
 			// Setup the connection with the DB
-			connect = DriverManager.getConnection(db_url, db_user, db_pwd);
+			connect = getConnection();
 
 			statement = connect.createStatement();
 			resultSet = statement.executeQuery("select * from " 
@@ -241,7 +241,7 @@ public class Delivery extends DBConnector {
 		Delivery  del = null;
 		try {
 			// Setup the connection with the DB
-			connect = DriverManager.getConnection(db_url, db_user, db_pwd);
+			connect = getConnection();
 
 			statement = connect.createStatement();
 			/*System.out.println("select * from " 
@@ -287,8 +287,7 @@ public class Delivery extends DBConnector {
 		Delivery  del = null;
 		try {
 			// Setup the connection with the DB
-			connect = DriverManager.getConnection(db_url, db_user, db_pwd);
-
+			connect = getConnection();
 			statement = connect.createStatement();
 			/*System.out.println("select * from " 
 								+ TABLENAME
@@ -365,7 +364,7 @@ public class Delivery extends DBConnector {
 		
 		try {
 			// Setup the connection with the DB
-			connect = DriverManager.getConnection(db_url, db_user, db_pwd);
+			connect = getConnection();
 			connect.setAutoCommit(false);
 			
 			prepareStm = connect.prepareStatement("INSERT INTO " + TABLENAME + " (" 
@@ -426,7 +425,7 @@ public class Delivery extends DBConnector {
 			String dueDate, String delIdentifier) {
 		try {
 			// Setup the connection with the DB
-			connect = DriverManager.getConnection(db_url, db_user, db_pwd);
+			connect = getConnection();
 			connect.setAutoCommit(false);
 			
 			prepareStm = connect.prepareStatement("UPDATE " + TABLENAME + " SET " + NAMECOLUME + " = ?, " 

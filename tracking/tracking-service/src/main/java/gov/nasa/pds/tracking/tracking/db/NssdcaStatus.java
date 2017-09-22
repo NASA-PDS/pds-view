@@ -25,10 +25,10 @@ public class NssdcaStatus extends DBConnector {
 	public static final String EMAILCOLUME = "electronic_mail_address";
 	public static final String COMMENTCOLUME = "comment";
 
-	private static Connection connect = null;
-	private static Statement statement = null;
-	private static PreparedStatement prepareStm = null;
-	private static ResultSet resultSet = null;
+	private Connection connect = null;
+	private Statement statement = null;
+	private PreparedStatement prepareStm = null;
+	private ResultSet resultSet = null;
 
 	private String logIdentifier = null;
 	private String version = null;
@@ -151,10 +151,10 @@ public class NssdcaStatus extends DBConnector {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public void insertNssdcaStatus(String logical_identifier, String version, String date, String nssdca, String mail, String comment) {
+	public void insertNssdcaStatus(String logical_identifier, String version, String date, String nssdca, String email, String comment) {
 		try {
 			// Setup the connection with the DB
-			connect = DriverManager.getConnection(db_url, db_user, db_pwd);
+			connect = getConnection();
 			connect.setAutoCommit(false);
 			
 			prepareStm = connect.prepareStatement("INSERT INTO " + TABLENAME + " (" 
@@ -198,13 +198,13 @@ public class NssdcaStatus extends DBConnector {
 	 * @return
 	 */
 	@SuppressWarnings("finally")
-	public static List<NssdcaStatus> getNssdcaStatusList(String logical_identifier, String ver) {
+	public List<NssdcaStatus> getNssdcaStatusList(String logical_identifier, String ver) {
 		
 		List<NssdcaStatus> nssdcaStatuses = new ArrayList<NssdcaStatus>();
 		NssdcaStatus nssdcaStatus = null;
 		try {
 			// Setup the connection with the DB
-			connect = DriverManager.getConnection(db_url, db_user, db_pwd);
+			connect = getConnection();
 
 			statement = connect.createStatement();
 			
@@ -232,11 +232,86 @@ public class NssdcaStatus extends DBConnector {
 			return nssdcaStatuses;
 		}
 	}
+	/**
+	 * @return a list of Certification Status objects with the title.
+	 */
+	@SuppressWarnings("finally")
+	public List<NssdcaStatus> getNssdcaStatusOrderByVersion(String title) {
 
+		List<NssdcaStatus> nStatuses = new ArrayList<NssdcaStatus>();
+		NssdcaStatus nStatus = null;
+		try {
+			// Setup the connection with the DB
+			connect = getConnection();
+
+			statement = connect.createStatement();
+
+			resultSet = statement.executeQuery("select * from " + PRODUCTTABLENAME + " p, " + TABLENAME + " a"
+					+ " where p." + LOGIDENTIFIERCOLUME + " = " + "a." + LOGIDENTIFIERCOLUME + " and p."
+					+ Product.TITLECOLUME + " = " + title + " order by " + VERSIONCOLUME);
+
+			while (resultSet.next()) {
+				nStatus = new NssdcaStatus();
+
+				nStatus.setLogIdentifier(resultSet.getString(LOGIDENTIFIERCOLUME));
+				nStatus.setVersion(resultSet.getString(VERSIONCOLUME));
+				nStatus.setNssdca(resultSet.getString(NSSDCACOLUME));
+				nStatus.setEmail(resultSet.getString(EMAILCOLUME));
+				nStatus.setComment(resultSet.getString(COMMENTCOLUME));
+				nStatus.setDate(resultSet.getString(DATECOLUME));
+
+				nStatuses.add(nStatus);
+			}
+
+		} catch (Exception e) {
+			logger.error(e);
+		} finally {
+			close(statement);
+			return nStatuses;
+		}
+	}
+	/**
+	 * @return a list of all Certification Status objects.
+	 */
+	@SuppressWarnings("finally")
+	public List<NssdcaStatus> getNssdcaStatusOrderByVersion() {
+
+		List<NssdcaStatus> nStatuses = new ArrayList<NssdcaStatus>();
+		NssdcaStatus nStatus = null;
+		try {
+			// Setup the connection with the DB
+			connect = getConnection();
+
+			statement = connect.createStatement();
+
+			resultSet = statement
+					.executeQuery("select * from " + PRODUCTTABLENAME + " p, " + TABLENAME + " a" + " where p."
+							+ LOGIDENTIFIERCOLUME + " = " + "a." + LOGIDENTIFIERCOLUME + " order by " + VERSIONCOLUME);
+
+			while (resultSet.next()) {
+				nStatus = new NssdcaStatus();
+
+				nStatus.setLogIdentifier(resultSet.getString(LOGIDENTIFIERCOLUME));
+				nStatus.setVersion(resultSet.getString(VERSIONCOLUME));
+				nStatus.setNssdca(resultSet.getString(NSSDCACOLUME));
+				nStatus.setEmail(resultSet.getString(EMAILCOLUME));
+				nStatus.setComment(resultSet.getString(COMMENTCOLUME));
+				nStatus.setDate(resultSet.getString(DATECOLUME));
+
+				nStatuses.add(nStatus);
+			}
+
+		} catch (Exception e) {
+			logger.error(e);
+		} finally {
+			close(statement);
+			return nStatuses;
+		}
+	}
 	/**
 	 * @param stm
 	 */
-	private static void close(Statement stm) {
+	private void close(Statement stm) {
 		try {
 			if (resultSet != null) {
 				resultSet.close();

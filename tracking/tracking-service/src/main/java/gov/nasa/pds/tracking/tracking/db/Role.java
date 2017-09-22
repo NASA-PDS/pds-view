@@ -4,7 +4,6 @@
 package gov.nasa.pds.tracking.tracking.db;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -81,7 +80,7 @@ public class Role extends DBConnector {
 		
 		try {
 			// Setup the connection with the DB
-			connect = DriverManager.getConnection(db_url, db_user, db_pwd);
+			connect = getConnection();
 
 			statement = connect.createStatement();
 			resultSet = statement.executeQuery("SELECT * " +
@@ -132,7 +131,7 @@ public class Role extends DBConnector {
 	public void insertRole(String email, String reference) {
 		try {
 			// Setup the connection with the DB
-			connect = DriverManager.getConnection(db_url, db_user, db_pwd);
+			connect = getConnection();
 			connect.setAutoCommit(false);
 			
 			prepareStm = connect.prepareStatement("INSERT INTO " + TABLENAME + " (" + EMAILCOLUME + ", " + REFERENCECOLUME + ") VALUES (?, ?)");

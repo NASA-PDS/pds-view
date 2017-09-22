@@ -12,7 +12,7 @@ import javax.ws.rs.Produces;
 import org.apache.log4j.Logger;
 
 import gov.nasa.pds.tracking.tracking.db.DBConnector;
-import gov.nasa.pds.tracking.tracking.db.Status;
+import gov.nasa.pds.tracking.tracking.db.NssdcaStatus;
 import gov.nasa.pds.tracking.tracking.utils.HtmlConstants;
 
 @Path("/tracking/nssdcastatus")
@@ -46,38 +46,29 @@ public class HTMLBasedNssdcaStatus  extends DBConnector {
     			  "<table border=\"1\" style=\"width: 90%;border-spacing: 0; font:normal; font-size: 12\" >" +
     			  tableTiltes);
 
-    	Status aStatus;
+    	NssdcaStatus nStatus;
 		try {
-			String tableName = null;
+			nStatus = new NssdcaStatus();
 			
-			if (appConsts.containsKey(NSSDCA_STATUS_TABLE_NAME)) {
-				tableName = appConsts.getProperty(NSSDCA_STATUS_TABLE_NAME);
-	        
-				aStatus = new Status(tableName);
-				
-				List<Status> aStatuses = aStatus.getStatusOrderByVersion();
-				
-				logger.info("number of NSSDCA Status: "  + aStatuses.size());
-				
-				Iterator<Status> itr = aStatuses.iterator();
-	
-				while(itr.hasNext()) {
-					Status as = itr.next();
-			         
-			         sb.append("<tr>" +
-			    			  "<td>" + as.getDate() + "</td>"+
-				              "<td>" + as.getStatus() + "</td>" +
-				              "<td>" + as.getVersion() + "</td>" +
-				              "<td>" + as.getEmail() + "</td>" +
-				              "<td>" + as.getComment() + "</td>" +
-				              "<td>" + as.getLogIdentifier() + "</td>" +			              
-			    			  "<tr>");
-	
-			    }
-			}else{
-				logger.error("Please check the properties file and give the table name of NSSDCA status.");
-			}
+			List<NssdcaStatus> nStatuses = nStatus.getNssdcaStatusOrderByVersion();
 			
+			logger.info("number of NSSDCA Status: "  + nStatuses.size());
+			
+			Iterator<NssdcaStatus> itr = nStatuses.iterator();
+
+			while(itr.hasNext()) {
+				NssdcaStatus ns = itr.next();
+		         
+		         sb.append("<tr>" +
+		    			  "<td>" + ns.getDate() + "</td>"+
+			              "<td>" + ns.getNssdca() + "</td>" +
+			              "<td>" + ns.getVersion() + "</td>" +
+			              "<td>" + ns.getEmail() + "</td>" +
+			              "<td>" + ns.getComment() + "</td>" +
+			              "<td>" + ns.getLogIdentifier() + "</td>" +			              
+		    			  "<tr>");
+
+		    }
 		} catch (ClassNotFoundException e) {
 			logger.error(e);
 		} catch (SQLException e) {
@@ -105,36 +96,31 @@ public class HTMLBasedNssdcaStatus  extends DBConnector {
     			  "<table border=\"1\" style=\"width: 90%;border-spacing: 0; font:normal; font-size: 12\" >" +
     			  tableTiltes);
 
-    	Status aStatus;
+    	NssdcaStatus nStatus;
 		try {
-			String tableName = null;
 			
-			if (appConsts.containsKey(NSSDCA_STATUS_TABLE_NAME)) {
-				tableName = appConsts.getProperty(NSSDCA_STATUS_TABLE_NAME);
-				aStatus = new Status(tableName);
+			nStatus = new NssdcaStatus();
+			
+			List<NssdcaStatus> nStatuses = nStatus.getNssdcaStatusOrderByVersion(realTitle);
+			
+			logger.info("number of NSSDCA Status: "  + nStatuses.size());
+			
+			Iterator<NssdcaStatus> itr = nStatuses.iterator();
+
+			while(itr.hasNext()) {
+				NssdcaStatus ns = itr.next();
+		         
+		         sb.append("<tr>" +
+		    			  "<td>" + ns.getDate() + "</td>"+
+			              "<td>" + ns.getNssdca() + "</td>" +
+			              "<td>" + ns.getVersion() + "</td>" +
+			              "<td>" + ns.getEmail() + "</td>" +
+			              "<td>" + ns.getComment() + "</td>" +
+			              "<td>" + ns.getLogIdentifier() + "</td>" +			              
+		    			  "<tr>");
+
+		    }
 				
-				List<Status> aStatuses = aStatus.getStatusOrderByVersion(realTitle);
-				
-				logger.info("number of NSSDCA Status: "  + aStatuses.size());
-				
-				Iterator<Status> itr = aStatuses.iterator();
-	
-				while(itr.hasNext()) {
-					Status as = itr.next();
-			         
-			         sb.append("<tr>" +
-			    			  "<td>" + as.getDate() + "</td>"+
-				              "<td>" + as.getStatus() + "</td>" +
-				              "<td>" + as.getVersion() + "</td>" +
-				              "<td>" + as.getEmail() + "</td>" +
-				              "<td>" + as.getComment() + "</td>" +
-				              "<td>" + as.getLogIdentifier() + "</td>" +			              
-			    			  "<tr>");
-	
-			    }
-			}else{
-				logger.error("Please check the properties file and give the table name of NSSDCA status.");
-			}	
 		} catch (ClassNotFoundException e) {
 			logger.error(e);
 		} catch (SQLException e) {

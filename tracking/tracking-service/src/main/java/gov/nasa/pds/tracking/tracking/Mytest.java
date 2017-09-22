@@ -1,6 +1,7 @@
 package gov.nasa.pds.tracking.tracking;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -229,7 +230,7 @@ public class Mytest {
 			Input: logical_identifier (required), version_id (required)
 			Output: delivery_identifier, logical_identifier, version_id, name, start_date_time, stop_date_time, source, target, due_date
 			***********************************************************/
-			//test.getProductDeliveries("urn:nasa:pds:context_pds3:data_set:data_set.juno-j-rss-1-jugr-v1.0", "1.0");
+			test.getProductDeliveries("urn:nasa:pds:context_pds3:data_set:data_set.juno-j-rss-1-jugr-v1.0", "1.0");
 			
 			/**********************************************************
 			 Delivery Status Query – Query the submission_status table for the status progression of a delivery for a given product.
@@ -315,10 +316,10 @@ public class Mytest {
 			Input: delivery_identifier (required), status_date_time (required), status (required), electronic_mail_address (required), comment (optional)
 			Output: N/A
 			***********************************************************/			
-			//test.insertSubmission(31, "2017-08-17T11:23:59");
-			//test.insertSubmissionStatus(31, "2017-08-17T11:23:59", "2017-08-17T11:24:59", "Test", "danyu@jpl.nasa.gov", "test Dan Yu");
-			//test.insertSubmission(32, "2017-08-17T11:25:59");
-			//test.insertSubmissionStatus(32, "2017-08-17T11:25:59", "2017-08-17T11:26:59", "Test", "danyu@jpl.nasa.gov", null);
+			/*test.insertSubmission(31, "2017-08-17T11:23:59");
+			test.insertSubmissionStatus(31, "2017-08-17T11:23:59", "2017-08-17T11:24:59", "Test", "danyu@jpl.nasa.gov", "test Dan Yu");
+			test.insertSubmission(32, "2017-08-17T11:25:59");
+			test.insertSubmissionStatus(32, "2017-08-17T11:25:59", "2017-08-17T11:26:59", "Test", "danyu@jpl.nasa.gov", null);*/
 			
 			/**********************************************************
 			Submission Update – Update a submission record in the submission_status table for a given delivery.
@@ -350,7 +351,7 @@ public class Mytest {
 			Output: N/A
 			***********************************************************/
 			//ArchiveStatus as = new ArchiveStatus();
-			//as.insertArchiveStatus("logical_identifier", "version", "date", "status", "mail", "comment");
+			//as.insertArchiveStatus("urn:nasa:pds:context_pds3:data_set:data_set.jno-e-j-ss-wav-2-edr-v1.0", "1.0", "2017-09-21T12:24:59", "Test", "danyu@jpl.nasa.gov", "insert latest test");
 			//as.insertArchiveStatus("logical_identifier", "version", "date", "status", "mail", null);
 			
 			/**********************************************************			
@@ -358,43 +359,45 @@ public class Mytest {
 			Input: logical_identifier (required), version_id (required), status (required), electronic_mail_address (required), comment (optional)
 			Output: N/A
 			***********************************************************/
-			//CertificationStatus cs = new CertificationStatus();
-			//cs.insertCertificationStatus("logical_identifier", "version", "date", "status", "mail", "comment");
-			//cs.insertCertificationStatus("logical_identifier", "version", "date", "status", "mail", null);
+			/*CertificationStatus cs = new CertificationStatus();
+			cs.insertCertificationStatus("urn:nasa:pds:context_pds3:data_set:data_set.jno-e-j-ss-wav-2-edr-v1.0", "1.0", "2017-09-21T11:24:59", "Test", "danyu@jpl.nasa.gov", "insert CS test");
+			cs.insertCertificationStatus("urn:nasa:pds:context_pds3:data_set:data_set.jno-e-j-ss-wav-2-edr-v1.0", "1.0", "2017-09-21T12:24:59", "Test", "danyu@jpl.nasa.gov", "insert latest CS test");
+			cs.insertCertificationStatus("logical_identifier", "version", "date", "status", "mail", null);*/
 			
 			/**********************************************************			
 			DOI Insert – Insert a DOI status record into the doi table for a given product.
 			Input: logical_identifier (required), version_id (required), doi (required), registration_date (required), site_url (required), electronic_mail_address (required), comment (optional)
 			Output: N/A
 			***********************************************************/
-			//Doi doi = new Doi();
-			//doi.insertDOI("logical_identifier", "ver", "doi", "date", "url", "email", "comment");
-			//doi.insertDOI("logical_identifier", "ver", "doi", "date", "url", "email", null);
+			/*Doi doi = new Doi();
+			doi.insertDOI("logical_identifier", "ver", "doi", "date", "url", "email", "comment");
+			doi.insertDOI("logical_identifier", "ver", "doi", "date", "url", "email", null);*/
 			
 			/**********************************************************
 			DOI Update – Update a DOI status record (site_url) in the doi table for a given product.
-			Input: logical_identifier (required), version_id (required), site_url (required)
+			Input: logical_identifier (required), version_id (required), site_url (required), electronic_mail_address (required), comment (optional)
 			Output: N/A
 			***********************************************************/
-			//doi.update("logical_identifier", "ver", "url");
+			/*doi.update("logical_identifier", "ver", "url", "electronic_mail_address", "comment");
+			doi.update("logical_identifier", "ver", "url", "electronic_mail_address", null);*/
 			
 			/**********************************************************
 			NSSDCA Status Insert – Insert a NSSDCA status record into the nssdca_status table for a given product.
 			Input: logical_identifier (required), version_id (required), nssdca_identifier (required), electronic_mail_address (required), comment (optional)
 			Output: N/A
 			***********************************************************/
-			//NssdcaStatus ns = new NssdcaStatus();
-			//ns.insertNssdcaStatus("logical_identifier", "ver", "date", "nssdca_identifier", "mail", "comment");
-			//ns.insertNssdcaStatus("logical_identifier", "ver", "date", "nssdca_identifier", "mail", null);
+			/*NssdcaStatus ns = new NssdcaStatus();
+			ns.insertNssdcaStatus("logical_identifier", "ver", "date", "nssdca_identifier", "mail", "comment");
+			ns.insertNssdcaStatus("logical_identifier", "ver", "date", "nssdca_identifier", "mail", null);*/
 			
 			/**********************************************************
 			Release Insert – Insert a release record into the releases table for a given product.
 			Input: logical_identifier (required), version_id (required), release_date_time (required), name (required), description (required), electronic_mail_address (required), comment (optional)
 			Output: N/A
 			***********************************************************/
-			//Releases rl = new Releases();
-			//rl.insesrtReleases("logical_identifier", "ver", "date", "name", "descrip", "email", "comment");
-			//rl.insesrtReleases("logical_identifier", "ver", "date", "name", "descrip", "email", null);
+			/*Releases rl = new Releases();
+			rl.insesrtReleases("logical_identifier", "ver", "date", "name", "descrip", "email", "comment");
+			rl.insesrtReleases("logical_identifier", "ver", "date", "name", "descrip", "email", null);*/
 			
 			// ************************************ 9.4	Status Queries **************************
 			/**********************************************************
@@ -402,122 +405,124 @@ public class Mytest {
 			Input: logical_identifier (required), version_id (required)
 			Output: status_date_time, status, electronic_mail_address, comment
 			***********************************************************/
-			//ArchiveStatus latestAS;
-			//latestAS = ArchiveStatus.getLatestArchiveStatus("logical_identifier", "ver");
-			//logger.info("Archive Status: " + latestAS.getStatus());
-			//logger.info("Email: " + latestAS.getEmail());
-			//logger.info("Comment: " + latestAS.getComment());
-			//logger.info("Date: " + latestAS.getDate());
+			ArchiveStatus latestAS = new ArchiveStatus();
+			latestAS = latestAS.getLatestArchiveStatus("urn:nasa:pds:context_pds3:data_set:data_set.jno-e-j-ss-wav-2-edr-v1.0", "1.0");
+			logger.info("Archive Status: " + latestAS.getStatus());
+			logger.info("Email: " + latestAS.getEmail());
+			logger.info("Comment: " + latestAS.getComment());
+			logger.info("Date: " + latestAS.getDate());
 			
 			/**********************************************************
 			Archive Status List Query – Query the archive_status table for the archive status progression of a given product.
 			Input: logical_identifier (required), version_id (required)
 			Output: status_date_time, status, electronic_mail_address, comment
 			***********************************************************/
-			//List<ArchiveStatus> asList;
-			//asList = ArchiveStatus.getArchiveStatusList("logical_identifier", "ver");
+			List<ArchiveStatus> asList = new ArrayList<ArchiveStatus>();
+			ArchiveStatus aStatus = new ArchiveStatus();
+			asList = aStatus.getArchiveStatusList("urn:nasa:pds:context_pds3:data_set:data_set.jno-e-j-ss-wav-2-edr-v1.0", "1.0");
 			
-			//Iterator<ArchiveStatus> itrAS = asList.iterator();
-			//int countAS = 1;
-			//while (itrAS.hasNext()) {
-			//	ArchiveStatus s = itrAS.next();
-			//	logger.info("Archive Status " + countAS + ":\n " + s.getStatus() + " : " + s.getDate()
-			//	 + " : " + s.getEmail() + " : " + s.getComment());
-			//	countAS++;
-			//}
+			Iterator<ArchiveStatus> itrAS = asList.iterator();
+			int countAS = 1;
+			while (itrAS.hasNext()) {
+				ArchiveStatus s = itrAS.next();
+				logger.info("Archive Status " + countAS + ":\n " + s.getStatus() + " : " + s.getDate()
+				 + " : " + s.getEmail() + " : " + s.getComment());
+				countAS++;
+			}
 			
 			/**********************************************************
 			Certification Status Query – Query the certification_status table for the latest certification status of a given product.
 			Input: logical_identifier (required), version_id (required)
 			Output: status_date_time, status, electronic_mail_address, comment
 			***********************************************************/
-			//CertificationStatus latestCS;
-			//latestCS = CertificationStatus.getLatestCertificationStatus("logical_identifier", "ver");
-			//logger.info("Certification Status: " + latestCS.getStatus());
-			//logger.info("Email: " + latestCS.getEmail());
-			//logger.info("Comment: " + latestAS.getComment());
-			//logger.info("Date: " + latestCS.getDate());
+			CertificationStatus latestCS = new CertificationStatus();
+			latestCS = latestCS.getLatestCertificationStatus("urn:nasa:pds:context_pds3:data_set:data_set.jno-e-j-ss-wav-2-edr-v1.0", "1.0");
+			logger.info("Certification Status: " + latestCS.getStatus());
+			logger.info("Email: " + latestCS.getEmail());
+			logger.info("Comment: " + latestAS.getComment());
+			logger.info("Date: " + latestCS.getDate());
 			
 			/**********************************************************
 			Certification Status List Query – Query the certification_status table for the certification status progression of a given product.
 			Input: logical_identifier (required), version_id (required)
 			Output: status_date_time, status, electronic_mail_address, comment
 			***********************************************************/
-			//List<CertificationStatus> csList;
-			//csList = CertificationStatus.getCertificationStatusList("logical_identifier", "ver");
+			List<CertificationStatus> csList;
 			
-			//Iterator<CertificationStatus> itrCS = csList.iterator();
-			//int countCS = 1;
-			//while (itrCS.hasNext()) {
-			//	CertificationStatus s = itrCS.next();
-			//	logger.info("Certification Status " + countCS + ":\n " + s.getStatus() + " : " + s.getDate()
-			//	 + " : " + s.getEmail() + " : " + s.getComment());
-			//	countCS++;
-			//}
+			csList = (new CertificationStatus()).getCertificationStatusList("urn:nasa:pds:context_pds3:data_set:data_set.jno-e-j-ss-wav-2-edr-v1.0", "1.0");
+			
+			Iterator<CertificationStatus> itrCS = csList.iterator();
+			int countCS = 1;
+			while (itrCS.hasNext()) {
+				CertificationStatus s = itrCS.next();
+				logger.info("Certification Status " + countCS + ":\n " + s.getStatus() + " : " + s.getDate()
+				 + " : " + s.getEmail() + " : " + s.getComment());
+				countCS++;
+			}
 			
 			/**********************************************************
 			DOI Query – Query the doi table for the DOI and associated information of a given product.
 			Input: logical_identifier (required), version_id (required)
 			Output: doi, registration_date, site_url, electronic_mail_address, comment
 			***********************************************************/
-			//List<Doi> doiList;
-			//doiList = Doi.getDOIList("logical_identifier", "ver");
+			/*List<Doi> doiList;
+			doiList = (new Doi()).getDOIList("logical_identifier", "ver");
 			
-			//Iterator<Doi> itrDOI = doiList.iterator();
-			//int countDOI = 1;
-			//while (itrDOI.hasNext()) {
-			//	Doi d = itrDOI.next();
-			//	logger.info("DOI " + countDOI + ":\n " + d.getDoi() + " : " + d.getDate()
-			//	 + " : " + d.getUrl() + " : " + d.getEmail()+ " : " + d.getComment());
-			//	countDOI++;
-			//}
+			Iterator<Doi> itrDOI = doiList.iterator();
+			int countDOI = 1;
+			while (itrDOI.hasNext()) {
+				Doi d = itrDOI.next();
+				logger.info("DOI " + countDOI + ":\n " + d.getDoi() + " : " + d.getDate()
+				 + " : " + d.getUrl() + " : " + d.getEmail()+ " : " + d.getComment());
+				countDOI++;
+			}*/
 			
 			/**********************************************************
 			NSSDCA Query – Query the nssdca table for the NSSDCA information of a given product.
 			Input: logical_identifier (required), version_id (required)
 			Output: status_date_time, nssdca_identifier, electronic_mail_address, comment
 			***********************************************************/
-			//List<NssdcaStatus> nssdcaList;
-			//nssdcaList = NssdcaStatus.getNssdcaStatusList("logical_identifier", "ver");
+			/*List<NssdcaStatus> nssdcaList;
+			nssdcaList = (new NssdcaStatus()).getNssdcaStatusList("logical_identifier", "ver");
 			
-			//Iterator<NssdcaStatus> itrNssdca = nssdcaList.iterator();
-			//int countNssdca = 1;
-			//while (itrNssdca.hasNext()) {
-			//	NssdcaStatus n = itrNssdca.next();
-			//	logger.info("Nssdca Status " + countNssdca + ":\n " + n.getDate() + " : " + n.getNssdca()
-			//	  + " : " + n.getEmail()+ " : " + n.getComment());
-			//	countNssdca++;
-			//}
+			Iterator<NssdcaStatus> itrNssdca = nssdcaList.iterator();
+			int countNssdca = 1;
+			while (itrNssdca.hasNext()) {
+				NssdcaStatus n = itrNssdca.next();
+				logger.info("Nssdca Status " + countNssdca + ":\n " + n.getDate() + " : " + n.getNssdca()
+				  + " : " + n.getEmail()+ " : " + n.getComment());
+				countNssdca++;
+			}*/
 			
 			/**********************************************************
 			Release Query – Query the releases table for the latest release of a given product.
 			Input: logical_identifier (required), version_id (required)
 			Output: release_date_time, name, description, electronic_mail_address, comment
 			***********************************************************/
-			//Releases rel;
-			//rel = Releases.getLatestReleases("logical_identifier", "ver");
-			//logger.info("Date: " + rel.getDate());
-			//logger.info("Name: " + rel.getName());
-			//logger.info("Description: " + rel.getDescription());
-			//logger.info("Email: " + rel.getEmail());
-			//logger.info("Comment: " + rel.getComment());
+			/*Releases rel;
+			rel = (new Releases()).getLatestReleases("logical_identifier", "ver");
+			logger.info("Date: " + rel.getDate());
+			logger.info("Name: " + rel.getName());
+			logger.info("Description: " + rel.getDescription());
+			logger.info("Email: " + rel.getEmail());
+			logger.info("Comment: " + rel.getComment());*/
 			
 			/**********************************************************
 			Release List Query – Query the releases table for the release progression of a given product.
 			Input: logical_identifier (required), version_id (required)
 			Output: release_date_time, name, description, electronic_mail_address, comment
 			***********************************************************/
-			//List<Releases> relList;
-			//relList = Releases.getReleasesList("logical_identifier", "ver");
+			/*List<Releases> relList;
+			relList = (new Releases()).getReleasesList("logical_identifier", "ver");
 			
-			//Iterator<Releases> itrRel = relList.iterator();
-			//int countRel = 1;
-			//while (itrRel.hasNext()) {
-			//	Releases r = itrRel.next();
-			//	logger.info("Releases " + countRel + ":\n " + r.getDate() + " : " + r.getName()
-			//	 + " : " + r.getDescription() + " : " + r.getEmail() + " : " + r.getComment());
-			//	countRel++;
-			//}
+			Iterator<Releases> itrRel = relList.iterator();
+			int countRel = 1;
+			while (itrRel.hasNext()) {
+				Releases r = itrRel.next();
+				logger.info("Releases " + countRel + ":\n " + r.getDate() + " : " + r.getName()
+				 + " : " + r.getDescription() + " : " + r.getEmail() + " : " + r.getComment());
+				countRel++;
+			}*/
 
 			
 		} catch (Exception e) {

@@ -11,6 +11,8 @@ package gov.nasa.pds.tracking.tracking.db;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -22,10 +24,10 @@ public class DBConnector {
 
 	public static Logger logger = Logger.getLogger(DBConnector.class);
 
-	public static final String DB_URL = "javax.persistence.jdbc.url";
-	public static final String DB_USER = "javax.persistence.jdbc.user";
-	public static final String DB_PASSWD = "javax.persistence.jdbc.password";
-	public static final String DB_DRIVER = "javax.persistence.jdbc.driver";
+	private static final String DB_URL = "javax.persistence.jdbc.url";
+	private static final String DB_USER = "javax.persistence.jdbc.user";
+	private static final String DB_PASSWD = "javax.persistence.jdbc.password";
+	private static final String DB_DRIVER = "javax.persistence.jdbc.driver";
 	
 	public static final String ARCHIVE_STATUS_TABLE_NAME = "archive_status";
 	public static final String CERTIFICATION_STATUS_TABLE_NAME = "certification_status";
@@ -33,11 +35,11 @@ public class DBConnector {
 
 	public static final DateFormat ISO_BASIC = new SimpleDateFormat("yyyy-MM-dd\'T\'HH:mm:ss");
 	
-	protected Properties appConsts = null;
+	private Properties appConsts = null;
 
-	protected static String db_url = null;
-	protected static String db_user = null;
-	protected static String db_pwd = null;
+	private String db_url = null;
+	private String db_user = null;
+	private String db_pwd = null;
 	
 	/**
 	 * @throws ClassNotFoundException
@@ -79,5 +81,15 @@ public class DBConnector {
 		// load JDBC driver
 		Class.forName(appConsts.getProperty(DB_DRIVER));
 	}
-
+	
+	protected Connection getConnection(){
+		Connection conn = null;
+		try {
+			conn = DriverManager.getConnection(db_url, db_user, db_pwd);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return conn;		
+	}
 }

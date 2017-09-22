@@ -25,10 +25,10 @@ public class CertificationStatus extends DBConnector {
 	public static final String EMAILCOLUME = "electronic_mail_address";
 	public static final String COMMENTCOLUME = "comment";
 
-	private static Connection connect = null;
-	private static Statement statement = null;
-	private static PreparedStatement prepareStm = null;
-	private static ResultSet resultSet = null;
+	private Connection connect = null;
+	private Statement statement = null;
+	private PreparedStatement prepareStm = null;
+	private ResultSet resultSet = null;
 
 	private String logIdentifier = null;
 	private String version = null;
@@ -133,10 +133,10 @@ public class CertificationStatus extends DBConnector {
 	 * @param mail
 	 * @param comment
 	 */
-	public void insertCertificationStatus(String logical_identifier, String version, String date, String status, String mail, String comment) {
+	public void insertCertificationStatus(String logical_identifier, String version, String date, String status, String email, String comment) {
 		try {
 			// Setup the connection with the DB
-			connect = DriverManager.getConnection(db_url, db_user, db_pwd);
+			connect = getConnection();
 			connect.setAutoCommit(false);
 			
 			prepareStm = connect.prepareStatement("INSERT INTO " + TABLENAME + " (" 
@@ -156,7 +156,7 @@ public class CertificationStatus extends DBConnector {
 			prepareStm.executeUpdate();
 			
 			connect.commit();
-			logger.info("The Certification Status status " + status + " for the product: " + logical_identifier + ", has been added.");
+			logger.info("The Certification Status " + status + " for the product: " + logical_identifier + ", has been added.");
 			
 		} catch (Exception e) {
 			logger.error(e);
@@ -179,18 +179,18 @@ public class CertificationStatus extends DBConnector {
 	 * @return
 	 */
 	@SuppressWarnings("finally")
-	public static CertificationStatus getLatestCertificationStatus(String logical_identifier, String ver) {
+	public CertificationStatus getLatestCertificationStatus(String logical_identifier, String ver) {
 
 		CertificationStatus certifStatus = null;
 		try {
 			// Setup the connection with the DB
-			connect = DriverManager.getConnection(db_url, db_user, db_pwd);
+			connect = getConnection();
 
 			statement = connect.createStatement();
 			
 			resultSet = statement.executeQuery("select * from " + TABLENAME 
 					+ " where " + LOGIDENTIFIERCOLUME + " = '" + logical_identifier + "' and "
-					+ VERSIONCOLUME + " = '" + ver + "' order by " + DATECOLUME);
+					+ VERSIONCOLUME + " = '" + ver + "' order by " + DATECOLUME + " DESC");
 
 			if (resultSet.next()){
 				certifStatus = new CertificationStatus();
@@ -203,7 +203,9 @@ public class CertificationStatus extends DBConnector {
 				certifStatus.setDate(resultSet.getString(DATECOLUME));
 				
 			}	
-
+			else{
+				logger.info("Can not find Vertifacation Status!");
+			}
 		} catch (Exception e) {
 			logger.error(e);
 		} finally {
@@ -218,19 +220,19 @@ public class CertificationStatus extends DBConnector {
 	 * @return
 	 */
 	@SuppressWarnings("finally")
-	public static List<CertificationStatus> getCertificationStatusList(String logical_identifier, String ver) {
+	public List<CertificationStatus> getCertificationStatusList(String logical_identifier, String ver) {
 		
 		List<CertificationStatus> certifStatuses = new ArrayList<CertificationStatus>();
 		CertificationStatus certifStatus = null;
 		try {
 			// Setup the connection with the DB
-			connect = DriverManager.getConnection(db_url, db_user, db_pwd);
+			connect = getConnection();
 
 			statement = connect.createStatement();
 			
 			resultSet = statement.executeQuery("select * from " + TABLENAME 
 					+ " where " + LOGIDENTIFIERCOLUME + " = '" + logical_identifier + "' and "
-					+ VERSIONCOLUME + " = '" + ver + "' order by " + DATECOLUME + " DESC");
+					+ VERSIONCOLUME + " = '" + ver + "' order by " + DATECOLUME);
 
 			while (resultSet.next()){
 				certifStatus = new CertificationStatus();
@@ -252,11 +254,86 @@ public class CertificationStatus extends DBConnector {
 			return certifStatuses;
 		}
 	}
-	
+	/**
+	 * @return a list of Certification Status objects with the title.
+	 */
+	@SuppressWarnings("finally")
+	public List<CertificationStatus> getCertificationStatusOrderByVersion(String title) {
+
+		List<CertificationStatus> cStatuses = new ArrayList<CertificationStatus>();
+		CertificationStatus cStatus = null;
+		try {
+			// Setup the connection with the DB
+			connect = getConnection();
+
+			statement = connect.createStatement();
+
+			resultSet = statement.executeQuery("select * from " + PRODUCTTABLENAME + " p, " + TABLENAME + " a"
+					+ " where p." + LOGIDENTIFIERCOLUME + " = " + "a." + LOGIDENTIFIERCOLUME + " and p."
+					+ Product.TITLECOLUME + " = " + title + " order by " + VERSIONCOLUME);
+
+			while (resultSet.next()) {
+				cStatus = new CertificationStatus();
+
+				cStatus.setLogIdentifier(resultSet.getString(LOGIDENTIFIERCOLUME));
+				cStatus.setVersion(resultSet.getString(VERSIONCOLUME));
+				cStatus.setStatus(resultSet.getString(STATUSCOLUME));
+				cStatus.setEmail(resultSet.getString(EMAILCOLUME));
+				cStatus.setComment(resultSet.getString(COMMENTCOLUME));
+				cStatus.setDate(resultSet.getString(DATECOLUME));
+
+				cStatuses.add(cStatus);
+			}
+
+		} catch (Exception e) {
+			logger.error(e);
+		} finally {
+			close(statement);
+			return cStatuses;
+		}
+	}
+	/**
+	 * @return a list of all Certification Status objects.
+	 */
+	@SuppressWarnings("finally")
+	public List<CertificationStatus> getCertificationStatusOrderByVersion() {
+
+		List<CertificationStatus> cStatuses = new ArrayList<CertificationStatus>();
+		CertificationStatus cStatus = null;
+		try {
+			// Setup the connection with the DB
+			connect = getConnection();
+
+			statement = connect.createStatement();
+
+			resultSet = statement
+					.executeQuery("select * from " + PRODUCTTABLENAME + " p, " + TABLENAME + " a" + " where p."
+							+ LOGIDENTIFIERCOLUME + " = " + "a." + LOGIDENTIFIERCOLUME + " order by " + VERSIONCOLUME);
+
+			while (resultSet.next()) {
+				cStatus = new CertificationStatus();
+
+				cStatus.setLogIdentifier(resultSet.getString(LOGIDENTIFIERCOLUME));
+				cStatus.setVersion(resultSet.getString(VERSIONCOLUME));
+				cStatus.setStatus(resultSet.getString(STATUSCOLUME));
+				cStatus.setEmail(resultSet.getString(EMAILCOLUME));
+				cStatus.setComment(resultSet.getString(COMMENTCOLUME));
+				cStatus.setDate(resultSet.getString(DATECOLUME));
+
+				cStatuses.add(cStatus);
+			}
+
+		} catch (Exception e) {
+			logger.error(e);
+		} finally {
+			close(statement);
+			return cStatuses;
+		}
+	}
 	/**
 	 * @param stm
 	 */
-	private static void close(Statement stm) {
+	private void close(Statement stm) {
 		try {
 			if (resultSet != null) {
 				resultSet.close();

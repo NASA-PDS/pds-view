@@ -98,7 +98,7 @@ public class Reference extends DBConnector {
 		Reference ref = null;
 		try {
 			// Setup the connection with the DB
-			connect = DriverManager.getConnection(db_url, db_user, db_pwd);
+			connect = getConnection();
 
 			statement = connect.createStatement();
 
@@ -157,7 +157,7 @@ public class Reference extends DBConnector {
 	public void insertReference(String logicalIdentifier, String reference, String type) {
 		try {
 			// Setup the connection with the DB
-			connect = DriverManager.getConnection(db_url, db_user, db_pwd);
+			connect = getConnection();
 			connect.setAutoCommit(false);
 			
 			prepareStm = connect.prepareStatement("INSERT INTO " + TABLENAME + " (" + LOG_IDENTIFIERCOLUME + ", "
@@ -196,7 +196,7 @@ public class Reference extends DBConnector {
 	public void updateReference(String logicalIdentifier, String reference, String type) {
 		try {
 			// Setup the connection with the DB
-			connect = DriverManager.getConnection(db_url, db_user, db_pwd);
+			connect = getConnection();
 			connect.setAutoCommit(false);
 			prepareStm = connect.prepareStatement("UPDATE " + TABLENAME + " SET " + TYPECOLUME + " = ? "
 														+ "WHERE " + LOG_IDENTIFIERCOLUME + " = ? "

@@ -12,7 +12,7 @@ import javax.ws.rs.Produces;
 import org.apache.log4j.Logger;
 
 import gov.nasa.pds.tracking.tracking.db.DBConnector;
-import gov.nasa.pds.tracking.tracking.db.Status;
+import gov.nasa.pds.tracking.tracking.db.CertificationStatus;
 import gov.nasa.pds.tracking.tracking.utils.HtmlConstants;
 
 @Path("/tracking/certificationstatus")
@@ -46,38 +46,29 @@ public class HTMLBasedCertificationStatus  extends DBConnector {
     			  "<table border=\"1\" style=\"width: 90%;border-spacing: 0; font:normal; font-size: 12\" >" +
     			  tableTiltes);
 
-    	Status aStatus;
+    	CertificationStatus cStatus;
 		try {
-			String tableName = null;
-			
-			if (appConsts.containsKey(CERTIFICATION_STATUS_TABLE_NAME)) {
-				tableName = appConsts.getProperty(CERTIFICATION_STATUS_TABLE_NAME);
-	        
-				aStatus = new Status(tableName);
+			cStatus = new CertificationStatus();
 				
-				List<Status> aStatuses = aStatus.getStatusOrderByVersion();
+				List<CertificationStatus> cStatuses = cStatus.getCertificationStatusOrderByVersion();
 				
-				logger.info("number of Certification Status: "  + aStatuses.size());
+				logger.info("number of Certification Status: "  + cStatuses.size());
 				
-				Iterator<Status> itr = aStatuses.iterator();
+				Iterator<CertificationStatus> itr = cStatuses.iterator();
 	
 				while(itr.hasNext()) {
-					Status as = itr.next();
+					CertificationStatus cs = itr.next();
 			         
 			         sb.append("<tr>" +
-			    			  "<td>" + as.getDate() + "</td>"+
-				              "<td>" + as.getStatus() + "</td>" +
-				              "<td>" + as.getVersion() + "</td>" +
-				              "<td>" + as.getEmail() + "</td>" +
-				              "<td>" + as.getComment() + "</td>" +
-				              "<td>" + as.getLogIdentifier() + "</td>" +			              
+			    			  "<td>" + cs.getDate() + "</td>"+
+				              "<td>" + cs.getStatus() + "</td>" +
+				              "<td>" + cs.getVersion() + "</td>" +
+				              "<td>" + cs.getEmail() + "</td>" +
+				              "<td>" + cs.getComment() + "</td>" +
+				              "<td>" + cs.getLogIdentifier() + "</td>" +			              
 			    			  "<tr>");
 	
 			    }
-			}else{
-				logger.error("Please check the properties file and give the table name of certification status.");
-			}
-			
 		} catch (ClassNotFoundException e) {
 			logger.error(e);
 		} catch (SQLException e) {
@@ -105,36 +96,29 @@ public class HTMLBasedCertificationStatus  extends DBConnector {
     			  "<table border=\"1\" style=\"width: 90%;border-spacing: 0; font:normal; font-size: 12\" >" +
     			  tableTiltes);
 
-    	Status aStatus;
+    	CertificationStatus cStatus;
 		try {
-			String tableName = null;
+			cStatus = new CertificationStatus();
 			
-			if (appConsts.containsKey(CERTIFICATION_STATUS_TABLE_NAME)) {
-				tableName = appConsts.getProperty(CERTIFICATION_STATUS_TABLE_NAME);
-				aStatus = new Status(tableName);
-				
-				List<Status> aStatuses = aStatus.getStatusOrderByVersion(realTitle);
-				
-				logger.info("number of Certification Status: "  + aStatuses.size());
-				
-				Iterator<Status> itr = aStatuses.iterator();
-	
-				while(itr.hasNext()) {
-					Status as = itr.next();
-			         
-			         sb.append("<tr>" +
-			    			  "<td>" + as.getDate() + "</td>"+
-				              "<td>" + as.getStatus() + "</td>" +
-				              "<td>" + as.getVersion() + "</td>" +
-				              "<td>" + as.getEmail() + "</td>" +
-				              "<td>" + as.getComment() + "</td>" +
-				              "<td>" + as.getLogIdentifier() + "</td>" +			              
-			    			  "<tr>");
-	
-			    }
-			}else{
-				logger.error("Please check the properties file and give the table name of certification status.");
-			}	
+			List<CertificationStatus> cStatuses = cStatus.getCertificationStatusOrderByVersion(realTitle);
+			
+			logger.info("number of Certification Status: "  + cStatuses.size());
+			
+			Iterator<CertificationStatus> itr = cStatuses.iterator();
+
+			while(itr.hasNext()) {
+				CertificationStatus cs = itr.next();
+		         
+		         sb.append("<tr>" +
+		    			  "<td>" + cs.getDate() + "</td>"+
+			              "<td>" + cs.getStatus() + "</td>" +
+			              "<td>" + cs.getVersion() + "</td>" +
+			              "<td>" + cs.getEmail() + "</td>" +
+			              "<td>" + cs.getComment() + "</td>" +
+			              "<td>" + cs.getLogIdentifier() + "</td>" +			              
+		    			  "<tr>");
+
+		    }				
 		} catch (ClassNotFoundException e) {
 			logger.error(e);
 		} catch (SQLException e) {
