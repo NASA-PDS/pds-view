@@ -194,7 +194,7 @@
     <dependency>
       <groupId>gov.nasa.pds</groupId>
       <artifactId>product-tools</artifactId>
-      <version>3.4.1</version>
+      <version>${product-tools-version}</version>
     </dependency>
     <dependency>
       <groupId>org.jsoup</groupId>
