@@ -37,7 +37,7 @@ public class ExceptionContainer implements ExceptionHandler {
   }
   
   public List<LabelException> getExceptions() {
-    return new ArrayList<LabelException>(exceptions);
+    return this.exceptions;
   }
   
   public void addException(LabelException exception) {
