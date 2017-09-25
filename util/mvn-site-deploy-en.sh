@@ -127,6 +127,8 @@ mkdir -p $1/preparation/core
 cp -r preparation/core/target/site/* $1/preparation/core
 mkdir -p $1/preparation/generate
 cp -r preparation/generate/target/site/* $1/preparation/generate
+mkdir -p $1/preparation/inspect
+cp -r preparation/inspect/target/site/* $1/preparation/inspect
 mkdir -p $1/preparation/pds4-tools
 cp -r preparation/pds4-tools/target/site/* $1/preparation/pds4-tools
 mkdir -p $1/preparation/transform

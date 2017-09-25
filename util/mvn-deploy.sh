@@ -84,6 +84,9 @@ mvn deploy
 cd ../generate
 mvn site
 mvn deploy
+cd ../inspect
+mvn site
+mvn deploy
 cd ../pds4-tools
 mvn site
 mvn deploy
