@@ -220,7 +220,7 @@ public class TableDataContentValidationRule extends AbstractValidationRule {
                     dataFile.toString(), tableIndex, reader.getCurrentRow());
                 manuallyParseRecord = true;
               } else {
-                addTableException(ExceptionType.INFO, 
+                addTableException(ExceptionType.DEBUG, 
                         "Record ends in carriage-return line feed.",
                         dataFile.toString(),
                         tableIndex,
@@ -236,7 +236,7 @@ public class TableDataContentValidationRule extends AbstractValidationRule {
                           reader.getCurrentRow()); 
                   manuallyParseRecord = true;
                 } else {
-                  addTableException(ExceptionType.INFO, 
+                  addTableException(ExceptionType.DEBUG, 
                           "Record equals the defined record length "
                           + "(expected " + recordLength + ", got " + line.length() + ").",
                           dataFile.toString(),
@@ -254,7 +254,7 @@ public class TableDataContentValidationRule extends AbstractValidationRule {
                           reader.getCurrentRow());
                   manuallyParseRecord = true;
                 } else {
-                  addTableException(ExceptionType.INFO, 
+                  addTableException(ExceptionType.DEBUG, 
                           "Record length is less than or equal to the max "
                           + "defined record length "
                           + "(max " + recordMaxLength + ", got " + line.length() + ").",
@@ -443,7 +443,7 @@ public class TableDataContentValidationRule extends AbstractValidationRule {
                     -1));
           } else {
             getListener().addProblem(
-                new LabelException(ExceptionType.INFO, 
+                new LabelException(ExceptionType.DEBUG, 
                     "Number of 'Field_Bit' elements equals the 'bit_fields' value "
                         + "in the label (expected "
                         + definedBitFields.intValue()

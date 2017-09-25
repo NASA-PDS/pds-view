@@ -20,6 +20,7 @@ package gov.nasa.pds.tools.label;
  *
  */
 public enum ExceptionType {
+  DEBUG(5,"DEBUG"),
   INFO(4,"INFO"),
   WARNING(3,"WARNING"),
   ERROR(2,"ERROR"),

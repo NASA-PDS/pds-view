@@ -66,7 +66,24 @@ public class FieldValueValidator {
   /** Container to capture messages. */
   private ProblemListener listener;
   
-  private Pattern formatPattern;
+  private static final Pattern formatPattern = Pattern.compile("%([\\+,-])?([0-9]+)(\\.([0-9]+))?([doxfeEs])");
+  private static final Pattern leadingWhiteSpacePattern = Pattern.compile("\\s+.*");
+  private static final Pattern trailingWhiteSpacePattern = Pattern.compile(".*\\s+");
+  private static final Pattern asciiIntegerPattern = Pattern.compile("[+-]?\\d+");
+  private static final Pattern asciiNonNegativeIntPattern = Pattern.compile("[+]?\\d+");
+  private static final Pattern asciiReal = Pattern.compile("[-+]?[0-9]+(\\.?[0-9]+)?([eE][-+]?[0-9]+)?");
+  private static final Pattern asciiNumericBase2Pattern = Pattern.compile("[0-1]{1,255}");
+  private static final Pattern asciiNumericBase8Pattern = Pattern.compile("[0-7]{1,255}");
+  private static final Pattern asciiNumericBase16Pattern = Pattern.compile("[0-9a-fA-F]{1,255}");
+  private static final Pattern asciiMd5ChecksumPattern = Pattern.compile("[0-9a-fA-F]{32}");
+  private static final Pattern asciiDoiPattern = Pattern.compile("10\\.\\S+/\\S+");
+  private static final Pattern asciiLidPattern = Pattern.compile("urn:[a-z]+:[a-z]+:([0-9a-z-._]:?)+");
+  private static final Pattern asciiLidVidPattern = Pattern.compile("urn:[a-z]+:[a-z]+:([0-9a-z-._]:?)+::[1-9][0-9]*\\.[0-9]+");
+  private static final Pattern asciiLidVidLidPattern = Pattern.compile("urn:[a-z]+:[a-z]+:([0-9a-z-._]:?)+::[1-9][0-9]*\\.[0-9]+");
+  private static final Pattern asciiVidPattern = Pattern.compile("[1-9][0-9]*\\.[0-9]+(\\.[0-9]+)?(\\.[0-9]+)?");
+  private static final Pattern asciiDirPathNamePattern = Pattern.compile("[A-Za-z0-9][A-Za-z0-9_-]*[A-Za-z0-9]");
+  private static final Pattern asciiFileNamePattern = Pattern.compile("[A-Za-z0-9][A-Za-z0-9-_\\.]*[A-Za-z0-9]\\.[A-Za-z0-9]+");
+  private static final Pattern dirPattern = Pattern.compile("/?([A-Za-z0-9][A-Za-z0-9_-]*[A-Za-z0-9]/?)*");
   
   /**
    * Constructor.
@@ -76,7 +93,6 @@ public class FieldValueValidator {
    */
   public FieldValueValidator(ProblemListener listener) {
     this.listener = listener;
-    this.formatPattern = Pattern.compile("%([\\+,-])?([0-9]+)(\\.([0-9]+))?([doxfeEs])");
   }
   
   /**
@@ -106,7 +122,7 @@ public class FieldValueValidator {
         if (!value.trim().isEmpty()) {
           try {
             checkType(value.trim(), fields[i].getType());
-            addTableException(ExceptionType.INFO, 
+            addTableException(ExceptionType.DEBUG, 
                 "Value '" + value.trim() + "' matches its data type '"
                     + fields[i].getType().getXMLType() + "'.",
                 record.getLocation(),
@@ -165,7 +181,7 @@ public class FieldValueValidator {
         } else {
           String message = "Field has a value '" + value
               + "' that is greater than the defined minimum value '" + minimum.toString() +  "'. "; 
-          addTableException(ExceptionType.INFO, 
+          addTableException(ExceptionType.DEBUG, 
               message,
               recordLocation,
               fieldIndex);          
@@ -182,7 +198,7 @@ public class FieldValueValidator {
         } else {
           String message = "Field has a value '" + value
               + "' that is less than the defined maximum value '" + maximum.toString() +  "'. "; 
-          addTableException(ExceptionType.INFO,
+          addTableException(ExceptionType.DEBUG,
              message,
              recordLocation,
              fieldIndex);          
@@ -213,81 +229,75 @@ public class FieldValueValidator {
       throw new Exception(value + " is not allowed");
     }
     if (FieldType.ASCII_INTEGER.getXMLType().equals(type.getXMLType())) {
-      String pattern = "[+-]?\\d+";
-      if (value.matches(pattern)) {
+      if (asciiIntegerPattern.matcher(value).matches()) {
         try {
           Long.parseLong(value);
         } catch (NumberFormatException e) {
           throw new Exception("Could not convert to long: " + value);
         }
       } else {
-        throw new Exception("'" + value + "' does not match the pattern '" + pattern + "'");
+        throw new Exception("'" + value + "' does not match the pattern '" + asciiIntegerPattern.toString() + "'");
       }
     } else if (FieldType.ASCII_NONNEGATIVE_INTEGER.getXMLType().equals(type.getXMLType())) {
-      String pattern = "[+]?\\d+";
-      if (value.matches(pattern)) {
+      if (asciiNonNegativeIntPattern.matcher(value).matches()) {
         try {
           UnsignedLong.valueOf(value);
         } catch (NumberFormatException e) {
           throw new Exception("Could not convert to an unsigned long: " + value);
         }
       } else {
-        throw new Exception("'" + value + "' does not match the pattern '" + pattern + "'");        
+        throw new Exception("'" + value + "' does not match the pattern '" + asciiNonNegativeIntPattern.toString() + "'");        
       }
     } else if (FieldType.ASCII_REAL.getXMLType().equals(type.getXMLType())) {
-      String pattern = "[-+]?[0-9]+(\\.?[0-9]+)?([eE][-+]?[0-9]+)?";
-      if (value.matches(pattern)) {
+      if (asciiReal.matcher(value).matches()) {
         try {
           Double.parseDouble(value);
         } catch (NumberFormatException e) {
           throw new Exception("Could not convert to a double: " + value);
         }
       } else {
-        throw new Exception("'" + value + "' does not match the pattern '" + pattern + "'");        
+        throw new Exception("'" + value + "' does not match the pattern '" + asciiReal.toString() + "'");        
       }
     } else if (FieldType.ASCII_NUMERIC_BASE2.getXMLType().equals(type.getXMLType())) {
-      String pattern = "[0-1]{1,255}";
-      if (value.matches(pattern)) {
+      if (asciiNumericBase2Pattern.matcher(value).matches()) {
         try {
           new BigInteger(value, 2);
         } catch (NumberFormatException e) {
           throw new Exception("Could not convert to a base-2 integer: " + value);
         }
       } else {
-        throw new Exception("'" + value + "' does not match the pattern '" + pattern + "'");
+        throw new Exception("'" + value + "' does not match the pattern '" + asciiNumericBase2Pattern.toString() + "'");
       }
     } else if (FieldType.ASCII_NUMERIC_BASE8.getXMLType().equals(type.getXMLType())) {
-      String pattern = "[0-7]{1,255}";
-      if (value.matches(pattern)) {
+      if (asciiNumericBase8Pattern.matcher(value).matches()) {
         try {
           new BigInteger(value, 8);
         } catch (NumberFormatException e) {
           throw new Exception("Could not convert to a base-8 integer: " + value);
         }
       } else {
-        throw new Exception("'" + value + "' does not match the pattern '" + pattern + "'");
+        throw new Exception("'" + value + "' does not match the pattern '" + asciiNumericBase8Pattern.toString() + "'");
       }
     } else if (FieldType.ASCII_NUMERIC_BASE16.getXMLType().equals(type.getXMLType())) {
-      String pattern = "[0-9a-fA-F]{1,255}";
-      if (value.matches(pattern)) {
+      if (asciiNumericBase16Pattern.matcher(value).matches()) {
         try {
           new BigInteger(value, 16);
         } catch (NumberFormatException e) {
           throw new Exception("Could not convert to a base-16 integer: " + value);
         }
       } else {
-        throw new Exception("'" + value + "' does not match the pattern '" + pattern + "'");
+        throw new Exception("'" + value + "' does not match the pattern '" + asciiNumericBase16Pattern.toString() + "'");
       }
     } else if (FieldType.ASCII_MD5_CHECKSUM.getXMLType().equals(type.getXMLType())) {
-      String pattern = "[0-9a-fA-F]{32}";
-      if (value.matches(pattern)) {
+
+      if (asciiMd5ChecksumPattern.matcher(value).matches()) {
         try {
           new BigInteger(value, 16);
         } catch (NumberFormatException e) {
           throw new Exception("Could not convert to a base-16 integer: " + value);
         }
       } else {
-        throw new Exception("'" + value + "' does not match the pattern '" + pattern + "'");
+        throw new Exception("'" + value + "' does not match the pattern '" + asciiMd5ChecksumPattern.toString() + "'");
       }
     } else if (FieldType.ASCII_ANYURI.getXMLType().equals(type.getXMLType())) {
       try {
@@ -296,34 +306,28 @@ public class FieldValueValidator {
         throw new Exception(e.getMessage());
       }
     } else if (FieldType.ASCII_DOI.getXMLType().equals(type.getXMLType())) {
-      String pattern = "10\\.\\S+/\\S+";
-      if (!value.matches(pattern)) {
-        throw new Exception("'" + value + "' does not match the pattern '" + pattern + "'");
+      if (!asciiDoiPattern.matcher(value).matches()) {
+        throw new Exception("'" + value + "' does not match the pattern '" + asciiDoiPattern.toString() + "'");
       }
     } else if (FieldType.ASCII_LID.getXMLType().equals(type.getXMLType())) {
-      String pattern = "urn:[a-z]+:[a-z]+:([0-9a-z-._]:?)+";
-      if (!value.matches(pattern)) {
-        throw new Exception("'" + value + "' does not match the pattern '" + pattern + "'");
+      if (!asciiLidPattern.matcher(value).matches()) {
+        throw new Exception("'" + value + "' does not match the pattern '" + asciiLidPattern.toString() + "'");
       }
     } else if (FieldType.ASCII_LIDVID.getXMLType().equals(type.getXMLType())) {
-      String pattern = "urn:[a-z]+:[a-z]+:([0-9a-z-._]:?)+::[1-9][0-9]*\\.[0-9]+";
-      if (!value.matches(pattern)) {
-        throw new Exception("'" + value + "' does not match the pattern '" + pattern + "'");
+      if (!asciiLidVidPattern.matcher(value).matches()) {
+        throw new Exception("'" + value + "' does not match the pattern '" + asciiLidVidPattern.toString() + "'");
       }      
     } else if (FieldType.ASCII_LIDVID_LID.getXMLType().equals(type.getXMLType())) {
       // Can accept a LID or LIDVID?
-      String lidvidPattern = "urn:[a-z]+:[a-z]+:([0-9a-z-._]:?)+::[1-9][0-9]*\\.[0-9]+";
-      if (!value.matches(lidvidPattern)) {
-        String lidPattern = "urn:[a-z]+:[a-z]+:([0-9a-z-._]:?)+";
-        if (!value.matches(lidPattern)) {
-          throw new Exception("'" + value + "' does not match the patterns '" + lidvidPattern
-              + "' or '" + lidPattern + "'");
+      if (!asciiLidVidLidPattern.matcher(value).matches()) {
+        if (!asciiLidPattern.matcher(value).matches()) {
+          throw new Exception("'" + value + "' does not match the patterns '" + asciiLidVidPattern.toString()
+              + "' or '" + asciiLidPattern.toString() + "'");
         }
       }
     } else if (FieldType.ASCII_VID.getXMLType().equals(type.getXMLType())) {
-      String pattern = "[1-9][0-9]*\\.[0-9]+(\\.[0-9]+)?(\\.[0-9]+)?";
-      if (!value.matches(pattern)) {
-        throw new Exception("'" + value + "' does not match the pattern '" + pattern + "'");
+      if (!asciiVidPattern.matcher(value).matches()) {
+        throw new Exception("'" + value + "' does not match the pattern '" + asciiVidPattern.toString() + "'");
       }
     } else if (FieldType.ASCII_STRING.getXMLType().equals(type.getXMLType())) {
       StringBuffer buffer = new StringBuffer(value);
@@ -354,40 +358,36 @@ public class FieldValueValidator {
       }
     } else if (FieldType.ASCII_DIRECTORY_PATH_NAME.getXMLType().equals(type.getXMLType())) {
       String[] dirs = value.split("/");
-      String pattern = "[A-Za-z0-9][A-Za-z0-9_-]*[A-Za-z0-9]";
       for (int i = 0; i < dirs.length; i++) {
-        if (!dirs[i].matches(pattern)) {
-          throw new Exception(dirs[i] + " does not match the pattern '" + pattern + "'");
+        if (!asciiDirPathNamePattern.matcher(dirs[i]).matches()) {
+          throw new Exception(dirs[i] + " does not match the pattern '" + asciiDirPathNamePattern.toString() + "'");
         }
         if (dirs[i].length() > 255) {
           throw new Exception(dirs[i] + " is longer than 255 characters");
         }
       }
     } else if (FieldType.ASCII_FILE_NAME.getXMLType().equals(type.getXMLType())) {
-      String pattern = "[A-Za-z0-9][A-Za-z0-9-_\\.]*[A-Za-z0-9]\\.[A-Za-z0-9]+";
-      if (!value.matches(pattern)) {
-        throw new Exception(value + " does not match the pattern '" + pattern + "'");        
+      if (!asciiFileNamePattern.matcher(value).matches()) {
+        throw new Exception(value + " does not match the pattern '" + asciiFileNamePattern.toString() + "'");        
       }
       if (value.length() > 255) {
         throw new Exception(value + " is longer than 255 characters");
       }      
     } else if (FieldType.ASCII_FILE_SPECIFICATION_NAME.getXMLType().equals(type.getXMLType())) {
-      String dirPattern = "/?([A-Za-z0-9][A-Za-z0-9_-]*[A-Za-z0-9]/?)*";
       String dir = FilenameUtils.getFullPath(value);
       if (!dir.isEmpty()) {
         if (dir.length() > 255) {
           throw new Exception("The directory spec '" + dir + "' is longer than 255 characters");
         }
-        if (!dir.matches(dirPattern)) {
+        if (!dirPattern.matcher(dir).matches()) {
           throw new Exception("The directory spec '" + dir + "' does not match the pattern '" + dirPattern + "'");  
         }
       }
-      String fnPattern = "[A-Za-z0-9][A-Za-z0-9-_\\.]*[A-Za-z0-9]\\.[A-Za-z0-9]+";
       String name = FilenameUtils.getName(value);
       if (name.isEmpty()) {
         throw new Exception("No filename spec found in '" + value + "'."); 
-      } else if (!name.matches(fnPattern)) {
-        throw new Exception("The filename spec '" + name + "' does not match the pattern '" + fnPattern + "'");        
+      } else if (!asciiFileNamePattern.matcher(name).matches()) {
+        throw new Exception("The filename spec '" + name + "' does not match the pattern '" + asciiFileNamePattern.toString() + "'");        
       }
       if (name.length() > 255) {
         throw new Exception("The filename spec '" + name + "' is longer than 255 characters");
@@ -415,13 +415,10 @@ public class FieldValueValidator {
       }
       String specifier = matcher.group(5);
       if (matcher.group(1) != null) {
-        String regexLeadingWhitespace = "\\s+.*";
-        String regexTrailingWhitespace = ".*\\s+";
-
         String justified = matcher.group(1);
         if ("+".equals(justified)) {
           //check if there is trailing whitespace
-          if (Pattern.matches(regexTrailingWhitespace, value)) {
+          if (trailingWhiteSpacePattern.matcher(value).matches()) {
             addTableException(ExceptionType.ERROR, 
                     "The value '" + value + "' is not right-justified.",
                     recordLocation,
@@ -429,7 +426,7 @@ public class FieldValueValidator {
             isValid = false;
           }
         } else if ("-".equals(justified)) {
-          if (Pattern.matches(regexLeadingWhitespace, value)) {
+          if (leadingWhiteSpacePattern.matcher(value).matches()) {
             addTableException(ExceptionType.ERROR, 
                 "The value '" + value + "' is not left-justified.",
                 recordLocation,
@@ -502,7 +499,7 @@ public class FieldValueValidator {
         }
       }
       if (isValid) {
-        addTableException(ExceptionType.INFO, 
+        addTableException(ExceptionType.DEBUG, 
             "Value '" + value + "' conforms to the defined field format '" + format + "'",
             recordLocation, fieldIndex);
       }
