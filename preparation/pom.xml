@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
 <!--
-  Copyright 2010-2016, by the California Institute of Technology.
+  Copyright 2010-2017, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology
   Transfer at the California Institute of Technology.
@@ -40,6 +40,7 @@
     <module>design</module>
     -->
     <module>generate</module>
+    <module>inspect</module>
     <!--
     <module>lace</module>
     -->
@@ -70,6 +71,15 @@
       <name>Michael Cayanan</name>
       <id>mcayanan</id>
       <email>Michael.Cayanan@jpl.nasa.gov</email>
+      <organization>NASA Jet Propulsion Laboratory</organization>
+      <roles>
+        <role>Developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Jim Hofman</name>
+      <id>jehofman</id>
+      <email>James.E.Hofman@jpl.nasa.gov</email>
       <organization>NASA Jet Propulsion Laboratory</organization>
       <roles>
         <role>Developer</role>
