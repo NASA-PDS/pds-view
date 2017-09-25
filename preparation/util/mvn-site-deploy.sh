@@ -1,5 +1,5 @@
 #!/bin/sh
-# Copyright 2011-2015, by the California Institute of Technology. 
+# Copyright 2011-2017, by the California Institute of Technology. 
 # ALL RIGHTS RESERVED. United States Government sponsorship acknowledged. 
 # Any commercial use must be negotiated with the Office of Technology Transfer 
 # at the California Institute of Technology. 
@@ -19,10 +19,10 @@
 cd ..
 mvn clean
 
-cd core
+cd pds4-tools
 mvn install clean
-cd ../pds4-tools/objectAccess
+cd ../core
 mvn install clean
-cd ../..
+cd ..
 
 mvn site-deploy
