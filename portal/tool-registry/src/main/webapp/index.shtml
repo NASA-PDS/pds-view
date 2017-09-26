@@ -1,0 +1,689 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<!-- InstanceBegin template="../Templates/main.dwt" codeOutsideHTMLIsLocked="false" -->
+<head>
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>PDS: Tool Registry</title>
+
+<!-- InstanceEndEditable -->
+
+[an error occurred while processing this directive]
+
+<!-- InstanceBeginEditable name="head" -->
+<!-- InstanceEndEditable -->
+<!-- InstanceParam name="menu_section" type="text" value="tools" -->
+<!-- InstanceParam name="menu_item" type="text" value="tools_tool_registry" -->
+<!-- InstanceParam name="left_sidebar" type="boolean" value="true" -->
+<!-- InstanceParam name="standard_sidebar" type="boolean" value="true" -->
+<!-- InstanceParam name="standard_page_content" type="boolean" value="true" -->
+<!-- InstanceParam name="custom_page_class" type="text" value="" -->
+
+<!-- JQuery -->
+  <script src="jquery/jquery-2.1.3.min.js"></script>
+
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="bootstrap/css/bootstraptw-bs.min.css">
+  <link rel="stylesheet" href="bootstrap/css/bootstrap-theme.min.css">
+  <script src="bootstrap/js/bootstrap.min.js"></script>
+  <script src="jqueryui/jquery-ui.min.js"></script>
+
+  <!-- Ajax Solr -->
+  <script src="lib/core/Core.js"></script>
+  <script src="lib/core/AbstractManager.js"></script>
+  <script src="lib/managers/Manager.jquery.js"></script>
+  <script src="lib/core/Parameter.js"></script>
+  <script src="lib/core/ParameterStore.js"></script>
+  <script src="lib/core/AbstractWidget.js"></script>
+  <script src="lib/core/AbstractTextWidget.js"></script>
+  <script src="widgets/ResultWidget.js"></script>
+  <script src="widgets/SearchWidget.js"></script>
+  <script src="widgets/PagerWidget.js"></script>
+  <script src="widgets/detailWidgets/DetailLinkSearchWidget.js"></script>
+
+
+
+  <!--Calendar-->
+  <link rel="stylesheet" href="lib/pikaday/pikaday.css"/>
+  <script src="lib/pikaday/moment.js"></script>
+  <script src="lib/pikaday/pikaday.js"></script>
+
+  <!--Calendar-->
+  <script src="lib/vkbeautify/vkbeautify.0.99.00.beta.js"></script>
+
+  <!--Tool Registry-->
+  <link rel="stylesheet" href="css/ToolRegistry.css"/>
+  <script src="js/ToolRegistry.js"></script>
+
+</head>
+
+<body class="sidebar  menu_tools menu_item_tools_tool_registry ">
+  <!--[if IE]>
+  <div id="IE">
+  <![endif]-->
+
+  [an error occurred while processing this directive]
+  [an error occurred while processing this directive]
+
+  <div id="submenu">
+    [an error occurred while processing this directive]
+    <div class="clear">
+    </div>
+  </div>
+
+  <!-- Sidebar -->
+  <div id="sidebar">
+    [an error occurred while processing this directive]
+    <!-- InstanceBeginEditable name="leftSidebar" -->
+    <!-- InstanceEndEditable -->
+  </div>
+
+  <!-- Main content -->
+  <div id="content">
+    <h1>Tool Registry</h1>
+    <p class="formp">
+      This interface enables search and discovery of tools, services, and APIs for working with data following the PDS standards. Tools have been submitted from the broad PDS community and multiple institutions, including those from members of the International Planetary Data Alliance (IPDA). This interface allows the user to search for and discover these tools. The interface also allows tool providers to submit their software for inclusion in the registry.
+    </p>
+    <div class="tw-bs">
+      <div class="pageControl">
+        <!-- Nav tabs -->
+          <ul id="pageControlTabs" class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active"><a href="#searchForTools" aria-controls="searchForTools" role="tab" data-toggle="tab">Search for Tools</a></li>
+            <li role="presentation"><a href="#add" aria-controls="add" role="tab" data-toggle="tab">Submit a Tool</a></li>
+          </ul>
+
+          <!-- Tab panes -->
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="searchForTools"></div>
+            <div role="tabpanel" class="tab-pane" id="add"></div>
+          </div>
+      </div>
+
+      <div id="searchContainer">
+        <div class="registryServiceHeader">
+          <br/>
+          <div class="panel panel-default" id="trSearch">
+            <div class="panel-body">
+              <div ><!--Ajax solr form begin-->
+
+                <div class="form-horizontal">
+                  <p class="formp"><strong>Browse or search the PDS tool registry. Select a tool below to view the details.</strong></p>
+                  <div class="input-group">
+                    <div class="input-group-btn">
+                      <button id="trSearchToggleButton" type="button" class="btn btn-success">Search</button>
+                      <!--
+                      <button id="trSearchToggleButton" type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Search <span class="caret"></span></button>
+                      <ul class="dropdown-menu" role="menu">
+                        <li role="presentation" class="dropdown-header">Searching Method:</li>
+                        <li id="trToggleSearchingMethodSearch"><a>Search</a></li>
+                        <li id="trToggleSearchingMethodMatch"><a>Match</a></li>
+                      </ul>
+                      -->
+                    </div><!-- /btn-group -->
+                    <input type="text" id="trSearchInput" class="form-control" aria-label="...">
+                  </div><!-- /input-group -->
+
+                  <table id="radioOptionsTable">
+                    <tbody>
+                    <tr>
+                      <!-- <th>Sort:</th> -->
+                      <th>Category:</th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th>Interface Type:</th>
+                      <th></th>
+                      <th>Support:</th>
+                    </tr>
+
+                    <tr>
+                      <!-- Disable the sort option.
+                      <td>
+                        <div id="sortOrderRadio1Div" class="radio">
+                          <label>
+                            <input type="radio" name="sortOrderRadios" id="sortOrderRadio1" value="ascAlpha" checked="">
+                            Ascending Alphabetical Order
+                          </label>
+                        </div>
+                      </td>
+                      -->
+                      <td>
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="categoryRadios" id="categoryRadio1" value="All" checked="">
+                            All
+                          </label>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="categoryRadios" id="categoryRadio4" value="Design">
+                            Design
+                          </label>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="categoryRadios" id="categoryRadio7" value="Planning">
+                            Planning
+                          </label>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="categoryRadios" id="categoryRadio10" value="Validation">
+                            Validation
+                          </label>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="interfaceTypeRadios" id="interfaceTypeRadio1" value="All" checked="">
+                            All
+                          </label>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="interfaceTypeRadios" id="interfaceTypeRadio4" value="GUI">
+                            GUI
+                          </label>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="pdsVersionRadios" id="pdsOrderRadio1" value="both" checked="">
+                            Both
+                          </label>
+                        </div>
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <!-- Disable the sort option.
+                      <td>
+                        <div id="sortOrderRadio2Div" class="radio">
+                          <label>
+                            <input type="radio" name="sortOrderRadios" id="sortOrderRadio2" value="descAlpha">
+                            Descending Alphabetical Order
+                          </label>
+                        </div>
+                      </td>
+                      -->
+                      <td>
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="categoryRadios" id="categoryRadio2" value="Analysis">
+                            Analysis
+                          </label>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="categoryRadios" id="categoryRadio5" value="Dissemination">
+                            Dissemination
+                          </label>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="categoryRadios" id="categoryRadio8" value="Search">
+                            Search
+                          </label>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="categoryRadios" id="categoryRadioLast" value="Visualization">
+                            Visualization
+                          </label>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="interfaceTypeRadios" id="interfaceTypeRadio2" value="API">
+                            API
+                          </label>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="interfaceTypeRadios" id="interfaceTypeRadio5" value="Service">
+                            Service
+                          </label>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="pdsVersionRadios" id="pdsOrderRadio2" value="pds3">
+                            PDS3
+                          </label>
+                        </div>
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <!-- Disable the sort option.
+                      <td>
+                      </td>
+                      -->
+                      <td>
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="categoryRadios" id="categoryRadio3" value="Reader">
+                            Reader
+                          </label>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="categoryRadios" id="categoryRadio6" value="Generation">
+                            Generation
+                          </label>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="categoryRadios" id="categoryRadio9" value="Transformation">
+                            Transformation
+                          </label>
+                        </div>
+                      </td>
+                      <td>
+                      </td>
+                      <td>
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="interfaceTypeRadios" id="interfaceTypeRadio3" value="Command-Line">
+                            Command-Line
+                          </label>
+                        </div>
+                      </td>
+                      <td></td>
+                      <td>
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="pdsVersionRadios" id="pdsOrderRadio3" value="pds4">
+                            PDS4
+                          </label>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody></table>
+                </div><!--End form horizontal-->
+
+              </div><!--End of ajax solr search form "search"-->
+            </div>
+          </div>
+          <br/>
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">Tools</h3>
+            </div>
+            <div class="panel-body">
+
+              <div id="trResult">
+                <div id="trNavigation">
+                  <div id="trPager-header" class="trPagerHeader">
+                  </div>
+                  <table id="trDocs" class="table table-condensed table-striped ToolRegistryTable">
+                  </table>
+                  <ul class="pagination" id="trPager">
+                  </ul>
+                </div>
+              </div>
+
+              <div id="trDetailDiv" style="display: none;">
+                <div class="panel panel-default">
+                  <div class="panel-body">
+                    <div id="trDetailTitle">
+                    </div>
+                  </div>
+                </div>
+
+                <!--Details-->
+                <div class="panel panel-default">
+                  <div class="panel-body">
+                    <div id="trDetailContainer">
+                    </div>
+                  </div>
+                </div>
+
+                <!--Back Button Section-->
+                <div class="panel panel-default">
+                  <div class="panel-body">
+                    <button id="returnToSearchButtonBottom" type="button" class="btn btn-info btn-lg btn-block"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Return To Search</button>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="addToolContainer">
+            <div class="addToolHeader">
+              <p id="formHeaderInstructions" class="formp">
+                Use this form to submit a new tool to the PDS Tool Registry.
+                <br>
+                <br>
+                All fields with an asterisk <span class="asterisk">*</span> are required.
+                <br>
+                <br>
+                Updating? Prefill using an existing product label XML:&nbsp;
+                <span class="fileUpload btn btn-default btn-xs">
+                  <span>Upload</span>
+                  <input type="file" id="prefillInput" class="upload" />
+                </span>
+                <span class="displayNone uploadPrefillErrorMessage">&nbsp;Invalid File Uploaded</span>
+              </p>
+
+
+
+              <ol id="steps" class="steps">
+                <li class="current">
+                  <span aria-hidden="true" class="glyphicon glyphicon-pencil"></span>
+                  <strong class="step">Step 1:</strong>
+                  Tool Information
+                </li>
+                <li>
+                  <span aria-hidden="true" class="glyphicon glyphicon-upload"></span>
+                  <strong class="step">Step 2:</strong>
+                  Software Information
+                </li>
+                <li>
+                  <span aria-hidden="true" class="glyphicon glyphicon-user"></span>
+                  <strong class="step">Step 3:</strong>
+                  Submitter Information
+                </li>
+              </ol>
+            </div>
+
+            <div class="addToolFormContainer" id="addToolFormContainer">
+
+              <div id="toolDescription">
+                <div class="panel panel-default">
+                  <div class="panel-body">
+
+                    <div class="form-group" id="toolNameFormGroup">
+                      <label for="toolNameInput" class="control-label">Tool Name <span class="asterisk">*</span></br><span class="labelDescription">Provide a name for the tool.</span></label>
+                      <input type="text" class="form-control" id="toolNameInput" placeholder="" maxlength="255" pattern="title" required>
+                      <label id="toolNameErrorMessage" for="toolNameInput" class="control-label invalidInputMessage displayNone">This field is required and must be less than 255 characters. No special characters (&amp;, &lt;, &gt;).</label>
+                    </div>
+
+                    <div class="form-group" id="toolTypeFormGroup">
+                      <label for="toolTypeInput"  class="control-label">Type <span class="asterisk">*</span> </br><span class="labelDescription">Identify whether it is a downloadable tool or online service.</span></label>
+                      <select class="form-control" id="toolTypeInput">
+                        <option>Tool</option>
+                        <option>Service</option>
+                      </select>
+                      <label id="toolTypeErrorMessage" for="toolTypeInput" class="control-label invalidInputMessage displayNone">This field is required.</label>
+                    </div>
+
+                    <div class="form-group" id="abstractDescriptionFormGroup">
+                      <label for="abstractDescriptionInput" class="control-label">Abstract Description <span class="asterisk">*</span></br><span class="labelDescription">Provide a brief description of the tool.</span></label>
+                      <input type="text" class="form-control" id="abstractDescriptionInput" placeholder="" maxlength="255">
+                      <label id="abstractDescriptionErrorMessage" for="toolTypeInput" class="control-label invalidInputMessage displayNone">This field is required and must be less than 255 characters. No special characters (&amp;, &lt;, &gt;).</label>
+                    </div>
+
+                    <div class="form-group" id="descriptionFormGroup">
+                      <label for="descriptionInput" class="control-label">Description</br><span class="labelDescription">Provide a detailed description of the tool.</span></label>
+                      <textarea class="form-control vresize" id="descriptionInput" rows="3" placeholder=""></textarea>
+                      <label id="descriptionErrorMessage" for="toolTypeInput" class="control-label invalidInputMessage displayNone">No special characters (&amp;, &lt;, &gt;).</label>
+                    </div>
+
+                    <div class="form-group" id="supportFormGroup">
+                      <label for="support" class="control-label">Support <span class="asterisk">*</span></br><span class="labelDescription">Does this tool support PDS3 or PDS4 data.</span></label>
+                      <div id="support">
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="supportRadios" value="pds3"> PDS3
+                          </label>
+                        </div>
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="supportRadios" value="pds4"> PDS4
+                          </label>
+                        </div>
+                      </div>
+                      <label id="supportErrorMessage" for="toolTypeInput" class="control-label invalidInputMessage displayNone">Selection is required.</label>
+                    </div>
+
+                    <div class="form-group" id="categoryFormGroup">
+                      <label class="control-label" for="category">Category <span class="asterisk">*</span></br><span class="labelDescription">Select one or more categories that describe the tool.</span></label>
+                      <div id="category">
+                        <div class="checkbox">
+                          <label>
+                            <input type="checkbox" name="categoryCheckboxes" value="Analysis"> Analysis
+                          </label>
+                        </div>
+                        <div class="checkbox">
+                          <label>
+                            <input type="checkbox" name="categoryCheckboxes" value="Reader"> Reader
+                          </label>
+                        </div>
+                        <div class="checkbox">
+                          <label>
+                            <input type="checkbox" name="categoryCheckboxes" value="Design"> Design
+                          </label>
+                        </div>
+                        <div class="checkbox">
+                          <label>
+                            <input type="checkbox" name="categoryCheckboxes" value="Dissemination"> Dissemination
+                          </label>
+                        </div>
+                        <div class="checkbox">
+                          <label>
+                            <input type="checkbox" name="categoryCheckboxes" value="Generation"> Generation
+                          </label>
+                        </div>
+                        <div class="checkbox">
+                          <label>
+                            <input type="checkbox" name="categoryCheckboxes" value="Planning"> Planning
+                          </label>
+                        </div>
+                        <div class="checkbox">
+                          <label>
+                            <input type="checkbox" name="categoryCheckboxes" value="Search"> Search
+                          </label>
+                        </div>
+                        <div class="checkbox">
+                          <label>
+                            <input type="checkbox" name="categoryCheckboxes" value="Transformation"> Transformation
+                          </label>
+                        </div>
+                        <div class="checkbox">
+                          <label>
+                            <input type="checkbox" name="categoryCheckboxes" value="Validation"> Validation
+                          </label>
+                        </div>
+                        <div class="checkbox">
+                          <label>
+                            <input type="checkbox" name="categoryCheckboxes" value="Visualization"> Visualization
+                          </label>
+                        </div>
+                      </div>
+                      <label id="categoryErrorMessage" for="toolTypeInput" class="control-label invalidInputMessage displayNone">Selection is required.</label>
+                    </div>
+
+                    <div class="form-group" id="interfaceTypeFormGroup">
+                      <label for="interfaceType" class="control-label">Interface Type <span class="asterisk">*</span></br><span class="labelDescription">Select one or more interface types available with the tool.</span></label>
+                      <div id="interfaceType">
+                        <div class="checkbox">
+                          <label>
+                            <input type="checkbox" name="interfaceTypeCheckboxes" value="API"> API
+                          </label>
+                        </div>
+                        <div class="checkbox">
+                          <label>
+                            <input type="checkbox" name="interfaceTypeCheckboxes" value="Command-Line"> Command-Line
+                          </label>
+                        </div>
+                        <div class="checkbox">
+                          <label>
+                            <input type="checkbox" name="interfaceTypeCheckboxes" value="GUI"> GUI
+                          </label>
+                        </div>
+                        <div class="checkbox">
+                          <label>
+                            <input type="checkbox" name="interfaceTypeCheckboxes" value="Service"> Service
+                          </label>
+                        </div>
+                      </div>
+                      <label id="interfaceTypeErrorMessage" for="toolTypeInput" class="control-label invalidInputMessage displayNone">Selection is required.</label>
+                    </div>
+
+                    <button id="finishStepOneButton" type="submit" class="btn btn-success btn-lg pull-right toStepTwoButton">Next</button>
+
+                  </div>
+                </div>
+              </div>
+              <div id="toolSoftwareInformation">
+                <div class="panel panel-default">
+                  <div class="panel-body">
+
+                    <div class="form-group" id="versionFormGroup">
+                      <label class="control-label" for="versionInput">Version</br><span class="labelDescription">Provide the version of the tool.</span></label>
+                      <input type="text" class="form-control" id="versionInput" placeholder="" maxlength="255">
+                      <label id="versionErrorMessage" for="toolTypeInput" class="control-label invalidInputMessage displayNone">Must be less than 255 characters. No special characters (&amp;, &lt;, &gt;).</label>
+                    </div>
+
+                    <div class="form-group" id="releaseDateFormGroup">
+                      <label class="control-label" for="releaseDateInput">Release Date</br><span class="labelDescription">Provide the date when this version was released.</span></label>
+                      <input type="text" class="form-control" id="releaseDateInput" placeholder="">
+                      <label id="releaseDateErrorMessage" for="toolTypeInput" class="control-label invalidInputMessage displayNone">Must be YYYY-MM-DD format.</label>
+                    </div>
+
+                    <div id="softwareLanguageContainer">
+                      <div class="form-group" id="softwareLanguageFormGroupLabel">
+                        <label class="control-label" for="softwareLanguage">Software Language</br><span class="labelDescription">Provide the computer programming languages that the tool supports, if applicable. Please list each language separately, one per line.</span></label>
+                      </div>
+                      <div class="form-group">
+                        <input type="text" class="form-control softwareLanguageInput" placeholder="" maxlength="255">
+                      </div>
+                    </div>
+                    <div class="form-group addLineButton">
+                      <button id="addSoftwareLanguageButton" type="submit" class="btn btn-default pull-right"><span aria-hidden="true" class="glyphicon glyphicon-plus"></span></button><button id="removeSoftwareLanguageButton" type="submit" class="btn btn-default pull-right"><span aria-hidden="true" class="glyphicon glyphicon-minus"></span></button>
+                    </div>
+
+                    <div class="form-group" id="supportedOperatingSystemsFormGroup">
+                      <label class="control-label" for="supportedOperatingSystemsInput">Supported Operating Systems</br><span class="labelDescription">Describe the supported hardware and operating system platforms the tool supports, if applicable.</span></label>
+                      <textarea class="form-control vresize" id="supportedOperatingSystemsInput" rows="3"></textarea>
+                      <label id="supportedOperatingSystemsErrorMessage" for="toolTypeInput" class="control-label invalidInputMessage displayNone">No special characters (&amp;, &lt;, &gt;).</label>
+                    </div>
+
+                    <div class="form-group" id="systemRequirementsFormGroup">
+                      <label class="control-label" for="systemRequirementsInput">System Requirements</br><span class="labelDescription">Describe any system requirements necessary to run the tool on designated operating systems, if applicable.</span></label>
+                      <textarea class="form-control vresize" id="systemRequirementsInput" rows="3"></textarea>
+                      <label id="systemRequirementsErrorMessage" for="toolTypeInput" class="control-label invalidInputMessage displayNone">No special characters (&amp;, &lt;, &gt;).</label>
+                    </div>
+
+                    <div class="form-group" id="citationFormGroup">
+                      <label class="control-label" for="citationInput">Citation</br><span class="labelDescription">Provide a bibliographic citation for the tool, if applicable.</span></label>
+                      <textarea class="form-control vresize" id="citationInput" rows="3" maxlength="5000"></textarea>
+                      <label id="citationErrorMessage" for="toolTypeInput" class="control-label invalidInputMessage displayNone">No special characters (&amp;, &lt;, &gt;).</label>
+                    </div>
+
+                    <div id="urlContainer">
+                      <div class="form-group" id="urlFormGroupLabel">
+                        <label class="control-label" for="urlInput">URL <span class="asterisk">*</span></br><span class="labelDescription">Provide a URL where the tool can be downloaded or accessed online. If more than one, enter one per line.</label>
+                      </div>
+                      <div class="form-group">
+                        <input type="text" class="form-control urlInput" placeholder="" maxlength="255">
+                      </div>
+                    </div>
+                    <div class="form-group addLineButton">
+                      <button id="addUrlButton" type="submit" class="btn btn-default pull-right"><span aria-hidden="true" class="glyphicon glyphicon-plus"></span></button><button id="removeUrlButton" type="submit" class="btn btn-default pull-right"><span aria-hidden="true" class="glyphicon glyphicon-minus"></span></button>
+                    </div>
+
+                    <div id="serviceInterfaceInformation">
+
+                      <div class="panel panel-default">
+                        <div class="panel-body">
+                            <p class="formp serviceInterfaceInformationDescription">
+                              If the interfaces for this tool are described by a Web Application Description Language (WADL) file or a Web Service Definition Language (WSDL) file, then that file can be attached and described here.
+                            </p>
+                          <div class="form-group">
+                            <label for="fileInput">Input File</br><span class="labelDescription">Upload a file containing one or more WADL or WSDL interface descriptions.</span></label>
+                            <input type="file" id="wFileInput" multiple>
+                          </div>
+
+                          <div id="serviceInterfaceInformationDescription">
+                          </div>
+
+                        </div>
+                      </div>
+
+                    </div>
+
+                    <button type="submit" class="btn btn-default btn-lg pull-left toStepOneButton">Previous</button>
+                    <button id="finishStepTwoButton" type="submit" class="btn btn-success btn-lg pull-right toStepThreeButton">Next</button>
+
+                  </div>
+                </div>
+              </div>
+              <div id="submitterInformation">
+                <div class="panel panel-default">
+                  <div class="panel-body">
+
+                    <div class="form-group" id="submitterNameFormGroup">
+                      <label class="control-label" for="submitterNameInput">Submitter Name<span class="asterisk">*</span></br><span class="labelDescription">Provide the name of the submitter.</span></label>
+                      <input type="text" class="form-control" id="submitterNameInput" placeholder="" maxlength="255">
+                      <label id="submitterNameErrorMessage" for="toolTypeInput" class="control-label invalidInputMessage displayNone">Value is required. Must not contain special characters (&amp;, &lt;, &gt;).</label>
+                    </div>
+
+                    <div class="form-group" id="submitterInstitutionFormGroup">
+                      <label class="control-label" for="submitterInstitutionInput">Submitter Institution<span class="asterisk">*</span></br><span class="labelDescription">Provide the name of the institution employing the submitter or better yet curates the tool.</span></label>
+                      <input type="text" class="form-control" id="submitterInstitutionInput" placeholder="" maxlength="255">
+                      <label id="submitterInstitutionErrorMessage" for="toolTypeInput" class="control-label invalidInputMessage displayNone">Value is required. Must not contain special characters (&amp;, &lt;, &gt;).</label>
+                    </div>
+
+                    <div class="form-group" id="submitterEmailFormGroup">
+                      <label class="control-label" for="submitterEmailInput">Submitter Email<span class="asterisk">*</span></br><span class="labelDescription">Provide the email address of the submitter so that we may contact you regarding the submission.</span></label>
+                      <input type="email" class="form-control" id="submitterEmailInput" placeholder="" maxlength="255">
+                      <label id="submitterEmailErrorMessage" for="toolTypeInput" class="control-label invalidInputMessage displayNone">Not a valid email</label>
+                    </div>
+
+                    <button type="submit" class="btn btn-default btn-lg pull-left toStepTwoButton">Previous</button>
+                    <button id="finishButton" type="submit" class="btn btn-success btn-lg pull-right">Submit</button>
+
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <div id="submissionCompleteContainer">
+              <div class="panel panel-default">
+                <div class="panel-body">
+                  <h1>Thank You For Your Submission</h1>
+                  <p class="formp">Your submission is awaiting review. Once it is finished being reviewed it will be uploaded to the system.</p>
+                  <p class="formp"><a class="btn btn-primary btn-lg" id="backToSiteButton">Back</a></p>
+                </div>
+              </div>
+            </div>
+    </div><!--End tw-bs -->
+  </div><!--End main content -->
+
+  [an error occurred while processing this directive]
+
+  <!--[if IE]>
+  </div>
+  <![endif]-->
+</body>
+<!-- InstanceEnd -->
+</html>
