@@ -48,6 +48,7 @@
     <module>search</module>
     <module>security</module>
     <module>storage</module>
+    <module>tracking</module>
     <module>transport</module>
   </modules>
 
