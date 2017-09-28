@@ -24,6 +24,9 @@
 
   <body>
     <release version="0.1.0" date="TBD" description="TBD">
+      <action dev="hyunlee" type="add" issue="PDS-512">
+        Integrate the transform tool with the Tools Service.
+      </action>
     </release>
   </body>
 </document>
