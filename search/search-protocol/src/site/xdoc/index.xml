@@ -24,7 +24,7 @@
 
   <body>
     <section name="About Search Protocol">
-      <p>The Search Protocol is the search protocol implementation into a separate JAR component under the Search component.  The Search Protocol component is a dependency of the Search Service. 
+      <p>The Search Protocol component provides the PDS-specific search protocol for interacting with the Search Service. By offering it as a separate component, it allows other developers of Apache Solr search services to support the same protocol.
       </p>
 
       <p>Please send comments, change requests and bug reports to the <a href="mailto:pds_operator@jpl.nasa.gov">PDS Operator</a> at pds_operator@jpl.nasa.gov.
