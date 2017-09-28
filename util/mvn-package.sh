@@ -53,6 +53,8 @@ cd search
 mvn --non-recursive install clean
 cd search-core
 mvn install clean
+cd ../search-protocol
+mvn install clean
 cd ../..
 
 cd storage

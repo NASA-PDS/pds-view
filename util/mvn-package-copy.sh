@@ -65,6 +65,7 @@ echo "Copying the Search packages to the package directory."
 cp ../../search/product-search-ui/target/product-search-ui*bin* .
 cp ../../search/search-analytics/target/search-analytics*bin* .
 cp ../../search/search-core/target/search-core*bin* .
+cp ../../search/search-protocol/target/search-protocol*bin* .
 cp ../../search/search-service/target/search-service*bin* .
 cp ../../search/search-ui/target/search-ui*bin* .
 
