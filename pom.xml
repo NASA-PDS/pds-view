@@ -54,10 +54,10 @@
 
   <properties>
     <!-- Internal Dependency Version -->
+    <pds4-tools-version>0.9.0</pds4-tools-version>
     <core-version>1.12.0</core-version>
     <email-version>0.1.0</email-version>
     <generate-version>0.13.0</generate-version>
-    <pds4-tools-version>0.9.0</pds4-tools-version>
     <registry-version>1.13.0</registry-version>
     <search-version>1.11.0</search-version>
     <storage-version>1.2.0</storage-version>

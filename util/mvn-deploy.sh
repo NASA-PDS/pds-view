@@ -159,6 +159,13 @@ mvn site
 mvn deploy
 cd ../..
 
+cd tracking
+mvn deploy --non-recursive
+cd tracking-service
+mvn site
+mvn deploy
+cd ../..
+
 cd transport
 mvn deploy --non-recursive
 cd transport-ofsn

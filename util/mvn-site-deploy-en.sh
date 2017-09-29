@@ -39,11 +39,11 @@ cd ../..
 
 cd preparation
 mvn --non-recursive install clean
-cd core
+cd pds4-tools
+mvn install clean
+cd ../core
 mvn install clean
 cd ../generate
-mvn install clean
-cd ../pds4-tools
 mvn install clean
 cd ../transform
 mvn install clean

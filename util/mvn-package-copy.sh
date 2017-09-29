@@ -74,6 +74,9 @@ echo "Copying the Storage packages to the package directory."
 cp ../../storage/product-service/target/product-service*bin* .
 cp ../../storage/storage-service/target/storage-service*bin* .
 
+echo "Copying the Tracking packages to the package directory."
+cp ../../tracking/tracking-service/target/tracking-service*bin* .
+
 echo "Copying the Transport packages to the package directory."
 cp ../../transport/transport-ofsn/target/transport-ofsn*bin* .
 cp ../../transport/transport-proxy/target/transport-proxy*bin* .
