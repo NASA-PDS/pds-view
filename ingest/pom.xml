@@ -39,6 +39,7 @@
     <module>catalog</module>
     <module>harvest</module>
     <module>harvest-pdap</module>
+    <module>harvest-search</module>
   </modules>
 
   <licenses>

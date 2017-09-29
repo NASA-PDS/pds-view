@@ -44,6 +44,9 @@ mvn deploy
 cd ../harvest-pdap
 mvn site
 mvn deploy
+cd ../harvest-search
+mvn site
+mvn deploy
 cd ../..
 
 cd migrate

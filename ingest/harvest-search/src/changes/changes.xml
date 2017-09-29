@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2010-2016, by the California Institute of Technology.
+  Copyright 2010-2017, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -23,13 +23,16 @@
   </properties>
 
   <body>
-    <release version="0.1.0" date="TBD" description="TBD">
+    <release version="0.1.0" date="2017-09-29" description="This release of the Harvest-Search Tool is a component of the integrated release 8.0.0 of the PDS4 System. This is an operational release of the system components to date.">
       <action dev="mcayanan" type="update" issue="PDS-464">
         Updated Windows System Properties Install Guide.
       </action>
+      <action dev="mcayanan" type="update">
+         Update XPath to also search for the "Member Status" field.
+      </action>
       <action dev="mcayanan" type="add">
          Initial release of the Harvest-Search Tool.
-      </action>      
+      </action>
     </release>
   </body>
 </document>

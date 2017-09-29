@@ -26,7 +26,7 @@
 
   <groupId>gov.nasa.pds.2010</groupId>
   <artifactId>email</artifactId>
-  <version>0.1.0-dev</version>
+  <version>0.1.0</version>
   <packaging>pom</packaging>
 
   <name>Email</name>

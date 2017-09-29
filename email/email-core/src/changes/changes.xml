@@ -23,8 +23,8 @@
   </properties>
 
   <body>
-    <release version="0.1.0" date="TBD" description="TBD">
-      <action dev="hyunlee" type="add">
+    <release version="0.1.0" date="2017-09-29" description="This release of the Email Core is a component of the integrated release 8.0.0 of the PDS4 System. This is an operational release of the system components to date.">
+      <action dev="hyunlee" type="add" issue="PDS-461">
         Added the capability to accept email requests from Java applications. 
       </action>
     </release>

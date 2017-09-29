@@ -45,6 +45,7 @@
     <module>lace</module>
     -->
     <module>pds4-tools</module>
+    <module>tools-service</module>
     <module>transform</module>
     <module>validate</module>
   </modules>

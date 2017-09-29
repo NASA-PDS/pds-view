@@ -97,6 +97,8 @@ mkdir -p $1/ingest/harvest
 cp -r ingest/harvest/target/site/* $1/ingest/harvest
 mkdir -p $1/ingest/harvest-pdap
 cp -r ingest/harvest-pdap/target/site/* $1/ingest/harvest-pdap
+mkdir -p $1/ingest/harvest-search
+cp -r ingest/harvest-search/target/site/* $1/ingest/harvest-search
 
 echo "Deploying Model component sites to the deployment directory."
 mkdir -p $1/model

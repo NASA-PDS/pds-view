@@ -30,6 +30,7 @@ echo "Copying the Ingest packages to the package directory."
 cp ../../ingest/catalog/target/catalog*bin* .
 cp ../../ingest/harvest/target/harvest*bin* .
 cp ../../ingest/harvest-pdap/target/harvest-pdap*bin* .
+cp ../../ingest/harvest-search/target/harvest-search*bin* .
 
 echo "Copying the Migrate packages to the package directory."
 cp ../../migrate/migrate-tools/target/migrate-tools*bin* .
