@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-  <!-- PDS4 Schematron for Name Space Id:pds  Version:1.9.0.0 - Thu Aug 31 17:31:31 PDT 2017 -->
+  <!-- PDS4 Schematron for Name Space Id:pds  Version:1.9.0.0 - Fri Sep 29 08:39:37 PDT 2017 -->
   <!-- Generated from the PDS4 Information Model Version 1.9.0.0 - System Build 8a -->
   <!-- *** This PDS4 schematron file is an operational deliverable. *** -->
 <sch:schema xmlns:sch="http://purl.oclc.org/dsdl/schematron" queryBinding="xslt2">
@@ -18,7 +18,7 @@
 		   <!-- ================================================ -->
   <sch:pattern>
     <sch:rule context="/*">
-      <sch:assert test="name() = ('Product_Attribute_Definition','Product_Browse', 'Product_Ancillary', 'Product_Bundle', 'Product_Class_Definition',  'Product_Collection', 'Product_Context', 'Product_Document', 'Product_File_Repository', 'Product_File_Text', 'Product_Observational', 'Product_Service', 'Product_Native', 'Product_Software', 'Product_SPICE_Kernel', 'Product_Thumbnail', 'Product_Update', 'Product_XML_Schema', 'Product_Zipped', 'Product_Data_Set_PDS3', 'Product_Instrument_Host_PDS3', 'Product_Instrument_PDS3','Product_Mission_PDS3', 'Product_Proxy_PDS3', 'Product_Subscription_PDS3', 'Product_Target_PDS3', 'Product_Volume_PDS3', 'Product_Volume_Set_PDS3', 'Product_AIP', 'Product_DIP', 'Product_SIP', 'Product_SIP_Deep_Archive', 'Product_DIP_Deep_Archive', 'Ingest_LDD')">
+      <sch:assert test="name() = ('Product_Attribute_Definition','Product_Browse', 'Product_Ancillary', 'Product_Bundle', 'Product_Class_Definition',  'Product_Collection', 'Product_Context', 'Product_Document', 'Product_File_Repository', 'Product_File_Text', 'Product_Metadata_Supplemental', 'Product_Observational', 'Product_Service', 'Product_Native', 'Product_Software', 'Product_SPICE_Kernel', 'Product_Thumbnail', 'Product_Update', 'Product_XML_Schema', 'Product_Zipped', 'Product_Data_Set_PDS3', 'Product_Instrument_Host_PDS3', 'Product_Instrument_PDS3','Product_Mission_PDS3', 'Product_Proxy_PDS3', 'Product_Subscription_PDS3', 'Product_Target_PDS3', 'Product_Volume_PDS3', 'Product_Volume_Set_PDS3', 'Product_AIP', 'Product_DIP', 'Product_SIP', 'Product_SIP_Deep_Archive', 'Product_DIP_Deep_Archive', 'Ingest_LDD')">
         The ROOT element must be one of the allowed types.</sch:assert>
     </sch:rule>
   </sch:pattern>
@@ -317,6 +317,12 @@
         The value restriction_of for attribute DD_Association.reference_type is deprecated and should not be used.</sch:assert>
       <sch:assert test="pds:reference_type != 'extension_of'">
         The value extension_of for attribute DD_Association.reference_type is deprecated and should not be used.</sch:assert>
+    </sch:rule>
+  </sch:pattern>
+  <sch:pattern>
+    <sch:rule context="pds:DD_Association/pds:local_identifier" role="warning">
+      <sch:assert test="false()">
+        pds:DD_Association/pds:local_identifier is deprecated and should not be used.</sch:assert>
     </sch:rule>
   </sch:pattern>
   <sch:pattern>
@@ -745,8 +751,8 @@
   </sch:pattern>
   <sch:pattern>
     <sch:rule context="pds:Identification_Area/pds:product_class">
-      <sch:assert test=". = ('Product_AIP', 'Product_Ancillary', 'Product_Attribute_Definition', 'Product_Browse', 'Product_Bundle', 'Product_Class_Definition', 'Product_Collection', 'Product_Context', 'Product_DIP', 'Product_DIP_Deep_Archive', 'Product_Data_Set_PDS3', 'Product_Document', 'Product_File_Repository', 'Product_File_Text', 'Product_Instrument_Host_PDS3', 'Product_Instrument_PDS3', 'Product_Mission_PDS3', 'Product_Native', 'Product_Observational', 'Product_Proxy_PDS3', 'Product_SIP', 'Product_SIP_Deep_Archive', 'Product_SPICE_Kernel', 'Product_Service', 'Product_Software', 'Product_Subscription_PDS3', 'Product_Target_PDS3', 'Product_Thumbnail', 'Product_Update', 'Product_Volume_PDS3', 'Product_Volume_Set_PDS3', 'Product_XML_Schema', 'Product_Zipped')">
-        The attribute pds:product_class must be equal to one of the following values 'Product_AIP', 'Product_Ancillary', 'Product_Attribute_Definition', 'Product_Browse', 'Product_Bundle', 'Product_Class_Definition', 'Product_Collection', 'Product_Context', 'Product_DIP', 'Product_DIP_Deep_Archive', 'Product_Data_Set_PDS3', 'Product_Document', 'Product_File_Repository', 'Product_File_Text', 'Product_Instrument_Host_PDS3', 'Product_Instrument_PDS3', 'Product_Mission_PDS3', 'Product_Native', 'Product_Observational', 'Product_Proxy_PDS3', 'Product_SIP', 'Product_SIP_Deep_Archive', 'Product_SPICE_Kernel', 'Product_Service', 'Product_Software', 'Product_Subscription_PDS3', 'Product_Target_PDS3', 'Product_Thumbnail', 'Product_Update', 'Product_Volume_PDS3', 'Product_Volume_Set_PDS3', 'Product_XML_Schema', 'Product_Zipped'.</sch:assert>
+      <sch:assert test=". = ('Product_AIP', 'Product_Ancillary', 'Product_Attribute_Definition', 'Product_Browse', 'Product_Bundle', 'Product_Class_Definition', 'Product_Collection', 'Product_Context', 'Product_DIP', 'Product_DIP_Deep_Archive', 'Product_Data_Set_PDS3', 'Product_Document', 'Product_File_Repository', 'Product_File_Text', 'Product_Instrument_Host_PDS3', 'Product_Instrument_PDS3', 'Product_Metadata_Supplemental', 'Product_Mission_PDS3', 'Product_Native', 'Product_Observational', 'Product_Proxy_PDS3', 'Product_SIP', 'Product_SIP_Deep_Archive', 'Product_SPICE_Kernel', 'Product_Service', 'Product_Software', 'Product_Subscription_PDS3', 'Product_Target_PDS3', 'Product_Thumbnail', 'Product_Update', 'Product_Volume_PDS3', 'Product_Volume_Set_PDS3', 'Product_XML_Schema', 'Product_Zipped')">
+        The attribute pds:product_class must be equal to one of the following values 'Product_AIP', 'Product_Ancillary', 'Product_Attribute_Definition', 'Product_Browse', 'Product_Bundle', 'Product_Class_Definition', 'Product_Collection', 'Product_Context', 'Product_DIP', 'Product_DIP_Deep_Archive', 'Product_Data_Set_PDS3', 'Product_Document', 'Product_File_Repository', 'Product_File_Text', 'Product_Instrument_Host_PDS3', 'Product_Instrument_PDS3', 'Product_Metadata_Supplemental', 'Product_Mission_PDS3', 'Product_Native', 'Product_Observational', 'Product_Proxy_PDS3', 'Product_SIP', 'Product_SIP_Deep_Archive', 'Product_SPICE_Kernel', 'Product_Service', 'Product_Software', 'Product_Subscription_PDS3', 'Product_Target_PDS3', 'Product_Thumbnail', 'Product_Update', 'Product_Volume_PDS3', 'Product_Volume_Set_PDS3', 'Product_XML_Schema', 'Product_Zipped'.</sch:assert>
     </sch:rule>
   </sch:pattern>
   <sch:pattern>

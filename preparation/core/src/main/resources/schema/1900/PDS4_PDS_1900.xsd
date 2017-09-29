@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-  <!-- PDS4 XML/Schema for Name Space Id:pds  Version:1.9.0.0 - Thu Aug 31 17:31:31 PDT 2017 -->
+  <!-- PDS4 XML/Schema for Name Space Id:pds  Version:1.9.0.0 - Fri Sep 29 08:39:37 PDT 2017 -->
   <!-- Generated from the PDS4 Information Model Version 1.9.0.0 - System Build 8a -->
   <!-- *** This PDS4 product schema is an operational deliverable. *** -->
   <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
@@ -492,7 +492,8 @@
         dictionary.</xs:documentation>
     </xs:annotation>
     <xs:sequence>
-      <xs:element name="local_identifier" type="pds:local_identifier" minOccurs="1" maxOccurs="unbounded"> </xs:element>
+      <xs:element name="identifier_reference" type="pds:identifier_reference" minOccurs="1" maxOccurs="unbounded"> </xs:element>
+      <xs:element name="local_identifier" type="pds:local_identifier" minOccurs="0" maxOccurs="unbounded"> </xs:element>
       <xs:element name="reference_type" type="pds:reference_type" minOccurs="1" maxOccurs="1"> </xs:element>
       <xs:element name="minimum_occurrences" type="pds:minimum_occurrences" minOccurs="1" maxOccurs="1"> </xs:element>
       <xs:element name="maximum_occurrences" type="pds:maximum_occurrences" minOccurs="1" maxOccurs="1"> </xs:element>
@@ -4783,6 +4784,17 @@
 	   </xs:restriction>
   </xs:simpleType>
 
+  <xs:simpleType name="identifier_reference">
+    <xs:annotation>
+      <xs:documentation>The identifier_reference attribute provides the
+        value of an identifier.</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="pds:ASCII_Short_String_Collapsed">
+     <xs:minLength value="1"/>
+     <xs:maxLength value="255"/>
+	   </xs:restriction>
+  </xs:simpleType>
+
   <xs:simpleType name="information_model_version">
     <xs:annotation>
       <xs:documentation>The information_model_version attribute provides
@@ -7897,6 +7909,7 @@
      pds:Primary_Result_Summary/pds:data_regime
      pds:Primary_Result_Summary/pds:type
      pds:Primary_Result_Summary/pds:processing_level_id
+     pds:DD_Association/pds:local_identifier
      pds:Table_Binary/pds:record_delimiter
      pds:Uniformly_Sampled/pds:sampling_parameters
      pds:Object_Statistics/pds:bit_mask
