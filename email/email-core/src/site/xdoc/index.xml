@@ -23,7 +23,7 @@
   </properties>
 
   <body>
-    <section name="About Email Service">
+    <section name="About Email Core">
       <p>The Email Core provides functionality to accept electronic mail requests via a Java API and send those requests to the target recipients via a configured SMTP server.
       </p>
 

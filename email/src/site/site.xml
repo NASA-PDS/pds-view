@@ -18,7 +18,7 @@
 
 <project name="email">
   <bannerLeft>
-    <src>images/pds_logo.png</src>
+    <src>images/pds4_logo.png</src>
     <href>https://pds-cm.jpl.nasa.gov/pds4/</href>
   </bannerLeft>
 
