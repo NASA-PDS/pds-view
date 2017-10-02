@@ -35,19 +35,38 @@
     </section>
 
     <section name="System Requirements">
-      <p>The Inspect Tool software was developed using Python and will run on any platform with a supported Python environment. It is compatible with Python 2.6 or 2.7. It is not compatible with Python 2.5 or earlier versions, nor with Python 3 or later versions. The following commands test the local Python installation in a UNIX-based environment:
+      <p>This section details the system requirements for installing and operating the Inspect Tool software.
       </p>
 
-      <source>
+      <subsection name="Python">
+        <p>The Inspect Tool software was developed using Python and will run on any platform with a supported Python environment. It is compatible with Python 2.6 or 2.7. It is not compatible with Python 2.5 or earlier versions, nor with Python 3 or later versions. The following commands test the local Python installation in a UNIX-based environment:
+        </p>
+
+        <source>
 % which python
 /usr/bin/python
 
 % python --version
 Python 2.7.2
-      </source>
+        </source>
 
-      <p>The first command above checks whether the <i>python</i> executable is in the environment's path and the second command reports the version. If Python is not installed or the version is not 2.6 or 2.7, Python will need to be downloaded and installed in the current environment. Consult the local system administrator for installation of this software.
-      </p>
+        <p>The first command above checks whether the <i>python</i> executable is in the environment's path and the second command reports the version. If Python is not installed or the version is not 2.6 or 2.7, Python will need to be downloaded and installed in the current environment. Consult the local system administrator for installation of this software.
+        </p>
+      </subsection>
+
+      <subsection name="Python Dependencies">
+        <p>The Inspect Tool software has dependencies on a number of Python libraries. More details on each of these dependencies will be provided at a later date. For now, here is the list of dependencies:
+        </p>
+
+        <ul>
+          <li>Pds4_tools</li>
+          <li>PyQt4</li>
+          <li>SIP</li>
+          <li>Numpy</li>
+          <li>collections (for OrderedDict)</li>
+          <li>textwrap</li>
+        </ul>
+      </subsection>
     </section>
 
     <section name="Unpacking the Package">
@@ -76,7 +95,7 @@ or
           </p>
         </li>
         <li><b>bin/</b><br/>
-          <p>This directory contains shell and batch scripts for launching and interacting with the software for UNIX-based and Windows environments.
+          <p>This directory contains Python scripts for launching and interacting with the software for UNIX-based and Windows environments.
           </p>
         </li>
         <li><b>doc/</b><br/>

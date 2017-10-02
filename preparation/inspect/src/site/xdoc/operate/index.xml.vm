@@ -24,8 +24,21 @@
 
   <body>
     <section name="Operation">
-      <p>This document describes how to operate the Inspect Tool. ...
+      <p>This document describes how to operate the Inspect Tool. The following topics can be found in this document:
       </p>
+
+      <ul>
+        <li><a href="#Quick_Start">Quick Start</a></li>
+      </ul>
+    </section>
+
+    <section name="Quick Start">
+      <p>This section is intended to provide a quick and easy way to run the Inpsect Tool. The following command demonstrates how to launch the tool:
+      </p>
+
+      <source>
+% python View.py
+      </source>
     </section>
   </body>
 </document>
