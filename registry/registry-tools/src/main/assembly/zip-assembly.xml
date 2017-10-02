@@ -28,7 +28,7 @@
 
   <fileSets>
     <fileSet>
-      <directory>src/main/bin</directory>
+      <directory>src/main/python</directory>
       <outputDirectory>bin</outputDirectory>
       <fileMode>755</fileMode>
       <lineEnding>crlf</lineEnding>

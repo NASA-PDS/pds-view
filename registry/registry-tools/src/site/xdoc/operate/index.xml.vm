@@ -39,6 +39,28 @@
       <p>This software package consists of a set of Python scripts for interacting with a Registry Service instance. This software does have a dependency on the <i>pds.registry</i> package which must be deployed to the local Python environment prior to operation of this software.
       </p>
 
+      <subsection name="extrinsic-slot-replace.py">
+        <p>This script replaces a slot value where the source-string is replaced by the replace-string for a list of extrinsics filtered optionally by Object Type and LID wildcard.
+        </p>
+
+        <source>
+% python extrinsic-slot-replace.py &lt;registry-url&gt; &lt;slot-name&gt; &lt;source-string&gt; &lt;replace-string&gt; [&lt;object-type&gt; [&lt;lid-prefix&gt;]]
+        </source>
+
+        <p>The following table describes the command-line options available:
+        </p>
+
+        <table>
+          <tr><th>Command-Line Option</th><th>Description</th></tr>
+          <tr><td>registry-url</td><td>The URL of the Registry Service instance (e.g., http://localhost:8080/registry). This option is required.</td></tr>
+          <tr><td>slot-name</td><td>The name of the slot to have its value replaced.</td></tr>
+          <tr><td>source-string</td><td>The string in the named slot value to be replaced.</td></tr>
+          <tr><td>replace-string</td><td>The replacement string.</td></tr>
+          <tr><td>object-type</td><td>The object type of the extrinsics to be queried (e.g., Product_Collection, Product_Observational, etc.). This option is optional.</td></tr>
+          <tr><td>lid-prefix</td><td>A portion of the logical identifier (e.g., urn:nasa:pds:example) to further filter the results. This option is optional.</td></tr>
+        </table>
+      </subsection>
+
       <subsection name="list-extrinsics.py">
         <p>This script queries a registry service instance for a list of extrinsics filtered optionally by Object Type and LID wildcard. The extrinsics are listed in CSV format to standard out with fields: lid, version_id, name and status.
         </p>
