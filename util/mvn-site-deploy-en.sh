@@ -171,6 +171,8 @@ mkdir -p $1/search/search-analytics
 cp -r search/search-analytics/target/site/* $1/search/search-analytics
 mkdir -p $1/search/search-core
 cp -r search/search-core/target/site/* $1/search/search-core
+mkdir -p $1/search/search-protocol
+cp -r search/search-protocol/target/site/* $1/search/search-protocol
 mkdir -p $1/search/search-service
 cp -r search/search-service/target/site/* $1/search/search-service
 mkdir -p $1/search/search-ui
