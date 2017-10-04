@@ -135,6 +135,8 @@ mkdir -p $1/preparation/inspect
 cp -r preparation/inspect/target/site/* $1/preparation/inspect
 mkdir -p $1/preparation/pds4-tools
 cp -r preparation/pds4-tools/target/site/* $1/preparation/pds4-tools
+mkdir -p $1/preparation/tools-service
+cp -r preparation/tools-service/target/site/* $1/preparation/tools-service
 mkdir -p $1/preparation/transform
 cp -r preparation/transform/target/site/* $1/preparation/transform
 mkdir -p $1/preparation/validate
