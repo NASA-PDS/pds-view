@@ -22,6 +22,9 @@
     <author email="Sean.Hardman@jpl.nasa.gov">Sean Hardman</author>
   </properties>
   <body>
+    <release version="1.6.0" date="TBD" description="TBD">
+    </release>
+
     <release version="1.5.0" date="2017-09-29" description="This release of Phonebook Search is a component of the integrated release 8.0.0 of the PDS4 System. This is an operational release of the system components to date.">
     </release>
 

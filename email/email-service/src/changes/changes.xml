@@ -23,6 +23,9 @@
   </properties>
 
   <body>
+    <release version="0.2.0" date="TBD" description="TBD">
+    </release>
+
     <release version="0.1.0" date="2017-09-29" description="This release of the Email Service is a component of the integrated release 8.0.0 of the PDS4 System. This is an operational release of the system components to date.">
       <action dev="hyunlee" type="add" issue="PDS-461">
         Added the capability to accept email requests from Java applications and Javascript-based clients. 
