@@ -1,7 +1,7 @@
 id=rings-apache-metrics
 node=rings
 xfertype=http
-host=http://pds-rings.seti.org/
+host=https://pds-rings.seti.org/
 user=anonymous
 password=anonymous
 encrypt=false
