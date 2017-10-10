@@ -7,7 +7,7 @@
 
 <!-- InstanceEndEditable -->
 
-[an error occurred while processing this directive]
+<!--#include virtual="/include/includes.html" -->
 
 <!-- InstanceBeginEditable name="head" -->
 <!-- InstanceEndEditable -->
@@ -18,42 +18,7 @@
 <!-- InstanceParam name="standard_page_content" type="boolean" value="true" -->
 <!-- InstanceParam name="custom_page_class" type="text" value="" -->
 
-<!-- JQuery -->
-  <script src="jquery/jquery-2.1.3.min.js"></script>
-
-  <!-- Bootstrap -->
-  <link rel="stylesheet" href="bootstrap/css/bootstraptw-bs.min.css">
-  <link rel="stylesheet" href="bootstrap/css/bootstrap-theme.min.css">
-  <script src="bootstrap/js/bootstrap.min.js"></script>
-  <script src="jqueryui/jquery-ui.min.js"></script>
-
-  <!-- Ajax Solr -->
-  <script src="lib/core/Core.js"></script>
-  <script src="lib/core/AbstractManager.js"></script>
-  <script src="lib/managers/Manager.jquery.js"></script>
-  <script src="lib/core/Parameter.js"></script>
-  <script src="lib/core/ParameterStore.js"></script>
-  <script src="lib/core/AbstractWidget.js"></script>
-  <script src="lib/core/AbstractTextWidget.js"></script>
-  <script src="widgets/ResultWidget.js"></script>
-  <script src="widgets/SearchWidget.js"></script>
-  <script src="widgets/PagerWidget.js"></script>
-  <script src="widgets/detailWidgets/DetailLinkSearchWidget.js"></script>
-
-
-
-  <!--Calendar-->
-  <link rel="stylesheet" href="lib/pikaday/pikaday.css"/>
-  <script src="lib/pikaday/moment.js"></script>
-  <script src="lib/pikaday/pikaday.js"></script>
-
-  <!--Calendar-->
-  <script src="lib/vkbeautify/vkbeautify.0.99.00.beta.js"></script>
-
-  <!--Tool Registry-->
-  <link rel="stylesheet" href="css/ToolRegistry.css"/>
-  <script src="js/ToolRegistry.js"></script>
-
+<!--#include virtual="ToolRegistryImports.html" -->
 </head>
 
 <body class="sidebar  menu_tools menu_item_tools_tool_registry ">
@@ -61,18 +26,18 @@
   <div id="IE">
   <![endif]-->
 
-  [an error occurred while processing this directive]
-  [an error occurred while processing this directive]
+  <!--#include virtual="/include/header.html" -->
+  <!--#include virtual="/include/main_menu.html" -->
 
   <div id="submenu">
-    [an error occurred while processing this directive]
+    <!--#include virtual="/include/tool_menu.html" -->
     <div class="clear">
     </div>
   </div>
 
   <!-- Sidebar -->
   <div id="sidebar">
-    [an error occurred while processing this directive]
+    <!--#include virtual="/include/standard_sidebar.html" -->
     <!-- InstanceBeginEditable name="leftSidebar" -->
     <!-- InstanceEndEditable -->
   </div>
@@ -583,19 +548,19 @@
                     <div class="form-group" id="supportedOperatingSystemsFormGroup">
                       <label class="control-label" for="supportedOperatingSystemsInput">Supported Operating Systems</br><span class="labelDescription">Describe the supported hardware and operating system platforms the tool supports, if applicable.</span></label>
                       <textarea class="form-control vresize" id="supportedOperatingSystemsInput" rows="3"></textarea>
-                      <label id="supportedOperatingSystemsErrorMessage" for="toolTypeInput" class="control-label invalidInputMessage displayNone">No special characters (&amp;, &lt;, &gt;).</label>
+                      <label id="supportedOperatingSystemsErrorMessage" for="toolTypeInput" class="control-label invalidInputMessage displayNone">No special characters (&amp;, &gt;, &lt;).</label>
                     </div>
 
                     <div class="form-group" id="systemRequirementsFormGroup">
                       <label class="control-label" for="systemRequirementsInput">System Requirements</br><span class="labelDescription">Describe any system requirements necessary to run the tool on designated operating systems, if applicable.</span></label>
                       <textarea class="form-control vresize" id="systemRequirementsInput" rows="3"></textarea>
-                      <label id="systemRequirementsErrorMessage" for="toolTypeInput" class="control-label invalidInputMessage displayNone">No special characters (&amp;, &lt;, &gt;).</label>
+                      <label id="systemRequirementsErrorMessage" for="toolTypeInput" class="control-label invalidInputMessage displayNone">No special characters (&amp;, &gt;, &lt;).</label>
                     </div>
 
                     <div class="form-group" id="citationFormGroup">
                       <label class="control-label" for="citationInput">Citation</br><span class="labelDescription">Provide a bibliographic citation for the tool, if applicable.</span></label>
                       <textarea class="form-control vresize" id="citationInput" rows="3" maxlength="5000"></textarea>
-                      <label id="citationErrorMessage" for="toolTypeInput" class="control-label invalidInputMessage displayNone">No special characters (&amp;, &lt;, &gt;).</label>
+                      <label id="citationErrorMessage" for="toolTypeInput" class="control-label invalidInputMessage displayNone">No special characters (&amp;, &gt;, &lt;).</label>
                     </div>
 
                     <div id="urlContainer">
@@ -643,13 +608,13 @@
                     <div class="form-group" id="submitterNameFormGroup">
                       <label class="control-label" for="submitterNameInput">Submitter Name<span class="asterisk">*</span></br><span class="labelDescription">Provide the name of the submitter.</span></label>
                       <input type="text" class="form-control" id="submitterNameInput" placeholder="" maxlength="255">
-                      <label id="submitterNameErrorMessage" for="toolTypeInput" class="control-label invalidInputMessage displayNone">Value is required. Must not contain special characters (&amp;, &lt;, &gt;).</label>
+                      <label id="submitterNameErrorMessage" for="toolTypeInput" class="control-label invalidInputMessage displayNone">Value is required. Must not contain special characters (&amp;, &gt;, &lt;).</label>
                     </div>
 
                     <div class="form-group" id="submitterInstitutionFormGroup">
                       <label class="control-label" for="submitterInstitutionInput">Submitter Institution<span class="asterisk">*</span></br><span class="labelDescription">Provide the name of the institution employing the submitter or better yet curates the tool.</span></label>
                       <input type="text" class="form-control" id="submitterInstitutionInput" placeholder="" maxlength="255">
-                      <label id="submitterInstitutionErrorMessage" for="toolTypeInput" class="control-label invalidInputMessage displayNone">Value is required. Must not contain special characters (&amp;, &lt;, &gt;).</label>
+                      <label id="submitterInstitutionErrorMessage" for="toolTypeInput" class="control-label invalidInputMessage displayNone">Value is required. Must not contain special characters (&amp;, &gt;, &lt;).</label>
                     </div>
 
                     <div class="form-group" id="submitterEmailFormGroup">
@@ -679,7 +644,8 @@
     </div><!--End tw-bs -->
   </div><!--End main content -->
 
-  [an error occurred while processing this directive]
+
+  <!--#include virtual="/include/footer.html" -->
 
   <!--[if IE]>
   </div>
