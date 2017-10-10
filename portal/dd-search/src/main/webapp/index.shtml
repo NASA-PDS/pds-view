@@ -6,7 +6,7 @@
 <title>PDS: Data Dictionary Search</title>
 <!-- InstanceEndEditable -->
 
-[an error occurred while processing this directive]
+<!--#include virtual="/include/includes.html" -->
 
 <!-- InstanceBeginEditable name="head" -->
 <!-- InstanceEndEditable -->
@@ -17,32 +17,7 @@
 <!-- InstanceParam name="standard_page_content" type="boolean" value="true" -->
 <!-- InstanceParam name="custom_page_class" type="text" value="" -->
 
-<!-- JQuery -->
-  <script src="jquery/jquery-2.1.3.min.js"></script>
-
-  <!-- Bootstrap -->
-  <link rel="stylesheet" href="bootstrap/css/bootstraptw-bs.min.css">
-  <link rel="stylesheet" href="bootstrap/css/bootstrap-theme.min.css">
-  <script src="bootstrap/js/bootstrap.min.js"></script>
-  <script src="jqueryui/jquery-ui.min.js"></script>
-  
-  <script src="js/DataDictionary.js"></script>
-
-  <!-- Ajax Solr -->
-  <script src="lib/core/Core.js"></script>
-  <script src="lib/core/AbstractManager.js"></script>
-  <script src="lib/managers/Manager.jquery.js"></script>
-  <script src="lib/core/Parameter.js"></script>
-  <script src="lib/core/ParameterStore.js"></script>
-  <script src="lib/core/AbstractWidget.js"></script>
-  <script src="lib/core/AbstractTextWidget.js"></script>
-  <script src="widgets/ResultWidget.js"></script>
-  <script src="widgets/SearchWidget.js"></script>
-  <script src="widgets/PagerWidget.js"></script>
-  <script src="widgets/detailWidgets/DetailLinkSearchWidget.js"></script>
-
-  <!--Data Dictionary CSS -->
-  <link rel="stylesheet" href="css/dataDictionary.css"/>
+<!--#include virtual="dataDictionarySearchImports.html" -->
 </head>
 
 <body class="sidebar  menu_tools menu_item_tools_data_dictionary_lookup ">
@@ -50,18 +25,18 @@
   <div id="IE">
   <![endif]-->
 
-  [an error occurred while processing this directive]
-  [an error occurred while processing this directive]
+  <!--#include virtual="/include/header.html" -->
+  <!--#include virtual="/include/main_menu.html" -->
 
   <div id="submenu">
-    [an error occurred while processing this directive]
+    <!--#include virtual="/include/tool_menu.html" -->
     <div class="clear">
     </div>
   </div>
 
   <!-- Sidebar -->
   <div id="sidebar">
-    [an error occurred while processing this directive]
+    <!--#include virtual="/include/standard_sidebar.html" -->
     <!-- InstanceBeginEditable name="leftSidebar" -->
     <!-- InstanceEndEditable -->
   </div>
@@ -214,7 +189,7 @@
   </div><!--End main content -->
 
 
-  [an error occurred while processing this directive]
+  <!--#include virtual="/include/footer.html" -->
 
   <!--[if IE]>
   </div>
