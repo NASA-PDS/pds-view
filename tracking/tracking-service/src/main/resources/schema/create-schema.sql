@@ -82,6 +82,7 @@ create table product (
 create table reference (
   logical_identifier varchar(255) not null,
   reference varchar(255) not null,
+  title varchar(255) not null,
   type varchar(255) not null,
   primary key (logical_identifier, reference)
 ) ENGINE=InnoDB;
