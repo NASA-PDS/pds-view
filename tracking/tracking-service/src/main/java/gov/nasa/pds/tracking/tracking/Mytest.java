@@ -168,7 +168,10 @@ public class Mytest {
 			int count = 1;
 			while (itr.hasNext()) {
 				Reference r = itr.next();
-				logger.info("references " + count + ":\n " + r.getLog_identifier() + " : " + r.getReference() + " : "
+				logger.info("references " + count + ":\n " 
+						+ r.getLog_identifier() + " : " 
+						+ r.getReference() + " : "
+						+ r.getTitle() + " : "
 						+ r.getType());
 				count++;
 			}
@@ -222,7 +225,7 @@ public class Mytest {
 			Input: electronic_mail_address (required)
 			Output: electronic_mail_address, name, reference
 			***********************************************************/
-			//test.getUserRoles("sean.hardman@jpl.nasa.gov");
+			test.getUserRoles("sean.hardman@jpl.nasa.gov");			
 			//test.getUserRoles("rafael.alanis@jpl.nasa.gov");
 			
 			/**********************************************************
@@ -250,16 +253,16 @@ public class Mytest {
 			/**********************************************************
 			 Product Reference Query Query – Query the reference table for a list of product references.
 			Input: logical_identifier (required)
-			Output: logical_identifier, reference, type
+			Output: logical_identifier, reference, title, type
 			***********************************************************/
-			//test.getProductReferences("urn:nasa:pds:context_pds3:data_set:data_set.juno-j-rss-1-jugr-v1.0");
+			test.getProductReferences("urn:nasa:pds:context_pds3:data_set:data_set.juno-j-rss-1-jugr-v1.0");
 			
 			/**********************************************************
 			 Product Role Query– Query the product, reference, role and user tables for a list of users with the Investigation role for a product.			
 			Input: logical_identifier (required), type (required)
 			Output: electronic_mail_address, name
 			***********************************************************/			
-			//test.getProductRoleUsers("urn:nasa:pds:context_pds3:data_set:data_set.juno-j-rss-1-jugr-v1.0", "Investigation");
+			test.getProductRoleUsers("urn:nasa:pds:context_pds3:data_set:data_set.juno-j-rss-1-jugr-v1.0", "Investigation");
 			
 			
 			// ************************************ 9.1 Delivery Inserts/Updates **************************
@@ -294,22 +297,22 @@ public class Mytest {
 			
 			/**********************************************************
 			Reference Insert – Insert a reference record into the reference table for a given product.
-			Input: logical_identifier (required), reference (required), type (required)
+			Input: logical_identifier (required), reference (required), title (required), type (required)
 			***********************************************************/
-			//test.insertReference("urn:nasa:pds:context_pds3:data_set:data_set.jno-e-j-ss-wav-2-edr-v1.0", "DanY_Atmospheres", "danyu test");
+			test.insertReference("urn:nasa:pds:context_pds3:data_set:data_set.jno-e-j-ss-wav-2-edr-v1.0", "DanY_Atmospheres", "Juno", "danyu test");
 
 			/**********************************************************
 			Reference Update – Update a reference record into the reference table for a given product.
-			Input: logical_identifier (required), reference (required), type (required)
+			Input: logical_identifier (required), reference (required), title (required), type (required)
 			Output: N/A
 			***********************************************************/
-			//test.updateReference("urn:nasa:pds:context_pds3:data_set:data_set.jno-e-j-ss-wav-2-edr-v1.0", "DanY_Atmospheres", "danyu update test");
+			test.updateReference("urn:nasa:pds:context_pds3:data_set:data_set.jno-e-j-ss-wav-2-edr-v1.0", "DanY_Atmospheres", "Juno", "danyu update test");
 			
 			/**********************************************************
 			Role Insert – Insert a role record into the role table for a given user.
 			Input: electronic_mail_address (required), reference (required)
 			***********************************************************/
-			//test.insertRole("danyu@jpl.nasa.gov", "DanY_Atmospheres");
+			test.insertRole("danyu@jpl.nasa.gov", "DanY_Atmospheres");
 			
 			/**********************************************************
 			Submission Insert – Insert a submission record into the submission and submission_status tables for a given delivery.
@@ -603,22 +606,22 @@ public class Mytest {
 		
 	}
 
-	private void updateReference(String logicalIdentifier, String reference, String type) {
+	private void updateReference(String logicalIdentifier, String reference, String title, String type) {
 		Reference ref;
 		try {
 			ref = new Reference();
-			ref.updateReference(logicalIdentifier, reference, type);
+			ref.updateReference(logicalIdentifier, reference, title, type);
 		} catch (ClassNotFoundException | SQLException e) {
 			
 			e.printStackTrace();
 		}
 	}
 
-	private void insertReference(String logicalIdentifier, String reference, String type) {
+	private void insertReference(String logicalIdentifier, String reference, String title, String type) {
 		Reference ref;
 		try {
 			ref = new Reference();
-			ref.insertReference(logicalIdentifier, reference, type);
+			ref.insertReference(logicalIdentifier, reference, title, type);
 		} catch (ClassNotFoundException | SQLException e) {
 			
 			e.printStackTrace();

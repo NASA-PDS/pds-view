@@ -26,6 +26,7 @@ public class Reference extends DBConnector {
 	
 	public static final String LOG_IDENTIFIERCOLUME = "logical_identifier";
 	public static final String REFERENCECOLUME = "reference";
+	public static final String TITLECOLUME = "title";
 	public static final String TYPECOLUME = "type";
 	
 	
@@ -36,6 +37,7 @@ public class Reference extends DBConnector {
 	
 	private String log_identifier = null;
 	private String reference = null;
+	private String title = null;
 	private String type = null;
 
 	/**
@@ -81,6 +83,20 @@ public class Reference extends DBConnector {
 	}
 
 	/**
+	 * @return the title
+	 */
+	public String getTitle() {
+		return title;
+	}
+
+	/**
+	 * @param title, the title to set
+	 */
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	/**
 	 * @throws ClassNotFoundException
 	 * @throws SQLException
 	 */
@@ -114,6 +130,7 @@ public class Reference extends DBConnector {
 
 				ref.setLog_identifier(resultSet.getString(LOG_IDENTIFIERCOLUME));
 				ref.setReference(resultSet.getString(REFERENCECOLUME));
+				ref.setTitle(resultSet.getString(TITLECOLUME));
 				ref.setType(resultSet.getString(TYPECOLUME));
 								
 				refs.add(ref);
@@ -154,7 +171,7 @@ public class Reference extends DBConnector {
 	 * @param reference
 	 * @param type
 	 */
-	public void insertReference(String logicalIdentifier, String reference, String type) {
+	public void insertReference(String logicalIdentifier, String reference, String title, String type) {
 		try {
 			// Setup the connection with the DB
 			connect = getConnection();
@@ -162,15 +179,17 @@ public class Reference extends DBConnector {
 			
 			prepareStm = connect.prepareStatement("INSERT INTO " + TABLENAME + " (" + LOG_IDENTIFIERCOLUME + ", "
 																					+ REFERENCECOLUME + ", "
-																					+ TYPECOLUME + ") VALUES (?, ?, ?)");
+																					+ TITLECOLUME + ", "
+																					+ TYPECOLUME + ") VALUES (?, ?, ?, ?)");
 			prepareStm.setString(1, logicalIdentifier);
 			prepareStm.setString(2, reference);
-			prepareStm.setString(3, type);
+			prepareStm.setString(3, title);
+			prepareStm.setString(4, type);
 			
 			prepareStm.executeUpdate();
 			
 			connect.commit();
-			logger.info("The reference, " + reference + ", for  " + logicalIdentifier + " has been added.");
+			logger.info("The reference, " + title + ", for  " + logicalIdentifier + " has been added.");
 			
 		} catch (Exception e) {
 			logger.error(e);
@@ -193,24 +212,25 @@ public class Reference extends DBConnector {
 	 * @param reference
 	 * @param type
 	 */
-	public void updateReference(String logicalIdentifier, String reference, String type) {
+	public void updateReference(String logicalIdentifier, String reference, String title, String type) {
 		try {
 			// Setup the connection with the DB
 			connect = getConnection();
 			connect.setAutoCommit(false);
-			prepareStm = connect.prepareStatement("UPDATE " + TABLENAME + " SET " + TYPECOLUME + " = ? "
+			prepareStm = connect.prepareStatement("UPDATE " + TABLENAME + " SET " + TITLECOLUME + " = ?, "+ TYPECOLUME + " = ? "
 														+ "WHERE " + LOG_IDENTIFIERCOLUME + " = ? "
 														+ "AND " + REFERENCECOLUME + " = ?");
 			
-			prepareStm.setString(1, type);
-			prepareStm.setString(2, logicalIdentifier);
-			prepareStm.setString(3, reference);
+			prepareStm.setString(1, title);
+			prepareStm.setString(2, type);
+			prepareStm.setString(3, logicalIdentifier);
+			prepareStm.setString(4, reference);
 			
 			
 			prepareStm.executeUpdate();
 			
 			connect.commit();
-			logger.info("The type for  " + logicalIdentifier + " has been updated to " + type + ".");
+			logger.info("The reference for  " + title + " has been updated.");
 			
 		} catch (Exception e) {
 			logger.error(e);
