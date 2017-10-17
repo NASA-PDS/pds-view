@@ -469,7 +469,36 @@ insert into user (electronic_mail_address, name) values ('william-kurth@uiowa.ed
 */
 
 /*
-** submission
+** archive_status
 */
 
+insert into archive_status (logical_identifier, version_id, status_date_time, status, electronic_mail_address, comment) values ('urn:nasa:pds:context_pds3:data_set:data_set.juno-e-rss-1-eagr-v1.0', '1.0', '2017-10-01T00:00:00', 'IN PEER REVIEW', 'sean.hardman@jpl.nasa.gov', 'This is a test.');
+
+insert into archive_status (logical_identifier, version_id, status_date_time, status, electronic_mail_address, comment) values ('urn:nasa:pds:context_pds3:data_set:data_set.juno-e-rss-1-eagr-v1.0', '1.0', '2017-10-16T00:00:00', 'ARCHIVED', 'sean.hardman@jpl.nasa.gov', 'This is a test.');
+
+insert into archive_status (logical_identifier, version_id, status_date_time, status, electronic_mail_address, comment) values ('urn:nasa:pds:context_pds3:data_set:data_set.juno-j-rss-1-ocru-v1.0', '1.0', '2017-10-16T00:00:00', 'ARCHIVED', 'sean.hardman@jpl.nasa.gov', 'This is a test.');
+
+/*
+** certification_status
+*/
+
+insert into certification_status (logical_identifier, version_id, status_date_time, status, electronic_mail_address, comment) values ('urn:nasa:pds:context_pds3:data_set:data_set.juno-e-rss-1-eagr-v1.0', '1.0', '2017-10-16T00:00:00', 'CERTIFIED', 'sean.hardman@jpl.nasa.gov', 'This is a test.');
+
+insert into certification_status (logical_identifier, version_id, status_date_time, status, electronic_mail_address, comment) values ('urn:nasa:pds:context_pds3:data_set:data_set.juno-j-rss-1-ocru-v1.0', '1.0', '2017-10-16T00:00:00', 'CERTIFIED', 'sean.hardman@jpl.nasa.gov', 'This is a test.');
+
+/*
+** doi
+*/
+
+insert into doi (logical_identifier, version_id, doi, registration_date, site_url, electronic_mail_address, comment) values ('urn:nasa:pds:context_pds3:data_set:data_set.juno-e-rss-1-eagr-v1.0', '1.0', 'http://dx.doi.org/10.5067/PDSJN-ERSS1', '2017-10-16T00:00:00', 'https://pds.nasa.gov/', 'sean.hardman@jpl.nasa.gov', 'This is a test.');
+
+insert into doi (logical_identifier, version_id, doi, registration_date, site_url, electronic_mail_address, comment) values ('urn:nasa:pds:context_pds3:data_set:data_set.juno-j-rss-1-ocru-v1.0', '1.0', 'http://dx.doi.org/10.5067/PDSJN-JRSS1', '2017-10-16T00:00:00', 'https://pds.nasa.gov/', 'sean.hardman@jpl.nasa.gov', 'This is a test.');
+
+/*
+** nssdca_status
+*/
+
+insert into nssdca_status (logical_identifier, version_id, status_date_time, nssdca_identifier, electronic_mail_address, comment) values ('urn:nasa:pds:context_pds3:data_set:data_set.juno-e-rss-1-eagr-v1.0', '1.0', '2017-10-16T00:00:00', 'N00000', 'sean.hardman@jpl.nasa.gov', 'This is a test.');
+
+insert into nssdca_status (logical_identifier, version_id, status_date_time, nssdca_identifier, electronic_mail_address, comment) values ('urn:nasa:pds:context_pds3:data_set:data_set.juno-j-rss-1-ocru-v1.0', '1.0', '2017-10-16T00:00:00', 'N00001', 'sean.hardman@jpl.nasa.gov', 'This is a test.');
 
