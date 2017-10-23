@@ -27,7 +27,7 @@
   </parent>
 
   <groupId>gov.nasa.pds.2010.tracking</groupId>
-  <artifactId>tracking-service</artifactId>
+  <artifactId>tracking</artifactId>
   <packaging>war</packaging>
 
   <name>Tracking Service</name>
@@ -82,7 +82,7 @@
         <artifactId>maven-war-plugin</artifactId>
         <version>2.6</version>
         <configuration>
-          <warName>tracking-service</warName>
+          <warName>tracking</warName>
           <warSourceDirectory>src/main/webapp</warSourceDirectory>
           <failOnMissingWebXml>false</failOnMissingWebXml>
         </configuration>
