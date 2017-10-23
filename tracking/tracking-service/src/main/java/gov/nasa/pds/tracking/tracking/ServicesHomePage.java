@@ -11,15 +11,22 @@ public class ServicesHomePage {
     @GET
     @Produces("text/html")
     public String defaultProducts() {
- 
-        /*StringBuilder sb = new StringBuilder();
-        sb.append("Services!");*/
+
  
         return HtmlConstants.PAGE_BEGIN +
-		          "<h1>PDS Services:</h1>" +		
+		          "<h1>PDS Services</h1>" +		
 	              "<div>" +
-	              "<li><a href=\"tracking/products\">Tracking Service</a><br/></li>" +
-	              "</div>" 
+	              "<li><a href=\"html/products\">All products - HTML</a><br/></li>" +
+	              "</div>" +
+	              "<div>" +
+	              "<li><a href=\"html/products/true\">All products that have associated deliveries - HTML</a><br/></li>" +
+	              "</div>" +
+	              "<div>" +
+	              "<li><a href=\"json/products\">All products - JSON</a><br/></li>" +
+	              "</div>" +
+	              "<div>" +
+	              "<li><a href=\"json/products/true\">All products that have associated deliveries - JSON</a><br/></li>" +
+	              "</div>"
               + HtmlConstants.PAGE_END;
     }
 

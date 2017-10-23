@@ -21,15 +21,13 @@ import org.apache.log4j.Logger;
  * @author danyu dan.yu@jpl.nasa.gov
  *
  */
-/**
- * @author danyu dan.yu@jpl.nasa.gov
- *
- */
+
 public class Product extends DBConnector {
 
 	public static Logger logger = Logger.getLogger(Product.class);
 
 	private static final String TABLENAME = "product";
+	private static final String DELIVERYTABLENAME = "delivery";
 
 	public static final String IDENTIFIERCOLUME  = "logical_identifier";	
 	public static final String VERSIONCOLUME  = "version_id";	
@@ -181,6 +179,47 @@ public class Product extends DBConnector {
 
 			statement = connect.createStatement();
 			resultSet = statement.executeQuery("select * from " + TABLENAME + " order by " + TITLECOLUME);
+			
+			while (resultSet.next()) {
+				prod = new Product();
+				prod.setIdentifier(resultSet.getString(IDENTIFIERCOLUME));
+				prod.setVersion(resultSet.getString(VERSIONCOLUME));
+				prod.setTitle(resultSet.getString(TITLECOLUME));
+				prod.setType(resultSet.getString(TYPECOLUME));
+				prod.setAlternate(resultSet.getString(ALTERNATECOLUME));
+
+				prodObjs.add(prod);
+			}
+			
+		} catch (Exception e) {
+			logger.error(e);
+		} finally {
+			close(statement);
+			return prodObjs;
+		}
+	}
+	
+	/**
+	 * @return a list of all products that have associated deliveries order by title 
+	 */
+	@SuppressWarnings("finally")
+	public List<Product> getProductsAssociatedDeliveriesOrderByTitle() {
+		List<Product> prodObjs = new ArrayList<Product>();
+		Product  prod = null;
+		try {
+			// Setup the connection with the DB
+			connect = getConnection();
+
+			statement = connect.createStatement();
+			logger.debug("select DISTINCT p.* from " + TABLENAME + " p, " + DELIVERYTABLENAME + " d " +
+					"where p." + IDENTIFIERCOLUME + " = d." + IDENTIFIERCOLUME +
+					" and p." + VERSIONCOLUME + " = d." + VERSIONCOLUME +
+					" order by " + TITLECOLUME);
+			
+			resultSet = statement.executeQuery("select DISTINCT p.* from " + TABLENAME + " p, " + DELIVERYTABLENAME + " d " +
+											"where p." + IDENTIFIERCOLUME + " = d." + IDENTIFIERCOLUME +
+											" and p." + VERSIONCOLUME + " = d." + VERSIONCOLUME +
+											" order by " + TITLECOLUME);
 			
 			while (resultSet.next()) {
 				prod = new Product();

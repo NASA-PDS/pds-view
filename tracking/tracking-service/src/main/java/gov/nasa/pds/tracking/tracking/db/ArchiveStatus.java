@@ -153,11 +153,11 @@ public class ArchiveStatus extends DBConnector {
 
 			statement = connect.createStatement();
 
-			logger.debug("select * from " + PRODUCTTABLENAME + " p, " + TABLENAME + " a" + " where p."
-					+ LOGIDENTIFIERCOLUME + " = " + "a." + LOGIDENTIFIERCOLUME + " order by " + VERSIONCOLUME);
+			logger.debug("select a.* from " + PRODUCTTABLENAME + " p, " + TABLENAME + " a" + " where p."
+					+ LOGIDENTIFIERCOLUME + " = " + "a." + LOGIDENTIFIERCOLUME + " order by a." + VERSIONCOLUME);
 			resultSet = statement
-					.executeQuery("select * from " + PRODUCTTABLENAME + " p, " + TABLENAME + " a" + " where p."
-							+ LOGIDENTIFIERCOLUME + " = " + "a." + LOGIDENTIFIERCOLUME + " order by " + VERSIONCOLUME);
+					.executeQuery("select a.* from " + PRODUCTTABLENAME + " p, " + TABLENAME + " a" + " where p."
+							+ LOGIDENTIFIERCOLUME + " = " + "a." + LOGIDENTIFIERCOLUME + " order by a." + VERSIONCOLUME);
 
 			while (resultSet.next()) {
 				archStatus = new ArchiveStatus();
@@ -194,12 +194,12 @@ public class ArchiveStatus extends DBConnector {
 
 			statement = connect.createStatement();
 
-			logger.debug("select * from " + PRODUCTTABLENAME + " p, " + TABLENAME + " a" + " where p."
-					+ LOGIDENTIFIERCOLUME + " = " + "a." + LOGIDENTIFIERCOLUME + " and p." + Product.TITLECOLUME + " = "
-					+ title + " order by " + VERSIONCOLUME);
-			resultSet = statement.executeQuery("select * from " + PRODUCTTABLENAME + " p, " + TABLENAME + " a"
+			logger.debug("select a.* from " + PRODUCTTABLENAME + " p, " + TABLENAME + " a" + " where p."
+					+ LOGIDENTIFIERCOLUME + " = " + "a." + LOGIDENTIFIERCOLUME + " and p." + Product.TITLECOLUME + " = '"
+					+ title + "' order by a." + VERSIONCOLUME);
+			resultSet = statement.executeQuery("select a.* from " + PRODUCTTABLENAME + " p, " + TABLENAME + " a"
 					+ " where p." + LOGIDENTIFIERCOLUME + " = " + "a." + LOGIDENTIFIERCOLUME + " and p."
-					+ Product.TITLECOLUME + " = " + title + " order by " + VERSIONCOLUME);
+					+ Product.TITLECOLUME + " = '" + title + "' order by a." + VERSIONCOLUME);
 
 			while (resultSet.next()) {
 				archStatus = new ArchiveStatus();

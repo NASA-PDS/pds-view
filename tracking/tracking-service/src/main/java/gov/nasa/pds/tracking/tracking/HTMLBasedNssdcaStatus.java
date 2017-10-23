@@ -11,11 +11,12 @@ import javax.ws.rs.Produces;
 
 import org.apache.log4j.Logger;
 
+import gov.nasa.pds.tracking.tracking.db.ArchiveStatus;
 import gov.nasa.pds.tracking.tracking.db.DBConnector;
 import gov.nasa.pds.tracking.tracking.db.NssdcaStatus;
 import gov.nasa.pds.tracking.tracking.utils.HtmlConstants;
 
-@Path("/tracking/nssdcastatus")
+@Path("html/nssdcastatus")
 public class HTMLBasedNssdcaStatus  extends DBConnector {
 	
 	public HTMLBasedNssdcaStatus() throws ClassNotFoundException, SQLException {
@@ -80,18 +81,72 @@ public class HTMLBasedNssdcaStatus  extends DBConnector {
  
         return HtmlConstants.PAGE_BEGIN + sb.toString() + HtmlConstants.PAGE_END;
     }
+    /**
+     * @param id
+     * @param version
+     * @return
+     */
+    @Path("{id : (.+)?}/{version : (.+)?}")
+    @GET
+    @Produces("text/html")
+    public String NssdcaStatus(@PathParam("id") String id, @PathParam("version") String version) {
+    	
+    	StringBuilder sb = new StringBuilder();
+    	sb.append("<h1>Tracking Service</h1>" +
+    			"  <h2>Nssdca Status for the product: " + id + ", " + version + "</h2>" +
+	              "<div>" +
+    			  "<table border=\"1\" style=\"width: 90%;border-spacing: 0; font:normal; font-size: 12\" >" +
+    			  tableTiltes);
+
+    	NssdcaStatus nStatus;
+		try {
+				nStatus = new NssdcaStatus();
+				
+				List<NssdcaStatus> nStatuses = nStatus.getNssdcaStatusList(id, version);
+				
+				logger.info("number of Nssdca Status: "  + nStatuses.size());
+				
+				Iterator<NssdcaStatus> itr = nStatuses.iterator();
+	
+				while(itr.hasNext()) {
+					NssdcaStatus ns = itr.next();
+			         
+					sb.append("<tr>" +
+			    			  "<td>" + ns.getDate() + "</td>"+
+				              "<td>" + ns.getNssdca() + "</td>" +
+				              "<td>" + ns.getVersion() + "</td>" +
+				              "<td>" + ns.getEmail() + "</td>" +
+				              "<td>" + ns.getComment() + "</td>" +
+				              "<td>" + ns.getLogIdentifier() + "</td>" +			              
+			    			  "<tr>");
+				}
+	
+		} catch (ClassNotFoundException e) {
+			logger.error(e);
+		} catch (SQLException e) {
+			logger.error(e);
+		}
+    			
+        
+        sb.append("</table></div>");
  
-    @Path("{title}")
+        return HtmlConstants.PAGE_BEGIN + sb.toString() + HtmlConstants.PAGE_END;
+    }
+    /**
+     * @param title
+     * @return
+     */
+    @Path("{title : (.+)?}")
     @GET
     @Produces("text/html")
     public String NssdcaStatus(@PathParam("title") String title) {
     	
     	//Get all archive status for the title in the archive_status table
-    	String realTitle = title.replaceAll("&", "/");
+    	//String realTitle = title.replaceAll("&", "/");
     	
     	StringBuilder sb = new StringBuilder();
     	sb.append("<h1>Tracking Service</h1>" +
-    			"  <h2>NSSDCA status for " + realTitle + "</h2>" +
+    			"  <h2>NSSDCA status for " + title + "</h2>" +
 	              "<div>" +
     			  "<table border=\"1\" style=\"width: 90%;border-spacing: 0; font:normal; font-size: 12\" >" +
     			  tableTiltes);
@@ -101,7 +156,7 @@ public class HTMLBasedNssdcaStatus  extends DBConnector {
 			
 			nStatus = new NssdcaStatus();
 			
-			List<NssdcaStatus> nStatuses = nStatus.getNssdcaStatusOrderByVersion(realTitle);
+			List<NssdcaStatus> nStatuses = nStatus.getNssdcaStatusOrderByVersion(title);
 			
 			logger.info("number of NSSDCA Status: "  + nStatuses.size());
 			

@@ -244,11 +244,11 @@ public class Delivery extends DBConnector {
 			connect = getConnection();
 
 			statement = connect.createStatement();
-			/*System.out.println("select * from " 
-					+ productTableName + " p, " + tableName + " d"
-					+ " where p." + log_identifierColume + " = " + "d." + log_identifierColume 
-					+ " and p." + Product.titleColume + " = " + title
-					+ " order by " + dueDateColume);*/
+			logger.debug("select * from " 
+					+ PRODUCTTABLENAME + " p, " + TABLENAME + " d"
+					+ " where p." + LOG_IDENTIFIERCOLUME + " = " + "d." + LOG_IDENTIFIERCOLUME 
+					+ " and p." + Product.TITLECOLUME + " = '" + title
+					+ "' order by " + DUEDATECOLUME);
 			resultSet = statement.executeQuery("select * from " 
 												+ PRODUCTTABLENAME + " p, " + TABLENAME + " d"
 												+ " where p." + LOG_IDENTIFIERCOLUME + " = " + "d." + LOG_IDENTIFIERCOLUME 
@@ -289,11 +289,12 @@ public class Delivery extends DBConnector {
 			// Setup the connection with the DB
 			connect = getConnection();
 			statement = connect.createStatement();
-			/*System.out.println("select * from " 
-								+ TABLENAME
-								+ " where " + LOG_IDENTIFIERCOLUME + " = '" + log_identifer 
-								+ "' and " + VERSIONCOLUME + " = '" + version
-								+ "' order by " + DUEDATECOLUME);*/
+			
+			logger.debug("select * from " 
+					+ TABLENAME
+					+ " where " + LOG_IDENTIFIERCOLUME + " = '" + log_identifer 
+					+ "' and " + VERSIONCOLUME + " = '" + version
+					+ "' order by " + DUEDATECOLUME);
 			resultSet = statement.executeQuery("select * from " 
 												+ TABLENAME
 												+ " where " + LOG_IDENTIFIERCOLUME + " = '" + log_identifer 

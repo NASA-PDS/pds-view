@@ -14,7 +14,7 @@ import org.apache.log4j.Logger;
 import gov.nasa.pds.tracking.tracking.db.Delivery;
 import gov.nasa.pds.tracking.tracking.utils.HtmlConstants;
  
-@Path("/tracking/delivery")
+@Path("html/delivery")
 public class HTMLBasedDelivery {
 	public static Logger logger = Logger.getLogger(HTMLBasedProducts.class);
 		
@@ -52,7 +52,7 @@ public class HTMLBasedDelivery {
 			int count = 1;
 			while(itr.hasNext()) {
 		         Delivery d = itr.next();
-		         logger.info("Deliveris " + count + ":\n " + d.getLogIdentifier() + " : " + d.getName());
+		         logger.debug("Deliveris " + count + ":\n " + d.getLogIdentifier() + " : " + d.getName());
 		         sb.append("<tr>" +
 		    			  "<td>" + d.getName() + "</td>"+
 			              "<td>" + d.getStart() + "</td>" +
@@ -80,21 +80,16 @@ public class HTMLBasedDelivery {
         return HtmlConstants.PAGE_BEGIN + sb.toString() + HtmlConstants.PAGE_END;
     }
  
-    @Path("{title}")
+    @Path("{id : (.+)?}/{version : (.+)?}")
     @GET
     @Produces("text/html")
-    public String deliveries(@PathParam("title") String title) {
+    public String deliveries(@PathParam("id") String id, @PathParam("version") String version) {
     	
-    	//Get all deliveries for the title in the delivery table
     	
-    	//logger.info("Title: "  + title);
-    	
-    	String realTitle = title.replaceAll("&", "/");
-    	//logger.info("Real Title: "  + realTitle);
     	
     	StringBuilder sb = new StringBuilder();
     	sb.append("<h1>Tracking Service</h1>" +
-    			"  <h2>Deliveries for " + realTitle + "</h2>" +
+    			"  <h2>Deliveries for " + id + ", " + version + "</h2>" +
 	              "<div>" +
     			  "<table border=\"1\" style=\"width: 90%;border-spacing: 0; font:normal; font-size: 14\" >" +
     			  tableTiltes);
@@ -102,13 +97,66 @@ public class HTMLBasedDelivery {
     	Delivery del;
 		try {
 			del = new Delivery();
-			List<Delivery> dels = del.getDeliveriesOrderByDueDate(realTitle);
-			//logger.info("number of deliveris: "  + dels.size());
+			List<Delivery> dels = del.getProductDeliveries(id, version);
+			logger.info("number of deliveris: "  + dels.size());
 			Iterator<Delivery> itr = dels.iterator();
 			int count = 1;
 			while(itr.hasNext()) {
 		         Delivery d = itr.next();
-		         logger.info("Deliveris " + count + ":\n " + d.getLogIdentifier() + " : " + d.getName());
+		         logger.debug("Deliveris " + count + ":\n " + d.getLogIdentifier() + " : " + d.getName());
+		         sb.append("<tr>" +
+		    			  "<td>" + d.getName() + "</td>"+
+			              "<td>" + d.getStart() + "</td>" +
+			              "<td>" + d.getStop() + "</td>" +
+			              "<td>" + d.getVersion() + "</td>" +
+			              "<td>" + d.getSource() + "</td>" +
+			              "<td>" + d.getTarget() + "</td>" +
+			              "<td>" + d.getDueDate() + "</td>" +
+			              "<td>" + d.getLogIdentifier() + "</td>" +
+			              "<td>" + d.getDelIdentifier() + "</td>" +
+		    			  "<tr>");
+		         count++;
+		    }
+
+			
+		} catch (ClassNotFoundException e) {
+			logger.error(e);
+		} catch (SQLException e) {
+			logger.error(e);
+		}
+    			
+        
+        sb.append("</table></div>");
+ 
+        return HtmlConstants.PAGE_BEGIN + sb.toString() + HtmlConstants.PAGE_END;
+    }
+    
+    @Path("{title : (.+)?}")
+    @GET
+    @Produces("text/html")
+    public String deliveries(@PathParam("title") String title) {
+    	
+    	//Get all deliveries for the title in the delivery table
+    	
+    	logger.debug("Title: "  + title);
+    	
+    	StringBuilder sb = new StringBuilder();
+    	sb.append("<h1>Tracking Service</h1>" +
+    			"  <h2>Deliveries for " + title + "</h2>" +
+	              "<div>" +
+    			  "<table border=\"1\" style=\"width: 90%;border-spacing: 0; font:normal; font-size: 14\" >" +
+    			  tableTiltes);
+
+    	Delivery del;
+		try {
+			del = new Delivery();
+			List<Delivery> dels = del.getDeliveriesOrderByDueDate(title);
+			logger.info("number of deliveris: "  + dels.size());
+			Iterator<Delivery> itr = dels.iterator();
+			int count = 1;
+			while(itr.hasNext()) {
+		         Delivery d = itr.next();
+		         logger.debug("Deliveris " + count + ":\n " + d.getLogIdentifier() + " : " + d.getName());
 		         sb.append("<tr>" +
 		    			  "<td>" + d.getName() + "</td>"+
 			              "<td>" + d.getStart() + "</td>" +

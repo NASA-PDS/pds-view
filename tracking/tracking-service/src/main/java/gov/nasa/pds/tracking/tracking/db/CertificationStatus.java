@@ -268,9 +268,9 @@ public class CertificationStatus extends DBConnector {
 
 			statement = connect.createStatement();
 
-			resultSet = statement.executeQuery("select * from " + PRODUCTTABLENAME + " p, " + TABLENAME + " a"
+			resultSet = statement.executeQuery("select a.* from " + PRODUCTTABLENAME + " p, " + TABLENAME + " a"
 					+ " where p." + LOGIDENTIFIERCOLUME + " = " + "a." + LOGIDENTIFIERCOLUME + " and p."
-					+ Product.TITLECOLUME + " = " + title + " order by " + VERSIONCOLUME);
+					+ Product.TITLECOLUME + " = '" + title + "' order by a." + VERSIONCOLUME);
 
 			while (resultSet.next()) {
 				cStatus = new CertificationStatus();
@@ -307,8 +307,8 @@ public class CertificationStatus extends DBConnector {
 			statement = connect.createStatement();
 
 			resultSet = statement
-					.executeQuery("select * from " + PRODUCTTABLENAME + " p, " + TABLENAME + " a" + " where p."
-							+ LOGIDENTIFIERCOLUME + " = " + "a." + LOGIDENTIFIERCOLUME + " order by " + VERSIONCOLUME);
+					.executeQuery("select c.* from " + PRODUCTTABLENAME + " p, " + TABLENAME + " c" + " where p."
+							+ LOGIDENTIFIERCOLUME + " = " + "c." + LOGIDENTIFIERCOLUME + " order by c." + VERSIONCOLUME);
 
 			while (resultSet.next()) {
 				cStatus = new CertificationStatus();

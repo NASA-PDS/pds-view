@@ -118,9 +118,10 @@ public class Reference extends DBConnector {
 
 			statement = connect.createStatement();
 
-			/*System.out.println("select * from " + TABLENAME
+			logger.debug("select * from " + TABLENAME
 											+ " where " + LOG_IDENTIFIERCOLUME + " = '" + identifier
-											+ "' order by " + TYPECOLUME);*/
+											+ "' order by " + TYPECOLUME);
+			
 			resultSet = statement.executeQuery("select * from " + TABLENAME
 											+ " where " + LOG_IDENTIFIERCOLUME + " = '" + identifier
 											+ "' order by " + TYPECOLUME);

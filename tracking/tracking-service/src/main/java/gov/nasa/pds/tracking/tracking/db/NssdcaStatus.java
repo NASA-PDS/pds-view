@@ -246,9 +246,9 @@ public class NssdcaStatus extends DBConnector {
 
 			statement = connect.createStatement();
 
-			resultSet = statement.executeQuery("select * from " + PRODUCTTABLENAME + " p, " + TABLENAME + " a"
+			resultSet = statement.executeQuery("select a.* from " + PRODUCTTABLENAME + " p, " + TABLENAME + " a"
 					+ " where p." + LOGIDENTIFIERCOLUME + " = " + "a." + LOGIDENTIFIERCOLUME + " and p."
-					+ Product.TITLECOLUME + " = " + title + " order by " + VERSIONCOLUME);
+					+ Product.TITLECOLUME + " = '" + title + "' order by a." + VERSIONCOLUME);
 
 			while (resultSet.next()) {
 				nStatus = new NssdcaStatus();
@@ -285,8 +285,8 @@ public class NssdcaStatus extends DBConnector {
 			statement = connect.createStatement();
 
 			resultSet = statement
-					.executeQuery("select * from " + PRODUCTTABLENAME + " p, " + TABLENAME + " a" + " where p."
-							+ LOGIDENTIFIERCOLUME + " = " + "a." + LOGIDENTIFIERCOLUME + " order by " + VERSIONCOLUME);
+					.executeQuery("select n.* from " + PRODUCTTABLENAME + " p, " + TABLENAME + " n" + " where p."
+							+ LOGIDENTIFIERCOLUME + " = " + "n." + LOGIDENTIFIERCOLUME + " order by n." + VERSIONCOLUME);
 
 			while (resultSet.next()) {
 				nStatus = new NssdcaStatus();
