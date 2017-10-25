@@ -99,6 +99,10 @@
           </li>
           <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-512'>PDS-512</a>] - Transform: Integrate the tool with the Tools Service
           </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-519'>PDS-519</a>] - Generate: The tool outputs an unexpected warning
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-521'>PDS-521</a>] - Validate: The -R pds4.bundle option cancels -e "*.xml"
+          </li>
         </ul>
       </subsection>
 
@@ -114,6 +118,8 @@
           <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-501'>PDS-501</a>] - Core: Support bundle.xml and collection.xml file names to trigger their respective rule types
           </li>
           <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-515'>PDS-515</a>] - Validate: Handshake failure occurs when trying to validate against schemas located on the PDS machines
+          </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-523'>PDS-523</a>] - Transform: transformation of character table product to PDS3 label fails
           </li>
         </ul>
       </subsection>
