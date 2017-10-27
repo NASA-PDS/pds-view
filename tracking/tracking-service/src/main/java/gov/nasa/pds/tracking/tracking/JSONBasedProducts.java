@@ -52,11 +52,11 @@ public class JSONBasedProducts {
 		         logger.debug("Product " + count + ":\n " + p.getIdentifier() + " : " + p.getTitle());
 		         
 		         jsonProd = new JSONObject();
-		         jsonProd.put("logical_identifier", p.getIdentifier());
-		         jsonProd.put("version_id", p.getVersion());
-		         jsonProd.put("title", p.getTitle());
-		         jsonProd.put("type", p.getType());
-		         jsonProd.put("alternate_id", p.getAlternate());
+		         jsonProd.put(Product.IDENTIFIERCOLUME, p.getIdentifier());
+		         jsonProd.put(Product.VERSIONCOLUME, p.getVersion());
+		         jsonProd.put(Product.TITLECOLUME, p.getTitle());
+		         jsonProd.put(Product.TYPECOLUME, p.getType());
+		         jsonProd.put(Product.ALTERNATECOLUME, p.getAlternate());
 
 		         jsonProducts.append("products", jsonProd);
 		         count++;
@@ -92,11 +92,11 @@ public class JSONBasedProducts {
 		         logger.debug("Product " + count + ":\n " + p.getIdentifier() + " : " + p.getTitle());
 		         
 		         jsonProd = new JSONObject();
-		         jsonProd.put("logical_identifier", p.getIdentifier());
-		         jsonProd.put("version_id", p.getVersion());
-		         jsonProd.put("title", p.getTitle());
-		         jsonProd.put("type", p.getType());
-		         jsonProd.put("alternate_id", p.getAlternate());
+		         jsonProd.put(Product.IDENTIFIERCOLUME, p.getIdentifier());
+		         jsonProd.put(Product.VERSIONCOLUME, p.getVersion());
+		         jsonProd.put(Product.TITLECOLUME, p.getTitle());
+		         jsonProd.put(Product.TYPECOLUME, p.getType());
+		         jsonProd.put(Product.ALTERNATECOLUME, p.getAlternate());
 
 		         jsonProducts.append("products", jsonProd);
 		         count++;

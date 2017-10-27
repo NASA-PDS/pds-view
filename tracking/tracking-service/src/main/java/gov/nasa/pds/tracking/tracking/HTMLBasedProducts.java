@@ -50,7 +50,7 @@ public class HTMLBasedProducts {
 		         logger.debug("Product " + count + ":\n " + p.getIdentifier() + " : " + p.getTitle());
 		         sb.append("<tr>" +
 		    			  "<td><table><tr>" + p.getTitle() + "</br></br>" +
-		    			  					"<a href=\"../html/delivery/" + p.getIdentifier() + "/" + p.getVersion() + "\">Deliveris</a></br>" +
+		    			  					"<a href=\"../html/delivery/" + p.getIdentifier() + "/" + p.getVersion() + "\">Deliveries</a></br>" +
 		    			  					"<a href=\"../html/archivestatus/" + p.getIdentifier() + "/" + p.getVersion() + "/false\">Archive Status</a></br>" +
 		    			  					"<a href=\"../html/archivestatus/" + p.getIdentifier() + "/" + p.getVersion() + "/true\">Latest Archive Status</a></br>" +
 		    			  					"<a href=\"../html/certificationstatus/" + p.getIdentifier() + "/" + p.getVersion() + "/false\">Certification Status</a></br>" +
@@ -110,7 +110,8 @@ public class HTMLBasedProducts {
 		         logger.debug("Product " + count + ":\n " + p.getIdentifier() + " : " + p.getTitle());
 		         sb.append("<tr>" +
 		    			  "<td><table><tr>" + p.getTitle() + "</br></br>" +
-		    			  					"<a href=\"../../html/delivery/" + p.getIdentifier() + "/" + p.getVersion() + "\">Deliveris</a></br>" +
+		    			  					"<a href=\"../../html/delivery/" + p.getIdentifier() + "/" + p.getVersion() + "\">Deliveries - HTML </a></br>" +
+		    			  					"<a href=\"../../json/delivery/" + p.getIdentifier() + "/" + p.getVersion() + "\">Deliveries - JSON</a></br>" +
 		    			  					"<a href=\"../../html/archivestatus/" + p.getIdentifier() + "/" + p.getVersion() + "/false\">Archive Status</a></br>" +
 		    			  					"<a href=\"../../html/archivestatus/" + p.getIdentifier() + "/" + p.getVersion() + "/true\">Latest Archive Status</a></br>" +
 		    			  					"<a href=\"../../html/certificationstatus/" + p.getIdentifier() + "/" + p.getVersion() + "/false\">Certification Status</a></br>" +

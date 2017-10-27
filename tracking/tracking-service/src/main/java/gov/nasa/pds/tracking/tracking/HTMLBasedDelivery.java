@@ -52,7 +52,7 @@ public class HTMLBasedDelivery {
 			int count = 1;
 			while(itr.hasNext()) {
 		         Delivery d = itr.next();
-		         logger.debug("Deliveris " + count + ":\n " + d.getLogIdentifier() + " : " + d.getName());
+		         logger.debug("Deliveries " + count + ":\n " + d.getLogIdentifier() + " : " + d.getName());
 		         sb.append("<tr>" +
 		    			  "<td>" + d.getName() + "</td>"+
 			              "<td>" + d.getStart() + "</td>" +
@@ -103,7 +103,7 @@ public class HTMLBasedDelivery {
 			int count = 1;
 			while(itr.hasNext()) {
 		         Delivery d = itr.next();
-		         logger.debug("Deliveris " + count + ":\n " + d.getLogIdentifier() + " : " + d.getName());
+		         logger.debug("Deliveries " + count + ":\n " + d.getLogIdentifier() + " : " + d.getName());
 		         sb.append("<tr>" +
 		    			  "<td>" + d.getName() + "</td>"+
 			              "<td>" + d.getStart() + "</td>" +
