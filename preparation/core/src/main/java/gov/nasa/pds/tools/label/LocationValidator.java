@@ -15,6 +15,7 @@ package gov.nasa.pds.tools.label;
 
 import gov.nasa.pds.tools.label.validate.DocumentValidator;
 import gov.nasa.pds.tools.util.SettingsManager;
+import gov.nasa.pds.tools.validate.ListenerExceptionPropagator;
 import gov.nasa.pds.tools.validate.ProblemListener;
 import gov.nasa.pds.tools.validate.TargetRegistrar;
 import gov.nasa.pds.tools.validate.ValidationProblem;
@@ -264,98 +265,6 @@ public class LocationValidator {
 		this.validationRule = ruleName;
 	}
 	
-	private class ListenerExceptionPropagator implements ProblemListener {
-		
-		private ValidateExceptionHandler handler;
-		int errorCount;
-		int warningCount;
-		int infoCount;
-
-		public ListenerExceptionPropagator(ValidateExceptionHandler handler) {
-			this.handler = handler;
-		}
-
-		@Override
-		public void addProblem(ValidationProblem problem) {
-			ExceptionType type;
-			
-			switch (problem.getProblem().getSeverity()) {
-			case ERROR:
-				type = ExceptionType.ERROR;
-				++errorCount;
-				break;
-			case WARNING:
-				type = ExceptionType.WARNING;
-				++warningCount;
-				break;
-			default:
-				type = ExceptionType.INFO;
-				++infoCount;
-				break;
-			}
-			LabelException ex = new LabelException(
-					type,
-					problem.getMessage(),
-					"",
-					problem.getTarget().getLocation(),
-					problem.getLineNumber(),
-					problem.getColumnNumber()
-			);
-			handler.addException(ex);
-		}
-		
-		
-		
-    @Override
-    public void addProblem(LabelException exception) {
-      ExceptionType type = exception.getExceptionType();
-      if (ExceptionType.FATAL.equals(type) || ExceptionType.ERROR.equals(type)) {
-        ++errorCount;
-      } else if (ExceptionType.WARNING.equals(type)) {
-        ++warningCount;
-      } else {
-        ++infoCount;
-      }
-      handler.addException(exception); 
-    }
-
-		@Override
-		public int getErrorCount() {
-			return errorCount;
-		}
-
-		@Override
-		public int getWarningCount() {
-			return warningCount;
-		}
-
-		@Override
-		public int getInfoCount() {
-			return infoCount;
-		}
-
-		@Override
-		public boolean hasProblems(String location, boolean includeChildren) {
-			return false;
-		}
-
-		@Override
-		public ExceptionType getSeverity(String location, boolean includeChildren) {
-			return null;
-		}
-
-		@Override
-		public Collection<ValidationProblem> getProblemsForLocation(
-				String location, boolean includeChildren) {
-			return null;
-		}
-
-    @Override
-    public void addLocation(String location) {
-      handler.addLocation(location);
-    }
-	}
-	
 	/**
 	 * Implements a simple exception handler that prints exceptions to the standout error output.
 	 * @author merose
@@ -390,6 +299,16 @@ public class LocationValidator {
     public void addLocation(String location) {
       // TODO Auto-generated method stub
       
+    }
+
+    @Override
+    public void printHeader(String title) {
+      // TODO Auto-generated method stub
+      
+    }
+    
+    public void record(String location) {
+      // TODO Auto-generated method stub
     }
 	}
 

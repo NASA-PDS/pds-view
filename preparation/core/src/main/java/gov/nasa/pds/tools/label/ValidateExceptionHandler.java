@@ -24,4 +24,18 @@ public interface ValidateExceptionHandler extends ExceptionHandler {
    * @param location The location.
    */
   void addLocation(String location);
+  
+  /**
+   * Adds a header to the report.
+   * 
+   * @param title The name of the section to add.
+   */
+  void printHeader(String title);
+  
+  /**
+   * Records the validation results.
+   * 
+   * @param location The target file.
+   */
+  void record(String location);
 }

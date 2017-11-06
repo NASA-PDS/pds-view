@@ -156,6 +156,10 @@ public class InMemoryRegistrar implements TargetRegistrar {
     return unreferencedTargets;
   }
 
+  public synchronized Collection<Identifier> getReferencedIdentifiers() {
+    return referencedIdentifiers;
+  }
+  
   @Override
   public synchronized Collection<Identifier> getUnreferencedIdentifiers() {
     List<Identifier> unreferencedIdentifiers = new ArrayList<Identifier>();
@@ -186,5 +190,16 @@ public class InMemoryRegistrar implements TargetRegistrar {
     }
 
     return danglingRefs;
+  }
+  
+  public synchronized String getIdentifierReferenceLocation(Identifier id) {
+    String result = null;
+    for (Identifier ri : identifierReferenceLocations.keySet()) {
+      if (ri.equals(id)) {
+        result = identifierReferenceLocations.get(ri);
+        break;
+      }
+    }
+    return result;
   }
 }

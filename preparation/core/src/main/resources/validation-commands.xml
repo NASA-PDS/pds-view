@@ -15,29 +15,34 @@
     <command caption="Register file references" className="gov.nasa.pds.tools.validate.rule.pds4.RegisterTargetReferences" />
     <command caption="Register label identifiers" className="gov.nasa.pds.tools.validate.rule.pds4.RegisterLabelIdentifiers" />
     <command caption="Data Content matches table descriptions in label" className="gov.nasa.pds.tools.validate.rule.pds4.TableDataContentValidationRule" />
+    <command caption="Record validation results" className="gov.nasa.pds.tools.validate.rule.RecordValidationResults" />
   </command>   
 
   <chain name="pds4.bundle" caption="PDS4 Bundle" className="gov.nasa.pds.tools.validate.rule.pds4.BundleValidationRule">
     <command caption="Register targets" className="gov.nasa.pds.tools.validate.rule.RegisterTargets" />
-    <command caption="Bundle contents naming" className="gov.nasa.pds.tools.validate.rule.pds4.BundleContentsNamingRule" />
-    <command caption="File and directory naming" className="gov.nasa.pds.tools.validate.rule.pds4.FileAndDirectoryNamingRule" />
     <command caption="XML files are labels" className="gov.nasa.pds.tools.validate.rule.pds4.LabelInFolderRule" />
     <command caption="Directories validated as collections" className="gov.nasa.pds.tools.validate.rule.pds4.CollectionInBundleRule" />
+    <command caption="Set report header" className="gov.nasa.pds.tools.validate.rule.SetReportHeader" />
+    <command caption="Bundle contents naming" className="gov.nasa.pds.tools.validate.rule.pds4.BundleContentsNamingRule" />
+    <command caption="File and directory naming" className="gov.nasa.pds.tools.validate.rule.pds4.FileAndDirectoryNamingRule" />
     <command caption="Find files not labeled" className="gov.nasa.pds.tools.validate.rule.pds4.FindUnreferencedFiles" />
     <command caption="Bundle Referential Integrity" className="gov.nasa.pds.tools.validate.rule.pds4.BundleReferentialIntegrityRule" />
-    <command caption="Find identifiers not referenced" className="gov.nasa.pds.tools.validate.rule.pds4.FindUnreferencedIdentifiers" />  
+    <command caption="Find identifiers not referenced" className="gov.nasa.pds.tools.validate.rule.pds4.FindUnreferencedIdentifiers" />
+    <command caption="Record validation results" className="gov.nasa.pds.tools.validate.rule.RecordValidationResults" />  
   </chain>
   
   <chain name="pds4.collection" caption="PDS4 Collection" className="gov.nasa.pds.tools.validate.rule.pds4.CollectionValidationRule">
     <command caption="Register targets" className="gov.nasa.pds.tools.validate.rule.RegisterTargets" />
+    <command caption="XML files are labels" className="gov.nasa.pds.tools.validate.rule.pds4.LabelInFolderRule" />
+    <command caption="Subdirectories of collection" className="gov.nasa.pds.tools.validate.rule.pds4.SubDirectoryRule" />
+    <command caption="Set report header" className="gov.nasa.pds.tools.validate.rule.SetReportHeader" />
     <command caption="Mark subdirectories referenced" className="gov.nasa.pds.tools.validate.rule.MarkSubdirectoriesReferenced" />
     <command caption="Subdirectory naming" className="gov.nasa.pds.tools.validate.rule.pds4.SubdirectoryNamingRule" />
     <command caption="File and directory naming" className="gov.nasa.pds.tools.validate.rule.pds4.FileAndDirectoryNamingRule" />
-    <command caption="XML files are labels" className="gov.nasa.pds.tools.validate.rule.pds4.LabelInFolderRule" />
-    <command caption="Subdirectories of collection" className="gov.nasa.pds.tools.validate.rule.pds4.SubDirectoryRule" />
     <command caption="Find files not labeled" className="gov.nasa.pds.tools.validate.rule.pds4.FindUnreferencedFiles" />
     <command caption="Collection Referential Integrity" className="gov.nasa.pds.tools.validate.rule.pds4.CollectionReferentialIntegrityRule" />
-    <command caption="Find identifiers not referenced" className="gov.nasa.pds.tools.validate.rule.pds4.FindUnreferencedIdentifiers" /> 
+    <command caption="Find identifiers not referenced" className="gov.nasa.pds.tools.validate.rule.pds4.FindUnreferencedIdentifiers" />
+    <command caption="Record validation results" className="gov.nasa.pds.tools.validate.rule.RecordValidationResults" />
   </chain> 
 
   <command name="pds3.volume" caption="PDS3 Volume" className="gov.nasa.pds.tools.validate.rule.pds3.VolumeValidationRule" />

@@ -70,6 +70,7 @@ public class CollectionReferentialIntegrityRule extends AbstractValidationRule {
           try {
             XMLExtractor extractor = new XMLExtractor(child.getUrl());
             if("Product_Collection".equals(extractor.getValueFromDoc(PRODUCT_CLASS))) {
+              getListener().addLocation(child.getUrl().toString());
               getCollectionMembers(child.getUrl());
               break;
             }

@@ -165,5 +165,21 @@ public interface TargetRegistrar {
      * @return a collection of dangling identifier references
      */
     Collection<IdentifierReference> getDanglingReferences();
+    
+    /**
+     * Gets a collection of referenced identifiers.
+     *
+     * @return a collection of referenced identifiers.
+     */
+    Collection<Identifier> getReferencedIdentifiers();
+    
+    /**
+     * Gets the location of where the given identifier is referenced.
+     * 
+     * @param id The identifier to find.
+     * 
+     * @return The location where the given identifier is referenced.
+     */
+    String getIdentifierReferenceLocation(Identifier id); 
 
 }

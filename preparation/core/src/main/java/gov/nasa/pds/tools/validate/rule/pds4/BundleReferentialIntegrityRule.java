@@ -95,6 +95,7 @@ public class BundleReferentialIntegrityRule extends AbstractValidationRule {
               // For bundles, set a reference to itself.
               getRegistrar().addIdentifierReference(child.getUrl().toString(), 
                   new Identifier(lid, vid));
+              getListener().addLocation(child.getUrl().toString());
               getBundleMembers(child.getUrl());
               break;
             }

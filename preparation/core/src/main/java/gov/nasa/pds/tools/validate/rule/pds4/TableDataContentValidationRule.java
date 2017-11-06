@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.BufferUnderflowException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -207,8 +208,14 @@ public class TableDataContentValidationRule extends AbstractValidationRule {
         // We have either a character or delimited table
         try {
           if (table instanceof TableBinary) {
-            while ( (record = reader.readNext()) != null ) {
-              fieldValueValidator.validate(record, reader.getFields());
+            try {
+              while ( (record = reader.readNext()) != null ) {
+                fieldValueValidator.validate(record, reader.getFields());
+              }
+            } catch (BufferUnderflowException be) {
+              throw new IOException(
+                  "Unexpected end-of-file reached while reading table '"
+                      + tableIndex + "', record '" + reader.getCurrentRow() + "'");
             }
           } else {
             String line = null;       

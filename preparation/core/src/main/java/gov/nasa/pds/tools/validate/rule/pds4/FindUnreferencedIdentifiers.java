@@ -21,6 +21,7 @@ import org.apache.commons.io.FilenameUtils;
 import gov.nasa.pds.tools.label.ExceptionType;
 import gov.nasa.pds.tools.label.LabelException;
 import gov.nasa.pds.tools.validate.Identifier;
+import gov.nasa.pds.tools.validate.ListenerExceptionPropagator;
 import gov.nasa.pds.tools.validate.rule.AbstractValidationRule;
 import gov.nasa.pds.tools.validate.rule.ValidationTest;
 
@@ -44,25 +45,48 @@ public class FindUnreferencedIdentifiers extends AbstractValidationRule {
   public void findUnreferencedIdentifiers() {
     // Only run the test if we are the root target, to avoid duplicate errors.
     if (getContext().isRootTarget()) {
-      for (Identifier identifier : getRegistrar().getUnreferencedIdentifiers()) {       
-        String location = getRegistrar().getTargetForIdentifier(identifier);
-        String memberType = "collection";
-        Matcher matcher = COLLECTION_LABEL_PATTERN.matcher(
-            FilenameUtils.getName(location));
-        if (matcher.matches()) {
-          memberType = "bundle";
+      for (Identifier id : getRegistrar().getIdentifierDefinitions().keySet()) {  
+        String location = getRegistrar().getTargetForIdentifier(id);
+        getListener().addLocation(location);
+        boolean found = false;
+        for (Identifier ri : getRegistrar().getReferencedIdentifiers()) {
+          if (ri.equals(id)) {
+            found = true;
+            getListener().addProblem(new LabelException(ExceptionType.INFO,
+                "Identifier '" + id.toString()
+                + "' is a member of '"
+                + getRegistrar().getIdentifierReferenceLocation(id) + "'",
+                location,
+                location,
+                null,
+                null));
+            break;
+          }
         }
-        // Don't print out messages if were validating using collection rules and 
-        // the identifier in question is a collection
-        if ( !("bundle".equals(memberType) && 
-            getContext().getRule().getCaption().equals("PDS4 Collection")) ) {
-          getListener().addProblem(new LabelException(ExceptionType.WARNING,
-              "Identifier '" + identifier.toString() + "' is not a member of any "
-                  + memberType + " within the given target", 
-              location,
-              location,
-              null,
-              null));
+        if (!found) {
+          String memberType = "collection";
+          Matcher matcher = COLLECTION_LABEL_PATTERN.matcher(
+              FilenameUtils.getName(location));
+          if (matcher.matches()) {
+            memberType = "bundle";
+          }
+          // Don't print out messages if were validating using collection rules and 
+          // the identifier in question is a collection
+          if ( !("bundle".equals(memberType) && 
+              getContext().getRule().getCaption().equals("PDS4 Collection")) ) {
+            getListener().addProblem(new LabelException(ExceptionType.WARNING,
+                "Identifier '" + id.toString() + "' is not a member of any "
+                    + memberType + " within the given target", 
+                location,
+                location,
+                null,
+                null));
+          }     
+        }
+        if (getListener() instanceof ListenerExceptionPropagator) {
+          ListenerExceptionPropagator lp = 
+              (ListenerExceptionPropagator) getListener();
+          lp.record(getTarget().toString());
         }
       }
     }

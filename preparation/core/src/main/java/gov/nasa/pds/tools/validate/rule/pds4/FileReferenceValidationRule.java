@@ -381,7 +381,7 @@ public class FileReferenceValidationRule extends AbstractValidationRule {
         } else {
           message = "Generated checksum '" + generatedChecksum
               + "' matches the supplied checksum '" + checksumInLabel
-              + "' in the produt label for '"
+              + "' in the product label for '"
               + urlRef + "'";
           type = ProblemType.GENERAL_INFO;
           severity = ExceptionType.INFO;
