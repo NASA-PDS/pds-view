@@ -60,6 +60,27 @@ create table doi (
   primary key (logical_identifier, version_id)
 ) ENGINE=InnoDB;
 
+create table instrument_reference (
+  logical_identifier varchar(255) not null,
+  reference varchar(255) not null,
+  title varchar(255) not null,
+  primary key (logical_identifier, reference)
+) ENGINE=InnoDB;
+
+create table investigation_reference (
+  logical_identifier varchar(255) not null,
+  reference varchar(255) not null,
+  title varchar(255) not null,
+  primary key (logical_identifier, reference)
+) ENGINE=InnoDB;
+
+create table node_reference (
+  logical_identifier varchar(255) not null,
+  reference varchar(255) not null,
+  title varchar(255) not null,
+  primary key (logical_identifier, reference)
+) ENGINE=InnoDB;
+
 create table nssdca_status (
   logical_identifier varchar(255) not null,
   version_id varchar(255) not null,
@@ -77,14 +98,6 @@ create table product (
   type varchar(255) not null,
   alternate_id varchar(255),
   primary key (logical_identifier, version_id)
-) ENGINE=InnoDB;
-
-create table reference (
-  logical_identifier varchar(255) not null,
-  reference varchar(255) not null,
-  title varchar(255) not null,
-  type varchar(255) not null,
-  primary key (logical_identifier, reference)
 ) ENGINE=InnoDB;
 
 create table releases (
