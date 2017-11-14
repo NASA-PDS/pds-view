@@ -196,7 +196,7 @@
       </ul>
 
       <xsl:if test="count(response/result/doc[(arr|str)[@name='data_product_type']='Resource']) > 2">
-        <div class="more-info"><a class="info-button">More...</a></div>
+        <div class="more-info"><a class="info-button">More related archive resources...</a></div>
       </xsl:if>
     </xsl:if>
 
@@ -208,7 +208,7 @@
       </ul>
       
       <xsl:if test="count(response/result/doc[(arr|str)[@name='data_product_type']='Product_Context_Search_Tool']) > 2">
-        <div class="more-tools"><a class="tools-button">More...</a></div>
+        <div class="more-tools"><a class="tools-button">More related search tools...</a></div>
       </xsl:if>
     </xsl:if>
 

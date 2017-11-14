@@ -73,7 +73,7 @@ $(function() {
 				if ($('.tool').is(":visible")) {
 					$('a.tools-button').text("Hide");
 				} else {
-					$('a.tools-button').text("More...");
+					$('a.tools-button').text("More related search tools...");
 				}
 			});
 
@@ -84,7 +84,7 @@ $(function() {
 				if ($('.info').is(":visible")) {
 					$('a.info-button').text("Hide");
 				} else {
-					$('a.info-button').text("More...");
+					$('a.info-button').text("More related archive resources...");
 				}
 			});
 

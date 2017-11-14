@@ -68,6 +68,30 @@
       <registryPath>modification_description</registryPath>
     </field>
     <!-- Reference_List Fields -->
+    <field name="investigation_ref" type="string">
+      <registryPath>investigation_ref</registryPath>
+    </field>
+    <field name="investigation_name" type="string">
+      <registryPath>investigation_ref.mission_name</registryPath>
+    </field>
+    <field name="instrument_host_ref" type="string">
+      <registryPath>instrument_host_ref</registryPath>
+    </field>
+    <field name="instrument_host_name" type="string">
+      <registryPath>instrument_host_ref.instrument_host_name</registryPath>
+    </field>
+    <field name="instrument_ref" type="string">
+      <registryPath>instrument_ref</registryPath>
+    </field>
+    <field name="instrument_name" type="string">
+      <registryPath>instrument_ref.instrument_name</registryPath>
+    </field>
+    <field name="target_ref" type="string">
+      <registryPath>target_ref</registryPath>
+    </field>
+    <field name="target_name" type="string">
+      <registryPath>target_ref.target_name</registryPath>
+    </field>
     <field name="external_reference_text" type="string">
       <registryPath>external_reference_text</registryPath>
     </field>
@@ -97,6 +121,9 @@
     </field>
     <field name="file_ref_url" type="string">
       <registryPath>file_ref.access_url</registryPath>
+    </field>
+    <field name="file_ref_size" type="string">
+      <registryPath>file_ref.file_size</registryPath>
     </field>
   </indexFields>
 </product>

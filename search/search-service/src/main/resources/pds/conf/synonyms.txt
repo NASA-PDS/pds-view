@@ -15,5 +15,7 @@
 mer, opportunity, spirit
 mpf, pathfinder, sojourner
 msl, curiosity
+mgs, surveyor
 psa, esa
 spectra, spectrum
+ring, rings
