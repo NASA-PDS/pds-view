@@ -19,7 +19,7 @@
 */
 
 /*
-** product/reference
+** product/*_reference
 */
 
 /* Juno Gravity Data Sets */
@@ -278,6 +278,18 @@ insert into node_reference (logical_identifier, reference, title) values ('urn:n
 
 /* Juno Radiation Data Sets */
 
+/* LADEE NMS */
+
+insert into product (logical_identifier, version_id, title, type, alternate_id) values ('urn:nasa:pds:ladee_nms', '1.0', 'LADEE Neutral Mass Spectrometer Data', 'PDS4-Bundle', 'LADEE Neutral Mass Spectrometer Data Bundle');
+
+insert into product (logical_identifier, version_id, title, type, alternate_id) values ('urn:nasa:pds:ladee_nms:data_calibrated', '1.0', 'NMS Calibrated Data Collection', 'PDS4-Collection', 'LADEE Neutral Mass Spectrometer Calibrated Data Collection');
+
+insert into product (logical_identifier, version_id, title, type, alternate_id) values ('urn:nasa:pds:ladee_nms:data_derived', '1.0', 'NMS Derived Data Collection', 'PDS4-Collection', 'LADEE Neutral Mass Spectrometer Derived Data Collection');
+
+insert into product (logical_identifier, version_id, title, type, alternate_id) values ('urn:nasa:pds:ladee_nms:data_raw', '1.0', 'NMS Raw Data Collection', 'PDS4-Collection', 'LADEE Neutral Mass Spectrometer Raw Data Collection');
+
+insert into product (logical_identifier, version_id, title, type, alternate_id) values ('urn:nasa:pds:ladee_nms:document', '1.0', 'LADEE NMS Document Collection', 'PDS4-Collection', 'LADEE Neutral Mass Spectrometer Document Collection');
+
 /*
 ** delivery
 */
@@ -490,9 +502,15 @@ insert into certification_status (logical_identifier, version_id, status_date_ti
 ** doi
 */
 
-insert into doi (logical_identifier, version_id, doi, registration_date, site_url, electronic_mail_address, comment) values ('urn:nasa:pds:context_pds3:data_set:data_set.juno-e-rss-1-eagr-v1.0', '1.0', 'http://dx.doi.org/10.5067/PDSJN-ERSS1', '2017-10-16T00:00:00', 'https://pds.nasa.gov/', 'sean.hardman@jpl.nasa.gov', 'This is a test.');
+insert into doi (logical_identifier, version_id, doi, registration_date, site_url, electronic_mail_address, comment) values ('urn:nasa:pds:ladee_nms', '1.0', '10.17189/1408898', '2017-11-15T10:36:06', 'https://pds.jpl.nasa.gov/ds-view/pds/viewBundle.jsp?identifier=urn%3Anasa%3Apds%3Aladee_nms&amp;version=1.0', 'sean.hardman@jpl.nasa.gov', 'Registered by Ron Joyner. OSTI ID: 1408898.');
 
-insert into doi (logical_identifier, version_id, doi, registration_date, site_url, electronic_mail_address, comment) values ('urn:nasa:pds:context_pds3:data_set:data_set.juno-j-rss-1-ocru-v1.0', '1.0', 'http://dx.doi.org/10.5067/PDSJN-JRSS1', '2017-10-16T00:00:00', 'https://pds.nasa.gov/', 'sean.hardman@jpl.nasa.gov', 'This is a test.');
+insert into doi (logical_identifier, version_id, doi, registration_date, site_url, electronic_mail_address, comment) values ('urn:nasa:pds:ladee_nms:data_calibrated', '1.0', '10.17189/1408892', '2017-11-15T09:44:42', 'https://pds.jpl.nasa.gov/ds-view/pds/viewCollection.jsp?identifier=urn%3Anasa%3Apds%3Aladee_nms%3Adata_calibrated&amp;version=1.0', 'sean.hardman@jpl.nasa.gov', 'Registered by Ron Joyner. OSTI ID: 1408892.');
+
+insert into doi (logical_identifier, version_id, doi, registration_date, site_url, electronic_mail_address, comment) values ('urn:nasa:pds:ladee_nms:data_derived', '1.0', '10.17189/1408897', '2017-11-15T10:34:56', 'https://pds.jpl.nasa.gov/ds-view/pds/viewCollection.jsp?identifier=urn%3Anasa%3Apds%3Aladee_nms%3Adata_derived&amp;version=1.0', 'sean.hardman@jpl.nasa.gov', 'Registered by Ron Joyner. OSTI ID: 1408897.');
+
+insert into doi (logical_identifier, version_id, doi, registration_date, site_url, electronic_mail_address, comment) values ('urn:nasa:pds:ladee_nms:data_raw', '1.0', '10.17189/1408893', '2017-11-15T09:50:39', 'https://pds.jpl.nasa.gov/ds-view/pds/viewCollection.jsp?identifier=urn%3Anasa%3Apds%3Aladee_nms%3Adata_raw&amp;version=1.0', 'sean.hardman@jpl.nasa.gov', 'Registered by Ron Joyner. OSTI ID: 1408893.');
+
+insert into doi (logical_identifier, version_id, doi, registration_date, site_url, electronic_mail_address, comment) values ('urn:nasa:pds:ladee_nms:document', '1.0', '10.17189/1408894', '2017-11-15T09:52:41', 'https://pds.jpl.nasa.gov/ds-view/pds/viewCollection.jsp?identifier=urn%3Anasa%3Apds%3Aladee_nms%3Adocument&amp;version=1.0', 'sean.hardman@jpl.nasa.gov', 'Registered by Ron Joyner. OSTI ID: 1408894.');
 
 /*
 ** nssdca_status
