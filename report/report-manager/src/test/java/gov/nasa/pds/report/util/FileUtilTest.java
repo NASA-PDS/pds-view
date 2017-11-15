@@ -168,4 +168,37 @@ public class FileUtilTest extends ReportManagerTest{
 		
 	}
 	
+	@Test
+	public void testGetFilesFromDirTree(){
+		
+		// Set up the test
+		File testDir = new File(TestConstants.TEST_STAGING_DIR,
+				"dir-tree-test");
+		File outputDir = new File(TestConstants.TEST_STAGING_DIR,
+				"dir-tree-test-output");
+		try{
+			FileUtils.forceMkdir(testDir);
+			FileUtils.copyDirectoryToDirectory(
+					new File(TestConstants.TEST_DIR_RELATIVE, 
+					"usr"), testDir);
+		}catch(IOException e) {
+			fail("An error occurred while setting up to test the utility to " +
+					"rescue files from weird dir trees: " + e.getMessage());
+		}
+		
+		// Run the utility
+		try {
+			FileUtil.getFilesFromDirTree(new File(testDir, "usr"), outputDir);
+		}catch(ReportManagerException e) {
+			fail("An error occurred while running the test of the utility to " +
+					"rescue files from weird dir trees: " + e.getMessage());
+		}
+		
+		// Validate results
+		assertTrue("The output directory was not created", outputDir.exists());
+		assertTrue("The file was not copied out of the dir tree",
+				new File(outputDir, "server2-pds-rings-apache2.2017-10-01.log").exists());
+		
+	}
+	
 }

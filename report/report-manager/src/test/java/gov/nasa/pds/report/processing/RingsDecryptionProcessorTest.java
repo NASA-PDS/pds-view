@@ -53,7 +53,18 @@ public class RingsDecryptionProcessorTest extends ReportManagerTest{
 	@Test
 	public void testNominal(){
 		
-		// Run the processor and get the output directory
+		// Copy the nominal input into the input directory
+		try {
+			FileUtils.copyFileToDirectory(
+					new File(TestConstants.TEST_DIR_RELATIVE, 
+					"rings-pds-rings-apache2.2014-10-01.tar.gz"),
+					this.testDir);
+		}catch(IOException e){
+			fail("An error occurred while staging the log to process: " +
+					e.getMessage());
+		}
+		
+		// Run the processor
 		try{
 			this.processor.process(this.testDir, this.outputDir);
 		}catch(ProcessingException e){
@@ -72,6 +83,44 @@ public class RingsDecryptionProcessorTest extends ReportManagerTest{
 		assertTrue("The unzipped rings tarball is an empty file",
 				outputFile.length() > 0);
 			
+	}
+	
+	@Test
+	public void testDirTree(){
+		
+		// Copy the input into the input directory that will create a directory
+		// tree when decompressed
+		try {
+			FileUtils.copyFileToDirectory(
+					new File(TestConstants.TEST_DIR_RELATIVE, 
+					"server2-pds-rings-apache2.2017-10-01.tar.gz"),
+					this.testDir);
+		}catch(IOException e){
+			fail("An error occurred while staging the log to process: " +
+					e.getMessage());
+		}
+		
+		// Run the processor
+		try{
+			this.processor.process(this.testDir, this.outputDir);
+		}catch(ProcessingException e){
+			fail("An error occurred during the nominal rings log decryption " +
+					"test: " + e.getMessage());
+		}
+		
+		// Verify that the output directory was created, that the test file was
+		// properly processed, and that the left-over directory tree was deleted
+		assertTrue("The output directory was not created by the rings " +
+				"decryption processor", this.outputDir.exists());
+		File outputFile = new File(this.outputDir,
+				"server2-pds-rings-apache2.2017-10-01.log");
+		assertTrue("The test rings tarball was not properly decrypted",
+				outputFile.exists());
+		assertTrue("The unzipped rings tarball is an empty file",
+				outputFile.length() > 0);
+		assertFalse("The left-over directory tree was not deleted",
+				new File(outputFile, "usr").exists());
+		
 	}
 	
 }

@@ -301,5 +301,51 @@ public class FileUtil {
 		return Arrays.asList(dir.listFiles());
 		
 	}
+	
+	/**
+	 * Copy all files found within the given directory or its sub-directories
+	 * to the given location.
+	 * 
+	 * @param dir						The directory (a {@link File}) in which to search.
+	 * @param dest						The directory into which files are copied.
+	 * @throws ReportManagerException	If the provided parameters are invalid
+	 * 									or if an error occurs while copying.
+	 */
+	public static void getFilesFromDirTree(File dir, File dest)
+			throws ReportManagerException{
+		
+		if(dir == null || !dir.exists()){
+			throw new ReportManagerException("Root dir does not exist");
+		}
+		if(!dir.isDirectory()){
+			throw new ReportManagerException(
+					"Can't extract files from dir tree. " +
+					"Provided root dir is not a directory");
+		}else if(dest.exists() && !dest.isDirectory()){
+			throw new ReportManagerException(
+					"Can't extract files from dir tree. " +
+					"Provided destination dir is not a directory");
+		}
+		
+		String[] filenames = dir.list();
+		for(int i = 0; i < filenames.length; i++){
+			File f = new File(dir, filenames[i]);
+			if(f.isDirectory()){
+				log.finest("Found nested directory: " + f.getAbsolutePath());
+				getFilesFromDirTree(f, dest);
+			}else{
+				try{
+					log.finest("Copying file " + f.getAbsolutePath() + " to " +
+							dest.getAbsolutePath());
+					FileUtils.copyFileToDirectory(f, dest);
+				}catch(IOException e) {
+					throw new ReportManagerException("Could not copy " +
+							f.getAbsolutePath() + " out of dir tree: " +
+							e.getMessage());
+				}
+			}
+		}
+		
+	}
 
 }
