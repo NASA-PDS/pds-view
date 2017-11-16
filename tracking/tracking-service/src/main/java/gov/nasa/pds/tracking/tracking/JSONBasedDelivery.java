@@ -56,15 +56,15 @@ public class JSONBasedDelivery {
 		         logger.debug("Deliveries " + count + ":\n " + d.getLogIdentifier() + " : " + d.getName());
 		         
 		         jsonDelivery = new JSONObject();	         
-		         jsonDelivery.put(Delivery.DEL_IDENTIFIERCOLUME, d.getDelIdentifier());
-		         jsonDelivery.put(Delivery.LOG_IDENTIFIERCOLUME, d.getLogIdentifier());
-		         jsonDelivery.put(Delivery.VERSIONCOLUME, d.getVersion());
-		         jsonDelivery.put(Delivery.NAMECOLUME, d.getName());
-		         jsonDelivery.put(Delivery.STARTCOLUME, d.getStart());
-		         jsonDelivery.put(Delivery.STOPCOLUME, d.getStop());		         
-		         jsonDelivery.put(Delivery.SOURCECOLUME, d.getSource());
-		         jsonDelivery.put(Delivery.TARGETCOLUME, d.getTarget());
-		         jsonDelivery.put(Delivery.DUEDATECOLUME, d.getDueDate());
+		         jsonDelivery.put(Delivery.DEL_IDENTIFIERCOLUMN, d.getDelIdentifier());
+		         jsonDelivery.put(Delivery.LOG_IDENTIFIERCOLUMN, d.getLogIdentifier());
+		         jsonDelivery.put(Delivery.VERSIONCOLUMN, d.getVersion());
+		         jsonDelivery.put(Delivery.NAMECOLUMN, d.getName());
+		         jsonDelivery.put(Delivery.STARTCOLUMN, d.getStart());
+		         jsonDelivery.put(Delivery.STOPCOLUMN, d.getStop());		         
+		         jsonDelivery.put(Delivery.SOURCECOLUMN, d.getSource());
+		         jsonDelivery.put(Delivery.TARGETCOLUMN, d.getTarget());
+		         jsonDelivery.put(Delivery.DUEDATECOLUMN, d.getDueDate());
 		         
 		         jsonDeliveries.append("delivery", jsonDelivery);
 		         count++;
@@ -109,15 +109,15 @@ public class JSONBasedDelivery {
 		         logger.debug("Deliveries " + count + ":\n " + d.getLogIdentifier() + " : " + d.getName());
 		         
 		         jsonDelivery = new JSONObject();
-		         jsonDelivery.put(Delivery.DEL_IDENTIFIERCOLUME, d.getDelIdentifier());
-		         jsonDelivery.put(Delivery.LOG_IDENTIFIERCOLUME, d.getLogIdentifier());
-		         jsonDelivery.put(Delivery.VERSIONCOLUME, d.getVersion());
-		         jsonDelivery.put(Delivery.NAMECOLUME, d.getName());
-		         jsonDelivery.put(Delivery.STARTCOLUME, d.getStart());
-		         jsonDelivery.put(Delivery.STOPCOLUME, d.getStop());		         
-		         jsonDelivery.put(Delivery.SOURCECOLUME, d.getSource());
-		         jsonDelivery.put(Delivery.TARGETCOLUME, d.getTarget());
-		         jsonDelivery.put(Delivery.DUEDATECOLUME, d.getDueDate());
+		         jsonDelivery.put(Delivery.DEL_IDENTIFIERCOLUMN, d.getDelIdentifier());
+		         jsonDelivery.put(Delivery.LOG_IDENTIFIERCOLUMN, d.getLogIdentifier());
+		         jsonDelivery.put(Delivery.VERSIONCOLUMN, d.getVersion());
+		         jsonDelivery.put(Delivery.NAMECOLUMN, d.getName());
+		         jsonDelivery.put(Delivery.STARTCOLUMN, d.getStart());
+		         jsonDelivery.put(Delivery.STOPCOLUMN, d.getStop());		         
+		         jsonDelivery.put(Delivery.SOURCECOLUMN, d.getSource());
+		         jsonDelivery.put(Delivery.TARGETCOLUMN, d.getTarget());
+		         jsonDelivery.put(Delivery.DUEDATECOLUMN, d.getDueDate());
 		         
 		         
 		         

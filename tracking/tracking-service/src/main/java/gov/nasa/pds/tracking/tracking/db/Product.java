@@ -29,11 +29,18 @@ public class Product extends DBConnector {
 	private static final String TABLENAME = "product";
 	private static final String DELIVERYTABLENAME = "delivery";
 
-	public static final String IDENTIFIERCOLUME  = "logical_identifier";	
-	public static final String VERSIONCOLUME  = "version_id";	
-	public static final String TITLECOLUME  = "title";
-	public static final String TYPECOLUME  = "type";
-	public static final String ALTERNATECOLUME = "alternate_id";
+	public static final String IDENTIFIERCOLUMN  = "logical_identifier";	
+	public static final String VERSIONCOLUMN  = "version_id";	
+	public static final String TITLECOLUMN  = "title";
+	public static final String TYPECOLUMN  = "type";
+	public static final String ALTERNATECOLUMN = "alternate_id";
+	
+	public static final String INVESTREFCOLUMN = "investigation_reference";	
+	public static final String INVESTTITLECOLUMN = "investigation_title";
+	public static final String INSTREFCOLUMN = "instrument_reference";
+	public static final String INSTTITLECOLUMN = "instrument_title";
+	public static final String NODEREFCOLUMN = "node_reference";
+	public static final String NODETITLECOLUMN = "node_title";
 
 	private Connection connect = null;
 	private Statement statement = null;
@@ -45,6 +52,96 @@ public class Product extends DBConnector {
 	private String title = null;
 	private String type = null;
 	private String alternate = null;
+	private String instRef = null;
+	/**
+	 * @return the instRef
+	 */
+	public String getInstRef() {
+		return instRef;
+	}
+
+	/**
+	 * @param instRef, the instRef to set
+	 */
+	public void setInstRef(String instRef) {
+		this.instRef = instRef;
+	}
+
+	/**
+	 * @return the instTitle
+	 */
+	public String getInstTitle() {
+		return instTitle;
+	}
+
+	/**
+	 * @param instTitle, the instTitle to set
+	 */
+	public void setInstTitle(String instTitle) {
+		this.instTitle = instTitle;
+	}
+
+	/**
+	 * @return the inveRef
+	 */
+	public String getInveRef() {
+		return inveRef;
+	}
+
+	/**
+	 * @param inveRef, the inveRef to set
+	 */
+	public void setInveRef(String inveRef) {
+		this.inveRef = inveRef;
+	}
+
+	/**
+	 * @return the inveTitle
+	 */
+	public String getInveTitle() {
+		return inveTitle;
+	}
+
+	/**
+	 * @param inveTitle, the inveTitle to set
+	 */
+	public void setInveTitle(String inveTitle) {
+		this.inveTitle = inveTitle;
+	}
+
+	/**
+	 * @return the nodeRef
+	 */
+	public String getNodeRef() {
+		return nodeRef;
+	}
+
+	/**
+	 * @param nodeRef, the nodeRef to set
+	 */
+	public void setNodeRef(String nodeRef) {
+		this.nodeRef = nodeRef;
+	}
+
+	/**
+	 * @return the nodeTitle
+	 */
+	public String getNodeTitle() {
+		return nodeTitle;
+	}
+
+	/**
+	 * @param nodeTitle, the nodeTitle to set
+	 */
+	public void setNodeTitle(String nodeTitle) {
+		this.nodeTitle = nodeTitle;
+	}
+
+	private String instTitle = null;
+	private String inveRef = null;
+	private String inveTitle = null;
+	private String nodeRef = null;
+	private String nodeTitle = null;
 
 	/**
 	 * @return
@@ -140,20 +237,20 @@ public class Product extends DBConnector {
 			if(type != null && type.length() > 0) {
 				
 				resultSet = statement.executeQuery("select * from " + TABLENAME 
-						+ " where " + TYPECOLUME + " = '" + type
-						+ "' order by " + TITLECOLUME);
+						+ " where " + TYPECOLUMN + " = '" + type
+						+ "' order by " + TITLECOLUMN);
 			}
 			else{
-				resultSet = statement.executeQuery("select * from " + TABLENAME + " order by " + TITLECOLUME);
+				resultSet = statement.executeQuery("select * from " + TABLENAME + " order by " + TITLECOLUMN);
 			}
 			
 			while (resultSet.next()) {
 				prod = new Product();
-				prod.setIdentifier(resultSet.getString(IDENTIFIERCOLUME));
-				prod.setVersion(resultSet.getString(VERSIONCOLUME));
-				prod.setTitle(resultSet.getString(TITLECOLUME));
-				prod.setType(resultSet.getString(TYPECOLUME));
-				prod.setAlternate(resultSet.getString(ALTERNATECOLUME));
+				prod.setIdentifier(resultSet.getString(IDENTIFIERCOLUMN));
+				prod.setVersion(resultSet.getString(VERSIONCOLUMN));
+				prod.setTitle(resultSet.getString(TITLECOLUMN));
+				prod.setType(resultSet.getString(TYPECOLUMN));
+				prod.setAlternate(resultSet.getString(ALTERNATECOLUMN));
 
 				prodObjs.add(prod);
 			}
@@ -178,15 +275,15 @@ public class Product extends DBConnector {
 			connect = getConnection();
 
 			statement = connect.createStatement();
-			resultSet = statement.executeQuery("select * from " + TABLENAME + " order by " + TITLECOLUME);
+			resultSet = statement.executeQuery("select * from " + TABLENAME + " order by " + TITLECOLUMN);
 			
 			while (resultSet.next()) {
 				prod = new Product();
-				prod.setIdentifier(resultSet.getString(IDENTIFIERCOLUME));
-				prod.setVersion(resultSet.getString(VERSIONCOLUME));
-				prod.setTitle(resultSet.getString(TITLECOLUME));
-				prod.setType(resultSet.getString(TYPECOLUME));
-				prod.setAlternate(resultSet.getString(ALTERNATECOLUME));
+				prod.setIdentifier(resultSet.getString(IDENTIFIERCOLUMN));
+				prod.setVersion(resultSet.getString(VERSIONCOLUMN));
+				prod.setTitle(resultSet.getString(TITLECOLUMN));
+				prod.setType(resultSet.getString(TYPECOLUMN));
+				prod.setAlternate(resultSet.getString(ALTERNATECOLUMN));
 
 				prodObjs.add(prod);
 			}
@@ -203,7 +300,7 @@ public class Product extends DBConnector {
 	 * @return a list of all products that have associated deliveries order by title 
 	 */
 	@SuppressWarnings("finally")
-	public List<Product> getProductsAssociatedDeliveriesOrderByTitle() {
+	public List<Product> getProductsAssociatedDeliveriesOrderByTitle(String instRef, String investRef) {
 		List<Product> prodObjs = new ArrayList<Product>();
 		Product  prod = null;
 		try {
@@ -211,23 +308,74 @@ public class Product extends DBConnector {
 			connect = getConnection();
 
 			statement = connect.createStatement();
-			logger.debug("select DISTINCT p.* from " + TABLENAME + " p, " + DELIVERYTABLENAME + " d " +
-					"where p." + IDENTIFIERCOLUME + " = d." + IDENTIFIERCOLUME +
-					" and p." + VERSIONCOLUME + " = d." + VERSIONCOLUME +
-					" order by " + TITLECOLUME);
+			String defaultQueryPartOne = "select DISTINCT p.*, ivr.reference AS investigation_reference, " +
+										"ivr.title AS investigation_title, " +
+										"isr.reference AS instrument_reference, " +
+										"isr.title AS instrument_title, " +
+										"nr.reference AS node_reference, " +
+										"nr.title AS node_title " +
+							"from " + TABLENAME + " p, " + 
+									DELIVERYTABLENAME + " d, " + 
+									Reference.INVES_TABLENAME + " ivr," + 
+									Reference.INST_TABLENAME + " isr," + 
+									Reference.NODE_TABLENAME + " nr " +
+							"where p." + IDENTIFIERCOLUMN + " = d." + IDENTIFIERCOLUMN +
+								" and p." + VERSIONCOLUMN + " = d." + VERSIONCOLUMN + 
+								" and p." + IDENTIFIERCOLUMN + " = ivr." + IDENTIFIERCOLUMN +
+								" and p." + IDENTIFIERCOLUMN + " = isr." + IDENTIFIERCOLUMN +
+								" and p." + IDENTIFIERCOLUMN + " = nr." + IDENTIFIERCOLUMN;
+			String defaultQueryOrder = " order by " + TITLECOLUMN;
 			
-			resultSet = statement.executeQuery("select DISTINCT p.* from " + TABLENAME + " p, " + DELIVERYTABLENAME + " d " +
-											"where p." + IDENTIFIERCOLUME + " = d." + IDENTIFIERCOLUME +
-											" and p." + VERSIONCOLUME + " = d." + VERSIONCOLUME +
-											" order by " + TITLECOLUME);
+			String queryInstRefPart = "";
+			String queryInveRefPart = "";
+			if (instRef != null && !instRef.equalsIgnoreCase("null") && instRef.length() > 0)
+				queryInstRefPart = " and isr." + Reference.REFERENCECOLUMN + " = '" + instRef + "'";
+			if (investRef != null && !investRef.equalsIgnoreCase("null") && investRef.length() > 0)
+				queryInveRefPart = " and ivr." + Reference.REFERENCECOLUMN + " = '" + investRef + "'";
+			
+			String query = defaultQueryPartOne + queryInstRefPart + queryInveRefPart + defaultQueryOrder;
+										
+			logger.debug(query);
+			
+			/*SELECT DISTINCT 
+			p.*, 
+			ivr.reference AS investigation_reference, 
+			ivr.title AS investigation_title, 
+			isr.reference AS instrument_reference, 
+			isr.title AS instrument_title, 
+			nr.reference AS node_reference, 
+			nr.title AS node_title
+			FROM 
+			product p, 
+			delivery d , 
+			investigation_reference ivr, 
+			instrument_reference isr, 
+			node_reference nr
+			WHERE 
+			p.logical_identifier = d.logical_identifier
+			AND p.version_id = d.version_id
+			AND p.logical_identifier = ivr.logical_identifier
+			AND p.logical_identifier = isr.logical_identifier
+			AND p.logical_identifier = nr.logical_identifier
+			AND isr.reference = 'urn:nasa:pds:context_pds3:instrument:waves.jno'
+			AND ivr.reference = 'urn:nasa:pds:context_pds3:investigation:mission.juno'
+			ORDER BY p.title*/
+			
+			resultSet = statement.executeQuery(query);
 			
 			while (resultSet.next()) {
 				prod = new Product();
-				prod.setIdentifier(resultSet.getString(IDENTIFIERCOLUME));
-				prod.setVersion(resultSet.getString(VERSIONCOLUME));
-				prod.setTitle(resultSet.getString(TITLECOLUME));
-				prod.setType(resultSet.getString(TYPECOLUME));
-				prod.setAlternate(resultSet.getString(ALTERNATECOLUME));
+				prod.setIdentifier(resultSet.getString(IDENTIFIERCOLUMN));
+				prod.setVersion(resultSet.getString(VERSIONCOLUMN));
+				prod.setTitle(resultSet.getString(TITLECOLUMN));
+				prod.setType(resultSet.getString(TYPECOLUMN));
+				prod.setAlternate(resultSet.getString(ALTERNATECOLUMN));
+				prod.setInstRef(resultSet.getString(INSTREFCOLUMN));
+				prod.setInstTitle(resultSet.getString(INSTTITLECOLUMN));
+				prod.setInveRef(resultSet.getString(INVESTREFCOLUMN));
+				prod.setInveTitle(resultSet.getString(INVESTTITLECOLUMN));
+				prod.setNodeRef(resultSet.getString(NODEREFCOLUMN));
+				prod.setNodeTitle(resultSet.getString(NODETITLECOLUMN));
 
 				prodObjs.add(prod);
 			}
@@ -253,19 +401,19 @@ public class Product extends DBConnector {
 			connect = getConnection();
 			
 			String query = "select * from " + TABLENAME 
-							+ " where " + IDENTIFIERCOLUME + " = '" + idf 
-							+ "' AND " + VERSIONCOLUME + " = '" + ver  + "'";
+							+ " where " + IDENTIFIERCOLUMN + " = '" + idf 
+							+ "' AND " + VERSIONCOLUMN + " = '" + ver  + "'";
 			statement = connect.createStatement();
 			
 			resultSet = statement.executeQuery(query);
 			
 			while (resultSet.next()) {
 				prodObj = new Product();
-				prodObj.setIdentifier(resultSet.getString(IDENTIFIERCOLUME));
-				prodObj.setVersion(resultSet.getString(VERSIONCOLUME));
-				prodObj.setTitle(resultSet.getString(TITLECOLUME));
-				prodObj.setType(resultSet.getString(TYPECOLUME));
-				prodObj.setAlternate(resultSet.getString(ALTERNATECOLUME));
+				prodObj.setIdentifier(resultSet.getString(IDENTIFIERCOLUMN));
+				prodObj.setVersion(resultSet.getString(VERSIONCOLUMN));
+				prodObj.setTitle(resultSet.getString(TITLECOLUMN));
+				prodObj.setType(resultSet.getString(TYPECOLUMN));
+				prodObj.setAlternate(resultSet.getString(ALTERNATECOLUMN));
 			
 			}
 			
@@ -314,11 +462,11 @@ public class Product extends DBConnector {
 			connect.setAutoCommit(false);
 			
 			prepareStm = connect.prepareStatement("INSERT INTO " + TABLENAME 
-												+ " (" + IDENTIFIERCOLUME + ", " 
-												+ VERSIONCOLUME  + ", "
-												+ TITLECOLUME  + ", "
-												+ TYPECOLUME  + ", "
-												+ ALTERNATECOLUME
+												+ " (" + IDENTIFIERCOLUMN + ", " 
+												+ VERSIONCOLUMN  + ", "
+												+ TITLECOLUMN  + ", "
+												+ TYPECOLUMN  + ", "
+												+ ALTERNATECOLUMN
 												+ ") VALUES (?, ?, ?, ?, ?)");
 			prepareStm.setString(1, logicalIdentifier);
 			prepareStm.setString(2, versionId);
@@ -361,11 +509,11 @@ public class Product extends DBConnector {
 			connect = getConnection();
 			connect.setAutoCommit(false);
 
-			prepareStm = connect.prepareStatement("UPDATE " + TABLENAME + " SET " + TITLECOLUME + " = ?, "
-																				  + TYPECOLUME + " = ?, "
-																				  + ALTERNATECOLUME + " = ? "
-																				  + "WHERE " + IDENTIFIERCOLUME + " = ? "
-																				  + "AND " + VERSIONCOLUME + " = ?");
+			prepareStm = connect.prepareStatement("UPDATE " + TABLENAME + " SET " + TITLECOLUMN + " = ?, "
+																				  + TYPECOLUMN + " = ?, "
+																				  + ALTERNATECOLUMN + " = ? "
+																				  + "WHERE " + IDENTIFIERCOLUMN + " = ? "
+																				  + "AND " + VERSIONCOLUMN + " = ?");
 			
 			prepareStm.setString(1, title);
 			prepareStm.setString(2, type);

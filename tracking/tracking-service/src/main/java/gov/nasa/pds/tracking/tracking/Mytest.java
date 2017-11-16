@@ -154,15 +154,15 @@ public class Mytest {
 		
 	}
 
-	private void getProductReferences(String log_identifer) {
+	private void getProductReferences(String log_identifer, String tableName) {
 		
 		Reference ref;
 		try {
 			ref = new Reference();
 			
-			List<Reference> refs = ref.getProductReferences(log_identifer);
+			List<Reference> refs = ref.getProductReferences(log_identifer, tableName);
 			
-			logger.info(" ============== number of references for " + log_identifer + " : " + refs.size() + " =====================");
+			logger.info(" ============== number of " + tableName + " for " + log_identifer + " : " + refs.size() + " =====================");
 			
 			Iterator<Reference> itr = refs.iterator();
 			int count = 1;
@@ -171,8 +171,7 @@ public class Mytest {
 				logger.info("references " + count + ":\n " 
 						+ r.getLog_identifier() + " : " 
 						+ r.getReference() + " : "
-						+ r.getTitle() + " : "
-						+ r.getType());
+						+ r.getTitle());
 				count++;
 			}
 		} catch (ClassNotFoundException e) {
@@ -183,15 +182,15 @@ public class Mytest {
 
 	}
 	
-	private void getProductRoleUsers(String log_identifer, String role) {
+	private void getProductRoleUsers(String log_identifer,String refTableName) {
 		
 		User user;
 		try {
 			user = new User();
 			
-			List<User> users = user.getProductRoleUsers(log_identifer, role);
+			List<User> users = user.getProductRoleUsers(log_identifer,refTableName);
 			
-			logger.info(" ============== number of users for " + log_identifer + " and " + role + ": " + users.size() + " =====================");
+			logger.info(" ============== number of users for " + log_identifer + " and " + refTableName + ": " + users.size() + " =====================");
 			
 			Iterator<User> itr = users.iterator();
 			int count = 1;
@@ -250,19 +249,57 @@ public class Mytest {
 			//test.getProducts(null);
 			//test.getProducts("PDS3-Data-Set");
 			
+			/* remove later
 			/**********************************************************
 			 Product Reference Query Query – Query the reference table for a list of product references.
 			Input: logical_identifier (required)
 			Output: logical_identifier, reference, title, type
-			***********************************************************/
+			***********************************************************//*
 			test.getProductReferences("urn:nasa:pds:context_pds3:data_set:data_set.juno-j-rss-1-jugr-v1.0");
+			*/
+			
+			
+			
+			/**********************************************************
+			 Product Delivery Query – Query the product, delivery and *_reference tables 
+			 for a list of products that have associated deliveries.
+			Input: investigation_reference (optional), instrument_reference (optional)
+			Output: logical_identifier, version_id, title, type, alternate_id
+			***********************************************************/
+			
+			/**********************************************************
+			 Product Instrument Reference Query – Query the instrument_reference table 
+			 for a list of instrument references for a product.
+			Input: logical_identifier (required)
+			Output: logical_identifier, reference, title
+			***********************************************************/
+			test.getProductReferences("urn:nasa:pds:context_pds3:data_set:data_set.juno-j-rss-1-jugr-v1.0", Reference.INST_TABLENAME);
+			/**********************************************************
+			 Product Investigation Reference Query – Query the investigation_reference table 
+			 for a list of investigation references for a product.
+			Input: logical_identifier (required)
+			Output: logical_identifier, reference, title
+			***********************************************************/
+			test.getProductReferences("urn:nasa:pds:context_pds3:data_set:data_set.juno-j-rss-1-jugr-v1.0", Reference.INVES_TABLENAME);
+			/**********************************************************
+			 Product Node Reference Query – Query the node_reference table 
+			 for a list of node references for a product.
+			Input: logical_identifier (required)
+			Output: logical_identifier, reference, title
+			***********************************************************/
+			test.getProductReferences("urn:nasa:pds:context_pds3:data_set:data_set.juno-j-rss-1-jugr-v1.0", Reference.NODE_TABLENAME);
+			
+			
+			
+			
+			
 			
 			/**********************************************************
 			 Product Role Query– Query the product, reference, role and user tables for a list of users with the Investigation role for a product.			
 			Input: logical_identifier (required), type (required)
 			Output: electronic_mail_address, name
 			***********************************************************/			
-			test.getProductRoleUsers("urn:nasa:pds:context_pds3:data_set:data_set.juno-j-rss-1-jugr-v1.0", "Investigation");
+			test.getProductRoleUsers("urn:nasa:pds:context_pds3:data_set:data_set.juno-j-rss-1-jugr-v1.0", Reference.INVES_TABLENAME);
 			
 			
 			// ************************************ 9.1 Delivery Inserts/Updates **************************

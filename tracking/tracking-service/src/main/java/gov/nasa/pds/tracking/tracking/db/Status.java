@@ -27,12 +27,12 @@ public class Status extends DBConnector {
 										// nssdca_status
 	private final static String PRODUCTTABLENAME  = "product";
 
-	private final static String LOGIDENTIFIERCOLUME = "logical_identifier";
-	private final static  String VERSIONCOLUME = "version_id";
-	private final static  String DATECOLUME = "status_date_time";
-	private String statusColume = null;
-	private final static  String EMAILCOLUME = "electronic_mail_address";
-	private final static  String COMMENTCOLUME = "comment";
+	private final static String LOGIDENTIFIERCOLUMN = "logical_identifier";
+	private final static  String VERSIONCOLUMN = "version_id";
+	private final static  String DATECOLUMN = "status_date_time";
+	private String statusCOLUMN = null;
+	private final static  String EMAILCOLUMN = "electronic_mail_address";
+	private final static  String COMMENTCOLUMN = "comment";
 
 	private Connection connect = null;
 	private Statement statement = null;
@@ -61,18 +61,18 @@ public class Status extends DBConnector {
 	}
 
 	/**
-	 * @return the statusColume
+	 * @return the statusCOLUMN
 	 */
-	public String getStatusColume() {
-		return statusColume;
+	public String getStatusCOLUMN() {
+		return statusCOLUMN;
 	}
 
 	/**
-	 * @param statusColume
-	 *            the statusColume to set
+	 * @param statusCOLUMN
+	 *            the statusCOLUMN to set
 	 */
-	public void setStatusColume(String statusColume) {
-		this.statusColume = statusColume;
+	public void setStatusCOLUMN(String statusCOLUMN) {
+		this.statusCOLUMN = statusCOLUMN;
 	}
 
 	/**
@@ -172,9 +172,9 @@ public class Status extends DBConnector {
 	public Status(String tblName) throws ClassNotFoundException, SQLException {
 		setTableName(tblName);
 		if (tableName.equals(NSSDCA_STATUS_TABLE_NAME)) {
-			setStatusColume("nssdca_identifier");
+			setStatusCOLUMN("nssdca_identifier");
 		} else {
-			setStatusColume("status");
+			setStatusCOLUMN("status");
 		}
 	}
 
@@ -193,20 +193,20 @@ public class Status extends DBConnector {
 			statement = connect.createStatement();
 
 			/*System.out.println("select * from " + PRODUCTTABLENAME + " p, " + tableName + " a" + " where p."
-					+ LOGIDENTIFIERCOLUME + " = " + "a." + LOGIDENTIFIERCOLUME + " order by " + VERSIONCOLUME);*/
+					+ LOGIDENTIFIERCOLUMN + " = " + "a." + LOGIDENTIFIERCOLUMN + " order by " + VERSIONCOLUMN);*/
 			resultSet = statement
 					.executeQuery("select * from " + PRODUCTTABLENAME + " p, " + tableName + " a" + " where p."
-							+ LOGIDENTIFIERCOLUME + " = " + "a." + LOGIDENTIFIERCOLUME + " order by " + VERSIONCOLUME);
+							+ LOGIDENTIFIERCOLUMN + " = " + "a." + LOGIDENTIFIERCOLUMN + " order by " + VERSIONCOLUMN);
 
 			while (resultSet.next()) {
 				status = new Status();
 
-				status.setLogIdentifier(resultSet.getString(LOGIDENTIFIERCOLUME));
-				status.setVersion(resultSet.getString(VERSIONCOLUME));
-				status.setStatus(resultSet.getString(statusColume));
-				status.setEmail(resultSet.getString(EMAILCOLUME));
-				status.setComment(resultSet.getString(COMMENTCOLUME));
-				status.setDate(resultSet.getString(DATECOLUME));
+				status.setLogIdentifier(resultSet.getString(LOGIDENTIFIERCOLUMN));
+				status.setVersion(resultSet.getString(VERSIONCOLUMN));
+				status.setStatus(resultSet.getString(statusCOLUMN));
+				status.setEmail(resultSet.getString(EMAILCOLUMN));
+				status.setComment(resultSet.getString(COMMENTCOLUMN));
+				status.setDate(resultSet.getString(DATECOLUMN));
 
 				statuses.add(status);
 			}
@@ -234,21 +234,21 @@ public class Status extends DBConnector {
 			statement = connect.createStatement();
 
 			/*System.out.println("select * from " + PRODUCTTABLENAME + " p, " + tableName + " a" + " where p."
-					+ LOGIDENTIFIERCOLUME + " = " + "a." + LOGIDENTIFIERCOLUME + " and p." + Product.titleColume + " = "
-					+ title + " order by " + VERSIONCOLUME);*/
+					+ LOGIDENTIFIERCOLUMN + " = " + "a." + LOGIDENTIFIERCOLUMN + " and p." + Product.titleCOLUMN + " = "
+					+ title + " order by " + VERSIONCOLUMN);*/
 			resultSet = statement.executeQuery("select * from " + PRODUCTTABLENAME + " p, " + tableName + " a"
-					+ " where p." + LOGIDENTIFIERCOLUME + " = " + "a." + LOGIDENTIFIERCOLUME + " and p."
-					+ Product.TITLECOLUME + " = " + title + " order by " + VERSIONCOLUME);
+					+ " where p." + LOGIDENTIFIERCOLUMN + " = " + "a." + LOGIDENTIFIERCOLUMN + " and p."
+					+ Product.TITLECOLUMN + " = " + title + " order by " + VERSIONCOLUMN);
 
 			while (resultSet.next()) {
 				status = new Status();
 
-				status.setLogIdentifier(resultSet.getString(LOGIDENTIFIERCOLUME));
-				status.setVersion(resultSet.getString(VERSIONCOLUME));
-				status.setStatus(resultSet.getString(statusColume));
-				status.setEmail(resultSet.getString(EMAILCOLUME));
-				status.setComment(resultSet.getString(COMMENTCOLUME));
-				status.setDate(resultSet.getString(DATECOLUME));
+				status.setLogIdentifier(resultSet.getString(LOGIDENTIFIERCOLUMN));
+				status.setVersion(resultSet.getString(VERSIONCOLUMN));
+				status.setStatus(resultSet.getString(statusCOLUMN));
+				status.setEmail(resultSet.getString(EMAILCOLUMN));
+				status.setComment(resultSet.getString(COMMENTCOLUMN));
+				status.setDate(resultSet.getString(DATECOLUMN));
 
 				statuses.add(status);
 			}

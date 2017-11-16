@@ -23,11 +23,11 @@ public class User extends DBConnector {
 
 	private static final String TABLENAME = "user";
 	private static final String ROLETABLENAME = "role";
-	private static final String REFTABLENAME = "reference";
+	//private static final String REFTABLENAME = "reference";
 	private static final String PRODUCTTABLENAME = "product";
 	
-	public static final String NAMECOLUME = "name";
-	public static final String EMAILCOLUME = "electronic_mail_address";
+	public static final String NAMECOLUMN = "name";
+	public static final String EMAILCOLUMN = "electronic_mail_address";
 
 
 	private Connection connect = null;
@@ -115,12 +115,12 @@ public class User extends DBConnector {
 			// Setup the connection with the DB
 			connect = getConnection();
 			statement = connect.createStatement();
-			resultSet = statement.executeQuery("select * from " + TABLENAME + " order by " + EMAILCOLUME);
+			resultSet = statement.executeQuery("select * from " + TABLENAME + " order by " + EMAILCOLUMN);
 			
 			while (resultSet.next()) {
 				user = new User();
-				user.setUserEmail(resultSet.getString(EMAILCOLUME));
-				user.setUserName(resultSet.getString(NAMECOLUME));
+				user.setUserEmail(resultSet.getString(EMAILCOLUMN));
+				user.setUserName(resultSet.getString(NAMECOLUMN));
 				userObjs.add(user);
 			}
 			
@@ -144,16 +144,16 @@ public List<User> getUserRole(String email){
 		// Setup the connection with the DB
 		connect = getConnection();
 		statement = connect.createStatement();
-		resultSet = statement.executeQuery("SELECT u." + EMAILCOLUME + ", u." + NAMECOLUME + ", r." + Role.REFERENCECOLUME +
+		resultSet = statement.executeQuery("SELECT u." + EMAILCOLUMN + ", u." + NAMECOLUMN + ", r." + Role.REFERENCECOLUMN +
 										" FROM " + TABLENAME + " u, " + ROLETABLENAME + " r" +
-										" WHERE u." + EMAILCOLUME + " = '" + email + "' AND u." + EMAILCOLUME + " = r." + EMAILCOLUME +
-										" ORDER BY r." + Role.REFERENCECOLUME);
+										" WHERE u." + EMAILCOLUMN + " = '" + email + "' AND u." + EMAILCOLUMN + " = r." + EMAILCOLUMN +
+										" ORDER BY r." + Role.REFERENCECOLUMN);
 		
 		while (resultSet.next()) {
 			user = new User();
-			user.setUserEmail(resultSet.getString(EMAILCOLUME));
-			user.setUserName(resultSet.getString(NAMECOLUME));
-			user.setReference(resultSet.getString(Role.REFERENCECOLUME));
+			user.setUserEmail(resultSet.getString(EMAILCOLUMN));
+			user.setUserName(resultSet.getString(NAMECOLUMN));
+			user.setReference(resultSet.getString(Role.REFERENCECOLUMN));
 			userRoles.add(user);
 		}
 		
@@ -171,40 +171,46 @@ public List<User> getUserRole(String email){
  * @return a list of users
  */
 @SuppressWarnings("finally")
-public List<User> getProductRoleUsers(String log_identifer, String type) {
+public List<User> getProductRoleUsers(String log_identifer,String tableName) {
 	
 	List<User> productRoleUsers = new ArrayList<User>();
-	User user = null;
 	
-	try {
-		// Setup the connection with the DB
-		connect = getConnection();
-
-		statement = connect.createStatement();
+	if (tableName.equalsIgnoreCase(Reference.INST_TABLENAME) || tableName.equalsIgnoreCase(Reference.INVES_TABLENAME) 
+			||tableName.equalsIgnoreCase(Reference.NODE_TABLENAME)){
+		User user = null;
 		
-		resultSet = statement.executeQuery("SELECT u." + EMAILCOLUME + ", u." + NAMECOLUME + ", f." + Reference.TYPECOLUME +
-										" FROM " + TABLENAME + " u, " + ROLETABLENAME + " r, " + REFTABLENAME + " f, " + PRODUCTTABLENAME + " p" +
-										" where p." + Product.IDENTIFIERCOLUME + " = '" + log_identifer +
-										"' and p." + Product.IDENTIFIERCOLUME + " = f." + Reference.LOG_IDENTIFIERCOLUME +
-										" and f." + Reference.TYPECOLUME + " = '" + type +
-										"' and f." + Reference.REFERENCECOLUME + " = r." +  Role.REFERENCECOLUME +
-										" and r." + Role.EMAILCOLUME + " = u." + EMAILCOLUME +
-										" ORDER BY " + EMAILCOLUME);
-		
-		while (resultSet.next()) {
-			user = new User();
-			user.setUserEmail(resultSet.getString(EMAILCOLUME));
-			user.setUserName(resultSet.getString(NAMECOLUME));
-			user.setType(resultSet.getString(Reference.TYPECOLUME));
-			productRoleUsers.add(user);
+		try {
+			// Setup the connection with the DB
+			connect = getConnection();
+	
+			statement = connect.createStatement();
+			
+			resultSet = statement.executeQuery("SELECT u." + EMAILCOLUMN + ", u." + NAMECOLUMN + ", f." + Reference.TITLECOLUMN +
+											" FROM " + TABLENAME + " u, " + ROLETABLENAME + " r, " + tableName + " f, " + PRODUCTTABLENAME + " p" +
+											" where p." + Product.IDENTIFIERCOLUMN + " = '" + log_identifer +
+											"' and p." + Product.IDENTIFIERCOLUMN + " = f." + Reference.LOG_IDENTIFIERCOLUMN +
+											"' and f." + Reference.REFERENCECOLUMN + " = r." +  Role.REFERENCECOLUMN +
+											" and r." + Role.EMAILCOLUMN + " = u." + EMAILCOLUMN +
+											" ORDER BY " + EMAILCOLUMN);
+			
+			while (resultSet.next()) {
+				user = new User();
+				user.setUserEmail(resultSet.getString(EMAILCOLUMN));
+				user.setUserName(resultSet.getString(NAMECOLUMN));
+				user.setType(resultSet.getString(Reference.TITLECOLUMN));
+				productRoleUsers.add(user);
+			}
+			
+		} catch (Exception e) {
+			logger.error(e);
+		} finally {
+			close(statement);
+			//return productRoleUsers;
 		}
-		
-	} catch (Exception e) {
-		logger.error(e);
-	} finally {
-		close(statement);
-		return productRoleUsers;
+	}else{
+		logger.error("Please check the reference table name: instrument_reference, investigation_reference or node_reference.");
 	}
+	return productRoleUsers;
 }
 /**
  * @param email
@@ -216,7 +222,7 @@ public void updateUser(String email, String name) {
 		connect = getConnection();
 		connect.setAutoCommit(false);
 		
-		prepareStm = connect.prepareStatement("UPDATE " + TABLENAME + " SET " + NAMECOLUME + " = ? WHERE " + EMAILCOLUME + " = ?");
+		prepareStm = connect.prepareStatement("UPDATE " + TABLENAME + " SET " + NAMECOLUMN + " = ? WHERE " + EMAILCOLUMN + " = ?");
 		prepareStm.setString(1, name);
 		prepareStm.setString(2, email);
 		
@@ -250,7 +256,7 @@ public void insertUser(String email, String name) {
 		connect = getConnection();
 		connect.setAutoCommit(false);
 		
-		prepareStm = connect.prepareStatement("INSERT INTO " + TABLENAME + " (" + EMAILCOLUME + ", " + NAMECOLUME + ") VALUES (?, ?)");
+		prepareStm = connect.prepareStatement("INSERT INTO " + TABLENAME + " (" + EMAILCOLUMN + ", " + NAMECOLUMN + ") VALUES (?, ?)");
 		prepareStm.setString(1, email);
 		prepareStm.setString(2, name);
 		

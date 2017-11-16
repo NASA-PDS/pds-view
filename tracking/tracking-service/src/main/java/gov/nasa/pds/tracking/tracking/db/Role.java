@@ -22,8 +22,8 @@ public class Role extends DBConnector {
 
 	private static final String TABLENAME  = "role";
 	
-	public static final String EMAILCOLUME = "electronic_mail_address";
-	public static final String REFERENCECOLUME = "reference";
+	public static final String EMAILCOLUMN = "electronic_mail_address";
+	public static final String REFERENCECOLUMN = "reference";
 		
 	private Connection connect = null;
 	private Statement statement = null;
@@ -85,12 +85,12 @@ public class Role extends DBConnector {
 			statement = connect.createStatement();
 			resultSet = statement.executeQuery("SELECT * " +
 											"FROM " + TABLENAME +
-											" ORDER BY " + REFERENCECOLUME);
+											" ORDER BY " + REFERENCECOLUMN);
 			
 			while (resultSet.next()) {
 				role = new Role();
-				role.setEmail(resultSet.getString(EMAILCOLUME));
-				role.setReference(resultSet.getString(REFERENCECOLUME));
+				role.setEmail(resultSet.getString(EMAILCOLUMN));
+				role.setReference(resultSet.getString(REFERENCECOLUMN));
 				roles.add(role);
 			}
 			
@@ -134,7 +134,7 @@ public class Role extends DBConnector {
 			connect = getConnection();
 			connect.setAutoCommit(false);
 			
-			prepareStm = connect.prepareStatement("INSERT INTO " + TABLENAME + " (" + EMAILCOLUME + ", " + REFERENCECOLUME + ") VALUES (?, ?)");
+			prepareStm = connect.prepareStatement("INSERT INTO " + TABLENAME + " (" + EMAILCOLUMN + ", " + REFERENCECOLUMN + ") VALUES (?, ?)");
 			prepareStm.setString(1, email);
 			prepareStm.setString(2, reference);
 			

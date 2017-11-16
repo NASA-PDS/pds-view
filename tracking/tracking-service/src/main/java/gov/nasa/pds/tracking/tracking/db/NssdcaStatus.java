@@ -18,12 +18,12 @@ public class NssdcaStatus extends DBConnector {
 	private static final String TABLENAME = "nssdca_status";
 	private static final String PRODUCTTABLENAME= "product";
   
-	public static final String LOGIDENTIFIERCOLUME = "logical_identifier";
-	public static final String VERSIONCOLUME = "version_id";
-	public static final String DATECOLUME = "status_date_time";
-	public static final String NSSDCACOLUME = "nssdca_identifier";
-	public static final String EMAILCOLUME = "electronic_mail_address";
-	public static final String COMMENTCOLUME = "comment";
+	public static final String LOGIDENTIFIERCOLUMN = "logical_identifier";
+	public static final String VERSIONCOLUMN = "version_id";
+	public static final String DATECOLUMN = "status_date_time";
+	public static final String NSSDCACOLUMN = "nssdca_identifier";
+	public static final String EMAILCOLUMN = "electronic_mail_address";
+	public static final String COMMENTCOLUMN = "comment";
 
 	private Connection connect = null;
 	private Statement statement = null;
@@ -158,12 +158,12 @@ public class NssdcaStatus extends DBConnector {
 			connect.setAutoCommit(false);
 			
 			prepareStm = connect.prepareStatement("INSERT INTO " + TABLENAME + " (" 
-													+ LOGIDENTIFIERCOLUME + ", " 
-													+ VERSIONCOLUME + ", "
-													+ DATECOLUME + ", "
-													+ NSSDCACOLUME + ", "
-													+ EMAILCOLUME + ", "
-													+ COMMENTCOLUME + ") VALUES (?, ?, ?, ?, ?, ?)");
+													+ LOGIDENTIFIERCOLUMN + ", " 
+													+ VERSIONCOLUMN + ", "
+													+ DATECOLUMN + ", "
+													+ NSSDCACOLUMN + ", "
+													+ EMAILCOLUMN + ", "
+													+ COMMENTCOLUMN + ") VALUES (?, ?, ?, ?, ?, ?)");
 			prepareStm.setString(1, logical_identifier);
 			prepareStm.setString(2, version);
 			prepareStm.setString(3, date);
@@ -209,18 +209,18 @@ public class NssdcaStatus extends DBConnector {
 			statement = connect.createStatement();
 			
 			resultSet = statement.executeQuery("select * from " + TABLENAME 
-					+ " where " + LOGIDENTIFIERCOLUME + " = '" + logical_identifier + "' and "
-					+ VERSIONCOLUME + " = '" + ver + "'");
+					+ " where " + LOGIDENTIFIERCOLUMN + " = '" + logical_identifier + "' and "
+					+ VERSIONCOLUMN + " = '" + ver + "'");
 
 			while (resultSet.next()){
 				nssdcaStatus = new NssdcaStatus();
 				
-				nssdcaStatus.setLogIdentifier(resultSet.getString(LOGIDENTIFIERCOLUME));
-				nssdcaStatus.setVersion(resultSet.getString(VERSIONCOLUME));
-				nssdcaStatus.setNssdca(resultSet.getString(NSSDCACOLUME));
-				nssdcaStatus.setEmail(resultSet.getString(EMAILCOLUME));
-				nssdcaStatus.setComment(resultSet.getString(COMMENTCOLUME));
-				nssdcaStatus.setDate(resultSet.getString(DATECOLUME));
+				nssdcaStatus.setLogIdentifier(resultSet.getString(LOGIDENTIFIERCOLUMN));
+				nssdcaStatus.setVersion(resultSet.getString(VERSIONCOLUMN));
+				nssdcaStatus.setNssdca(resultSet.getString(NSSDCACOLUMN));
+				nssdcaStatus.setEmail(resultSet.getString(EMAILCOLUMN));
+				nssdcaStatus.setComment(resultSet.getString(COMMENTCOLUMN));
+				nssdcaStatus.setDate(resultSet.getString(DATECOLUMN));
 				
 				nssdcaStatuses.add(nssdcaStatus);
 			}	
@@ -247,18 +247,18 @@ public class NssdcaStatus extends DBConnector {
 			statement = connect.createStatement();
 
 			resultSet = statement.executeQuery("select a.* from " + PRODUCTTABLENAME + " p, " + TABLENAME + " a"
-					+ " where p." + LOGIDENTIFIERCOLUME + " = " + "a." + LOGIDENTIFIERCOLUME + " and p."
-					+ Product.TITLECOLUME + " = '" + title + "' order by a." + VERSIONCOLUME);
+					+ " where p." + LOGIDENTIFIERCOLUMN + " = " + "a." + LOGIDENTIFIERCOLUMN + " and p."
+					+ Product.TITLECOLUMN + " = '" + title + "' order by a." + VERSIONCOLUMN);
 
 			while (resultSet.next()) {
 				nStatus = new NssdcaStatus();
 
-				nStatus.setLogIdentifier(resultSet.getString(LOGIDENTIFIERCOLUME));
-				nStatus.setVersion(resultSet.getString(VERSIONCOLUME));
-				nStatus.setNssdca(resultSet.getString(NSSDCACOLUME));
-				nStatus.setEmail(resultSet.getString(EMAILCOLUME));
-				nStatus.setComment(resultSet.getString(COMMENTCOLUME));
-				nStatus.setDate(resultSet.getString(DATECOLUME));
+				nStatus.setLogIdentifier(resultSet.getString(LOGIDENTIFIERCOLUMN));
+				nStatus.setVersion(resultSet.getString(VERSIONCOLUMN));
+				nStatus.setNssdca(resultSet.getString(NSSDCACOLUMN));
+				nStatus.setEmail(resultSet.getString(EMAILCOLUMN));
+				nStatus.setComment(resultSet.getString(COMMENTCOLUMN));
+				nStatus.setDate(resultSet.getString(DATECOLUMN));
 
 				nStatuses.add(nStatus);
 			}
@@ -286,17 +286,17 @@ public class NssdcaStatus extends DBConnector {
 
 			resultSet = statement
 					.executeQuery("select n.* from " + PRODUCTTABLENAME + " p, " + TABLENAME + " n" + " where p."
-							+ LOGIDENTIFIERCOLUME + " = " + "n." + LOGIDENTIFIERCOLUME + " order by n." + VERSIONCOLUME);
+							+ LOGIDENTIFIERCOLUMN + " = " + "n." + LOGIDENTIFIERCOLUMN + " order by n." + VERSIONCOLUMN);
 
 			while (resultSet.next()) {
 				nStatus = new NssdcaStatus();
 
-				nStatus.setLogIdentifier(resultSet.getString(LOGIDENTIFIERCOLUME));
-				nStatus.setVersion(resultSet.getString(VERSIONCOLUME));
-				nStatus.setNssdca(resultSet.getString(NSSDCACOLUME));
-				nStatus.setEmail(resultSet.getString(EMAILCOLUME));
-				nStatus.setComment(resultSet.getString(COMMENTCOLUME));
-				nStatus.setDate(resultSet.getString(DATECOLUME));
+				nStatus.setLogIdentifier(resultSet.getString(LOGIDENTIFIERCOLUMN));
+				nStatus.setVersion(resultSet.getString(VERSIONCOLUMN));
+				nStatus.setNssdca(resultSet.getString(NSSDCACOLUMN));
+				nStatus.setEmail(resultSet.getString(EMAILCOLUMN));
+				nStatus.setComment(resultSet.getString(COMMENTCOLUMN));
+				nStatus.setDate(resultSet.getString(DATECOLUMN));
 
 				nStatuses.add(nStatus);
 			}

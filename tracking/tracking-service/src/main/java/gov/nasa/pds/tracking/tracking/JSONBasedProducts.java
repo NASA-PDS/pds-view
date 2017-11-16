@@ -21,6 +21,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import gov.nasa.pds.tracking.tracking.db.Product;
+import gov.nasa.pds.tracking.tracking.db.Reference;
 
 /**
  * @author danyu dan.yu@jpl.nasa.gov
@@ -52,11 +53,11 @@ public class JSONBasedProducts {
 		         logger.debug("Product " + count + ":\n " + p.getIdentifier() + " : " + p.getTitle());
 		         
 		         jsonProd = new JSONObject();
-		         jsonProd.put(Product.IDENTIFIERCOLUME, p.getIdentifier());
-		         jsonProd.put(Product.VERSIONCOLUME, p.getVersion());
-		         jsonProd.put(Product.TITLECOLUME, p.getTitle());
-		         jsonProd.put(Product.TYPECOLUME, p.getType());
-		         jsonProd.put(Product.ALTERNATECOLUME, p.getAlternate());
+		         jsonProd.put(Product.IDENTIFIERCOLUMN, p.getIdentifier());
+		         jsonProd.put(Product.VERSIONCOLUMN, p.getVersion());
+		         jsonProd.put(Product.TITLECOLUMN, p.getTitle());
+		         jsonProd.put(Product.TYPECOLUMN, p.getType());
+		         jsonProd.put(Product.ALTERNATECOLUMN, p.getAlternate());
 
 		         jsonProducts.append("products", jsonProd);
 		         count++;
@@ -70,19 +71,21 @@ public class JSONBasedProducts {
         String result = "" + jsonProducts.toString(4);
         return Response.status(200).entity(result).build();
     }
-	
-	@Path("{Delivery}")
+
+	@Path("{instRef : (.+)?}/{investRef : (.+)?}")
     @GET
     @Produces("application/json")
-    public Response products(@PathParam("Delivery") boolean delivery)  throws JSONException {
+	public Response products(@PathParam("instRef") String insRef, @PathParam("investRef") String invRef)  throws JSONException {	
 		JSONObject jsonProducts = new JSONObject();
         
         JSONObject jsonProd = new JSONObject();
+        JSONObject jsonRef = new JSONObject();
         
         Product prod;
 		try {
 			prod = new Product();
-			List<Product> prods = prod.getProductsAssociatedDeliveriesOrderByTitle();
+			List<Product> prods = prod.getProductsAssociatedDeliveriesOrderByTitle(insRef, invRef);
+			
 			logger.info("number of products: "  + prods.size());
 			Iterator<Product> itr = prods.iterator();
 			int count = 1;
@@ -92,11 +95,26 @@ public class JSONBasedProducts {
 		         logger.debug("Product " + count + ":\n " + p.getIdentifier() + " : " + p.getTitle());
 		         
 		         jsonProd = new JSONObject();
-		         jsonProd.put(Product.IDENTIFIERCOLUME, p.getIdentifier());
-		         jsonProd.put(Product.VERSIONCOLUME, p.getVersion());
-		         jsonProd.put(Product.TITLECOLUME, p.getTitle());
-		         jsonProd.put(Product.TYPECOLUME, p.getType());
-		         jsonProd.put(Product.ALTERNATECOLUME, p.getAlternate());
+		         jsonProd.put(Product.IDENTIFIERCOLUMN, p.getIdentifier());
+		         jsonProd.put(Product.VERSIONCOLUMN, p.getVersion());
+		         jsonProd.put(Product.TITLECOLUMN, p.getTitle());
+		         jsonProd.put(Product.TYPECOLUMN, p.getType());
+		         jsonProd.put(Product.ALTERNATECOLUMN, p.getAlternate());
+		         
+		         jsonRef = new JSONObject();		         
+		         jsonRef.put(Reference.REFERENCECOLUMN, p.getInstRef());
+		         jsonRef.put(Reference.TITLECOLUMN, p.getInstTitle());
+		         jsonProd.append("instrument", jsonRef);
+		         
+		         jsonRef = new JSONObject();		         
+		         jsonRef.put(Reference.REFERENCECOLUMN, p.getInveRef());
+		         jsonRef.put(Reference.TITLECOLUMN, p.getInveTitle());
+		         jsonProd.append("investigation", jsonRef);
+		         
+		         jsonRef = new JSONObject();		         
+		         jsonRef.put(Reference.REFERENCECOLUMN, p.getNodeRef());
+		         jsonRef.put(Reference.TITLECOLUMN, p.getNodeTitle());
+		         jsonProd.append("node", jsonRef);
 
 		         jsonProducts.append("products", jsonProd);
 		         count++;

@@ -101,7 +101,7 @@ public class HTMLBasedProducts {
 		Product prod;
 		try {
 			prod = new Product();
-			List<Product> prods = prod.getProductsAssociatedDeliveriesOrderByTitle();
+			List<Product> prods = prod.getProductsAssociatedDeliveriesOrderByTitle(null, null);
 			logger.info("number of products: "  + prods.size());
 			Iterator<Product> itr = prods.iterator();
 			int count = 1;

@@ -26,12 +26,12 @@ public class ArchiveStatus extends DBConnector {
 	private static final String TABLENAME = "archive_status";
 	private static final String PRODUCTTABLENAME= "product";
 
-	public static final String LOGIDENTIFIERCOLUME = "logical_identifier";
-	public static final String VERSIONCOLUME = "version_id";
-	public static final String DATECOLUME = "status_date_time";
-	public static final String STATUSCOLUME = "status";
-	public static final String EMAILCOLUME = "electronic_mail_address";
-	public static final String COMMENTCOLUME = "comment";
+	public static final String LOGIDENTIFIERCOLUMN = "logical_identifier";
+	public static final String VERSIONCOLUMN = "version_id";
+	public static final String DATECOLUMN = "status_date_time";
+	public static final String STATUSCOLUMN = "status";
+	public static final String EMAILCOLUMN = "electronic_mail_address";
+	public static final String COMMENTCOLUMN = "comment";
 
 	private Connection connect = null;
 	private Statement statement = null;
@@ -154,20 +154,20 @@ public class ArchiveStatus extends DBConnector {
 			statement = connect.createStatement();
 
 			logger.debug("select a.* from " + PRODUCTTABLENAME + " p, " + TABLENAME + " a" + " where p."
-					+ LOGIDENTIFIERCOLUME + " = " + "a." + LOGIDENTIFIERCOLUME + " order by a." + VERSIONCOLUME);
+					+ LOGIDENTIFIERCOLUMN + " = " + "a." + LOGIDENTIFIERCOLUMN + " order by a." + VERSIONCOLUMN);
 			resultSet = statement
 					.executeQuery("select a.* from " + PRODUCTTABLENAME + " p, " + TABLENAME + " a" + " where p."
-							+ LOGIDENTIFIERCOLUME + " = " + "a." + LOGIDENTIFIERCOLUME + " order by a." + VERSIONCOLUME);
+							+ LOGIDENTIFIERCOLUMN + " = " + "a." + LOGIDENTIFIERCOLUMN + " order by a." + VERSIONCOLUMN);
 
 			while (resultSet.next()) {
 				archStatus = new ArchiveStatus();
 
-				archStatus.setLogIdentifier(resultSet.getString(LOGIDENTIFIERCOLUME));
-				archStatus.setVersion(resultSet.getString(VERSIONCOLUME));
-				archStatus.setStatus(resultSet.getString(STATUSCOLUME));
-				archStatus.setEmail(resultSet.getString(EMAILCOLUME));
-				archStatus.setComment(resultSet.getString(COMMENTCOLUME));
-				archStatus.setDate(resultSet.getString(DATECOLUME));
+				archStatus.setLogIdentifier(resultSet.getString(LOGIDENTIFIERCOLUMN));
+				archStatus.setVersion(resultSet.getString(VERSIONCOLUMN));
+				archStatus.setStatus(resultSet.getString(STATUSCOLUMN));
+				archStatus.setEmail(resultSet.getString(EMAILCOLUMN));
+				archStatus.setComment(resultSet.getString(COMMENTCOLUMN));
+				archStatus.setDate(resultSet.getString(DATECOLUMN));
 
 				archStatuses.add(archStatus);
 			}
@@ -195,21 +195,21 @@ public class ArchiveStatus extends DBConnector {
 			statement = connect.createStatement();
 
 			logger.debug("select a.* from " + PRODUCTTABLENAME + " p, " + TABLENAME + " a" + " where p."
-					+ LOGIDENTIFIERCOLUME + " = " + "a." + LOGIDENTIFIERCOLUME + " and p." + Product.TITLECOLUME + " = '"
-					+ title + "' order by a." + VERSIONCOLUME);
+					+ LOGIDENTIFIERCOLUMN + " = " + "a." + LOGIDENTIFIERCOLUMN + " and p." + Product.TITLECOLUMN + " = '"
+					+ title + "' order by a." + VERSIONCOLUMN);
 			resultSet = statement.executeQuery("select a.* from " + PRODUCTTABLENAME + " p, " + TABLENAME + " a"
-					+ " where p." + LOGIDENTIFIERCOLUME + " = " + "a." + LOGIDENTIFIERCOLUME + " and p."
-					+ Product.TITLECOLUME + " = '" + title + "' order by a." + VERSIONCOLUME);
+					+ " where p." + LOGIDENTIFIERCOLUMN + " = " + "a." + LOGIDENTIFIERCOLUMN + " and p."
+					+ Product.TITLECOLUMN + " = '" + title + "' order by a." + VERSIONCOLUMN);
 
 			while (resultSet.next()) {
 				archStatus = new ArchiveStatus();
 
-				archStatus.setLogIdentifier(resultSet.getString(LOGIDENTIFIERCOLUME));
-				archStatus.setVersion(resultSet.getString(VERSIONCOLUME));
-				archStatus.setStatus(resultSet.getString(STATUSCOLUME));
-				archStatus.setEmail(resultSet.getString(EMAILCOLUME));
-				archStatus.setComment(resultSet.getString(COMMENTCOLUME));
-				archStatus.setDate(resultSet.getString(DATECOLUME));
+				archStatus.setLogIdentifier(resultSet.getString(LOGIDENTIFIERCOLUMN));
+				archStatus.setVersion(resultSet.getString(VERSIONCOLUMN));
+				archStatus.setStatus(resultSet.getString(STATUSCOLUMN));
+				archStatus.setEmail(resultSet.getString(EMAILCOLUMN));
+				archStatus.setComment(resultSet.getString(COMMENTCOLUMN));
+				archStatus.setDate(resultSet.getString(DATECOLUMN));
 
 				archStatuses.add(archStatus);
 			}
@@ -238,18 +238,18 @@ public class ArchiveStatus extends DBConnector {
 			statement = connect.createStatement();
 			
 			resultSet = statement.executeQuery("select * from " + TABLENAME 
-					+ " where " + LOGIDENTIFIERCOLUME + " = '" + logical_identifier + "' and "
-					+ VERSIONCOLUME + " = '" + ver + "' order by " + DATECOLUME + " DESC");
+					+ " where " + LOGIDENTIFIERCOLUMN + " = '" + logical_identifier + "' and "
+					+ VERSIONCOLUMN + " = '" + ver + "' order by " + DATECOLUMN + " DESC");
 
 			if (resultSet.next()){
 				archStatus = new ArchiveStatus();
 
-				archStatus.setLogIdentifier(resultSet.getString(LOGIDENTIFIERCOLUME));
-				archStatus.setVersion(resultSet.getString(VERSIONCOLUME));
-				archStatus.setStatus(resultSet.getString(STATUSCOLUME));
-				archStatus.setEmail(resultSet.getString(EMAILCOLUME));
-				archStatus.setComment(resultSet.getString(COMMENTCOLUME));
-				archStatus.setDate(resultSet.getString(DATECOLUME));
+				archStatus.setLogIdentifier(resultSet.getString(LOGIDENTIFIERCOLUMN));
+				archStatus.setVersion(resultSet.getString(VERSIONCOLUMN));
+				archStatus.setStatus(resultSet.getString(STATUSCOLUMN));
+				archStatus.setEmail(resultSet.getString(EMAILCOLUMN));
+				archStatus.setComment(resultSet.getString(COMMENTCOLUMN));
+				archStatus.setDate(resultSet.getString(DATECOLUMN));
 			}	
 			else{
 				logger.info("Can not find any Archive Status!");
@@ -279,18 +279,18 @@ public class ArchiveStatus extends DBConnector {
 			statement = connect.createStatement();
 			
 			resultSet = statement.executeQuery("select * from " + TABLENAME 
-					+ " where " + LOGIDENTIFIERCOLUME + " = '" + logical_identifier + "' and "
-					+ VERSIONCOLUME + " = '" + ver + "' order by " + DATECOLUME);
+					+ " where " + LOGIDENTIFIERCOLUMN + " = '" + logical_identifier + "' and "
+					+ VERSIONCOLUMN + " = '" + ver + "' order by " + DATECOLUMN);
 
 			while (resultSet.next()){
 				archStatus = new ArchiveStatus();
 
-				archStatus.setLogIdentifier(resultSet.getString(LOGIDENTIFIERCOLUME));
-				archStatus.setVersion(resultSet.getString(VERSIONCOLUME));
-				archStatus.setStatus(resultSet.getString(STATUSCOLUME));
-				archStatus.setEmail(resultSet.getString(EMAILCOLUME));
-				archStatus.setComment(resultSet.getString(COMMENTCOLUME));
-				archStatus.setDate(resultSet.getString(DATECOLUME));
+				archStatus.setLogIdentifier(resultSet.getString(LOGIDENTIFIERCOLUMN));
+				archStatus.setVersion(resultSet.getString(VERSIONCOLUMN));
+				archStatus.setStatus(resultSet.getString(STATUSCOLUMN));
+				archStatus.setEmail(resultSet.getString(EMAILCOLUMN));
+				archStatus.setComment(resultSet.getString(COMMENTCOLUMN));
+				archStatus.setDate(resultSet.getString(DATECOLUMN));
 				
 				archStatuses.add(archStatus);
 			}	
@@ -318,12 +318,12 @@ public class ArchiveStatus extends DBConnector {
 			connect.setAutoCommit(false);
 			
 			prepareStm = connect.prepareStatement("INSERT INTO " + TABLENAME + " (" 
-													+ LOGIDENTIFIERCOLUME + ", " 
-													+ VERSIONCOLUME + ", "
-													+ DATECOLUME + ", "
-													+ STATUSCOLUME + ", "
-													+ EMAILCOLUME + ", "
-													+ COMMENTCOLUME + ") VALUES (?, ?, ?, ?, ?, ?)");
+													+ LOGIDENTIFIERCOLUMN + ", " 
+													+ VERSIONCOLUMN + ", "
+													+ DATECOLUMN + ", "
+													+ STATUSCOLUMN + ", "
+													+ EMAILCOLUMN + ", "
+													+ COMMENTCOLUMN + ") VALUES (?, ?, ?, ?, ?, ?)");
 			prepareStm.setString(1, logical_identifier);
 			prepareStm.setString(2, version);
 			prepareStm.setString(3, date);

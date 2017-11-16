@@ -32,15 +32,15 @@ public class Delivery extends DBConnector {
 		private static String TABLENAME  = "delivery";
 		private static String PRODUCTTABLENAME = "product";
 	
-		public static String LOG_IDENTIFIERCOLUME  = "logical_identifier";
-		public static String DEL_IDENTIFIERCOLUME  = "delivery_identifier";		
-		public static String VERSIONCOLUME  = "version_id";
-		public static String NAMECOLUME  = "name";
-		public static String STARTCOLUME  = "start_date_time";
-		public static String STOPCOLUME  = "stop_date_time";
-		public static String SOURCECOLUME  = "source";
-		public static String TARGETCOLUME  = "target";
-		public static String DUEDATECOLUME = "due_date";
+		public static String LOG_IDENTIFIERCOLUMN  = "logical_identifier";
+		public static String DEL_IDENTIFIERCOLUMN  = "delivery_identifier";		
+		public static String VERSIONCOLUMN  = "version_id";
+		public static String NAMECOLUMN  = "name";
+		public static String STARTCOLUMN  = "start_date_time";
+		public static String STOPCOLUMN  = "stop_date_time";
+		public static String SOURCECOLUMN  = "source";
+		public static String TARGETCOLUMN  = "target";
+		public static String DUEDATECOLUMN = "due_date";
 		
 		private Connection connect = null;
 		private Statement statement = null;
@@ -206,20 +206,20 @@ public class Delivery extends DBConnector {
 			statement = connect.createStatement();
 			resultSet = statement.executeQuery("select * from " 
 												+ TABLENAME
-												+ " order by " + DUEDATECOLUME);
+												+ " order by " + DUEDATECOLUMN);
 			
 			while (resultSet.next()) {
 				del = new Delivery();
 				
-				del.setLogIdentifier(resultSet.getString(LOG_IDENTIFIERCOLUME));
-				del.setDelIdentifier(resultSet.getInt(DEL_IDENTIFIERCOLUME));								
-				del.setVersion(resultSet.getString(VERSIONCOLUME));				
-				del.setName(resultSet.getString(NAMECOLUME));				
-				del.setStart(resultSet.getString(STARTCOLUME));
-				del.setStop(resultSet.getString(STOPCOLUME));
-				del.setSource(resultSet.getString(SOURCECOLUME));
-				del.setTarget(resultSet.getString(TARGETCOLUME));
-				del.setDueDate(resultSet.getString(DUEDATECOLUME));
+				del.setLogIdentifier(resultSet.getString(LOG_IDENTIFIERCOLUMN));
+				del.setDelIdentifier(resultSet.getInt(DEL_IDENTIFIERCOLUMN));								
+				del.setVersion(resultSet.getString(VERSIONCOLUMN));				
+				del.setName(resultSet.getString(NAMECOLUMN));				
+				del.setStart(resultSet.getString(STARTCOLUMN));
+				del.setStop(resultSet.getString(STOPCOLUMN));
+				del.setSource(resultSet.getString(SOURCECOLUMN));
+				del.setTarget(resultSet.getString(TARGETCOLUMN));
+				del.setDueDate(resultSet.getString(DUEDATECOLUMN));
 
 				delObjs.add(del);
 			}
@@ -246,27 +246,27 @@ public class Delivery extends DBConnector {
 			statement = connect.createStatement();
 			logger.debug("select * from " 
 					+ PRODUCTTABLENAME + " p, " + TABLENAME + " d"
-					+ " where p." + LOG_IDENTIFIERCOLUME + " = " + "d." + LOG_IDENTIFIERCOLUME 
-					+ " and p." + Product.TITLECOLUME + " = '" + title
-					+ "' order by " + DUEDATECOLUME);
+					+ " where p." + LOG_IDENTIFIERCOLUMN + " = " + "d." + LOG_IDENTIFIERCOLUMN 
+					+ " and p." + Product.TITLECOLUMN + " = '" + title
+					+ "' order by " + DUEDATECOLUMN);
 			resultSet = statement.executeQuery("select * from " 
 												+ PRODUCTTABLENAME + " p, " + TABLENAME + " d"
-												+ " where p." + LOG_IDENTIFIERCOLUME + " = " + "d." + LOG_IDENTIFIERCOLUME 
-												+ " and p." + Product.TITLECOLUME + " = '" + title
-												+ "' order by " + DUEDATECOLUME);
+												+ " where p." + LOG_IDENTIFIERCOLUMN + " = " + "d." + LOG_IDENTIFIERCOLUMN 
+												+ " and p." + Product.TITLECOLUMN + " = '" + title
+												+ "' order by " + DUEDATECOLUMN);
 			
 			while (resultSet.next()) {
 				del = new Delivery();
 				
-				del.setLogIdentifier(resultSet.getString(LOG_IDENTIFIERCOLUME));
-				del.setDelIdentifier(resultSet.getInt(DEL_IDENTIFIERCOLUME));								
-				del.setVersion(resultSet.getString(VERSIONCOLUME));				
-				del.setName(resultSet.getString(NAMECOLUME));				
-				del.setStart(resultSet.getString(STARTCOLUME));
-				del.setStop(resultSet.getString(STOPCOLUME));
-				del.setSource(resultSet.getString(SOURCECOLUME));
-				del.setTarget(resultSet.getString(TARGETCOLUME));
-				del.setDueDate(resultSet.getString(DUEDATECOLUME));
+				del.setLogIdentifier(resultSet.getString(LOG_IDENTIFIERCOLUMN));
+				del.setDelIdentifier(resultSet.getInt(DEL_IDENTIFIERCOLUMN));								
+				del.setVersion(resultSet.getString(VERSIONCOLUMN));				
+				del.setName(resultSet.getString(NAMECOLUMN));				
+				del.setStart(resultSet.getString(STARTCOLUMN));
+				del.setStop(resultSet.getString(STOPCOLUMN));
+				del.setSource(resultSet.getString(SOURCECOLUMN));
+				del.setTarget(resultSet.getString(TARGETCOLUMN));
+				del.setDueDate(resultSet.getString(DUEDATECOLUMN));
 
 				delObjs.add(del);
 			}
@@ -292,27 +292,27 @@ public class Delivery extends DBConnector {
 			
 			logger.debug("select * from " 
 					+ TABLENAME
-					+ " where " + LOG_IDENTIFIERCOLUME + " = '" + log_identifer 
-					+ "' and " + VERSIONCOLUME + " = '" + version
-					+ "' order by " + DUEDATECOLUME);
+					+ " where " + LOG_IDENTIFIERCOLUMN + " = '" + log_identifer 
+					+ "' and " + VERSIONCOLUMN + " = '" + version
+					+ "' order by " + DUEDATECOLUMN);
 			resultSet = statement.executeQuery("select * from " 
 												+ TABLENAME
-												+ " where " + LOG_IDENTIFIERCOLUME + " = '" + log_identifer 
-												+ "' and " + VERSIONCOLUME + " = '" + version
-												+ "' order by " + DUEDATECOLUME);
+												+ " where " + LOG_IDENTIFIERCOLUMN + " = '" + log_identifer 
+												+ "' and " + VERSIONCOLUMN + " = '" + version
+												+ "' order by " + DUEDATECOLUMN);
 			
 			while (resultSet.next()) {
 				del = new Delivery();
 				
-				del.setLogIdentifier(resultSet.getString(LOG_IDENTIFIERCOLUME));
-				del.setDelIdentifier(resultSet.getInt(DEL_IDENTIFIERCOLUME));								
-				del.setVersion(resultSet.getString(VERSIONCOLUME));				
-				del.setName(resultSet.getString(NAMECOLUME));				
-				del.setStart(resultSet.getString(STARTCOLUME));
-				del.setStop(resultSet.getString(STOPCOLUME));
-				del.setSource(resultSet.getString(SOURCECOLUME));
-				del.setTarget(resultSet.getString(TARGETCOLUME));
-				del.setDueDate(resultSet.getString(DUEDATECOLUME));
+				del.setLogIdentifier(resultSet.getString(LOG_IDENTIFIERCOLUMN));
+				del.setDelIdentifier(resultSet.getInt(DEL_IDENTIFIERCOLUMN));								
+				del.setVersion(resultSet.getString(VERSIONCOLUMN));				
+				del.setName(resultSet.getString(NAMECOLUMN));				
+				del.setStart(resultSet.getString(STARTCOLUMN));
+				del.setStop(resultSet.getString(STOPCOLUMN));
+				del.setSource(resultSet.getString(SOURCECOLUMN));
+				del.setTarget(resultSet.getString(TARGETCOLUMN));
+				del.setDueDate(resultSet.getString(DUEDATECOLUMN));
 
 				delObjs.add(del);
 			}
@@ -369,14 +369,14 @@ public class Delivery extends DBConnector {
 			connect.setAutoCommit(false);
 			
 			prepareStm = connect.prepareStatement("INSERT INTO " + TABLENAME + " (" 
-												+ LOG_IDENTIFIERCOLUME + ", "
-												+ VERSIONCOLUME + ", "
-												+ NAMECOLUME + ", "
-												+ STARTCOLUME + ", "
-												+ STOPCOLUME + ", "
-												+ SOURCECOLUME + ", "
-												+ TARGETCOLUME + ", "
-												+ DUEDATECOLUME + ") VALUES (?, ?, ?, ?, ?, ?, ?, ?)", Statement. RETURN_GENERATED_KEYS);
+												+ LOG_IDENTIFIERCOLUMN + ", "
+												+ VERSIONCOLUMN + ", "
+												+ NAMECOLUMN + ", "
+												+ STARTCOLUMN + ", "
+												+ STOPCOLUMN + ", "
+												+ SOURCECOLUMN + ", "
+												+ TARGETCOLUMN + ", "
+												+ DUEDATECOLUMN + ") VALUES (?, ?, ?, ?, ?, ?, ?, ?)", Statement. RETURN_GENERATED_KEYS);
 			prepareStm.setString(1, logicalIdentifier);
 			prepareStm.setString(2, versionId);
 			prepareStm.setString(3, name);
@@ -429,13 +429,13 @@ public class Delivery extends DBConnector {
 			connect = getConnection();
 			connect.setAutoCommit(false);
 			
-			prepareStm = connect.prepareStatement("UPDATE " + TABLENAME + " SET " + NAMECOLUME + " = ?, " 
-																			   + STARTCOLUME + " = ?, "
-																			   + STOPCOLUME + " = ?, "
-																			   + SOURCECOLUME + " = ?, "
-																			   + TARGETCOLUME + " = ?, "
-																			   + DUEDATECOLUME + " = ? "
-													+ "WHERE " + DEL_IDENTIFIERCOLUME + " = ?");
+			prepareStm = connect.prepareStatement("UPDATE " + TABLENAME + " SET " + NAMECOLUMN + " = ?, " 
+																			   + STARTCOLUMN + " = ?, "
+																			   + STOPCOLUMN + " = ?, "
+																			   + SOURCECOLUMN + " = ?, "
+																			   + TARGETCOLUMN + " = ?, "
+																			   + DUEDATECOLUMN + " = ? "
+													+ "WHERE " + DEL_IDENTIFIERCOLUMN + " = ?");
 			
 			prepareStm.setString(1, name);
 			prepareStm.setString(2, startDateTime);

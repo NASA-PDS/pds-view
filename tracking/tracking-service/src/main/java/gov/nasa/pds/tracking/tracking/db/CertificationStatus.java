@@ -18,12 +18,12 @@ public class CertificationStatus extends DBConnector {
 	private static final String TABLENAME = "certification_status";
 	private static final String PRODUCTTABLENAME= "product";
 
-	public static final String LOGIDENTIFIERCOLUME = "logical_identifier";
-	public static final String VERSIONCOLUME = "version_id";
-	public static final String DATECOLUME = "status_date_time";
-	public static final String STATUSCOLUME = "status";
-	public static final String EMAILCOLUME = "electronic_mail_address";
-	public static final String COMMENTCOLUME = "comment";
+	public static final String LOGIDENTIFIERCOLUMN = "logical_identifier";
+	public static final String VERSIONCOLUMN = "version_id";
+	public static final String DATECOLUMN = "status_date_time";
+	public static final String STATUSCOLUMN = "status";
+	public static final String EMAILCOLUMN = "electronic_mail_address";
+	public static final String COMMENTCOLUMN = "comment";
 
 	private Connection connect = null;
 	private Statement statement = null;
@@ -140,12 +140,12 @@ public class CertificationStatus extends DBConnector {
 			connect.setAutoCommit(false);
 			
 			prepareStm = connect.prepareStatement("INSERT INTO " + TABLENAME + " (" 
-													+ LOGIDENTIFIERCOLUME + ", " 
-													+ VERSIONCOLUME + ", "
-													+ DATECOLUME + ", "
-													+ STATUSCOLUME + ", "
-													+ EMAILCOLUME + ", "
-													+ COMMENTCOLUME + ") VALUES (?, ?, ?, ?, ?, ?)");
+													+ LOGIDENTIFIERCOLUMN + ", " 
+													+ VERSIONCOLUMN + ", "
+													+ DATECOLUMN + ", "
+													+ STATUSCOLUMN + ", "
+													+ EMAILCOLUMN + ", "
+													+ COMMENTCOLUMN + ") VALUES (?, ?, ?, ?, ?, ?)");
 			prepareStm.setString(1, logical_identifier);
 			prepareStm.setString(2, version);
 			prepareStm.setString(3, date);
@@ -189,18 +189,18 @@ public class CertificationStatus extends DBConnector {
 			statement = connect.createStatement();
 			
 			resultSet = statement.executeQuery("select * from " + TABLENAME 
-					+ " where " + LOGIDENTIFIERCOLUME + " = '" + logical_identifier + "' and "
-					+ VERSIONCOLUME + " = '" + ver + "' order by " + DATECOLUME + " DESC");
+					+ " where " + LOGIDENTIFIERCOLUMN + " = '" + logical_identifier + "' and "
+					+ VERSIONCOLUMN + " = '" + ver + "' order by " + DATECOLUMN + " DESC");
 
 			if (resultSet.next()){
 				certifStatus = new CertificationStatus();
 
-				certifStatus.setLogIdentifier(resultSet.getString(LOGIDENTIFIERCOLUME));
-				certifStatus.setVersion(resultSet.getString(VERSIONCOLUME));
-				certifStatus.setStatus(resultSet.getString(STATUSCOLUME));
-				certifStatus.setEmail(resultSet.getString(EMAILCOLUME));
-				certifStatus.setComment(resultSet.getString(COMMENTCOLUME));
-				certifStatus.setDate(resultSet.getString(DATECOLUME));
+				certifStatus.setLogIdentifier(resultSet.getString(LOGIDENTIFIERCOLUMN));
+				certifStatus.setVersion(resultSet.getString(VERSIONCOLUMN));
+				certifStatus.setStatus(resultSet.getString(STATUSCOLUMN));
+				certifStatus.setEmail(resultSet.getString(EMAILCOLUMN));
+				certifStatus.setComment(resultSet.getString(COMMENTCOLUMN));
+				certifStatus.setDate(resultSet.getString(DATECOLUMN));
 				
 			}	
 			else{
@@ -231,18 +231,18 @@ public class CertificationStatus extends DBConnector {
 			statement = connect.createStatement();
 			
 			resultSet = statement.executeQuery("select * from " + TABLENAME 
-					+ " where " + LOGIDENTIFIERCOLUME + " = '" + logical_identifier + "' and "
-					+ VERSIONCOLUME + " = '" + ver + "' order by " + DATECOLUME);
+					+ " where " + LOGIDENTIFIERCOLUMN + " = '" + logical_identifier + "' and "
+					+ VERSIONCOLUMN + " = '" + ver + "' order by " + DATECOLUMN);
 
 			while (resultSet.next()){
 				certifStatus = new CertificationStatus();
 
-				certifStatus.setLogIdentifier(resultSet.getString(LOGIDENTIFIERCOLUME));
-				certifStatus.setVersion(resultSet.getString(VERSIONCOLUME));
-				certifStatus.setStatus(resultSet.getString(STATUSCOLUME));
-				certifStatus.setEmail(resultSet.getString(EMAILCOLUME));
-				certifStatus.setComment(resultSet.getString(COMMENTCOLUME));
-				certifStatus.setDate(resultSet.getString(DATECOLUME));
+				certifStatus.setLogIdentifier(resultSet.getString(LOGIDENTIFIERCOLUMN));
+				certifStatus.setVersion(resultSet.getString(VERSIONCOLUMN));
+				certifStatus.setStatus(resultSet.getString(STATUSCOLUMN));
+				certifStatus.setEmail(resultSet.getString(EMAILCOLUMN));
+				certifStatus.setComment(resultSet.getString(COMMENTCOLUMN));
+				certifStatus.setDate(resultSet.getString(DATECOLUMN));
 				
 				certifStatuses.add(certifStatus);
 			}	
@@ -269,18 +269,18 @@ public class CertificationStatus extends DBConnector {
 			statement = connect.createStatement();
 
 			resultSet = statement.executeQuery("select a.* from " + PRODUCTTABLENAME + " p, " + TABLENAME + " a"
-					+ " where p." + LOGIDENTIFIERCOLUME + " = " + "a." + LOGIDENTIFIERCOLUME + " and p."
-					+ Product.TITLECOLUME + " = '" + title + "' order by a." + VERSIONCOLUME);
+					+ " where p." + LOGIDENTIFIERCOLUMN + " = " + "a." + LOGIDENTIFIERCOLUMN + " and p."
+					+ Product.TITLECOLUMN + " = '" + title + "' order by a." + VERSIONCOLUMN);
 
 			while (resultSet.next()) {
 				cStatus = new CertificationStatus();
 
-				cStatus.setLogIdentifier(resultSet.getString(LOGIDENTIFIERCOLUME));
-				cStatus.setVersion(resultSet.getString(VERSIONCOLUME));
-				cStatus.setStatus(resultSet.getString(STATUSCOLUME));
-				cStatus.setEmail(resultSet.getString(EMAILCOLUME));
-				cStatus.setComment(resultSet.getString(COMMENTCOLUME));
-				cStatus.setDate(resultSet.getString(DATECOLUME));
+				cStatus.setLogIdentifier(resultSet.getString(LOGIDENTIFIERCOLUMN));
+				cStatus.setVersion(resultSet.getString(VERSIONCOLUMN));
+				cStatus.setStatus(resultSet.getString(STATUSCOLUMN));
+				cStatus.setEmail(resultSet.getString(EMAILCOLUMN));
+				cStatus.setComment(resultSet.getString(COMMENTCOLUMN));
+				cStatus.setDate(resultSet.getString(DATECOLUMN));
 
 				cStatuses.add(cStatus);
 			}
@@ -308,17 +308,17 @@ public class CertificationStatus extends DBConnector {
 
 			resultSet = statement
 					.executeQuery("select c.* from " + PRODUCTTABLENAME + " p, " + TABLENAME + " c" + " where p."
-							+ LOGIDENTIFIERCOLUME + " = " + "c." + LOGIDENTIFIERCOLUME + " order by c." + VERSIONCOLUME);
+							+ LOGIDENTIFIERCOLUMN + " = " + "c." + LOGIDENTIFIERCOLUMN + " order by c." + VERSIONCOLUMN);
 
 			while (resultSet.next()) {
 				cStatus = new CertificationStatus();
 
-				cStatus.setLogIdentifier(resultSet.getString(LOGIDENTIFIERCOLUME));
-				cStatus.setVersion(resultSet.getString(VERSIONCOLUME));
-				cStatus.setStatus(resultSet.getString(STATUSCOLUME));
-				cStatus.setEmail(resultSet.getString(EMAILCOLUME));
-				cStatus.setComment(resultSet.getString(COMMENTCOLUME));
-				cStatus.setDate(resultSet.getString(DATECOLUME));
+				cStatus.setLogIdentifier(resultSet.getString(LOGIDENTIFIERCOLUMN));
+				cStatus.setVersion(resultSet.getString(VERSIONCOLUMN));
+				cStatus.setStatus(resultSet.getString(STATUSCOLUMN));
+				cStatus.setEmail(resultSet.getString(EMAILCOLUMN));
+				cStatus.setComment(resultSet.getString(COMMENTCOLUMN));
+				cStatus.setDate(resultSet.getString(DATECOLUMN));
 
 				cStatuses.add(cStatus);
 			}
