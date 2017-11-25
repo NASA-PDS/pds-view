@@ -1,0 +1,12 @@
+#
+# Whenever you deploy a new version of Logstash, create a directory inside the deployment called
+# "patterns" and copy this file inside it.
+#
+
+PARTIAL_EMAIL %{HTTPDUSER}|%{EMAILLOCALPART}@
+
+HTTPD_ADAPTEDLOG %{IPORHOST:clientip} %{PARTIAL_EMAIL:ident} %{PARTIAL_EMAIL:auth} \[%{HTTPDATE:timestamp}\] "(?:%{WORD:verb} %{NOTSPACE:request}(?: HTTP/%{NUMBER:httpversion})?|%{DATA:rawrequest})" %{NUMBER:response} (?:%{NUMBER:bytes}|-) %{QS:referrer} %{QS:agent}
+
+GOOGLEBOT_USER .*googlebot.*
+
+BOT_USERS %{GOOGLEBOT}
