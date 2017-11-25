@@ -5,8 +5,8 @@
 
 PARTIAL_EMAIL %{HTTPDUSER}|%{EMAILLOCALPART}@
 
-HTTPD_ADAPTEDLOG %{IPORHOST:clientip} %{PARTIAL_EMAIL:ident} %{PARTIAL_EMAIL:auth} \[%{HTTPDATE:timestamp}\] "(?:%{WORD:verb} %{NOTSPACE:request}(?: HTTP/%{NUMBER:httpversion})?|%{DATA:rawrequest})" %{NUMBER:response} (?:%{NUMBER:bytes}|-) %{QS:referrer} %{QS:agent}
+HTTPD_ADAPTEDLOG %{IPORHOST:clientip} %{NOTSPACE:ident} %{PARTIAL_EMAIL:auth} \[%{HTTPDATE:timestamp}\] "(?:%{WORD:verb} %{NOTSPACE:request}(?: HTTP/%{NUMBER:httpversion})?|%{DATA:rawrequest})" %{NUMBER:response} (?:%{NUMBER:bytes}|-) %{QS:referrer} %{QS:agent}
 
-GOOGLEBOT_USER .*googlebot.*
+GOOGLEBOT .*googlebot.*
 
-BOT_USERS %{GOOGLEBOT}
+BOTS %{GOOGLEBOT}
