@@ -5,6 +5,7 @@ import types
 import csv
 import io
 import sys
+import re
 from collections import OrderedDict
 import textwrap
 
@@ -12,12 +13,30 @@ import sip
 sip.setapi('QVariant',2)
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
+
+import numpy as np
+
+import matplotlib as mpl
+from matplotlib.figure import Figure
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_qt4agg import (
+    FigureCanvasQTAgg as FigureCanvas,
+    NavigationToolbar2QT as NavigationToolbar)
+# Safe import of PowerNorm (available in MPL v1.4+)
+try:
+    from matplotlib.colors import PowerNorm
+
+except ImportError:
+    PowerNorm = None
+
+
 from pds4_tools import pds4_read
 from pds4_tools.reader.table_objects import Meta_TableStructure
 import Model
 import Delegate
 #import Styles
-import numpy as np
+
+
 
 MAC = "qt_mac_set_native_menubar" in dir()
 __version__ = "1.0.1"
@@ -40,8 +59,16 @@ class MainWindow(QMainWindow):
         self.title = ''
         self.index = None
         self.model = None
+        self.image = None
+        self.image_data = None
+        self.x_tick_visible = True
+        self.y_tick_visible = True
+        self.color_bar_orientation = 'horizontal'
+        self._norm = mpl.colors.Normalize(clip=False)   # Linear normalization
+        self._interpolation = 'none'                    # default to no interpolation on images
 
         self.threeDTabInPlace = False
+        self.table_num = 0    # This is used for table arrays and image arrays (e.g 3D Spectral Data)
 
         self.logo = QLabel()
         self.logo.setPixmap(QPixmap("./Icons/PDS_Inspector_LOGO.png"))
@@ -58,7 +85,7 @@ class MainWindow(QMainWindow):
 
         self.tabFrame.setEnabled(True)
         self.tabFrame.setGeometry(10,10,555,550)
-        self.tabFrame.setStyleSheet("background-color: rgb(240, 255, 255)")
+        self.tabFrame.setStyleSheet("background-color: rgb(80, 80, 80)")
 
         # add tabs
         self.labelTab = QWidget()
@@ -87,6 +114,9 @@ class MainWindow(QMainWindow):
 
         self.threeDTableLayout = QGridLayout()
         #self.threeDTableInfoLayout = QHBoxLayout
+
+        self.imageLayout = QVBoxLayout()
+        self.imageInfoLayout = QHBoxLayout()
 
         self.tabFrame.setTabOrder(self.labelTab.focusProxy(), self.tableTab.focusProxy())
         self.tabFrame.setMovable(False)
@@ -117,30 +147,370 @@ class MainWindow(QMainWindow):
         status.addPermanentWidget(self.sizeLabel)
         status.showMessage("Ready", 5000)
 
-        fileOpenAction = self.createAction("&Open...", self.fileOpen,
-                QKeySequence.Open, "fileopen",
-                "Open a PDS file")
+        self.fileOpenAction = self.createAction("&Open...", self.fileOpen,
+                QKeySequence.Open,  icon="fileopen", tip="Open a PDS file")
+        self.fileSaveAsAction = self.createAction("Save &As...", self.fileSaveAs,
+                icon="filesaveas", tip="Save the image using a new name")
 
-        self.fileMenu = self.menuBar().addMenu("&File")
+        self.fileSaveAsAction.setDisabled(True)
 
-        self.fileMenuActions = (fileOpenAction, None)
+        self.fileQuitAction = self.createAction("&Quit..", self.close,
+                "Ctrl+Q", icon="filequit", tip="Close the application")
 
-#                                fileSaveAsAction, fileQuitAction, None)
-        self.connect(self.fileMenu, SIGNAL("aboutToShow()"),
-                     self.updateFileMenu)
 
-        settings = QSettings()
-        self.recentFiles = settings.value("RecentFiles") or []
-        self.restoreGeometry(settings.value("MainWindow/Geometry",
-                                            QByteArray()))
-        self.restoreState(settings.value("MainWindow/State",
-                                        QByteArray()))
+        fileMenu = self.menuBar().addMenu("&File")
 
-        self.setWindowTitle("PDS Inspector")
+        self.addActions(fileMenu, (self.fileOpenAction, None, self.fileSaveAsAction,
+                                None, self.fileQuitAction))
+
+
+
+
+        # Add the 'Label Options' menu bar items
+        self.labelMenu = self.menuBar().addMenu("Label Options")
+        labelOptionsGroup = QActionGroup(self, exclusive=True)
+        self.label_options = ('Object Label', 'Full Label', 'separator', 'Identification Area', 'Observation Area',
+                              'Discipline Area','Mission Area','separator','Display Settings', 'Spectral Characteristics','separator','File info')
+        self.labelActionList = {}
+        for label in self.label_options:
+            if label == 'separator':
+                self.labelMenu.addSeparator()
+            else:
+                self.labelActionList[label] = self.createAction(label, self.selectLabel,
+                                     icon='Display ' + label, tip='Display ' + label,
+                                     checkable=True, group_action=True)
+                labelGroupAction = labelOptionsGroup.addAction(self.labelActionList[label])
+                self.labelMenu.addAction(labelGroupAction)
+
+        self.labelActionList['Object Label'].setChecked(True)
+
+
+        # Add the 'Color Maps' menu bar items
+        self.invert_colormap = False
+
+        self.imageMenu = self.menuBar().addMenu("Color Maps")
+
+        viewBasicColorGroup = QActionGroup(self, exclusive=True)
+        self.colorMaps = ('gray', 'Reds', 'Greens', 'Blues', 'hot', 'afmhot', 'gist_heat', 'cool', 'coolwarm',
+                     'jet', 'rainbow', 'hsv', 'Paired', 'separator', "current selection in 'All'")
+
+        self.colorActionList = {}
+
+        for color in self.colorMaps:
+            if color == 'separator':
+                self.imageMenu.addSeparator()
+            else:
+                self.colorActionList[color] = self.createAction(color, self.selectColorMap,
+                     icon='show'+color, tip='Display '+color+' in image', checkable=True, group_action=True)
+                groupAction = viewBasicColorGroup.addAction(self.colorActionList[color])
+                self.imageMenu.addAction(groupAction)
+
+        self.colorActionList['gray'].setChecked(True)   # note: ...setDisabled(True) can be used individually
+
+        self.imageMenu.addSeparator()
+
+        # add an all colormaps pulldown
+
+        allSubMenu = self.imageMenu.addMenu("All")
+
+        self.actionListAll = {}
+        viewAllColorGroup = QActionGroup(self, exclusive=True)
+        self.allColormaps = sorted(m for m in plt.cm.datad if not m.endswith("_r"))
+        for color in self.allColormaps:
+            self.actionListAll[color] = self.createAction(color, self.selectColorMap,
+                                        icon='show' + color, tip='Display ' + color + ' in image',
+                                        checkable=True, group_action=True)
+            groupActionAll = viewAllColorGroup.addAction(self.actionListAll[color])
+            allSubMenu.addAction(groupActionAll)
+
+        self.actionListAll['gray'].setChecked(True)
+
+        self.imageMenu.addSeparator()
+
+        # add and Invert choice to the menu
+        self.invertColorAction = self.createAction("Invert", self.invertColorMap,
+                             shortcut="Ctrl+I",icon="invertColormap", tip="Invert the color", checkable=True)
+
+        self.invertColorAction.setChecked(False)
+
+        self.imageMenu.addAction(self.invertColorAction)
+
+
+        # 'Image Options' menu item
+        self.normalizationActionDict = {}
+        self.interpolationActionDict = {}
+
+        self.imageOptionsMenu = self.menuBar().addMenu("Image Options")
+        normalizationSubMenu = self.imageOptionsMenu.addMenu("Normalize")
+        normalizationGroup = QActionGroup(self, exclusive=True)
+        norm_options = ('Linear', 'Logarithmic', 'Squared', 'Square Root')
+        for mode in norm_options:
+            self.normalizationActionDict[mode] = self.createAction(mode, self.setNormalization, icon="NormalizationMode",
+                                    tip="Select Normalization Mode", checkable=True, group_action=True)
+            normalization_actions = normalizationGroup.addAction(self.normalizationActionDict[mode])
+            normalizationSubMenu.addAction(normalization_actions)
+
+        self.normalizationActionDict['Linear'].setChecked(True)
+
+        self.imageOptionsMenu.addSeparator()
+
+        interpolationSubMenu = self.imageOptionsMenu.addMenu("Interpolation method")
+        interpolationGroup = QActionGroup(self, exclusive=True)
+        interpolation_options =  ('none', 'nearest', 'bilinear', 'bicubic', 'spline16', 'spline36',
+                                  'hanning', 'hamming', 'hermite', 'kaiser', 'quadric', 'catrom',
+                                  'gaussian', 'bessel', 'mitchell', 'sinc', 'lanczos')
+        for mode in interpolation_options:
+            self.interpolationActionDict[mode] = self.createAction(mode, self.setInterpolation,
+                                                                   icon="InterpolationMode",
+                                                                   tip="Select Interpolation Mode", checkable=True,
+                                                                   group_action=True)
+            interpolation_actions = interpolationGroup.addAction(self.interpolationActionDict[mode])
+            interpolationSubMenu.addAction(interpolation_actions)
+
+        self.interpolationActionDict['none'].setChecked(True)
+
+
+
+
+
+
+        # 'View' menu item
+        self.tickActionDict = {}
+        self.colorbarActionDict = {}
+        self.viewMenu = self.menuBar().addMenu("View")
+
+        tickSubMenu = self.viewMenu.addMenu("Ticks")
+
+        tickGroup = QActionGroup(self, exclusive=True)
+        tick_options = ('Show Ticks', 'Show X-Tick', 'Show Y-Tick', 'Hide')
+        for t in tick_options:
+            self.tickActionDict[t] = self.createAction(t, self.setTicks, icon="hideShowTicks",
+                                    tip="Toggle Ticks Visibility", checkable=True, group_action=True)
+            tick_actions = tickGroup.addAction(self.tickActionDict[t])
+            tickSubMenu.addAction(tick_actions)
+
+        self.tickActionDict['Show Ticks'].setChecked(True)
+        self.x_tick_visible = False
+        self.y_tick_visible = False
+
+        self.viewMenu.addSeparator()
+
+        colorbarSubMenu = self.viewMenu.addMenu("Colorbar")
+        self.cb_removed = False
+        colorbarGroup = QActionGroup(self, exclusive=True)
+        colorbar_options = ('Horizontal', 'Vertical', 'Hide')
+        for cb in colorbar_options:
+            self.colorbarActionDict[cb] = self.createAction(cb, self.setColorbar, icon="colorbarOrientation",
+                                                       tip="Toggle Colorbar Orientataion", checkable=True, group_action=True)
+            cb_actions = colorbarGroup.addAction(self.colorbarActionDict[cb])
+            colorbarSubMenu.addAction(cb_actions)
+
+        self.colorbarActionDict['Horizontal'].setChecked(True)
+        self.viewMenu.addSeparator()
+
+        # Disable image functionality until an image is rendered
+        self.imageMenu.setDisabled(True)
+        self.viewMenu.setDisabled(True)
+        self.imageOptionsMenu.setDisabled(True)
+
+        # Disable until the 'View' button is pushed
+        self.labelMenu.setDisabled(True)
+
+
+        self.initalGrayScaleSetting()
+        self.setWindowTitle("PDS Inspect Tool")
         self.setWindowIcon(QIcon("./Icons/MagGlass.png"))
 
 
-        self.updateFileMenu()
+    def setInterpolation(self, mode):
+        self._interpolation = mode
+        self.draw2dImage(None, redraw=True)
+
+    def setNormalization(self, option):
+        print option
+        if option == 'Linear':
+            self._norm = mpl.colors.Normalize(clip=False)
+        elif option == 'Logarithmic':
+            self._norm = mpl.colors.LogNorm()
+        elif option == 'Squared':
+            self._norm = PowerNorm(gamma = 2.0)
+        elif option == 'Square Root':
+            self._norm = PowerNorm(gamma = 0.5)
+        else:
+            print('Option out of range')
+        self.draw2dImage(None, redraw=True)
+
+
+    def setColorbar(self, option):
+        if not self.cb_removed:
+            self.cbar.remove()
+        if option == 'Horizontal':
+            self.color_bar_orientation = 'horizontal'
+            self.cb_removed = False
+        elif option == 'Vertical':
+            self.color_bar_orientation = 'vertical'
+            self.cb_removed = False
+        elif option == 'Hide':
+            self.color_bar_orientation = 'hide'
+            self.cb_removed = True
+        self.renderImage(peripheral='ColorBar')
+        #self.draw2dImage(None, redraw=True)
+
+    def setTicks(self, axis):
+        if axis == 'Show Ticks':
+            self.x_tick_visible = True
+            self.y_tick_visible = True
+        elif axis == 'Hide Ticks':
+            self.x_tick_visible = False
+            self.y_tick_visible = False
+        elif axis == 'Show X-Tick':
+            self.x_tick_visible = True
+            self.y_tick_visible = False
+        elif axis == 'Show Y-Tick':
+            self.x_tick_visible = False
+            self.y_tick_visible = True
+        self.renderImage(peripheral='Ticks')
+
+
+    def selectLabel(self, label):
+
+        self.drawLabel(self.current_index, self.view_type, label)
+
+
+
+    def selectColorMap(self, colorMap):
+        self.cmap = colorMap
+        if self.invertColorAction.isChecked():
+            self.cmap += '_r'
+            print('cmap: {}'.format(self.cmap))
+        else:
+            self.cmap = colorMap
+            print('cmap: {}'.format(self.cmap))
+        if colorMap in self.allColormaps:
+            self.colorActionList["current selection in 'All'"].setDisabled(False)
+            self.actionListAll[colorMap].setChecked(True)
+        if colorMap not in self.colorMaps:
+            self.colorActionList["current selection in 'All'"].setChecked(True)
+        else:
+            self.colorActionList["current selection in 'All'"].setDisabled(True)
+        self.clearLayout(self.imageLayout)
+        self.clearLayout(self.imageInfoLayout)
+        self.draw2dImage(None, redraw=True)
+
+    def invertColorMap(self):
+        # This test is necessary to turn off the inversion of the current selection
+        if '_r' in self.cmap:
+            self.cmap = self.cmap[:-2]
+        self.selectColorMap(self.cmap)
+
+    def initalGrayScaleSetting(self):
+        #This is called to reset the checkboxes when a new file is opened.
+        self.invertColorAction.setChecked(False)
+        self.colorActionList['gray'].setChecked(True)
+        self.cmap = 'gray'
+        self.colorActionList["current selection in 'All'"].setDisabled(True)
+
+    def createAction(self, text, slot=None, shortcut=None, icon=None, tip=None,
+                     checkable=False, group_action=False, signal="triggered()"):
+        action = QAction(text, self)
+        if icon is not None:
+            action.setIcon(QIcon(":/{}.png".format(icon)))
+        if shortcut is not None:
+            action.setShortcut(shortcut)
+        if tip is not None:
+            action.setToolTip(tip)
+            action.setStatusTip(tip)
+        if slot is not None:
+            # Need to pass a parameter to the callback for a group action as in (View options)
+            if group_action:
+                self.connect(action, SIGNAL(signal), lambda:slot(text))
+            else:
+                self.connect(action, SIGNAL(signal), slot)
+        if checkable:
+            action.setCheckable(True)
+        return action
+
+
+    def addActions(self, target, actions):
+        for action in actions:
+            if action is None:
+                target.addSeparator()
+            else:
+                target.addAction(action)
+
+    # Sets defaults for a new file
+    def set_defaults(self):
+        # clear all the tab layouts and select the label tab
+        self.clearLayout(self.labelLayout)
+        self.clearLayout(self.tableLayout)
+        self.clearLayout(self.tableInfoLayout)
+        self.clearLayout(self.threeDTableLayout)
+        self.clearLayout(self.imageLayout)
+        self.clearLayout(self.imageInfoLayout)
+        self.initalGrayScaleSetting()
+        self._norm = mpl.colors.Normalize(clip=False)  # Linear normalization
+        self._interpolation = 'none'
+        self.labelActionList['Object Label'].setChecked(True)
+        self.colorActionList['gray'].setChecked(True)
+        self.actionListAll['gray'].setChecked(True)
+        self.normalizationActionDict['Linear'].setChecked(True)
+        self.tickActionDict['Show Ticks'].setChecked(True)
+        self.colorbarActionDict['Horizontal'].setChecked(True)
+        self.interpolationActionDict['none'].setChecked(True)
+
+
+    # This method call the QFileDialog to get allow selection of a file to open
+    def fileOpen(self):
+        self.set_defaults()
+        # Open File from menu bar
+        filename = QFileDialog.getOpenFileNames(self, "Select PDS File")
+        if filename:
+            fname = map(str, filename)
+            self.openSummaryGUI(fname[0])
+            self.imageMenu.setDisabled(True)  # Disable image functionality until an image is rendered
+            self.viewMenu.setDisabled(True)
+            self.imageOptionsMenu.setDisabled(True)
+            self.labelMenu.setDisabled(True)  # Disable until the 'View' button is pushed
+
+
+    def fileSave(self):
+        print('Not finished yet')
+
+    #    if self.image == None:
+    #        return True
+    #    if self.filename is None:
+    #        return self.fileSaveAs()
+    #    else:
+    #        fname, ext = self.filename.split('.')
+
+
+    def fileSaveAs(self):
+       # print('Not finished yet')
+       # return
+
+       # if self.image == None:
+       #     return True
+        fname = self.filename if self.filename is not None else "."
+        formats = (["*.{}".format(format.data().decode("ascii").lower())
+                    for format in QImageWriter.supportedImageFormats()])
+        fname = QFileDialog.getSaveFileName(self,
+                                            "Image Changer - Save Image", fname,
+                                            "Image files ({})".format(" ".join(formats)))
+        if fname:
+            if "." not in fname:
+                fname += ".png"
+            self.filename = fname
+            print('FILENAME: {}'.format(self.filename))
+            return self.fileSave()
+        return False
+
+    def closeEvent(self, event):
+        settings = QSettings()
+        settings.setValue("LastFile", self.filename)
+        settings.setValue("RecentFiles", self.recentFiles or [])
+        settings.setValue("MainWindow/Geometry", self.saveGeometry())
+        settings.setValue("MainWindow/State", self.saveState())
+
 
     def popInOut(self, tab):
         print("Test..")
@@ -162,18 +532,20 @@ class MainWindow(QMainWindow):
             event.ignore()
 
     def dropEvent(self, event):
-
         print("dropping a file.")
         for url in event.mimeData().urls():
             path = url.toLocalFile().toLocal8Bit().data()
             if os.path.isfile(path):
-                self.clearLayout(self.labelLayout)
-                self.clearLayout(self.tableLayout)
-                self.clearLayout(self.threeDTableLayout)
-                self.openFileGUI(path)
+                self.set_defaults()
+                self.openSummaryGUI(path)
+                self.imageMenu.setDisabled(True)  # Disable image functionality until an image is rendered
+                self.viewMenu.setDisabled(True)
+                self.imageOptionsMenu.setDisabled(True)
+                self.labelMenu.setDisabled(True)  # Disable until the 'View' button is pushed
                 #print(path)
         else:
             event.ignore()
+
 
     def closeEvent(self, event):
         event.accept()
@@ -190,44 +562,85 @@ class MainWindow(QMainWindow):
         :param index: a QModelIndex used internally by the model use .row() to get which button is pushed
         :return:
         '''
+        self.clearLayout(self.imageLayout)
         # self.summary[1] is a list of all the 'Name' fiels in the Summary
         viewType = self.getType(index, self.summary[1])
-        self.drawView(index, viewType)
 
+        self.labelMenu.setDisabled(False)
+        self.drawLabel(index, viewType)
+        self.current_index = index  # These are used when label options change within the same file
+        self.view_type = viewType
+        self.test_for_label()
+       # print('%%%%%%%%%%%%%%%')
+       # print(viewType)
         if viewType == 'Header':
             self.tabFrame.setTabEnabled(1, False)
             self.tabFrame.setTabEnabled(2, False)
+            self.tabFrame.setTabEnabled(3, False)
+            self.imageMenu.setDisabled(True)
+            self.viewMenu.setDisabled(True)
+            self.imageOptionsMenu.setDisabled(True)
         elif viewType == 'Array_2D_Image':
             self.tabFrame.setTabEnabled(1, True)
             self.tabFrame.setTabEnabled(2, True)
+            self.tabFrame.setTabEnabled(3, True)
             self.drawTable(index)
+            self.clearLayout(self.imageLayout)
+            self.clearLayout(self.imageInfoLayout)
+            self.draw2dImage(None,redraw=False)
         elif viewType == 'Array_3d_Spectrum':
             self.drawTable(index)
             self.tabFrame.setTabEnabled(1, True)
             self.tabFrame.setTabEnabled(2, True)
-
+            self.tabFrame.setTabEnabled(3, True)
         else:  # Table Data with no images
+            self.imageMenu.setDisabled(True)
+            self.viewMenu.setDisabled(True)
+            self.imageOptionsMenu.setDisabled(True)
             self.tabFrame.setTabEnabled(1, True)
             self.tabFrame.setTabEnabled(2, False)
+            self.tabFrame.setTabEnabled(3, False)
             self.drawTable(index)
 
 
-    def drawView(self, index, viewType):
+    def test_for_label(self):
+        # This is called everytime a view is changed from the Summary GUI area
+        # It enables the label areas that are present for that view, and disables those that are not.
+        for label in self.label_options:
+            if label == 'separator':
+                continue
+            ret = self.model.get_label(self.current_index.row(), label)
+            if ret == None:
+                self.labelActionList[label].setDisabled(True)
+            else:
+                self.labelActionList[label].setDisabled(False)
+
+    def drawLabel(self, index, viewType, labelType = 'Object Label'):
         '''
         This the method that displays the Label information
         It passes the label information to 'labelWidget' which is then added to the 'labelLayout' which
         is drawn to the labelTab
         :param index: a QModelIndex used internally by the model
+        :param viewType: the type of object (described in the object label)
+        :param labelType: the part of the label to display
         :return:
         '''
-        label_dict = self.model.get_label(index.row())
-        labelWidget = LabelFrame(label_dict, self.dimension, index, viewType)
+        if labelType == None:
+            self.labelActionList[labelType].setDisabled(True)
+        label = self.model.get_label(index.row(), labelType)
+        label_dict = label.to_dict()
+        print(labelType)
+        labelWidget = LabelFrame(label_dict, self.dimension, index, viewType, labelType)
         self.clearLayout(self.labelLayout)
-        #clear any existing layouts on the scene
         self.labelLayout.addWidget(labelWidget)
         self.labelTab.setLayout(self.labelLayout)
 
     def handleGetPosition(self, position):
+        '''
+
+        :param position: position of the cursor in the table
+        :return:
+        '''
         self.rowDisplay.setEnabled(True)
         self.columnDisplay.setEnabled(True)
         # refresh the widgets
@@ -243,7 +656,8 @@ class MainWindow(QMainWindow):
 
     def drawTableArray(self, dimension, table):
         '''
-
+        This method sets up the buttons for is for the '3D Table' tab.  The buttons are to select individual bands
+        in a Spectral_Cube_Object.  Clicking a button will update the 'Table' and 'Image' tabs.
         :param dimension: the number of file to make buttons for
         :param table:
         :return:
@@ -267,7 +681,7 @@ class MainWindow(QMainWindow):
         for i in range(rows):
             for j in range(10):
                 # make rows of buttons
-                buttons[i,j] = QPushButton('Table {}'.format(count))
+                buttons[i,j] = QPushButton('Band {}'.format(count))
                 # This give the button a unique name used in the callback to determine which button was clicked
                 buttons[i,j].setObjectName('%d' % count)
                 self.threeDTableLayout.addWidget(buttons[(i,j)], i,j)
@@ -275,7 +689,7 @@ class MainWindow(QMainWindow):
                 count += 1
         # Pick up the left over buttons
         for j in range(len_last_row):
-            buttons[rows+1, j] = QPushButton('Table {}'.format(count))
+            buttons[rows+1, j] = QPushButton('Band {}'.format(count))
             buttons[rows+1, j].setObjectName('%d' % count)
             self.threeDTableLayout.addWidget(buttons[rows+1,j], rows+1, j)
             buttons[rows+1, j].clicked.connect(lambda: self.handle3DTableButtonClicked(table))
@@ -294,11 +708,6 @@ class MainWindow(QMainWindow):
         button_number = int(sending_button.objectName())
         print('Button number: {}'.format(button_number))
         #set up the table for rendering
-        #print(data[button_number-1])
-
-        print("2")
-        print(type(data))
-        print(type(button_number))
 
         self.drawIndexedTable(data, button_number-1)
         self.tabFrame.setCurrentIndex(2)
@@ -312,48 +721,67 @@ class MainWindow(QMainWindow):
         row_col = self.dimension[1].split('X')
         num_rows = int(row_col[0])
         num_columns = int(row_col[1])
+        self.table_num = index
 
         # TODO Need to study the GroupTest.py to make sure I access all I need properly
         table_type = self.summary[1][1]  # this is the type of each array
 
         title = self.summary[0][0]  # this is the title of the 3D table
+        print(table_type)
 
         self.tableWidget = ItemTable(self, table[index], title, num_rows, num_columns, self.table_type)
+
+        # If this is not cleared another table will be added
+        # Will allow a button that allows multiple tables to be drawn and undocked for comparison
         self.clearLayout(self.tableLayout)
 
-        self.renderTable(title, table_num = index)
+        self.renderTable(title, self.table_num)
+        self.drawIndexedImage(table, index)
+
+    def drawIndexedImage(self,table,index):
+        print('INDEXED Image')
+
+        table_type = self.summary[1][1]  # this is the type of each array
+        if table_type == 'Array_2D_Image':
+            self.clearLayout(self.imageLayout)
+            self.clearLayout(self.imageInfoLayout)
+            self.draw2dImage(self.full_table, index, redraw=False)
+
+        title = self.summary[0][0]  # this is the title of the 3D table
 
 
     def drawTable(self, index):
         '''
-
         :param index:
         :return:
         '''
-        table, title, dimension, self.table_type, table_name = self.model.get_table(index)
+        self.table, self.title, dimension, self.table_type, self.table_name = self.model.get_table(index)
         if dimension == (0,0):
             self.tableTab.setDisabled(True)
         else:
             self.tableTab.setDisabled(False)
             # If we have an 'Array_3D_Specturm" we have to make a new tab with a button for each element
             if self.table_type == 'Array_3D_Spectrum':
-                self.drawTableArray(dimension[0], table)
+                self.drawTableArray(dimension[0], self.table)
                 return
             num_rows    = dimension[0]
             num_columns = dimension[1]
-            self.tableWidget = ItemTable(self, table, title, num_rows, num_columns, self.table_type)
-            print('TITLE : {}'.format(title))
+            self.tableWidget = ItemTable(self, self.table, self.title, num_rows, num_columns, self.table_type)
+            print('TITLE : {}'.format(self.title))
+         #
             self.clearLayout(self.tableLayout)
-            self.renderTable(table_name)
+            self.renderTable(self.table_name)
 
 
     def renderTable(self, title, table_num = -1):
         '''
-        :param title: The name of title taken from the Lable
+        :param title: The name of title taken from the Label
         :param table_num: Used only idenfitying and rendering individual tables in 3D Spectrum data
         :return:
         '''
         # Add row, column and Title information above the table
+        self.undocked_title = title
+        self.table_num = table_num
         rowLabel = QLabel('Row ')
         rowLabel.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
 
@@ -378,14 +806,13 @@ class MainWindow(QMainWindow):
 
         # If this is a member of a 3D array, display the table number
         # Account for indexing of arrays starting at 0, while the display starts at 1
-        table_num += 1
+        self.table_num += 1
         self.title = QLabel(title)
         self.title.setStyleSheet("""
                   font: 17pt Helvetica;
         """)
         self.checkBox = QCheckBox('Hold Slider Positions')
-        if (table_num) > 0:
-            # This checkbox
+        if (self.table_num) > 0:
             self.title = QLabel(title)
             self.title.setStyleSheet("""
                           font: 17pt Helvetica;
@@ -407,10 +834,10 @@ class MainWindow(QMainWindow):
 
             self.previousTable = QPushButton('<')
             self.previousTable.setFixedWidth(70)
-            self.previousTable.clicked.connect(lambda: self.changeTable(table_num-2))
+            self.previousTable.clicked.connect(lambda: self.changeTable(self.table_num-2))
             self.nextTable = QPushButton('>')
             self.nextTable.setFixedWidth(70)
-            self.nextTable.clicked.connect(lambda: self.changeTable(table_num))
+            self.nextTable.clicked.connect(lambda: self.changeTable(self.table_num))
 
             self.tableInfoLayout.addWidget(self.checkBox)
             self.tableInfoLayout.addWidget(self.title)
@@ -418,7 +845,7 @@ class MainWindow(QMainWindow):
             self.tableInfoLayout.addWidget(self.nextTable)
             self.tableInfoLayout.addWidget(tableLabel)
             self.tableInfoLayout.addWidget(self.tableDisplay)
-            self.tableDisplay.setText(str(table_num))
+            self.tableDisplay.setText(str(self.table_num))
         else:
            # if self.tableWidget.table_type == 'Array_3D_Spectrum':
            #     self.checkBox.setChecked(MainWindow.hold_position_checked)
@@ -436,8 +863,31 @@ class MainWindow(QMainWindow):
         self.tableInfoLayout.sizeHint()
 
         self.tableLayout.addLayout(self.tableInfoLayout)
-        self.tableLayout.addWidget(self.tableWidget)
+############## T3st########################
+        title = '+'
+        self.tableDockWidget = QDockWidget(title, self)
+        self.tableDockWidget.setObjectName("tableDockWidget")
+        self.tableDockWidget.setAllowedAreas(Qt.RightDockWidgetArea)
+
+        self.tableDockWidget.featuresChanged.connect(self.tableDockChanged)
+
+
+        self.tableDockWidget.setWindowIcon(QIcon("./Icons/MagGlass.png"))
+        self.tableDockWidget.setWidget(self.tableWidget)
+        self.addDockWidget(Qt.RightDockWidgetArea, self.tableDockWidget)
+
+        self.tableLayout.addWidget(self.tableDockWidget)
+
+       # self.tableLayout.addWidget(self.tableWidget)
         self.tableTab.setLayout(self.tableLayout)
+
+       # print('00000000')
+       # print title
+       # print(self.tableDockWidget.isFloating())
+       # print('1111111')
+
+    def tableDockChanged(self):
+        print("HERE: I want to change the title")
 
 
     @staticmethod
@@ -446,6 +896,12 @@ class MainWindow(QMainWindow):
 
 
     def changeTable(self, index):
+        '''
+        This is the callback for the arrow buttons on the table display for 3D images
+        The arrows direct you to the next or previous band.
+        :param index: Index into the structure of band data.
+        :return:
+        '''
         if index == -1:
             print("Already at the first table.")
             return
@@ -453,7 +909,8 @@ class MainWindow(QMainWindow):
             print("Already at the last table.")
         else:
             self.drawIndexedTable(self.full_table, index)
-
+            #TODO this is a bandaid to make sure the band images render ok
+            self.draw2dImage(self.full_table, index, redraw=False)
 
     def holdSliderPositions(self, state):
         if state == Qt.Checked:
@@ -461,12 +918,134 @@ class MainWindow(QMainWindow):
             ItemTable.sliderXVal = self.tableWidget.horizontalSliderBar.value()
             MainWindow.hold_position_checked = True
         elif state == Qt.Unchecked:
-            print("Unchecked button")
+            #print("Unchecked button")
             ItemTable.sliderYVal = 0
             ItemTable.sliderXVal = 0
             MainWindow.hold_position_checked = False
         else:
-            print'Trouble with holdSliderPosition method'
+            print('Trouble with holdSliderPosition method')
+
+
+   # def freeze_display(self):
+   #     if self.imageWidget is not None:
+   #        self.imageWidget.
+
+
+    # TODO break image stuff into it's own class or multiple methods for differnt types of images
+    def draw2dImage(self, image_array, index = -1, redraw=False):
+
+        if redraw == False:
+            if image_array == None:  # called from single image data structure
+                self.image_data = self.table
+            else:
+                # Render individual 'band' of 3d Spectrum data
+                self.image_data = image_array[index]
+
+        self._settings = {'dpi': 80., 'axes': Model._AxesProperties(), 'selected_axis': 0,
+                          'is_rgb': False, 'rgb_bands': (None, None, None)}
+        self.clearLayout(self.imageLayout)
+        self.clearLayout(self.imageInfoLayout)
+        self.figure = Figure((10.0, 8.0), dpi=self._settings['dpi'])
+
+        self.imageWidget = FigureCanvas(self.figure)
+
+        self.figure.clear()
+
+        self.axes = self.figure.add_subplot(111)
+
+        self.axes.autoscale_view(True,True,True)
+        self.axes.set_xlabel(self.summary[0][0])   #This works for a title
+
+      #  print(type(image_data))
+      #  print(image_data.shape)
+
+       # height, width = self.image_data.shape
+       # print('WIDTH: {}   HEIGHT: {}'.format(width,height))
+        _norm = mpl.colors.Normalize(clip=False)
+        #_norm = mpl.colors.Normalize()   # Linear
+        #_norm = mpl.colors.LogNorm()   # Log
+        #_norm = PowerNorm(gamma = 2.0) # squared
+        #_norm = PowerNorm(gamma = 0.5) # square root
+
+        _norm.vmin = np.ma.min(self.image_data)
+        _norm.vmax = np.ma.max(self.image_data)
+
+        print("Image data min max: {} / {}".format(_norm.vmin, _norm.vmax))
+
+        #self.image_data = self.image_data.T
+        self._origin = 'lower'
+
+        self.image = self.axes.imshow(self.image_data, origin=self._origin, interpolation=self._interpolation,
+                                      norm=self._norm, aspect='equal', cmap = self.cmap)
+
+        if not self.cb_removed:
+            self.cbar = self.figure.colorbar(self.image, orientation=self.color_bar_orientation)
+
+        self.renderImage()
+
+
+##############################
+
+
+    def renderImage(self, peripheral=None):
+        '''
+
+        :param peripheral: This flag tells the methods to only change the ticks or colorbar
+        :return:
+        '''
+
+        if peripheral == None:  # Only render these when redrawing the image.
+            self.imageMenu.setDisabled(False)
+            self.viewMenu.setDisabled(False)
+            self.imageOptionsMenu.setDisabled(False)
+            self.previousImage = QPushButton('<')
+            self.previousImage.setFixedWidth(70)
+            self.previousImage.clicked.connect(lambda: self.changeTable(self.table_num - 2))
+            self.previousImage.clicked.connect(lambda: self.BooBoo())
+            self.nextImage = QPushButton('>')
+            self.nextImage.setFixedWidth(70)
+            # self.nextImage.clicked.connect(lambda: self.changeTable(self.table_num - 2))
+            self.nextImage.clicked.connect(lambda: self.Yogi())
+            #if (table_num) > 0:
+
+            self.imageInfoLayout.addWidget(self.previousImage)
+            self.imageInfoLayout.addWidget(self.nextImage)
+
+            self.imageInfoLayout.setSpacing(5)
+            self.imageInfoLayout.stretch(0)
+            self.imageInfoLayout.sizeHint()
+
+            self.imageLayout.addLayout(self.imageInfoLayout)
+            self.imageTab.setLayout(self.imageLayout)
+        elif peripheral == 'ColorBar':
+            if self.color_bar_orientation != 'hide':
+                # the colorbar was removed to change the orientation, so add it back
+                self.cbar = self.figure.colorbar(self.image, orientation=self.color_bar_orientation)
+        elif peripheral == 'Ticks':
+            self.axes.get_xaxis().set_visible(self.x_tick_visible)
+            self.axes.get_yaxis().set_visible(self.y_tick_visible)
+        else:
+            pass
+
+
+
+        self.imageWidget.setWindowTitle(QString("PyQt"))
+        self.imageWidget.draw()
+
+        self.imageLayout.addWidget(self.imageWidget)
+        self.imageTab.setLayout(self.imageLayout)
+
+
+
+
+    def Yogi(self):
+        print("Smarter than the average Bear.")
+
+    def BooBoo(self):
+        print("I'm a cute little fellow.")
+
+#################################################
+
 
 
     # clear all the layouts before writing a new one
@@ -488,45 +1067,28 @@ class MainWindow(QMainWindow):
             # remove the item from layout
             layout.removeItem(item)
 
-    def createAction(self, text, slot=None, shortcut=None, icon=None,
-                         tip=None, checkable=False, signal="triggered()"):
-        action = QAction(text, self)
-        if icon is not None:
-            action.setIcon(QIcon(":/{}.png".format(icon)))
-        if shortcut is not None:
-            action.setShortcut(shortcut)
-        if tip is not None:
-            action.setToolTip(tip)
-            action.setStatusTip(tip)
-        if slot is not None:
-            self.connect(action, SIGNAL(signal), slot)
-        if checkable:
-            action.setCheckable(True)
-        return action
-
-
-    def addActions(self, target, actions):
-        for action in actions:
-            if action is None:
-                target.addSeparator()
-            else:
-                target.addAction(action)
-
-    # This method call the QFileDialog to get allow selection of a file to open
-    def fileOpen(self):
-        # Open File from menu bar
-        filename = QFileDialog.getOpenFileNames(self, "Select PDS File")
-        fname = map(str, filename)
-        self.openFileGUI(fname[0])
-
     # This opents the summary table Gui to allow further selection
-    def openFileGUI(self,fname):
+    def openSummaryGUI(self,fname):
         print("fname: {}".format(fname))
         self.setCentralWidget(self.tabFrame)
         # get the summary data
         self.model = Model.SummaryItemsModel(fname)
         self.title, self.summary, self.num_structs, self.dimension = self.model.get_summary()
-        #print self.summary
+
+        # Get the length of the summary data to use as a minimum value in the window
+        length = 0
+
+        display_summary = []
+        for i in range(len(self.summary)):
+            # add leading and trailing blanks
+            display_summary.append(' ' + self.summary[i][0] + ' ')
+            length += len(self.summary[i][0]) + 2
+
+        # Use a scale factor to match string lenth to pixels
+        sf = 11
+
+        self.horizontalHeaderLength = (length) * sf
+
         # Note: If there is a 'Header' type it will be in self.summary[1][0]
         # If this is not a
         # This table widget will be added to the dock widget
@@ -534,43 +1096,27 @@ class MainWindow(QMainWindow):
         # Set the size of the table based on the data filling it
         # Note self is passed so the SummaryTable can emit a signal back to the MainWindow
         self.summaryTable = SummaryTable(self, len(self.summary[1]), len(self.summary) + 1)
+
         # Test if this is a 3D array, and needs a 3D Table tab
         # If not remove the tab in case there was one from a previous file
-
         if self.threeDTabInPlace:
             self.tabFrame.removeTab(1)
             self.threeDTabInPlace = False
 
         height = (self.num_structs * 30 ) + 25
-        self.summaryTable.setMinimumSize(550, height)
+        #TODO compute the width based on the number of characters in the titles
+        self.summaryTable.setMinimumSize(self.horizontalHeaderLength, height)
+        self.summaryTable.setMaximumSize(self.horizontalHeaderLength, height)
+
+#        print('&&&&&&&&&&&')
+#        print(display_summary)
+#        print(self.summary)
         self.summaryTable.setSummaryData(self.header, self.summary)
         self.summaryDockWidget.setWindowTitle(self.title)
         self.summaryDockWidget.setWindowIcon(QIcon("./Icons/MagGlass.png"))
         self.summaryDockWidget.setWidget(self.summaryTable)
         self.addDockWidget(Qt.RightDockWidgetArea, self.summaryDockWidget)
         self.summaryDockWidget.show()
-
-
-    def updateFileMenu(self):
-        self.fileMenu.clear()
-        self.addActions(self.fileMenu, self.fileMenuActions[:-1])
-        current = self.filename
-        recentFiles = []
-        for fname in self.recentFiles:
-            if fname != current and QFile.exists(fname):
-                recentFiles.append(fname)
-        if recentFiles:
-            self.fileMenu.addSeparator()
-            for i, fname in enumerate(recentFiles):
-                action = QAction(QIcon(":/icon.png"),
-                         "&{} {}".format(i + 1, QFileInfo(
-                         fname).fileName()), self)
-                action.setData(fname)
-
-                self.fileMenu.addAction(action)
-        self.fileMenu.addSeparator()
-        self.fileMenu.addAction(self.fileMenuActions[-1])
-
 
 class Tab(QTabWidget):
 #    Out = pyqtSignal(QWidget)
@@ -608,13 +1154,13 @@ class LabelFrame(QWidget, QObject):
     This class will set up the Label Tab contents
     '''
     nameDataTypeDict = {}
-    def __init__(self, dict, dimension, index, viewType):
+    def __init__(self, dict, dimension, index, viewType, displayType):
         '''
-
         :param dict: The Label dictionary that all the data will be drawn from
         :param dimension: The dimension of any table or image associated with the file
         :param index: The Model index, use it's row() method to get which button was pushed
-        :param firstName: Thhe first 'Name' field - used to identify any 'Header' that may be part of the file
+        :param viewType: The first 'Name' field - used to identify any 'Header' that may be part of the file
+        :param displayType: The type of label display, 'object', 'full', 'mission_area', 'discipline_area' ..
         '''
         QWidget.__init__(self)
 
@@ -628,6 +1174,7 @@ class LabelFrame(QWidget, QObject):
         self.index = index
         self.viewType = viewType
 
+
         root_model = QStandardItemModel()
         self.tree.setModel(root_model)
 
@@ -638,31 +1185,41 @@ class LabelFrame(QWidget, QObject):
         self.tree.setStyleSheet("""
                   border: 20 px solid black;
                   border-radius: 10px;
-                  background-color: lightcyan;
+                  background-color: #A9A9A9;
                   font: 12pt Comic Sans MS;
         """)
 
-        self.tree.expandAll()
+        if displayType is not 'full_label':
+            self.tree.expandAll()
+
+
         self.tree.setEditTriggers(QAbstractItemView.NoEditTriggers)
         self.tree.setSelectionMode(QAbstractItemView.NoSelection)
 
-    # Some descriptions in files have the new line character (\n) others do not
-    # if the descriptions is over 70 characters, add new line at as close to 70 as possible.
-    # Then return the new string.
+
     def checkLength(self, string):
+        '''
+        checkLength() of unicode 'Description' field as taken from the xlm file.
+        if the descriptions is over 70 characters:
+            Format the line to be properly displayed as
+            70 character lines with a slight indentation
+
+        :param string: Unicode - the description as parsed from the xml file
+        :return: the modified string
+        '''
         line_max_len = 70
-        new_lines = []
-        new_string = ''
-       # print (string)
+
         if len(string) > line_max_len:
+            string = string.strip()             # remove blanks on each side
+            string = re.sub(' +', ' ', string)  # substitute a single blank for multiple blanks
+            string = string.replace('\n', '\n   ')  # Add a slight indentations for each line
+
             if '\n' in string:
-                # File is ok
-                string.strip()   # remove excess blanks
-                #print('ok')
                 return string
             else:
+                # add '\n' to make the proper lines
                 new_lines = textwrap.wrap(string,line_max_len)
-                new_string = '\n'.join(str(line) for line in new_lines)
+                new_string = '\n   '.join(str(line) for line in new_lines)
                 return new_string
 
     def populateTree(self, dict, parent, name, dataType):
@@ -676,18 +1233,19 @@ class LabelFrame(QWidget, QObject):
         :return:
         '''
         #TODO - iteritems() may not work in Python3 - they use iter()  use iterkey()
+        new_value = ''  # used to hold modified descriptions data
         for key, value in dict.iteritems():
             # Test for descriptions without '/n'
             if key == 'description':
-                value = self.checkLength(value)
+                new_value = self.checkLength(value)
+                value = new_value
+
             if key == 'data_type':
-                self.dataType.append(value)
-                print('data_Type')
+                self.dataType.append(new_value)
             if key == 'name':
                 # Test of we came accross a group name that has no dataType
                 if len(self.dataType) == len(self.name):
                     self.name.append(value)
-                    print('name')
             if isinstance(value, OrderedDict):
                 heading = QStandardItem('{}'.format(key))
                 parent.appendRow(heading)
@@ -709,9 +1267,15 @@ class LabelFrame(QWidget, QObject):
         #   firstName is the first 'name' in the structure, so if the first one is 'Header' we have not table or image
         if self.viewType == 'Header':
             LabelFrame.nameDataTypeDict = {}
-        else:
-            for i in range(len(self.name)):
-                LabelFrame.nameDataTypeDict[self.name[i]] = self.dataType[i]
+   #     else:
+   #         print('before loop')
+   #         print(self.name)
+   #         for i in range(len(self.name)):
+   #             print('((((((((')
+   #             print(i)
+   #             print('))))))))')
+   #             LabelFrame.nameDataTypeDict[self.name[i]] = self.dataType[i]
+   #         print(LabelFrame.nameDataTypeDict)
 
     @staticmethod
     def getLabelNameDataType():
@@ -732,17 +1296,21 @@ class SummaryTable(QTableWidget):
         self.object = f_arg   # Needed so it is possible to emit a signal to the main window
         QTableWidget.__init__(self, *args)
 
-        stylesheet = "QHeaderView::section{Background-color:rgb(176,224,230);border-radius:24px;padding:24py;}"
+        stylesheet = "QHeaderView::section{Background-color:rgb(0,0,100);border-radius:24px;padding:24py;}"
         self.setStyleSheet(stylesheet)
 
         self.setShowGrid(False)
+
         self.verticalHeader().setVisible(False)
         self.head = self.horizontalHeader()
         self.head.setStretchLastSection(True)
+        #self.resizeRowsToContents()
         self.head.setResizeMode(0, QHeaderView.ResizeToContents)
         self.head.setResizeMode(1,QHeaderView.ResizeToContents)
         self.head.setResizeMode(2, QHeaderView.ResizeToContents)
         self.head.setResizeMode(3, QHeaderView.ResizeToContents)
+        self.resizeColumnsToContents()
+        self.sizeHint()
 
 
     def setSummaryData(self, header, data):
@@ -757,6 +1325,7 @@ class SummaryTable(QTableWidget):
                     self.setItem(row, col, item)
                 else:
                     self.btn_sell = QPushButton('View')
+                    #self.btn_sell.setFixedWidth(80)
                     self.btn_sell.clicked.connect(self.handleButtonClicked)
                     self.setCellWidget(row, col, self.btn_sell)
                     self.update()
@@ -853,10 +1422,10 @@ class ItemTable(QTableView):
         self.installEventFilter(self)
 
         self.setStyleSheet("""
-            background-color: rgb(240, 255, 255);
+            background-color: rgb(175, 175, 175);
             gridline-color: rgb(0, 0, 0);
             font: 15pt Helvetica;
-            alternate-background-color: rgb(255, 255, 255);
+            alternate-background-color: rgb(200, 200, 200);
         """)
 
         self.sizeHint()
@@ -982,18 +1551,25 @@ class TextWindow(QTextBrowser):
 
     def __init__(self, *args):
         QTextBrowser.__init__(self, *args)
-        self.setText("Hi Jim")
+        self.setText("Hi Boo Boo")
 
 
 def main():
     app = QApplication(sys.argv)
     app.setOrganizationName("Jet Propulsion Laboratory")
     app.setOrganizationDomain("jpl.nasa.gov")
-    app.setApplicationName("PDS Inspector")
+    app.setApplicationName("PDS Inspect Tool")
 #    app.setWindowIcon(".ICON/boo.png")
 
     start = MainWindow()
-    app.setStyle("Plastique")
+    #app.setStyle("Plastique")
+    #app.setStyle("Cleanlooks")
+    #app.setStyle("motif")
+    #app.setStyle("sgi")
+    #app.setStyle("windows")
+    app.setStyle("macintosh")
+
+
     start.show()
     app.exec_()
 

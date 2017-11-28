@@ -1,7 +1,7 @@
 # Model - class that provides a uniform interface throught which datat items
 # are accessed
 import os
-import traceback
+
 from pds4_tools import *
 from pds4_tools.reader.table_objects import Meta_TableStructure
 #from pds4_tools.viewer.widgets.tree import TreeView
@@ -62,10 +62,135 @@ class SummaryItemsModel(QtCore.QAbstractItemModel):
         return self.title, self.summaryItems, num_of_structures, dimension
 
 
-    def get_label(self,index):
+    def get_display_settings_for_lid(self, local_identifier, label):
+        """ Search a PDS4 label for Display_Settings of a data structure with local_identifier.
+
+        Parameters
+        ----------
+        local_identifier : str or unicode
+            The local identifier of the data structure to which the display settings belong.
+        label : Label or ElementTree Element
+            Label for a PDS4 product with-in which to look for the display settings.
+
+        Returns
+    -------
+        Label, ElementTree Element or None
+            Found Display_Settings section with same return type as *label*, or None if not found.
+        """
+
+        matching_display = None
+
+        # Find all the Display Settings classes in the label
+        displays = label.findall('.//disp:Display_Settings')
+        if not displays:
+            return None
+
+        # Find the particular Display Settings for this LID
+        for display in displays:
+
+           # Look in both PDS and DISP namespace due to standards changes in the display dictionary
+            lid_disp = display.findtext('.//disp:local_identifier_reference')
+            lid_pds = display.findtext('.//local_identifier_reference')
+
+            if local_identifier in (lid_disp, lid_pds):
+                matching_display = display
+                break
+
+        return matching_display
+
+
+    def get_spectral_characteristics_for_lid(self, local_identifier, label):
+        """ Search a PDS4 label for Spectral_Characteristics of a data structure with local_identifier.
+
+        Parameters
+    ----------
+       local_identifier : str or unicode
+            The local identifier of the data structure to which the spectral characteristics belong.
+        label : Label or ElementTree Element
+            Label for a PDS4 product with-in which to look for the spectral characteristics.
+
+        Returns
+    -------
+        Label,  ElementTree Element or None
+            Found Spectral_Characteristics section with same return type as *label*, or None if not found.
+        """
+
+        matching_spectral = None
+
+        # Find all the Spectral Characteristics classes in the label
+        spectra = label.findall('.//sp:Spectral_Characteristics')
+        if not spectra:
+            return None
+
+        # Find the particular Spectral Characteristics for this LID
+        for spectral in spectra:
+
+            # There may be multiple local internal references for each spectral data object sharing these
+            # characteristics. Also look in both PDS and SP namespace due to standards changes in the spectral
+            # dictionary
+            references = spectral.findall('sp:Local_Internal_Reference') + \
+                     spectral.findall('Local_Internal_Reference')
+
+            for reference in references:
+
+                # Look in both PDS and DISP namespace due to standards changes in the display dictionary
+                lid_sp = reference.findtext('sp:local_identifier_reference')
+                lid_pds = reference.findtext('local_identifier_reference')
+
+                if local_identifier in (lid_sp, lid_pds):
+                    matching_spectral = spectral
+                    break
+
+        return matching_spectral
+
+
+
+    # Return the the label based on the display type
+    def get_label(self, index, display_type):
+
+        label = None
+        object_local_identifier = None
+
         structure_label = self.structure_list[index].label
-        label_dict = structure_label.to_dict()
-        return label_dict
+        full_label = self.structure_list[index].full_label
+
+        if structure_label is not None:
+            object_local_identifier = structure_label.findtext('local_identifier')
+
+        # Retrieve which label should be shown
+        if display_type == 'Full Label':
+            label = full_label
+
+        elif display_type == 'Identification Area':
+            label = full_label.find('.//Identification_Area')
+
+        elif display_type == 'Observation Area':
+            label = full_label.find('.//Observation_Area')
+
+        elif display_type == 'Discipline Area':
+            label = full_label.find('.//Discipline_Area')
+
+        elif display_type == 'Mission Area':
+            label = full_label.find('.//Mission_Area')
+
+        elif display_type == 'File info':
+            label = full_label.find('.//File')
+
+        elif structure_label is not None:
+
+            if display_type == 'Object Label':
+                label = structure_label
+
+            elif display_type == 'Display Settings':
+                label = self.get_display_settings_for_lid(object_local_identifier, full_label)
+
+            elif display_type == 'Spectral Characteristics':
+                label = self.get_spectral_characteristics_for_lid(object_local_identifier, full_label)
+
+        #label_dict = label.to_dict()
+        #return label_dict
+        return label
+
 
     def get_table(self, index):
 
@@ -87,12 +212,21 @@ class SummaryItemsModel(QtCore.QAbstractItemModel):
 
         return table.data, title, dimension, tableType, tableName
 
+class TwoDImage():
+    def __init__(self, data, parent=None):
+        QtCore.QAbstractTableModel.__init__(self, parent)
+        self._data = np.array(data)
 
-#  Allows large numpy arrays to be loaded directly into a tableView
+    def get_image_data(self):
+        return self._data
+
+
 class TwoDImageModel(QtCore.QAbstractTableModel):
     '''
-    This class handles the modelling of 2D images
+    This class handles the modelling of 2D image table data
+    Allows large nump[y array to be loaded directly into a tableView
     It is also used for 3D cube data, as the individual slices are 2D images
+    It is for the display of pixel data in a table not for image display
     '''
     def __init__(self, data, parent=None):
         QtCore.QAbstractTableModel.__init__(self, parent)
@@ -149,9 +283,9 @@ class TableModel(QtCore.QAbstractTableModel):
         self.r = temp[0]
         self.c = col_len
 
-        print("IN MODEL")
-        print('row count = {}'.format(self.r))
-        print('column count = {}'.format(self.c))
+      #  print("IN MODEL")
+      #  print('row count = {}'.format(self.r))
+      #  print('column count = {}'.format(self.c))
 
     def rowCount(self, parent=None):
         return self.r
@@ -171,8 +305,8 @@ class TableModel(QtCore.QAbstractTableModel):
                 self.column_index += 1
             elif role == QtCore.Qt.TextAlignmentRole:
                    return QtCore.Qt.AlignCenter
-            # TODO change the color of the grouped
-                   #  items in the table
+            # TODO change the color of the grouped items in the table
+
            # elif role == QtCore.Qt.BackgroundRole:
            #     # print self.column_index
            #     if self.isGroup(self.column_index):
@@ -269,4 +403,72 @@ class TableModel(QtCore.QAbstractTableModel):
         return col_num, self.groupFinder, header_dictionary
 
 
+class ImageModel():
+    def __init__(self, parent= None):
+
+        # Create basic data view window
+       # super(ImageModel, self).__init__(parent)
+        print("Maybe do something here")
+
+class _AxesProperties(object):
+    """ Helper class containing data about axes being displayed """
+
+    def __init__(self):
+        self.axes_properties = []
+
+    def __getitem__(self, index):
+
+        items = self.axes_properties[index]
+        print('items')
+        print(items)
+
+        return items
+
+    def __len__(self):
+        print('axes length: {}'.format(len(self.axes_properties)))
+        return len(self.axes_properties)
+
+    def add_axis(self, name, type, sequence_number, slice, length):
+
+        axis_properties = {'name': name,
+                           'type': type,
+                           'sequence_number': sequence_number,
+                           'slice': slice,
+                           'length': length}
+
+        self.axes_properties.append(axis_properties)
+
+    # Finds an axis by property key and value
+    def find(self, key, value):
+
+        match = next((d for d in self.axes_properties if d[key] == value), None)
+
+        if match is not None:
+            match = match.copy()
+        print('match is: {}'.format(match))
+        print(self.axes_properties)
+        return match
+
+    # Finds the index of an axis by property key and value
+    def find_index(self, key, value):
+
+        match = next((i for i, d in enumerate(self.axes_properties) if d[key] == value), None)
+        return match
+
+    # For axis having index, sets a key and a value
+    def set(self, index, key, value):
+        self.axes_properties[index][key] = value
+
+    def copy(self):
+
+        axes_properties = _AxesProperties()
+
+        for axis in self.axes_properties:
+            axes_properties.add_axis(axis['name'],
+                                     axis['type'],
+                                     axis['sequence_number'],
+                                     axis['slice'],
+                                     axis['length'])
+
+        return axes_properties
 
