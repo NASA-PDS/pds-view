@@ -35,6 +35,7 @@ from pds4_tools.reader.table_objects import Meta_TableStructure
 import Model
 import Delegate
 #import Styles
+import icons
 
 
 
@@ -61,6 +62,7 @@ class MainWindow(QMainWindow):
         self.model = None
         self.image = None
         self.image_data = None
+        self.cubeData = False
         self.x_tick_visible = True
         self.y_tick_visible = True
         self.color_bar_orientation = 'horizontal'
@@ -75,6 +77,11 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(self.logo)
         self.setAcceptDrops(True)
 
+        self.styleData = ''
+
+        #self.setStyleSheet(self.styleData)
+        self.setStyleSheet('')
+
         # connect to Summary table to recieve a View button clicked signal
         self.connect(self, SIGNAL("SummaryTableTriggered"), self.handleViewClicked)
 
@@ -84,8 +91,7 @@ class MainWindow(QMainWindow):
         self.tabFrame = Tab()
 
         self.tabFrame.setEnabled(True)
-        self.tabFrame.setGeometry(10,10,555,550)
-        self.tabFrame.setStyleSheet("background-color: rgb(80, 80, 80)")
+       # self.tabFrame.setGeometry(10,10,555,550)
 
         # add tabs
         self.labelTab = QWidget()
@@ -113,7 +119,7 @@ class MainWindow(QMainWindow):
         self.tableInfoLayout = QHBoxLayout()
 
         self.threeDTableLayout = QGridLayout()
-        #self.threeDTableInfoLayout = QHBoxLayout
+        #self.threeDTableInfoLayout = QHBoxLayout()
 
         self.imageLayout = QVBoxLayout()
         self.imageInfoLayout = QHBoxLayout()
@@ -162,9 +168,6 @@ class MainWindow(QMainWindow):
 
         self.addActions(fileMenu, (self.fileOpenAction, None, self.fileSaveAsAction,
                                 None, self.fileQuitAction))
-
-
-
 
         # Add the 'Label Options' menu bar items
         self.labelMenu = self.menuBar().addMenu("Label Options")
@@ -261,32 +264,28 @@ class MainWindow(QMainWindow):
                                   'gaussian', 'bessel', 'mitchell', 'sinc', 'lanczos')
         for mode in interpolation_options:
             self.interpolationActionDict[mode] = self.createAction(mode, self.setInterpolation,
-                                                                   icon="InterpolationMode",
-                                                                   tip="Select Interpolation Mode", checkable=True,
-                                                                   group_action=True)
+                                                icon="InterpolationMode",
+                                                tip="Select Interpolation Mode", checkable=True,
+                                                group_action=True)
             interpolation_actions = interpolationGroup.addAction(self.interpolationActionDict[mode])
             interpolationSubMenu.addAction(interpolation_actions)
 
         self.interpolationActionDict['none'].setChecked(True)
 
-
-
-
-
-
         # 'View' menu item
         self.tickActionDict = {}
         self.colorbarActionDict = {}
+        self.styleActionDict = {}
         self.viewMenu = self.menuBar().addMenu("View")
 
         tickSubMenu = self.viewMenu.addMenu("Ticks")
 
         tickGroup = QActionGroup(self, exclusive=True)
         tick_options = ('Show Ticks', 'Show X-Tick', 'Show Y-Tick', 'Hide')
-        for t in tick_options:
-            self.tickActionDict[t] = self.createAction(t, self.setTicks, icon="hideShowTicks",
+        for tick in tick_options:
+            self.tickActionDict[tick] = self.createAction(tick, self.setTicks, icon="hideShowTicks",
                                     tip="Toggle Ticks Visibility", checkable=True, group_action=True)
-            tick_actions = tickGroup.addAction(self.tickActionDict[t])
+            tick_actions = tickGroup.addAction(self.tickActionDict[tick])
             tickSubMenu.addAction(tick_actions)
 
         self.tickActionDict['Show Ticks'].setChecked(True)
@@ -312,6 +311,18 @@ class MainWindow(QMainWindow):
         self.imageMenu.setDisabled(True)
         self.viewMenu.setDisabled(True)
         self.imageOptionsMenu.setDisabled(True)
+
+        styleSubMenu = self.viewMenu.addMenu("Choose GUI Style")
+
+        styleGroup = QActionGroup(self, exclusive=True)
+        style_options = ('Default', 'Dark Orange')
+        for style in style_options:
+            self.styleActionDict[style] = self.createAction(style, self.setStyle, icon="setStyleSheet",
+                                                       tip="Set Stylesheet", checkable=True, group_action=True)
+            style_actions = styleGroup.addAction(self.styleActionDict[style])
+            styleSubMenu.addAction(style_actions)
+
+        self.viewMenu.addSeparator()
 
         # Disable until the 'View' button is pushed
         self.labelMenu.setDisabled(True)
@@ -371,11 +382,20 @@ class MainWindow(QMainWindow):
             self.y_tick_visible = True
         self.renderImage(peripheral='Ticks')
 
+    def setStyle(self, style):
+        if style == 'Default':
+            style = ''
+        elif style == 'Dark Orange':
+            f = open('./styleSheets/darkorange.stylesheet', 'r')
+            style = f.read()
+            f.close
+        else:
+            pass
+        self.setStyleSheet(style)
+
 
     def selectLabel(self, label):
-
         self.drawLabel(self.current_index, self.view_type, label)
-
 
 
     def selectColorMap(self, colorMap):
@@ -571,8 +591,11 @@ class MainWindow(QMainWindow):
         self.current_index = index  # These are used when label options change within the same file
         self.view_type = viewType
         self.test_for_label()
-       # print('%%%%%%%%%%%%%%%')
-       # print(viewType)
+
+      #  print('%%%%%%%%%%%%%%%')
+      #  print(viewType)
+
+
         if viewType == 'Header':
             self.tabFrame.setTabEnabled(1, False)
             self.tabFrame.setTabEnabled(2, False)
@@ -580,6 +603,7 @@ class MainWindow(QMainWindow):
             self.imageMenu.setDisabled(True)
             self.viewMenu.setDisabled(True)
             self.imageOptionsMenu.setDisabled(True)
+            self.tabFrame.setCurrentIndex(0)    # open up in the label tab
         elif viewType == 'Array_2D_Image':
             self.tabFrame.setTabEnabled(1, True)
             self.tabFrame.setTabEnabled(2, True)
@@ -588,11 +612,18 @@ class MainWindow(QMainWindow):
             self.clearLayout(self.imageLayout)
             self.clearLayout(self.imageInfoLayout)
             self.draw2dImage(None,redraw=False)
-        elif viewType == 'Array_3d_Spectrum':
+            if self.cubeData:
+                self.tabFrame.setCurrentIndex(2)  # account for the 3D Table tab
+            else:
+                self.tabFrame.setCurrentIndex(1)    # open up in the table tab
+        elif viewType == 'Array_3D_Spectrum':
             self.drawTable(index)
             self.tabFrame.setTabEnabled(1, True)
             self.tabFrame.setTabEnabled(2, True)
             self.tabFrame.setTabEnabled(3, True)
+            self.tabFrame.setCurrentIndex(1)
+            self.tabFrame.setCurrentIndex(1)  # open up in the table tab
+            self.cubeData = True
         else:  # Table Data with no images
             self.imageMenu.setDisabled(True)
             self.viewMenu.setDisabled(True)
@@ -601,6 +632,7 @@ class MainWindow(QMainWindow):
             self.tabFrame.setTabEnabled(2, False)
             self.tabFrame.setTabEnabled(3, False)
             self.drawTable(index)
+            self.tabFrame.setCurrentIndex(1)  # open up in the table tab
 
 
     def test_for_label(self):
@@ -662,6 +694,7 @@ class MainWindow(QMainWindow):
         :param table:
         :return:
         '''
+
         #print("DIMENSION: {}".format(dimension))
         self.num_tables = dimension
         #Add the 3D table tab then move the other tabs to accommodate the 2nd position
@@ -674,6 +707,7 @@ class MainWindow(QMainWindow):
         self.threeDTabInPlace = True
         self.clearLayout(self.threeDTableLayout)
         buttons = {}
+
         len_last_row = dimension % 10
         rows = dimension/10
         count = 1
@@ -696,8 +730,8 @@ class MainWindow(QMainWindow):
             count += 1
         self.tabFrame.setTabEnabled(3, True)
         self.threeDTableLayout.SetFixedSize
-        self.threeDTableLayout.setSpacing(5)
-        self.threeDTableLayout.setVerticalSpacing(5)
+        self.threeDTableLayout.setSpacing(15)
+        self.threeDTableLayout.setVerticalSpacing(15)
         self.threeDTableLayout.setSizeConstraint(QLayout.SetFixedSize)
         self.threeDTableTab.setLayout(self.threeDTableLayout)
 
@@ -808,15 +842,10 @@ class MainWindow(QMainWindow):
         # Account for indexing of arrays starting at 0, while the display starts at 1
         self.table_num += 1
         self.title = QLabel(title)
-        self.title.setStyleSheet("""
-                  font: 17pt Helvetica;
-        """)
+
         self.checkBox = QCheckBox('Hold Slider Positions')
         if (self.table_num) > 0:
             self.title = QLabel(title)
-            self.title.setStyleSheet("""
-                          font: 17pt Helvetica;
-                """)
             self.checkBox = QCheckBox('Hold Slider Positions')
             tableLabel = QLabel('Table ')
             tableLabel.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
@@ -1182,12 +1211,6 @@ class LabelFrame(QWidget, QObject):
         self.make_name_dataType_dict()
 
         self.tree.setHeaderHidden(True)
-        self.tree.setStyleSheet("""
-                  border: 20 px solid black;
-                  border-radius: 10px;
-                  background-color: #A9A9A9;
-                  font: 12pt Comic Sans MS;
-        """)
 
         if displayType is not 'full_label':
             self.tree.expandAll()
@@ -1296,8 +1319,8 @@ class SummaryTable(QTableWidget):
         self.object = f_arg   # Needed so it is possible to emit a signal to the main window
         QTableWidget.__init__(self, *args)
 
-        stylesheet = "QHeaderView::section{Background-color:rgb(0,0,100);border-radius:24px;padding:24py;}"
-        self.setStyleSheet(stylesheet)
+    #    stylesheet = "QHeaderView::section{Background-color:rgb(0,0,100);border-radius:24px;padding:24py;}"
+    #    self.setStyleSheet(stylesheet)
 
         self.setShowGrid(False)
 
@@ -1420,13 +1443,6 @@ class ItemTable(QTableView):
 
         self.setModel(tableModel)
         self.installEventFilter(self)
-
-        self.setStyleSheet("""
-            background-color: rgb(175, 175, 175);
-            gridline-color: rgb(0, 0, 0);
-            font: 15pt Helvetica;
-            alternate-background-color: rgb(200, 200, 200);
-        """)
 
         self.sizeHint()
         self.setShowGrid(True)
@@ -1561,7 +1577,7 @@ def main():
     app.setApplicationName("PDS Inspect Tool")
 #    app.setWindowIcon(".ICON/boo.png")
 
-    start = MainWindow()
+    mw = MainWindow()
     #app.setStyle("Plastique")
     #app.setStyle("Cleanlooks")
     #app.setStyle("motif")
@@ -1570,7 +1586,7 @@ def main():
     app.setStyle("macintosh")
 
 
-    start.show()
-    app.exec_()
+    mw.show()
+    sys,exit(app.exec_())
 
 main()
