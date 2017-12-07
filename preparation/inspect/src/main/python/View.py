@@ -51,7 +51,9 @@ class MainWindow(QMainWindow):
     font.setPointSize(15)
     font.setFamily('Arial')
 
+    # static variables used by different classes
     hold_position_checked = False
+    style_group = 'Default'  # This is used to control the color of groups in the various styles
 
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
@@ -76,6 +78,23 @@ class MainWindow(QMainWindow):
         self.logo.setPixmap(QPixmap("./Icons/PDS_Inspector_LOGO.png"))
         self.setCentralWidget(self.logo)
         self.setAcceptDrops(True)
+        self.platform = 'booboo'
+
+        # determine operating system:
+        if sys.platform.startswith('darwin'):
+            self.default_theme = "Macintosh"
+            self.platform = 'Mac'
+        elif sys.platform.startswith('win'):
+            self.default_theme = 'Windows'
+            self.platform = 'Windows'
+        elif sys.platform.startswith('linux'):
+            self.default_theme = "Plastique"
+            self.platform = 'Linux'
+
+        # This returns a list of all the available themes/styles for the OS
+        # It will be used in the setTheme callback to only enable those items in the list
+        qlist = QStyleFactory.keys()
+        self.theme_list = str(qlist.join(" ")).split(" ")
 
         self.styleData = ''
 
@@ -238,25 +257,13 @@ class MainWindow(QMainWindow):
 
         self.imageMenu.addAction(self.invertColorAction)
 
-
         # 'Image Options' menu item
-        self.normalizationActionDict = {}
         self.interpolationActionDict = {}
+        self.normalizationActionDict = {}
 
         self.imageOptionsMenu = self.menuBar().addMenu("Image Options")
-        normalizationSubMenu = self.imageOptionsMenu.addMenu("Normalize")
-        normalizationGroup = QActionGroup(self, exclusive=True)
-        norm_options = ('Linear', 'Logarithmic', 'Squared', 'Square Root')
-        for mode in norm_options:
-            self.normalizationActionDict[mode] = self.createAction(mode, self.setNormalization, icon="NormalizationMode",
-                                    tip="Select Normalization Mode", checkable=True, group_action=True)
-            normalization_actions = normalizationGroup.addAction(self.normalizationActionDict[mode])
-            normalizationSubMenu.addAction(normalization_actions)
 
-        self.normalizationActionDict['Linear'].setChecked(True)
-
-        self.imageOptionsMenu.addSeparator()
-
+        # Interpolation
         interpolationSubMenu = self.imageOptionsMenu.addMenu("Interpolation method")
         interpolationGroup = QActionGroup(self, exclusive=True)
         interpolation_options =  ('none', 'nearest', 'bilinear', 'bicubic', 'spline16', 'spline36',
@@ -272,27 +279,27 @@ class MainWindow(QMainWindow):
 
         self.interpolationActionDict['none'].setChecked(True)
 
+        self.imageOptionsMenu.addSeparator()
+
+        # Normalization
+        normalizationSubMenu = self.imageOptionsMenu.addMenu("Normalize")
+        normalizationGroup = QActionGroup(self, exclusive=True)
+        norm_options = ('Linear', 'Logarithmic', 'Squared', 'Square Root')
+        for mode in norm_options:
+            self.normalizationActionDict[mode] = self.createAction(mode, self.setNormalization,
+                                                                   icon="NormalizationMode",
+                                                                   tip="Select Normalization Mode", checkable=True,
+                                                                   group_action=True)
+            normalization_actions = normalizationGroup.addAction(self.normalizationActionDict[mode])
+            normalizationSubMenu.addAction(normalization_actions)
+
+        self.normalizationActionDict['Linear'].setChecked(True)
+
+
         # 'View' menu item
-        self.tickActionDict = {}
         self.colorbarActionDict = {}
-        self.styleActionDict = {}
+        self.tickActionDict = {}
         self.viewMenu = self.menuBar().addMenu("View")
-
-        tickSubMenu = self.viewMenu.addMenu("Ticks")
-
-        tickGroup = QActionGroup(self, exclusive=True)
-        tick_options = ('Show Ticks', 'Show X-Tick', 'Show Y-Tick', 'Hide')
-        for tick in tick_options:
-            self.tickActionDict[tick] = self.createAction(tick, self.setTicks, icon="hideShowTicks",
-                                    tip="Toggle Ticks Visibility", checkable=True, group_action=True)
-            tick_actions = tickGroup.addAction(self.tickActionDict[tick])
-            tickSubMenu.addAction(tick_actions)
-
-        self.tickActionDict['Show Ticks'].setChecked(True)
-        self.x_tick_visible = False
-        self.y_tick_visible = False
-
-        self.viewMenu.addSeparator()
 
         colorbarSubMenu = self.viewMenu.addMenu("Colorbar")
         self.cb_removed = False
@@ -305,33 +312,87 @@ class MainWindow(QMainWindow):
             colorbarSubMenu.addAction(cb_actions)
 
         self.colorbarActionDict['Horizontal'].setChecked(True)
+
         self.viewMenu.addSeparator()
+
+        tickSubMenu = self.viewMenu.addMenu("Ticks")
+
+        tickGroup = QActionGroup(self, exclusive=True)
+        tick_options = ('Show', 'Hide','Show X-Tick', 'Show Y-Tick')
+        for tick in tick_options:
+            self.tickActionDict[tick] = self.createAction(tick, self.setTicks, icon="hideShowTicks",
+                                                          tip="Toggle Ticks Visibility", checkable=True,
+                                                          group_action=True)
+            tick_actions = tickGroup.addAction(self.tickActionDict[tick])
+            tickSubMenu.addAction(tick_actions)
+
+        self.tickActionDict['Show'].setChecked(True)
+        self.x_tick_visible = False
+        self.y_tick_visible = False
 
         # Disable image functionality until an image is rendered
         self.imageMenu.setDisabled(True)
         self.viewMenu.setDisabled(True)
         self.imageOptionsMenu.setDisabled(True)
 
-        styleSubMenu = self.viewMenu.addMenu("Choose GUI Style")
-
-        styleGroup = QActionGroup(self, exclusive=True)
-        style_options = ('Default', 'Dark Orange')
-        for style in style_options:
-            self.styleActionDict[style] = self.createAction(style, self.setStyle, icon="setStyleSheet",
-                                                       tip="Set Stylesheet", checkable=True, group_action=True)
-            style_actions = styleGroup.addAction(self.styleActionDict[style])
-            styleSubMenu.addAction(style_actions)
-
         self.viewMenu.addSeparator()
 
         # Disable until the 'View' button is pushed
         self.labelMenu.setDisabled(True)
 
+        # Add the 'Styles' menu bar items
+
+        self.stylesActionList = {}
+        self.layoutActionList = {}
+
+        self.displayStylesMenu = self.menuBar().addMenu("Display Styles")
+        stylesSubMenu = self.displayStylesMenu.addMenu("Styles")
+        stylesGroup = QActionGroup(self, exclusive=True)
+        self.styles_options = ('Default','Dark Orange')
+        for style in self.styles_options:
+            if style == 'separator':
+                self.stylesMenu.addSeparator()
+            else:
+                self.stylesActionList[style] = self.createAction(style, self.setStyle,
+                                     icon='Set Style: ' + style, tip='Set Style ' + style,
+                                     checkable=True, group_action=True)
+                stylesGroupAction = stylesGroup.addAction(self.stylesActionList[style])
+                stylesSubMenu.addAction(stylesGroupAction)
+
+        self.stylesActionList['Default'].setChecked(True)
+
+        self.displayStylesMenu.addSeparator()
+
+        # Layouts
+        layoutSubMenu = self.displayStylesMenu.addMenu("Layouts")
+        layoutGroup = QActionGroup(self, exclusive=True)
+        layout_options = ("Macintosh", "Windows", "Plastique", "CDE", "Cleanlooks", "Motif", "sgi")
+        for layout in layout_options:
+            if layout == 'separator':
+                self.displayStylesMenu.addSeparator()
+            else:
+                self.layoutActionList[layout] = self.createAction(layout, self.setLayout,
+                                                                 icon='Set Layout: ' + layout, tip='Set Layout ' + layout,
+                                                                 checkable=True, group_action=True)
+                layoutGroupAction = layoutGroup.addAction(self.layoutActionList[layout])
+                layoutSubMenu.addAction(layoutGroupAction)
+
+        for i in layout_options:
+            if i not in self.theme_list:
+                self.layoutActionList[i].setDisabled(True)
+
+        self.layoutActionList[self.default_theme].setChecked(True)
+        self.layoutActionList['sgi'].setDisabled(True)
 
         self.initalGrayScaleSetting()
         self.setWindowTitle("PDS Inspect Tool")
         self.setWindowIcon(QIcon("./Icons/MagGlass.png"))
 
+
+    def setLayout(self, layout):
+        ret = QApp.app.setStyle(layout)
+        if ret == None:
+            print('Could not find a theme that should be displaying')
 
     def setInterpolation(self, mode):
         self._interpolation = mode
@@ -351,7 +412,6 @@ class MainWindow(QMainWindow):
             print('Option out of range')
         self.draw2dImage(None, redraw=True)
 
-
     def setColorbar(self, option):
         if not self.cb_removed:
             self.cbar.remove()
@@ -367,22 +427,25 @@ class MainWindow(QMainWindow):
         self.renderImage(peripheral='ColorBar')
         #self.draw2dImage(None, redraw=True)
 
-    def setTicks(self, axis):
-        if axis == 'Show Ticks':
+    def setTicks(self, selection):
+        if selection == 'Show':
             self.x_tick_visible = True
             self.y_tick_visible = True
-        elif axis == 'Hide Ticks':
+        elif selection == 'Hide':
+            print('HideTicks')
             self.x_tick_visible = False
             self.y_tick_visible = False
-        elif axis == 'Show X-Tick':
+        elif selection == 'Show X-Tick':
             self.x_tick_visible = True
             self.y_tick_visible = False
-        elif axis == 'Show Y-Tick':
+        elif selection == 'Show Y-Tick':
             self.x_tick_visible = False
             self.y_tick_visible = True
         self.renderImage(peripheral='Ticks')
 
+
     def setStyle(self, style):
+        MainWindow.style_group = style
         if style == 'Default':
             style = ''
         elif style == 'Dark Orange':
@@ -392,6 +455,16 @@ class MainWindow(QMainWindow):
         else:
             pass
         self.setStyleSheet(style)
+
+        # If there are groups in the table type then color them a
+        # different color so they stand out.
+        possible_groups = Delegate.possible_groups(self.table_type)
+        if possible_groups:
+            print("GROUPS")
+            self.tableWidget.set_group_colors()
+          #  ItemTable.set_group_colors_static(self.tableWidget)
+        else:
+            print("NO GROUPS")
 
 
     def selectLabel(self, label):
@@ -474,7 +547,7 @@ class MainWindow(QMainWindow):
         self.colorActionList['gray'].setChecked(True)
         self.actionListAll['gray'].setChecked(True)
         self.normalizationActionDict['Linear'].setChecked(True)
-        self.tickActionDict['Show Ticks'].setChecked(True)
+        self.tickActionDict['Show'].setChecked(True)
         self.colorbarActionDict['Horizontal'].setChecked(True)
         self.interpolationActionDict['none'].setChecked(True)
 
@@ -773,8 +846,7 @@ class MainWindow(QMainWindow):
         self.drawIndexedImage(table, index)
 
     def drawIndexedImage(self,table,index):
-        print('INDEXED Image')
-
+      #  print('INDEXED Image')
         table_type = self.summary[1][1]  # this is the type of each array
         if table_type == 'Array_2D_Image':
             self.clearLayout(self.imageLayout)
@@ -801,10 +873,12 @@ class MainWindow(QMainWindow):
             num_rows    = dimension[0]
             num_columns = dimension[1]
             self.tableWidget = ItemTable(self, self.table, self.title, num_rows, num_columns, self.table_type)
+
             print('TITLE : {}'.format(self.title))
          #
             self.clearLayout(self.tableLayout)
             self.renderTable(self.table_name)
+           # self.tableWidget.resizeTable()
 
 
     def renderTable(self, title, table_num = -1):
@@ -915,6 +989,7 @@ class MainWindow(QMainWindow):
        # print(self.tableDockWidget.isFloating())
        # print('1111111')
 
+
     def tableDockChanged(self):
         print("HERE: I want to change the title")
 
@@ -938,7 +1013,7 @@ class MainWindow(QMainWindow):
             print("Already at the last table.")
         else:
             self.drawIndexedTable(self.full_table, index)
-            #TODO this is a bandaid to make sure the band images render ok
+            #TODO  make sure the band images render ok
             self.draw2dImage(self.full_table, index, redraw=False)
 
     def holdSliderPositions(self, state):
@@ -1056,8 +1131,6 @@ class MainWindow(QMainWindow):
         else:
             pass
 
-
-
         self.imageWidget.setWindowTitle(QString("PyQt"))
         self.imageWidget.draw()
 
@@ -1146,6 +1219,7 @@ class MainWindow(QMainWindow):
         self.summaryDockWidget.setWidget(self.summaryTable)
         self.addDockWidget(Qt.RightDockWidgetArea, self.summaryDockWidget)
         self.summaryDockWidget.show()
+
 
 class Tab(QTabWidget):
 #    Out = pyqtSignal(QWidget)
@@ -1302,7 +1376,7 @@ class LabelFrame(QWidget, QObject):
 
     @staticmethod
     def getLabelNameDataType():
-        print LabelFrame.nameDataTypeDict
+      #  print LabelFrame.nameDataTypeDict
         return LabelFrame.nameDataTypeDict
 
 
@@ -1403,9 +1477,10 @@ class MyHeader(QHeaderView):
 class ItemTable(QTableView):
     sliderXVal = 0
     sliderYVal = 0
+
     def __init__(self, f_arg, *args ):
         self.object = f_arg  # Needed so it is possible to emit a signal to the main window
-        data = args[0]
+        self.table = args[0]
         title = args[1]
         rows = args[2]
         columns = args[3]
@@ -1413,26 +1488,26 @@ class ItemTable(QTableView):
         self.showHeaders = False
         self.newKey = ''
         self.image_types = ['Array_2D_Image', 'Array_3D_Spectrum']
-
         self.nameDataTypeDict = LabelFrame.getLabelNameDataType()
-
-        #print(data.shape)
-        #print(data)
+        #print(self.table.shape)
+        #print(self.table)
         QTableView.__init__(self, parent = None)
         #print("Table type: {}".format(self.table_type))
-        #tableModel = Model.TwoDImageModel(data)
+        #tableModel = Model.TwoDImageModel(self.table)
 
-        tableModel = Delegate.assignTableModel(data, self.table_type)
 
-        #try:
-        #    tableModel = Delegate.assignTableModel(data, self.table_type)
-        #except :
-        #    print('Table model not identified properly, check the delegate')
-        #    return
+
+        self.tableModel = Delegate.assignTableModel(self.table, self.table_type)
+        possible_groups = Delegate.possible_groups(self.table_type)
+        print(self.table_type)
+        print("possible_groups: {}".format(possible_groups))
+        if possible_groups:   # Test for groups, there may be groups in this data type
+
+            self.set_group_colors()
 
         if self.table_type not in self.image_types:
             # get the column header information
-            self.header_map = tableModel.headerDict
+            self.header_map = self.tableModel.headerDict
             # print self.header_map
             self.showHeaders = True
             # Use a custom horizontalHeader that give back cursor position when
@@ -1441,7 +1516,7 @@ class ItemTable(QTableView):
             myHeader = MyHeader(Qt.Horizontal, self)
             self.setHorizontalHeader(myHeader)
 
-        self.setModel(tableModel)
+        self.setModel(self.tableModel)
         self.installEventFilter(self)
 
         self.sizeHint()
@@ -1450,7 +1525,6 @@ class ItemTable(QTableView):
 
         # This will be use to display the title of the data of the columnn number selected
         self.horizontalHeader().sectionDoubleClicked.connect(self.displayColumnTitle)
-
         self.verticalHeader().setVisible(True)
 
         self.verticalSliderBar = self.verticalScrollBar()
@@ -1465,11 +1539,42 @@ class ItemTable(QTableView):
         self.doubleClicked.connect(self.getIndex)
 
 
+    def set_group_colors(self):
+        '''
+        ItemTable.set_group_colors()
+        This is called once at intialization and sets the group colors to the default value gray scale
+        It is also used in the call back for changes made in the 'Style' Menu.
+        There are 4 colors for each style.  If there are more than 4 groups in the file the pattern simply repeats.
+        '''
+
+        group_bg_dict_default = {0: (229, 231, 233), 1: (202, 207, 210), 2: (215, 219, 221),  # 4 shades of gray
+                                 3: (189, 195, 199)}
+        group_bg_dict_darkOrange = {0: (150, 150, 150), 1: (175, 175, 175), 2: (162, 162, 162),
+                                    3: (187, 187, 187)}
+
+        if MainWindow.style_group == 'Default':
+            group_color_dict = group_bg_dict_default
+        elif MainWindow.style_group == 'Dark Orange':
+            group_color_dict = group_bg_dict_darkOrange
+        else:
+            group_color_dict = group_bg_dict_default
+
+        group_dict =  group_color_dict
+        # Returns sets of columns numbers representing where the groups are
+        group_sets = self.tableModel.getGroupSet()
+
+        for i in range(len(group_sets)):
+            color = group_dict[i % 4 ]   # this will repeat the color pattern of 4 colors
+            for group in group_sets[i]:
+                self.setItemDelegateForColumn(group, Delegate.GroupDelegate(self, color))
+
+
     # Use this static method to update the slider position for all new instances
     # This allows the user to set the position if he uses the checkbox
     @staticmethod
     def getSliderValues(self):
         return ItemTable.sliderXVal, ItemTable.sliderYVal
+
 
     def displayColumnTitle(self, index):
 
@@ -1477,6 +1582,7 @@ class ItemTable(QTableView):
             column = index + 1
             messageBox = QMessageBox()
             messageBox.setIcon(QMessageBox.NoIcon)
+            self.selectColumn(index)
 
             # Get the header information
             for key in self.header_map.iterkeys():
@@ -1494,24 +1600,16 @@ class ItemTable(QTableView):
                     else:
                         self.newKey = key
                     if self.newKey in self.nameDataTypeDict:
-                        print("newKey")
-                        print self.newKey
                         title = title + '\n Data Type: ' + self.nameDataTypeDict[self.newKey]
-
-
-
 
             messageBox.setText("Column Header {}:\n{}".format(column, title))
             messageBox.setWindowTitle("Column Title")
             messageBox.setStandardButtons(QMessageBox.Ok)
             messageBox.setWindowModality(Qt.ApplicationModal)
 
-
-
             x, y = MyHeader.getMousePosition(self)
             messageBox.move(x, y)
             retVal = messageBox.exec_()
-
 
     def sizeHint(self):
         horizontal = self.horizontalHeader()
@@ -1534,6 +1632,7 @@ class ItemTable(QTableView):
         else:
             print("not a valid cell")
 
+
     # This is used for copying and pasting elements in the table
     def eventFilter(self, source, event):
         if (event.type() == QEvent.KeyPress and
@@ -1541,6 +1640,7 @@ class ItemTable(QTableView):
             self.copySelection()
             return True
         return super(ItemTable, self).eventFilter(source, event)
+
 
     def copySelection(self):
         selection = self.selectedIndexes()
@@ -1556,7 +1656,18 @@ class ItemTable(QTableView):
                 table[row][column] = index.data()
             stream = io.BytesIO()
             csv.writer(stream).writerows(table)
-            qApp.clipboard().setText(stream.getvalue())
+            QApp.app.clipboard().setText(stream.getvalue())
+
+    def resizeTable(self):
+        width = 50
+        for i in range(100):
+            if (i % 2) == 0:
+                width = 10
+                self.setItemDelegateForColumn(i, Delegate.ResizeTableDelegate(self, width))
+            else:
+                width = 100
+                self.setItemDelegateForColumn(i, Delegate.ResizeTableDelegate(self, width))
+
 
 
 
@@ -1569,24 +1680,27 @@ class TextWindow(QTextBrowser):
         QTextBrowser.__init__(self, *args)
         self.setText("Hi Boo Boo")
 
+class QApp(QApplication):
+    app = None
+    def __init__(self):
+        self.application = QApplication(sys.argv)
+        self.application.setOrganizationName("Jet Propulsion Laboratory")
+        self.application.setOrganizationDomain("jpl.nasa.gov")
+        self.application.setApplicationName("PDS Inspect Tool")
+        mw = MainWindow()
+        self.application.setStyle("macintosh")
+        mw.show()
+
+    # This is used to change the 'Theme' with app.setStyle() in a callback
+    @staticmethod
+    def getQApp(self):
+        QApp.app = self.application
+        return QApp.app
+
 
 def main():
-    app = QApplication(sys.argv)
-    app.setOrganizationName("Jet Propulsion Laboratory")
-    app.setOrganizationDomain("jpl.nasa.gov")
-    app.setApplicationName("PDS Inspect Tool")
-#    app.setWindowIcon(".ICON/boo.png")
-
-    mw = MainWindow()
-    #app.setStyle("Plastique")
-    #app.setStyle("Cleanlooks")
-    #app.setStyle("motif")
-    #app.setStyle("sgi")
-    #app.setStyle("windows")
-    app.setStyle("macintosh")
-
-
-    mw.show()
-    sys,exit(app.exec_())
+    a = QApp()
+    app = a.getQApp(a)
+    sys.exit(app.exec_())
 
 main()
