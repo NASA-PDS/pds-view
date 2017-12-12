@@ -1,4 +1,4 @@
-This INSTALL.txt file details how to build and deploy the AMES Tools web app.
+This file details how to build and deploy the UCD Tools web application.
 
 
 1. Set up the MySQL database.
@@ -31,17 +31,21 @@ At the time of this writing, the "-DskipTests" flag option is needed as the
 build fails if this flag is omitted.
 
 
-3. Copy the WAR file to the tomcat/webapps folder.
+3. Copy the WAR file. 
+
+Cope the WAR file to the $TOMCAT_HOME/webapps folder renaming the WAR file
+to "ucd-tools.war".
 
 
-4. Once the WAR file is unpacked, edit the 
-   webapps/ames-tools/WEB-INF/classes/config.properties file as needed.
+4. Edit the config file.
+
+Once the WAR file is unpacked, edit the $TOMCAT_HOME/webapps/ucd-tools/WEB-INF/classes/config.properties file as needed (change the password).
 
 The default values are set as follows:
 
 #defaults to root
-mysql.user = root
-mysql.pass = root
+mysql.user = pds
+mysql.pass = p@ssw0rd
 #defaults to 3306
 mysql.port = 3306
 #defaults to pds_web
@@ -58,7 +62,7 @@ mysql.db = database name
 mysql.server = host name of the MySQL server  
 
 
-5. Restart tomcat.
+5. Restart Tomcat Server.
 
 
 Some helpful notes from Mark Rose:

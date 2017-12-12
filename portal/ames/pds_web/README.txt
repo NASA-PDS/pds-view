@@ -1,4 +1,9 @@
-This document describes the steps required to configure your system in order to develop the TABLE EXPLORER in Eclipse.
+The UCD Tools project contains software for validating PDS3 volumes 
+and for exploring PDS3 and PDS4 tables. See the INSTALL.txt file for 
+details on building and deploying the web application.
+
+This rest of this document describes the steps required to configure 
+your system in order to develop the TABLE EXPLORER in Eclipse.
 
 Pre-requisites:
     Eclipse Java EE IDE for Web Developers

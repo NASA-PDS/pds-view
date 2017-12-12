@@ -25,20 +25,43 @@
 		<div class="contents" id="statusContainer" style="display: none;"></div>
 		<div class="contents" id="cancelContainer" style="display: none;"><input type="button" value="<s:text name="generic.button.cancel" />" onclick="cancel()" /></div>
 
-		<s:if test="safari">
-		<h2>Additional Requirements for Safari Users</h2>
-		<p>Safari has an additional level of security for Java applets. If this is the first time you are using the Validator you must allow access to your local computer as follows:</p>
+		<h2>Browser Requirements</h2>
+		<p>It would appear that Safari is the only browser left that supports Java applets which is how the Volume Validator validates your local volumes. 
+		In Safari, there is an additional level of security for Java applets. If this is the first time you are using the Validator you must allow access to your local computer as follows:</p>
+		<blockquote>
+		<h2>Safari Version 11</h2>
 		<ol>
-			<li>Open to the Safari Preferences dialog.</li>
+			<li>Open the Safari Preferences dialog.</li>
+			<li>Go to the Websites tab.</li>
+			<li>Select the <em>Java</em> plug-in.</li>
+			<li>For the website <em>pds-gamma.jpl.nasa.gov</em>, hold down the option key when selecting the pull-down menu and then deselect the <em>Run in Safe Mode</em> option. This allows the Validator to read your data volumes to check them for compliance.</li>
+			<li>Confirm that you want to run the Validator in unsafe mode by selecting the <em>Trust</em> button in the pop-up window.</li>
+			<li>Close the Preferences dialog.</li>
+			<li>Reload the page to restart the applet in unsafe mode.</li>
+		</ol>
+		<h2>Safari Version 10</h2>
+		<ol>
+			<li>Open the Safari Preferences dialog.</li>
 			<li>Go to the Security tab.</li>
 			<li>Next to <em>Internet plug-ins</em>, make sure <em>Allow plug-ins</em> is checked.</li>
-			<li>Next to <em>Internet plug-ins</em>, press the Manage Website Settings button (in Safari 10, it's the Plug-in Settings button).</li>
-			<li>For the website <em>pds-gamma.jpl.nasa.gov</em>, select Run in Unsafe Mode (in Safari 10, hold down the option key when selecting the pull-down menu and then deselect the Run in Safe Mode option). This allows the Validator to read your data volumes to check them for compliance.</li>
+			<li>Next to <em>Internet plug-ins</em>, press the <em>Plug-in Settings</em> button .</li>
+			<li>For the website <em>pds-gamma.jpl.nasa.gov</em>, hold down the option key when selecting the pull-down menu and then deselect the <em>Run in Safe Mode</em> option. This allows the Validator to read your data volumes to check them for compliance.</li>
+			<li>Confirm that you want to run the Validator in unsafe mode by clicking <em>Trust</em>.</li>
+			<li>Click <em>Done</em> and then close the Preferences dialog.</li>
+			<li>Reload the page to restart the applet in unsafe mode.</li>
+		</ol>
+		<h2>Safari Verion 9 and earlier</h2>
+		<ol>
+			<li>Open the Safari Preferences dialog.</li>
+			<li>Go to the Security tab.</li>
+			<li>Next to <em>Internet plug-ins</em>, make sure <em>Allow plug-ins</em> is checked.</li>
+			<li>Next to <em>Internet plug-ins</em>, press the Manage Website Settings button.</li>
+			<li>For the website <em>pds-gamma.jpl.nasa.gov</em>, select Run in Unsafe Mode. This allows the Validator to read your data volumes to check them for compliance.</li>
 			<li>Confirm that you want to run the Validator in unsafe mode by clicking Trust.</li>
 			<li>Click Done and then close the Preferences dialog.</li>
 			<li>Reload the page to restart the applet in unsafe mode.</li>
 		</ol>
-		</s:if>
+		</blockquote>
 
 		<div class="label">Version</div>
 		<div class="contents">

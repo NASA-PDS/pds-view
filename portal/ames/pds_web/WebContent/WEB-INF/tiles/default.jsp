@@ -187,7 +187,7 @@
 										<td id="footerInfo">
 											Webmaster: <a href="mailto:Emily.Law@jpl.nasa.gov">Emily Law</a><br />
 											NASA Official: William Knopf<br />
-											Last updated: October, 2016
+											Last updated: December, 2017
 										</td>
 									</tr>
 								</table>
