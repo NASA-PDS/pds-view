@@ -359,14 +359,14 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-			<version>1.7.7</version>
+			<version>1.5.8</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
-			<version>1.7.7</version>
+			<version>1.5.8</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
@@ -478,6 +478,6 @@
 		</plugins>
 	</reporting>
 	<properties>
-		<struts.version>2.3.12</struts.version>
+		<struts.version>2.3.34</struts.version>
 	</properties>
 </project>
