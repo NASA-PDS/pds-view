@@ -175,18 +175,6 @@
       <scope>runtime</scope>
     </dependency>
     <dependency>
-      <groupId>org.apache.velocity</groupId>
-      <artifactId>velocity</artifactId>
-      <version>1.7</version>
-      <scope>runtime</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.velocity</groupId>
-      <artifactId>velocity-tools</artifactId>
-      <version>2.0</version>
-      <scope>runtime</scope>
-    </dependency>
-    <dependency>
       <groupId>commons-collections</groupId>
       <artifactId>commons-collections</artifactId>
       <version>3.2.1</version>
