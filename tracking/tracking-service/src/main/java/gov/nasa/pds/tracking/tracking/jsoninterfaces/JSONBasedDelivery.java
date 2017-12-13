@@ -1,7 +1,7 @@
 /**
  * Copyright 2010-2017, by the California Institute of Technology.
  */
-package gov.nasa.pds.tracking.tracking;
+package gov.nasa.pds.tracking.tracking.jsoninterfaces;
 
 import javax.ws.rs.Path;
 

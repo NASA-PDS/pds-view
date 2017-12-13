@@ -1,4 +1,4 @@
-package gov.nasa.pds.tracking.tracking;
+package gov.nasa.pds.tracking.tracking.htmlinterfaces;
 
 import java.sql.SQLException;
 import java.util.Iterator;
@@ -16,7 +16,7 @@ import gov.nasa.pds.tracking.tracking.utils.HtmlConstants;
  
 @Path("html/delivery")
 public class HTMLBasedDelivery {
-	public static Logger logger = Logger.getLogger(HTMLBasedProducts.class);
+	public static Logger logger = Logger.getLogger(HTMLBasedDelivery.class);
 		
 	private String tableTiltes =  "<tr align=\"center\">" +
 			  "<td width=\"20%\"><b>Name</b></td>"+
