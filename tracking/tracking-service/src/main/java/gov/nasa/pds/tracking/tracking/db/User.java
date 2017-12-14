@@ -23,7 +23,6 @@ public class User extends DBConnector {
 
 	private static final String TABLENAME = "user";
 	private static final String ROLETABLENAME = "role";
-	//private static final String REFTABLENAME = "reference";
 	private static final String PRODUCTTABLENAME = "product";
 	
 	public static final String NAMECOLUMN = "name";
@@ -144,10 +143,17 @@ public List<User> getUserRole(String email){
 		// Setup the connection with the DB
 		connect = getConnection();
 		statement = connect.createStatement();
-		resultSet = statement.executeQuery("SELECT u." + EMAILCOLUMN + ", u." + NAMECOLUMN + ", r." + Role.REFERENCECOLUMN +
-										" FROM " + TABLENAME + " u, " + ROLETABLENAME + " r" +
-										" WHERE u." + EMAILCOLUMN + " = '" + email + "' AND u." + EMAILCOLUMN + " = r." + EMAILCOLUMN +
-										" ORDER BY r." + Role.REFERENCECOLUMN);
+		String query = "SELECT u." + EMAILCOLUMN + ", u." + NAMECOLUMN + ", r." + Role.REFERENCECOLUMN +
+				" FROM " + TABLENAME + " u, " + ROLETABLENAME + " r" +
+				" WHERE ";
+		if (email !=null &&  !email.equalsIgnoreCase("null") && email.length() > 0){
+			query = query + "u." + EMAILCOLUMN + " = '" + email + "' AND ";
+		}
+		
+		query = query + "u." + EMAILCOLUMN + " = r." + EMAILCOLUMN +
+				" ORDER BY r." + Role.REFERENCECOLUMN;
+		
+		resultSet = statement.executeQuery(query);
 		
 		while (resultSet.next()) {
 			user = new User();
@@ -170,7 +176,6 @@ public List<User> getUserRole(String email){
  * @param type
  * @return a list of users
  */
-@SuppressWarnings("finally")
 public List<User> getProductRoleUsers(String log_identifer,String tableName) {
 	
 	List<User> productRoleUsers = new ArrayList<User>();
@@ -185,11 +190,19 @@ public List<User> getProductRoleUsers(String log_identifer,String tableName) {
 	
 			statement = connect.createStatement();
 			
-			resultSet = statement.executeQuery("SELECT u." + EMAILCOLUMN + ", u." + NAMECOLUMN + ", f." + Reference.TITLECOLUMN +
+			logger.debug("SELECT u." + EMAILCOLUMN + ", u." + NAMECOLUMN + ", f." + Reference.TITLECOLUMN + ", f." + Reference.REFERENCECOLUMN +
 											" FROM " + TABLENAME + " u, " + ROLETABLENAME + " r, " + tableName + " f, " + PRODUCTTABLENAME + " p" +
 											" where p." + Product.IDENTIFIERCOLUMN + " = '" + log_identifer +
 											"' and p." + Product.IDENTIFIERCOLUMN + " = f." + Reference.LOG_IDENTIFIERCOLUMN +
-											"' and f." + Reference.REFERENCECOLUMN + " = r." +  Role.REFERENCECOLUMN +
+											" and f." + Reference.REFERENCECOLUMN + " = r." +  Role.REFERENCECOLUMN +
+											" and r." + Role.EMAILCOLUMN + " = u." + EMAILCOLUMN +
+											" ORDER BY " + EMAILCOLUMN);
+			
+			resultSet = statement.executeQuery("SELECT u." + EMAILCOLUMN + ", u." + NAMECOLUMN + ", f." + Reference.TITLECOLUMN + ", f." + Reference.REFERENCECOLUMN +
+											" FROM " + TABLENAME + " u, " + ROLETABLENAME + " r, " + tableName + " f, " + PRODUCTTABLENAME + " p" +
+											" where p." + Product.IDENTIFIERCOLUMN + " = '" + log_identifer +
+											"' and p." + Product.IDENTIFIERCOLUMN + " = f." + Reference.LOG_IDENTIFIERCOLUMN +
+											" and f." + Reference.REFERENCECOLUMN + " = r." +  Role.REFERENCECOLUMN +
 											" and r." + Role.EMAILCOLUMN + " = u." + EMAILCOLUMN +
 											" ORDER BY " + EMAILCOLUMN);
 			
@@ -197,6 +210,7 @@ public List<User> getProductRoleUsers(String log_identifer,String tableName) {
 				user = new User();
 				user.setUserEmail(resultSet.getString(EMAILCOLUMN));
 				user.setUserName(resultSet.getString(NAMECOLUMN));
+				user.setReference(resultSet.getString(Reference.REFERENCECOLUMN));
 				user.setType(resultSet.getString(Reference.TITLECOLUMN));
 				productRoleUsers.add(user);
 			}
@@ -212,6 +226,7 @@ public List<User> getProductRoleUsers(String log_identifer,String tableName) {
 	}
 	return productRoleUsers;
 }
+
 /**
  * @param email
  * @param name

@@ -7,7 +7,6 @@
 package gov.nasa.pds.tracking.tracking.db;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -336,30 +335,6 @@ public class Product extends DBConnector {
 			String query = defaultQueryPartOne + queryInstRefPart + queryInveRefPart + defaultQueryOrder;
 										
 			logger.debug(query);
-			
-			/*SELECT DISTINCT 
-			p.*, 
-			ivr.reference AS investigation_reference, 
-			ivr.title AS investigation_title, 
-			isr.reference AS instrument_reference, 
-			isr.title AS instrument_title, 
-			nr.reference AS node_reference, 
-			nr.title AS node_title
-			FROM 
-			product p, 
-			delivery d , 
-			investigation_reference ivr, 
-			instrument_reference isr, 
-			node_reference nr
-			WHERE 
-			p.logical_identifier = d.logical_identifier
-			AND p.version_id = d.version_id
-			AND p.logical_identifier = ivr.logical_identifier
-			AND p.logical_identifier = isr.logical_identifier
-			AND p.logical_identifier = nr.logical_identifier
-			AND isr.reference = 'urn:nasa:pds:context_pds3:instrument:waves.jno'
-			AND ivr.reference = 'urn:nasa:pds:context_pds3:investigation:mission.juno'
-			ORDER BY p.title*/
 			
 			resultSet = statement.executeQuery(query);
 			
