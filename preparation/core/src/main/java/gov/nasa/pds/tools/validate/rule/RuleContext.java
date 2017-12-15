@@ -78,6 +78,8 @@ public class RuleContext extends ContextBase {
    */
   public static final String CHECKSUM_MANIFEST_KEY = "validation.checksum-manifest";
   
+  public static final String CATALOG_FILES = "validation.catalogs";
+  
   private boolean rootTarget = false;
 
   /**
@@ -267,5 +269,13 @@ public class RuleContext extends ContextBase {
 	
 	public Map<URL, String> getChecksumManifest() {
 	  return (Map<URL, String>) getContextValue(CHECKSUM_MANIFEST_KEY, Map.class);
+	}
+	
+	public void setCatalogs(List<String> catalogs) {
+	  putContextValue(CATALOG_FILES, catalogs);
+	}
+	
+	public List<String> getCatalogs() {
+	  return (List<String>) getContextValue(CATALOG_FILES, List.class);
 	}
 }

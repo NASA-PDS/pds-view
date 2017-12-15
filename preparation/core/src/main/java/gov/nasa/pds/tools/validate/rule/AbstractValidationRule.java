@@ -99,6 +99,7 @@ public abstract class AbstractValidationRule implements ValidationRule {
     newContext.setChecksumManifest(context.getChecksumManifest());
     newContext.setForceLabelSchemaValidation(context.isForceLabelSchemaValidation());
     newContext.setRule(context.getRule());
+    newContext.setCatalogs(context.getCatalogs());
 
     return newContext;
 	}

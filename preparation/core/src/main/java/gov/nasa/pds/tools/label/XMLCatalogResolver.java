@@ -1,4 +1,4 @@
-//	Copyright 2009-2010, by the California Institute of Technology.
+//	Copyright 2009-2017, by the California Institute of Technology.
 //	ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
 //	Any commercial use must be negotiated with the Office of Technology 
 //	Transfer at the California Institute of Technology.
@@ -24,16 +24,13 @@ import org.apache.xerces.xni.XNIException;
 
 import javax.xml.parsers.SAXParserFactory;
 
-import org.apache.xerces.dom.DOMInputImpl;
 import org.apache.xerces.jaxp.SAXParserFactoryImpl;
 import org.apache.xerces.xni.parser.XMLEntityResolver;
 import org.apache.xerces.xni.parser.XMLInputSource;
-import org.apache.xml.resolver.Catalog;
 import org.apache.xml.resolver.CatalogManager;
 import org.apache.xml.resolver.readers.OASISXMLCatalogReader;
 import org.apache.xml.resolver.readers.SAXCatalogReader;
 import org.w3c.dom.ls.LSInput;
-import org.w3c.dom.ls.LSResourceResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.ext.EntityResolver2;
@@ -62,13 +59,13 @@ import org.xml.sax.ext.EntityResolver2;
  * between several parsers and the application.</p>
  *
  */
-public class XMLCatalogResolver implements XMLEntityResolver, EntityResolver2, LSResourceResolver  {
+public class XMLCatalogResolver extends CachedLSResourceResolver implements XMLEntityResolver, EntityResolver2 {
   
   /** Internal catalog manager for Apache catalogs. **/
   private CatalogManager fResolverCatalogManager = null;
   
   /** Internal catalog structure. **/
-  private Catalog fCatalog = null;
+  private XMLCatalog fCatalog = null;
 
   /** An array of catalog URIs. **/
   private String [] fCatalogsList = null;
@@ -333,12 +330,23 @@ public class XMLCatalogResolver implements XMLEntityResolver, EntityResolver2, L
       String resolvedId = null;
       
       try {
-          // The namespace is useful for resolving namespace aware
-          // grammars such as XML schema. Let it take precedence over
-          // the external identifier if one exists.
+        
+        //URIs specified in the catalog might be referencing the system identifiers
+        //so let's use that to do resolution.
+        if (systemId != null) {
+          resolvedId = resolveURI(systemId);
+        }
+        
+        
+        // The namespace is useful for resolving namespace aware
+        // grammars such as XML schema. Let it take precedence over
+        // the external identifier if one exists.
+        if (resolvedId == null) {
           if (namespaceURI != null) {
-              resolvedId = resolveURI(namespaceURI);
+            resolvedId = resolveURI(namespaceURI);
           }
+        }
+          
           
           if (!getUseLiteralSystemId() && baseURI != null) {
               // Attempt to resolve the system identifier against the base URI.
@@ -365,14 +373,50 @@ public class XMLCatalogResolver implements XMLEntityResolver, EntityResolver2, L
           }
       }
       // Ignore IOException. It cannot be thrown from this method.
-      catch (IOException ex) {}
+      catch (IOException io) {
+        if (getExceptionHandler() != null) {
+          getExceptionHandler().addException(
+              new LabelException(ExceptionType.FATAL, 
+                  io.getMessage(), baseURI));
+        }
+      }
       
       if (resolvedId != null) {
-          return new DOMInputImpl(publicId, resolvedId, baseURI);
-      }  
+//        System.out.println("Result: " + resolvedId);
+        return super.resolveResource(type, namespaceURI, publicId, resolvedId, baseURI);
+      }
+
+      if (getExceptionHandler() != null) {
+        if (systemId != null && namespaceURI != null) {
+          getExceptionHandler().addException(
+            new LabelException(ExceptionType.FATAL, 
+                "Could not resolve uri '" + systemId + "' or namespace '" + namespaceURI + "' with the given catalog file.", baseURI));
+        }
+      }
       return null;
   }
   
+  public String resolveSchematron(String systemId) 
+      throws IOException {
+    String resolvedId = null;
+    //URIs specified in the catalog might be referencing the system identifiers
+    //so let's use that to do resolution.
+    if (systemId != null) {
+      resolvedId = resolveURI(systemId);
+    }
+            
+    // Resolve against an external identifier if one exists. This
+    // is useful for resolving DTD external subsets and other 
+    // external entities. For XML schemas if there was no namespace 
+    // mapping we might be able to resolve a system identifier 
+    // specified as a location hint.
+    if (resolvedId == null) {
+      if (systemId != null) {
+        resolvedId = resolveSystem(systemId);
+      }
+    }
+    return resolvedId;
+  }
   
   /**
    * <p>Resolves an external entity. If the entity cannot be
@@ -492,7 +536,7 @@ public class XMLCatalogResolver implements XMLEntityResolver, EntityResolver2, L
       fResolverCatalogManager = new CatalogManager();
       fResolverCatalogManager.setBootstrapResolver(new BootstrapResolver());
       fResolverCatalogManager.setAllowOasisXMLCatalogPI(false);
-      fResolverCatalogManager.setCatalogClassName("org.apache.xml.resolver.Catalog");
+      fResolverCatalogManager.setCatalogClassName("gov.nasa.pds.tools.label.XMLCatalog");
       fResolverCatalogManager.setCatalogFiles("");
       fResolverCatalogManager.setIgnoreMissingProperties(true);
       fResolverCatalogManager.setPreferPublic(fPreferPublic);
@@ -509,7 +553,7 @@ public class XMLCatalogResolver implements XMLEntityResolver, EntityResolver2, L
    */
   private void parseCatalogs () throws IOException {
       if (fCatalogsList != null) {
-          fCatalog = new Catalog(fResolverCatalogManager);
+          fCatalog = new XMLCatalog(fResolverCatalogManager);
           attachReaderToCatalog(fCatalog);
           for (int i = 0; i < fCatalogsList.length; ++i) {
               String catalog = fCatalogsList[i];
@@ -526,7 +570,7 @@ public class XMLCatalogResolver implements XMLEntityResolver, EntityResolver2, L
   /**
    * Attaches the reader to the catalog.
    */
-  private void attachReaderToCatalog (Catalog catalog) {
+  private void attachReaderToCatalog (XMLCatalog catalog) {
 
       SAXParserFactory spf = new SAXParserFactoryImpl();
       spf.setNamespaceAware(true);

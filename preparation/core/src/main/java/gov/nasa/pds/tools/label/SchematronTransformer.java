@@ -21,6 +21,7 @@ import java.io.StringWriter;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import gov.nasa.pds.tools.util.Utility;
@@ -47,6 +48,7 @@ public class SchematronTransformer {
   private Transformer isoTransformer;
   private TransformerFactory transformerFactory;
   private Map<String, Transformer> cachedTransformers;
+  private XMLCatalogResolver resolver;
 
   /**
    * Constructor.
@@ -54,7 +56,8 @@ public class SchematronTransformer {
    * @throws TransformerConfigurationException A transformer configuration
    *  error occurred.
    */
-  public SchematronTransformer() throws TransformerConfigurationException {
+  public SchematronTransformer()
+      throws TransformerConfigurationException {
     // Use saxon for schematron (i.e. the XSLT generation).
     System.setProperty("javax.xml.transform.TransformerFactory",
         "net.sf.saxon.TransformerFactoryImpl");
@@ -68,6 +71,7 @@ public class SchematronTransformer {
     isoTransformer = isoFactory.newTransformer(isoSchematron);
     transformerFactory = TransformerFactory.newInstance();
     cachedTransformers = new HashMap<String, Transformer>();
+    this.resolver = null;
   }
 
   /**
@@ -155,8 +159,17 @@ public class SchematronTransformer {
       InputStream in = null;
       URLConnection conn = null;
       try {
+        if (resolver != null) {
+          String resolvedUrl = resolver.resolveSchematron(schematron.toString());
+          if (resolvedUrl == null) {
+            throw new IOException("Schematron was not resolvable through the catalog file.");
+          } else {
+            schematron = new URL(resolvedUrl);
+          }
+        }
         conn = schematron.openConnection();
         in = Utility.openConnection(conn);
+        
         StreamSource source = new StreamSource(in);
         source.setSystemId(schematron.toString());
         isoTransformer.transform(source, new StreamResult(
@@ -174,8 +187,7 @@ public class SchematronTransformer {
           message = "Cannot read schematron as URL cannot be found: "
             + io.getMessage();
         } else {
-          message = "Error occurred while reading schematron '"
-              + schematron.toString() + "': " + io.getMessage();
+          message = io.getMessage();
         }
         if (container != null) {
           container.addException(new LabelException(ExceptionType.FATAL,
@@ -190,5 +202,14 @@ public class SchematronTransformer {
     }
     return transformer;
   }
+  
+  public void setCatalogResolver(List<String> catalogs) {
+    this.resolver = new XMLCatalogResolver();
+    this.resolver.setPreferPublic(true);
+    this.resolver.setCatalogList(catalogs.toArray(new String[0]));
+  }
 
+  public void setCatalogResolver(XMLCatalogResolver resolver) {
+    this.resolver = resolver;
+  }
 }

@@ -233,4 +233,8 @@ import org.w3c.dom.ls.LSResourceResolver;
     public void setExceptionHandler(ExceptionHandler container) {
       this.container = container;
     }
+    
+    public ExceptionHandler getExceptionHandler() {
+      return this.container;
+    }
   }

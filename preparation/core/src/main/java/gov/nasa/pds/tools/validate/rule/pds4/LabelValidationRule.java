@@ -105,6 +105,9 @@ public class LabelValidationRule extends AbstractValidationRule {
 		ExceptionProcessor processor = new ExceptionProcessor(getListener(), getTarget());
 
     LabelValidator validator = ValidationResourceManager.INSTANCE.getResource(LabelValidator.class);
+    if (getContext().getCatalogs() != null) {
+      schematronTransformer.setCatalogResolver(getContext().getCatalogs());
+    }
 		try {
       Document document = null;
       if (getContext().isForceLabelSchemaValidation()) {

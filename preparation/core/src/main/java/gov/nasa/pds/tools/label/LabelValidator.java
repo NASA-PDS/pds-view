@@ -31,6 +31,7 @@ import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -226,10 +227,12 @@ public class LabelValidator {
    *
    * @param catalogFiles
    */
-  public void setCatalogs(String[] catalogFiles) {
+  public void setCatalogs(String[] catalogFiles) {  
     resolver = new XMLCatalogResolver();
     resolver.setPreferPublic(true);
     resolver.setCatalogList(catalogFiles);
+    schematronTransformer.setCatalogResolver(resolver);
+    useLabelSchematron = true;
   }
 
   private List<StreamSource> loadSchemaSources(List<URL> schemas)
@@ -353,6 +356,7 @@ public class LabelValidator {
       cachedValidatorHandler.setDocumentLocator(locator);
       if (resolver != null) {
         cachedValidatorHandler.setResourceResolver(resolver);
+        resolver.setExceptionHandler(exceptionHandler);
       } else {
         cachedValidatorHandler.setResourceResolver(cachedLSResolver);
       }
@@ -379,6 +383,7 @@ public class LabelValidator {
       }
       if (resolver != null) {
         reader.setEntityResolver(resolver);
+        resolver.setExceptionHandler(exceptionHandler);
       } else if (useLabelSchema) {
         reader.setEntityResolver(cachedEntityResolver);
       }
@@ -638,7 +643,7 @@ public class LabelValidator {
               // a URL. Assume a local reference to the schematron and
               // attempt to resolve it.
               try {
-                schematronRef = new URL(new URL(pi.getBaseURI()), value);
+                schematronRef = new URL(url, value);
               } catch (MalformedURLException mue) {
                 exceptionHandler.addException(new LabelException(ExceptionType.ERROR,
                     "Cannot resolve schematron specification '"
