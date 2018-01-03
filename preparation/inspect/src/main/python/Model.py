@@ -1,6 +1,7 @@
 # Model - class that provides a uniform interface throught which datat items
 # are accessed
 import os
+import csv
 
 from pds4_tools import *
 from pds4_tools.reader.table_objects import Meta_TableStructure
@@ -10,17 +11,15 @@ from PyQt4 import QtCore, QtGui
 
 Qt = QtCore.Qt
 
-import Delegate
-
-
 # from summary_view import open_summary
-
 
 # structures = pds4_read('../../PDS/SampleImage//virs_cube_64ppd_h02ne.xml')
 
+# noinspection PyCompatibility
 class SummaryItemsModel(QtCore.QAbstractItemModel):
     def __init__(self, fname):
-        print("fname: {}".format(fname))
+        QtCore.QAbstractItemModel.__init__(self, parent=None)
+       # print("fname: {}".format(fname))
         if fname == None:
             print("No file to read.")
         else:
@@ -62,7 +61,6 @@ class SummaryItemsModel(QtCore.QAbstractItemModel):
         self.summaryItems.append(id)
         self.summaryItems.append(type)
         self.summaryItems.append(dimension)
-
         return self.title, self.summaryItems, num_of_structures, dimension
 
     def get_display_settings_for_lid(self, local_identifier, label):
@@ -176,6 +174,9 @@ class SummaryItemsModel(QtCore.QAbstractItemModel):
         elif display_type == 'File info':
             label = full_label.find('.//File')
 
+        elif display_type == 'Statistics':
+            label = full_label.find('.//Object_Statistics')
+
         elif structure_label is not None:
 
             if display_type == 'Object Label':
@@ -191,6 +192,7 @@ class SummaryItemsModel(QtCore.QAbstractItemModel):
         # return label_dict
         return label
 
+    # noinspection PyCompatibility
     def get_table(self, index):
 
         # TODO check this zero index, may not work for all the different cases
@@ -199,10 +201,11 @@ class SummaryItemsModel(QtCore.QAbstractItemModel):
         table = self.structure_list[tableName]
         tableType = self.structure_list[tableName].type
 
-        print('tableName: {}'.format(tableName))
-        print(type(table))
+        #print('tableName: {}'.format(tableName))
+        #print(type(table))
         title = table.id
 
+        # noinspection PyCompatibility,PyCompatibility,PyCompatibility,PyCompatibility,PyCompatibility,PyCompatibility
         try:
             dimension = table.meta_data.dimensions()
         except AttributeError as e:
@@ -221,6 +224,7 @@ class TwoDImage():
         return self._data
 
 
+# noinspection PyCompatibility,PyCompatibility
 class TwoDImageModel(QtCore.QAbstractTableModel):
     '''
     This class handles the modelling of 2D image table data
@@ -246,7 +250,6 @@ class TwoDImageModel(QtCore.QAbstractTableModel):
     # The role tells the model which type of data is being referred to.
     # Qt.DisplayRole indicates the data is to be rendered in the form of text (QString)
     def data(self, index, role=Qt.DisplayRole):
-        # print(index.row())
         if index.isValid():
             if role == QtCore.Qt.DisplayRole:
                 row_column = tuple([index.row(), index.column()])
@@ -254,20 +257,32 @@ class TwoDImageModel(QtCore.QAbstractTableModel):
             # This will center Align the data
             elif role == QtCore.Qt.TextAlignmentRole:
                 return QtCore.Qt.AlignCenter
-
         return None
 
-
-###########################
-
-
+    def setTableStyle(self, style, color = None, text_color = None):
+        self.style_choice = style
 
 
+    def write_table_to_csv(self, fname):
+        # noinspection PyCompatibility,PyCompatibility,PyCompatibility,PyCompatibility,PyCompatibility,PyCompatibility
+        with open(unicode(fname), 'wb') as stream:
+            writer = csv.writer(stream)
+            for row in range(self.rowCount()):
+                rowdata = []
+                for column in range(self.columnCount()):
+                    item = self._data.item(row, column)
+                    if item is not None:
+                        # noinspection PyCompatibility,PyCompatibility,PyCompatibility,PyCompatibility,PyCompatibility,PyCompatibility
+                        rowdata.append(unicode(item).encode('utf8'))
+                    else:
+                        rowdata.append('')
+                writer.writerow(rowdata)
+
+#    def get_min(self):
+#        return self.data.min()
 
 
-###########################
-#class TableModel(QtCore.QAbstractItemModel):
-
+# noinspection PyCompatibility,PyCompatibility
 class TableModel(QtCore.QAbstractTableModel):
     '''
     This is the model for other types of tables
@@ -276,13 +291,18 @@ class TableModel(QtCore.QAbstractTableModel):
     to display the data.
     '''
 
-    def __init__(self, data, parent=None):
+    def __init__(self, data, type, parent=None):
         QtCore.QAbstractTableModel.__init__(self, parent)
         self._data = np.array(data)
+        self.table_type = type
         self.groupFinder = []
         self.group_list = []  # the indexes that refer to groups, and a group id
         self.group_set = set()
-        self.column_index = 0
+        self.data_count = 0
+        self.column_num = 0
+        self.groups = self.getGroupSet()
+        self.possible_groups = self.possible_groups(self.table_type)
+
 
         # TODO need to figure our how to read self.sturcture_list[0] in to table (see hello world code)
         # Probalby do it with by making self.structure_list a class variable.
@@ -291,11 +311,11 @@ class TableModel(QtCore.QAbstractTableModel):
 
         temp = np.shape(self._data)
         self.r = temp[0]
-        self.c = col_len
+        self.c = int(col_len)
 
-        #  print("IN MODEL")
-        #  print('row count = {}'.format(self.r))
-        #  print('column count = {}'.format(self.c))
+       # print("IN MODEL")
+       # print('row count = {}'.format(self.r))
+       # print('column count = {}'.format(self.c))
 
     def rowCount(self, parent=None):
         return self.r
@@ -304,35 +324,70 @@ class TableModel(QtCore.QAbstractTableModel):
         return self.c
 
     def data(self, index, role=Qt.DisplayRole):
-        last_group_id = 1
+        '''
+        Writes data to the table.  Gives groups different background and text colors.
+        self.group_list is a list of sets containing column numbers for members of each group set
+        self.group_colors is a dictionary keyed from 0 to 3 with color tuples for group background colors
+        self.group_text_color
+        '''
+
         if index.isValid():
             if role == QtCore.Qt.DisplayRole:
                 data = self.flatten(self._data.item(index.row()))
                 write_data = data[index.column()]
                 return write_data
-                self.column_index += 1
             elif role == QtCore.Qt.TextAlignmentRole:
                 return QtCore.Qt.AlignCenter
+        if role == QtCore.Qt.BackgroundColorRole:
+            if self.possible_groups:  # Test for groups, there may be groups in this data type
+                # self.group_list is a list of sets containing column numbers for members of each group set
+                # self.group_colors is a dictionary keyed from 0 to 3 with color tuples for group background colors
+                for i in range(len(self.group_list)):
+                    if index.column() in self.group_list[i]:
+                        r,g,b = self.group_colors[i%4]
+                        return QtGui.QColor(r, g, b)
+        if role == QtCore.Qt.TextColorRole:
+            if self.possible_groups:
+                for i in range(len(self.group_list)):
+                    if index.column() in self.group_list[i]:
+                        r,g,b = self.group_text_color
+                        return QtGui.QColor(r, g, b)
+
+    def showHeaderTitles(self, title_list):
+        pass
+
+    def setTableStyle(self, style, colors, text_color):
+        self. style_choice = style
+        self.group_colors = colors
+        self.group_text_color = text_color
 
 
     def flatten(self, row):
         '''
         :param row:
-        :return:
+        :return: a new 'flattened' row that includes groups
         This method takes a row of data and checks if there is a nested nparray in the line representing a group
         If a group exists it is mapped sequentially to the next set of columns, thus 'flattening' the row.
         In View.py these groups are given another color so they are very apparent
         '''
-        newlist = []
+        newRow = []
 
         for sublist in row:
             if type(sublist).__module__ == np.__name__:
                 array = sublist.tolist()
                 for i in array:
-                    newlist.append(i)
+                    newRow.append(i)
             else:
-                newlist.append(sublist)
-        return newlist
+                newRow.append(sublist)
+        return newRow
+
+    # Returns true if there may be groups in this type of data
+    def possible_groups(self, data_type):
+        data_type_with_groups = ('Table_Character', 'Table_Binary', 'Table_Delimited')
+        if data_type in data_type_with_groups:
+            return True
+        else:
+            return False
 
     def isGroup(self, col_index):
         if col_index in self.group_set:
@@ -363,7 +418,9 @@ class TableModel(QtCore.QAbstractTableModel):
                       'GROUP_1, ION COUNTS': [15, 16, 17, 18, 19, 20, 21, 22, 23, 24]}
         :return: dictionary
         '''
+        print("IN make title finder : passed was:")
         a = list
+        print(a)
         dict = {}
         data = []
         start = 1
@@ -391,21 +448,21 @@ class TableModel(QtCore.QAbstractTableModel):
         index = 0
         group_num = 0
         self.keys = table.dtype.names
-        #  print"Keys"
-        #  print self.keys
-        #  print"total"
-        #  print table.dtype
+        print("Keys")
+        print(self.keys)
+        print("total")
+        print(table.dtype)
         for key in self.keys:
-            # print key
-            # print(table[key].shape)
+            #print key
+            #print(table[key].shape)
             shape = (table[key].shape)
-            print(shape, key)
+            #print(shape, key)
             group_id = 1
             # shape will only be greater than 1 if there is a group
             if len(shape) > 1:
                 group_num += 1
                 self.groupFinder.append((key, shape[1]))
-                print(self.groupFinder)
+                #print(self.groupFinder)
                 self.addToGroupSet(col_num, shape[1])
                 col_num += shape[1]
 
@@ -415,11 +472,33 @@ class TableModel(QtCore.QAbstractTableModel):
             index += 1
 
         header_dictionary = self.make_title_finder(self.groupFinder)
-
-        # print(col_num)
-        print(self.groupFinder)
-        print(header_dictionary)
         return col_num, self.groupFinder, header_dictionary
+
+    def write_table_to_csv(self, fname):
+        with open(unicode(fname), 'wb') as stream:
+            writer = csv.writer(stream)
+            for row in range(self.rowCount()):
+                rowdata = []
+                for column in range(self.columnCount()):
+                    item = self._data.item(row, column)
+                    if item is not None:
+                        rowdata.append(unicode(item).encode('utf8'))
+                    else:
+                        rowdata.append('')
+                writer.writerow(rowdata)
+
+    def write_table_to_csv(self, fname):
+        '''
+        Writes the table to a csv file
+        It writes a row at a time
+        :param fname: File name selected by user
+        :return:
+        '''
+        with open(unicode(fname), 'wb') as stream:
+            writer = csv.writer(stream)
+            for row in range(self.rowCount()):
+                new_row = self.flatten(self._data.item(row))  # need to flatten in case there are groups.
+                writer.writerow(new_row)
 
 
 class ImageModel():
@@ -427,6 +506,24 @@ class ImageModel():
         # Create basic data view window
         # super(ImageModel, self).__init__(parent)
         print("Maybe do something here")
+
+
+def assignTableModel(data, table_type):
+    if table_type == 'Array_2D_Image':
+        #print("Length of data: {}".format(len(data)))
+        return TwoDImageModel(data)
+    elif table_type == 'Array_3D_Spectrum':
+       # print 'Array_3D_Spectrum'
+       # print("Length of data: {}".format(len(data)))
+        return TwoDImageModel(data)
+    elif table_type == 'Table_Character':
+        return TableModel(data, table_type)
+    elif table_type == 'Table_Binary':
+        return TableModel(data, table_type)
+    else:
+        possible_groups = True
+        print("In else: table type is, {}".format(table_type))
+        return TableModel(data, table_type)
 
 
 class _AxesProperties(object):
@@ -490,3 +587,5 @@ class _AxesProperties(object):
                                      axis['length'])
 
         return axes_properties
+
+
