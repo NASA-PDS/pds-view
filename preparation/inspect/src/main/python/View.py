@@ -17,11 +17,13 @@ from PyQt4.QtGui import *
 import numpy as np
 
 import matplotlib as mpl
+import matplotlib.patches as patches
 from matplotlib.figure import Figure
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_qt4agg import (
     FigureCanvasQTAgg as FigureCanvas,
     NavigationToolbar2QT as NavigationToolbar)
+
 # Safe import of PowerNorm (available in MPL v1.4+)
 try:
     from matplotlib.colors import PowerNorm
@@ -346,6 +348,15 @@ class MainWindow(QMainWindow):
             self.normalizationActionDict['Squared'].setEnabled(False)
             self.normalizationActionDict['Square Root'].setEnabled(False)
 
+        self.imageOptionsMenu.addSeparator()
+
+        # Show selection bounding box
+        self.showBoundingBoxAction = self.createAction("Show selection bounding box", self.getSelection,
+                                    icon="ShowSelection", tip="Draw bounding box in image around table selection")
+
+
+        self.imageOptionsMenu.addAction(self.showBoundingBoxAction)
+
         # Add the 'Display Styles' menu bar items
         self.stylesActionList = {}
         self.layoutActionList = {}
@@ -494,8 +505,12 @@ class MainWindow(QMainWindow):
         self.draw2dImage(None, redraw=True)
 
     def setColorbar(self, option):
+        print("IN SET COLOR BAR")
+
         if not self.cb_removed:
-            self.cbar.remove()
+            #self.cbar.remove()
+            self.imageWidget.cbar.remove()
+            print("Tried To Remove the color bar")
         if option == 'Horizontal':
             self.color_bar_orientation = 'horizontal'
             self.cb_removed = False
@@ -505,8 +520,8 @@ class MainWindow(QMainWindow):
         elif option == 'Hide':
             self.color_bar_orientation = 'hide'
             self.cb_removed = True
-        self.renderImage(peripheral='ColorBar')
-        #self.draw2dImage(None, redraw=True)
+       # self.renderImage(peripheral='ColorBar')
+        self.draw2dImage(None, redraw=False)
 
     def setTicks(self, selection):
         if selection == 'Show':
@@ -523,6 +538,7 @@ class MainWindow(QMainWindow):
             self.x_tick_visible = False
             self.y_tick_visible = True
         self.renderImage(peripheral='Ticks')
+       # self.draw2dImage(None, redraw=True)
 
 
     def setStyle(self, style):
@@ -770,6 +786,28 @@ class MainWindow(QMainWindow):
         i = index.row()
         return viewType[i]
 
+    def getSelection(self):
+        '''
+        This finds the selection coordinates in the table necessary for drawing a bounding box over the selected pixels
+        :return:
+        start_x = starting x coordinate for the rectangle based on the lower left corner
+        start_y = starting y coordinate for the rectangle based on the lower left corner
+        width   = width of the rectangle (number of columns)
+        heigth  = heigth of the rectange (number of rows)
+        '''
+        rows = set()
+        columns = set()
+        indices = self.tableWidget.selectionModel.selectedIndexes()
+        for index in indices:
+            rows.add(index.row())
+            columns.add(index.column())
+        self.start_x = min(columns) + 1
+        self.start_y = max(rows) + 1
+        self.width = max(columns) - self.start_x
+        self.height = (self.start_y - min(rows)) * -1
+        print('({},{}), width = {}, height = {}'.format(self.start_x, self.start_y, self.width, -self.height))
+        self.draw2dImage(self, redraw=True, drawBoundingBox=True)
+
     def handleViewClicked(self, index):
         '''
         This is the call back for the "View" button  being selected in the Summary area
@@ -866,6 +904,19 @@ class MainWindow(QMainWindow):
         self.clearLayout(self.labelLayout)
         self.labelLayout.addWidget(labelWidget)
         self.labelTab.setLayout(self.labelLayout)
+
+        self.labelDockWidget = QDockWidget(self.title, self)
+        self.labelDockWidget.setObjectName("labelDockWidget")
+        # Make the dock widget floatable, but not closeable
+        self.labelDockWidget.setFeatures(QDockWidget.DockWidgetFloatable | QDockWidget.DockWidgetMovable)
+
+        self.labelDockWidget.setAllowedAreas(Qt.RightDockWidgetArea | Qt.LeftDockWidgetArea)
+        self.labelDockWidget.setFloating(False)
+
+        self.labelDockWidget.setWidget(labelWidget)
+        self.addDockWidget(Qt.RightDockWidgetArea, self.labelDockWidget)
+        self.labelLayout.addWidget(self.labelDockWidget)
+
 
     def handleGetPosition(self, position):
         '''
@@ -1011,8 +1062,8 @@ class MainWindow(QMainWindow):
             self.tableWidget = ItemTable(self, self.table, self.title, num_rows, num_columns, self.table_type)
             self.setModelStyle()
 
-            print('TITLE : {}'.format(self.title))
-            print('TABLE TYPE : {}'.format(self.table_type))
+         #   print('TITLE : {}'.format(self.title))
+         #   print('TABLE TYPE : {}'.format(self.table_type))
          #
             self.clearLayout(self.tableLayout)
             self.renderTable(self.table_name)
@@ -1025,7 +1076,8 @@ class MainWindow(QMainWindow):
         :return:
         '''
         # Add row, column and Title information above the table
-        self.undocked_title = title
+
+        self.title = title
         self.table_num = table_num
         rowLabel = QLabel('Row ')
         rowLabel.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
@@ -1052,11 +1104,9 @@ class MainWindow(QMainWindow):
         # If this is a member of a 3D array, display the table number
         # Account for indexing of arrays starting at 0, while the display starts at 1
         self.table_num += 1
-        self.title = QLabel(title)
 
         self.checkBox = QCheckBox('Hold Slider Positions')
         if (self.table_num) > 0:
-            self.title = QLabel(title)
             self.checkBox = QCheckBox('Hold Slider Positions')
             tableLabel = QLabel('Table ')
             tableLabel.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
@@ -1080,7 +1130,7 @@ class MainWindow(QMainWindow):
             self.nextTable.clicked.connect(lambda: self.changeTable(self.table_num))
 
             self.tableInfoLayout.addWidget(self.checkBox)
-            self.tableInfoLayout.addWidget(self.title)
+
             self.tableInfoLayout.addWidget(self.previousTable)
             self.tableInfoLayout.addWidget(self.nextTable)
             self.tableInfoLayout.addWidget(tableLabel)
@@ -1091,7 +1141,6 @@ class MainWindow(QMainWindow):
            #     self.checkBox.setChecked(MainWindow.hold_position_checked)
 
             self.tableInfoLayout.setAlignment(Qt.AlignCenter)
-            self.tableInfoLayout.addWidget(self.title)
 
         self.tableInfoLayout.addWidget(rowLabel)
         self.tableInfoLayout.addWidget(self.rowDisplay)
@@ -1103,16 +1152,17 @@ class MainWindow(QMainWindow):
         self.tableInfoLayout.sizeHint()
 
         self.tableLayout.addLayout(self.tableInfoLayout)
-############## T3st########################
-        title = '+'
-        self.tableDockWidget = QDockWidget(title, self)
+
+        self.tableDockWidget = QDockWidget(self.title, self)
         self.tableDockWidget.setObjectName("tableDockWidget")
-        self.tableDockWidget.setAllowedAreas(Qt.RightDockWidgetArea)
+        self.tableDockWidget.setAllowedAreas(Qt.TopDockWidgetArea)
+        # set the dock widget to be able to float, but not able to close
+        self.tableDockWidget.setFeatures(QDockWidget.DockWidgetFloatable | QDockWidget.DockWidgetMovable)
 
         self.tableDockWidget.featuresChanged.connect(self.tableDockChanged)
 
 
-        self.tableDockWidget.setWindowIcon(QIcon("./Icons/MagGlass.png"))
+#        self.tableDockWidget.setWindowIcon(QIcon("./Icons/MagGlass.png"))
         self.tableDockWidget.setWidget(self.tableWidget)
         self.addDockWidget(Qt.RightDockWidgetArea, self.tableDockWidget)
 
@@ -1121,14 +1171,14 @@ class MainWindow(QMainWindow):
        # self.tableLayout.addWidget(self.tableWidget)
         self.tableTab.setLayout(self.tableLayout)
 
-       # print('00000000')
-       # print title
-       # print(self.tableDockWidget.isFloating())
-       # print('1111111')
+      #  print('00000000')
+      #  print self.title
+      #  print(self.tableDockWidget.isFloating())
+      #  print('1111111')
 
 
     def tableDockChanged(self):
-        print("HERE: I want to change the title")
+        print("HERE: I may want to do someting with the rest of the window")
 
 
     @staticmethod
@@ -1168,14 +1218,17 @@ class MainWindow(QMainWindow):
 
 
     # TODO break image stuff into it's own class or multiple methods for differnt types of images
-    def draw2dImage(self, image_array, index = -1, redraw=False, tabIndex=2):
-
+    def draw2dImage(self, image_array, index = -1, redraw=False, drawBoundingBox=False):
         if redraw == False:
             if image_array is None:   # called from single image data structure
                 self.image_data = self.table
             else:
                 # Render individual 'band' of 3d Spectrum data
                 self.image_data = image_array[index]
+
+
+        print('HERE')
+        print(self)
 
         self._settings = {'dpi': 80., 'axes': Model._AxesProperties(), 'selected_axis': 0,
                           'is_rgb': False, 'rgb_bands': (None, None, None)}
@@ -1190,7 +1243,7 @@ class MainWindow(QMainWindow):
         self.axes = self.figure.add_subplot(111)
 
         self.axes.autoscale_view(True,True,True)
-        self.axes.set_xlabel(self.summary[0][0])   #This works for a title
+        self.axes.set_xlabel(self.title)
 
       #  print(type(image_data))
       #  print(image_data.shape)
@@ -1212,11 +1265,30 @@ class MainWindow(QMainWindow):
         self.image = self.axes.imshow(self.image_data, origin=self._origin, interpolation=self._interpolation,
                                       norm=self._norm, aspect='equal', cmap = self.cmap)
 
+        if drawBoundingBox:
+           rect = patches.Rectangle((self.start_x,self.start_y),self.width,self.height,linewidth=1,edgecolor='r',facecolor='none')
+           self.axes.add_patch(rect)
+
+
         if not self.cb_removed:
-            self.cbar = self.figure.colorbar(self.image, orientation=self.color_bar_orientation)
+            # self.cbar = self.figure.colorbar(self.image, orientation=self.color_bar_orientation)
+            self.imageWidget.cbar = self.figure.colorbar(self.image, orientation=self.color_bar_orientation)
 
         self.current_view = self.image_index
         self.renderImage()
+
+    def is_floating(self):
+        print('got to top of isFloating')
+        print(self.imageDockWidget.isFloating())
+        self.imageDockWidget.setFloating(True)
+        print('tried to change the status')
+        print(self.imageDockWidget.isFloating())
+        print('did it work?')
+        if self.imageDockWidget.isFloating():
+            print('got here to setting isFloating')
+            self.imageDockWidget.setFloating(True)
+        else:
+            self.imageDockWidget.setFloating(True)
 
     def renderImage(self, peripheral=None):
         '''
@@ -1224,14 +1296,13 @@ class MainWindow(QMainWindow):
         :param peripheral: This flag tells the methods to only change the ticks or colorbar
         :return:
         '''
-
         if peripheral == None:  # Only render these when redrawing the image.
             self.imageMenu.setDisabled(False)
             self.viewMenu.setDisabled(False)
             self.imageOptionsMenu.setDisabled(False)
             self.previousImage = QPushButton('<')
             self.previousImage.setFixedWidth(70)
-            self.previousImage.clicked.connect(lambda: self.changeTable(self.table_num - 2))
+ #           self.previousImage.clicked.connect(lambda: self.changeTable(self.table_num - 2))
             self.previousImage.clicked.connect(lambda: self.BooBoo())
             self.nextImage = QPushButton('>')
             self.nextImage.setFixedWidth(70)
@@ -1247,21 +1318,39 @@ class MainWindow(QMainWindow):
             self.imageInfoLayout.sizeHint()
 
             self.imageLayout.addLayout(self.imageInfoLayout)
-            self.imageTab.setLayout(self.imageLayout)
+
+
+            self.imageDockWidget = QDockWidget(self.title, self)
+            self.imageDockWidget.setObjectName("imageDockWidget")
+            # Make the dock widget floatable, but not closeable
+            self.imageDockWidget.setFeatures(QDockWidget.DockWidgetFloatable | QDockWidget.DockWidgetMovable)
+
+            self.imageDockWidget.setWidget(self.imageWidget)
+            self.addDockWidget(Qt.RightDockWidgetArea, self.imageDockWidget)
+            self.imageLayout.addWidget(self.imageDockWidget)
+
         elif peripheral == 'ColorBar':
+            print("GOT TO THE RIGHT PLACE")
+            print(self.color_bar_orientation)
             if self.color_bar_orientation != 'hide':
                 # the colorbar was removed to change the orientation, so add it back
-                self.cbar = self.figure.colorbar(self.image, orientation=self.color_bar_orientation)
+                #self.cbar = self.figure.colorbar(self.image, orientation=self.color_bar_orientation)
+                self.imageWidget.cbar = self.figure.colorbar(self.image, orientation=self.color_bar_orientation)
         elif peripheral == 'Ticks':
             self.axes.get_xaxis().set_visible(self.x_tick_visible)
             self.axes.get_yaxis().set_visible(self.y_tick_visible)
         else:
             pass
 
-        self.imageWidget.setWindowTitle(QString("PyQt"))
-        self.imageWidget.draw()
+        print('calling is_floating()')
+        self.is_floating()
+        self.imageDockWidget.sizeHint()
+        self.imageWidget.setWindowTitle(QString("Yogi Bear"))
 
-        self.imageLayout.addWidget(self.imageWidget)
+   #     print("DIMENSION")
+    #    print(self.imageWidget.geometry())
+        #self.imageWidget.resize(100, 100)
+
         self.imageTab.setLayout(self.imageLayout)
 
 #################################################
@@ -1333,6 +1422,7 @@ class MainWindow(QMainWindow):
         self.summaryDockWidget.setWindowIcon(QIcon("./Icons/MagGlass.png"))
         self.summaryDockWidget.setWidget(self.summaryTable)
         self.addDockWidget(Qt.RightDockWidgetArea, self.summaryDockWidget)
+        self.summaryTable.sizeHint()
         self.summaryDockWidget.show()
 
 
@@ -1365,6 +1455,18 @@ class Tab(QTabWidget):
 #        self.tBar = self.tabBar()
 
 #       self.installEventFilter(self)
+
+class DockContents(QWidget):
+    _sizehint = None
+
+    def setSizeHint(self, width, height):
+        self._sizehint = QSize(width, height)
+
+    def sizeHint(self):
+        print('sizeHint:', self._sizehint)
+        if self._sizehint is not None:
+            return self._sizehint
+
 
 
 class LabelFrame(QWidget, QObject):
@@ -1591,7 +1693,6 @@ class MyHeader(QHeaderView):
 class ItemTable(QTableView):
     sliderXVal = 0
     sliderYVal = 0
-
     def __init__(self, f_arg, *args ):
         self.object = f_arg  # Needed so it is possible to emit a signal to the main window
         self.table = args[0]
@@ -1609,11 +1710,10 @@ class ItemTable(QTableView):
 
         self.tableModel = Model.assignTableModel(self.table, self.table_type)
 
-        print('Start')
       #  test = self.tableModel.get_table()
       #  print('Stop')
 
-        if self.table_type not in self.image_types:
+        if self.table_type not in self.image_types:  # No image in this file
             # get the column header information
             # key = title : value = column number
            # print('From table model - the headerDictionary')
@@ -1629,7 +1729,9 @@ class ItemTable(QTableView):
             myHeader = MyHeader(Qt.Horizontal, self)
             self.setHorizontalHeader(myHeader)
 
+
         self.setModel(self.tableModel)
+        self.selectionModel = self.selectionModel()
         self.installEventFilter(self)
 
         self.sizeHint()
@@ -1658,6 +1760,10 @@ class ItemTable(QTableView):
     @staticmethod
     def getSliderValues(self):
         return ItemTable.sliderXVal, ItemTable.sliderYVal
+
+    @staticmethod
+    def getSelectionModel(self):
+        return ItemTable.selectionModel
 
 
     def formatLabelInfo(self, label_dict):
@@ -1817,6 +1923,11 @@ class ItemTable(QTableView):
             stream = io.BytesIO()
             csv.writer(stream).writerows(table)
             QApp.app.clipboard().setText(stream.getvalue())
+
+    def getSelection(self):
+        self.indexes = self.selectedIndexes()
+        print('GET SELECTION CALLED')
+        print(self.indexes)
 
 
 class TextWindow(QTextBrowser):

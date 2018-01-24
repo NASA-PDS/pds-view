@@ -259,6 +259,7 @@ class TwoDImageModel(QtCore.QAbstractTableModel):
                 return QtCore.Qt.AlignCenter
         return None
 
+
     def setTableStyle(self, style, color = None, text_color = None):
         self.style_choice = style
 
@@ -418,7 +419,7 @@ class TableModel(QtCore.QAbstractTableModel):
                       'GROUP_1, ION COUNTS': [15, 16, 17, 18, 19, 20, 21, 22, 23, 24]}
         :return: dictionary
         '''
-        print("IN make title finder : passed was:")
+        print("In make title finder : passed was:")
         a = list
         print(a)
         dict = {}
