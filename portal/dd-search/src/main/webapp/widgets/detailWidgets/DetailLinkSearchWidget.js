@@ -133,7 +133,7 @@ AjaxSolr.DetailLinkSearchWidget = AjaxSolr.AbstractTextWidget.extend({
         output += this.createRow("Value Data Type", product.attribute_value_domain_value_data_type);
         output += this.createRow("Formation Rule", product.attribute_value_domain_formation_rule);
         output += this.createRow("Minimum Characters", product.attribute_value_domain_minimum_characters);
-        output += this.createRow("Maxiumum Characters", product.attribute_value_domain_maximum_characters);
+        output += this.createRow("Maximum Characters", product.attribute_value_domain_maximum_characters);
         output += this.createRow("Minimum Value", product.attribute_value_domain_minimum_value);
         output += this.createRow("Maximum Value", product.attribute_value_domain_maximum_value);
         output += this.createRow("Pattern", product.attribute_value_domain_pattern);
@@ -208,7 +208,7 @@ AjaxSolr.DetailLinkSearchWidget = AjaxSolr.AbstractTextWidget.extend({
                         output += this.createRow("Minimum Occurrences", product.class_association_minimum_occurrences[i]);
                     }
                     if(product.class_association_maximum_occurrences !== undefined){
-                        output += this.createRow("Maxiumum Occurrences", product.class_association_maximum_occurrences[i]);
+                        output += this.createRow("Maximum Occurrences", product.class_association_maximum_occurrences[i]);
                     }
                     if(product.class_association_constant_value !== undefined){
                         output += this.createRow("Constant Value", product.class_association_constant_value[i]);
