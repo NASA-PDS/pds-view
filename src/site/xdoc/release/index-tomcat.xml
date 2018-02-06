@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2011-2016, by the California Institute of Technology.
+  Copyright 2011-2018, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology 
   Transfer at the California Institute of Technology.
@@ -100,7 +100,7 @@
         <ul>
           <li>To avoid a conflict with another application listening on port <i>8080</i>, try changing the port to <i>8090</i>, otherwise <i>9000</i> and above are usually unused.</li>
           <li>If running multiple Tomcat servers, than <i>8090</i> is still a good alternative but the <i>shutdown</i> and <i>redirect</i> ports also need to be modified so that they do not conflict with the other Tomcat server.</li>
-          <li>If this Tomcat server is intended to respond to operational requests, then the port should be changed to <i>80</i> along with changing the <i>redirect</i> port to <i>443</i>. The alternative to having Tomcat listen on port <i>80</i> is to have another web server (e.g., Apache HTTP Server, Microsoft IIS, etc.) listen on that port and have it redirect requests to the Tomcat server at port <i>8080</i>. This type of configuration is covered in the Tomcat documentation and should also be covered in the documentation for the other web server.</li>
+          <li>If this Tomcat server is intended to respond directly to operational requests, then the port should be changed to <i>80</i> along with changing the <i>redirect</i> port to <i>443</i>. The alternative to having Tomcat listen on port <i>80</i> is to have another web server (e.g., Apache HTTP Server, Microsoft IIS, etc.) listen on that port and have it redirect requests to the Tomcat server at port <i>8080</i>. This type of configuration is covered in the Tomcat documentation and should also be covered in the documentation for the other web server.</li>
         </ul>
       </subsection>
 
@@ -152,9 +152,50 @@ CATALINA_OPTS="-Xms512m -Xmx2048m -XX:MaxPermSize=256m"
           </li>
         </ul>
       </subsection>
+
+      <subsection name="IT Security Configuration">
+        <p>In order to address issues that arise from IT Security scans (e.g., Cross-Site Scripting, Blind SQL Injection, etc.), the Filter component was developed to filter parameter values passed into web applications installed under the Tomcat Server. The <a href="../portal/filter/install/index.html">Installation</a> document for the Filter component provides the details for downloading, installing and configuring the software.
+        </p>
+
+        <p>In addition to filtering user input, the Tomcat Server should also set the <i>secure</i> attribute for cookies. To set this attribute, execute the following commands to edit the <i>web.xml</i> configuration file:
+        </p>
+
+        <source>
+% cd /usr/local/tomcat/conf
+% vi web.xml
+        </source>
+
+        <p>A search for <i>session-config</i> should discover the following XML block statements:
+        </p>
+
+        <source>
+    &lt;session-config&gt;
+        &lt;session-timeout&gt;30&lt;/session-timeout&gt;
+    &lt;/session-config&gt;
+        </source>
+ 
+        <p>Replace the above block with the following:
+        </p>
+ 
+        <source>
+    &lt;session-config&gt;
+        &lt;session-timeout&gt;30&lt;/session-timeout&gt;
+        &lt;cookie-config&gt;
+          &lt;http-only&gt;true&lt;/http-only&gt;
+          &lt;secure&gt;true&lt;/secure&gt;
+        &lt;/cookie-config&gt;
+    &lt;/session-config&gt;
+        </source>
+
+        <p>Then restart the Tomcat Server.
+        </p>
+      </subsection>
     </section>
 
     <section name="Secure Configuration">
+      <p>A secure configuration would only be necessary if the Tomcat Server was configured to respond directly to operational requests on port <i>80</i>. As mentioned above, the preferred configuration is to use an Apache HTTPD Server for accepting these requests and then redirecting them to the Tomcat Server.
+      </p>
+
       <p>If the local installation requires secure access, then follow the instructions in this section to secure the installation. This is not common and would only be required is exposing the Tomcat Server to the public network. It is suggested that the port hosting the Tomcat Server only allow local server access or access to servers from the same subnet. This configuration coupled with a few reverse proxy configurations from a publicly available Apache HTTPD Server (as suggested in the Release Description document), for example, provide sufficient security for the Tomcat Server while allowing its hosted applications to function properly.
       </p>
 
