@@ -25,12 +25,12 @@ function transform(toolsServiceUrl) {
 	//if (typeof toolsServiceUrl !== 'undefined')
 	var base = toolsServiceUrl;
 	console.log("tools service url base = " + base);
-	
+
 	var args = "target=" + findGetParameter("fileName");
 
 	var format = "format-type=" + $("#format :selected").text();
 	console.log("format type text = " + format);
-	
+
 	var outPath = findGetParameter("fileName");
 	var outdir = "outdir=" + outPath.substring(0, outPath.lastIndexOf("/"));
 
@@ -46,7 +46,7 @@ function transform(toolsServiceUrl) {
 
 	console.log("fullUrl: " + fullUrl);
 	if (listObjsFlag!="")
-    	fullUrl += "&" + listObjsFlag;
+		fullUrl += "&" + listObjsFlag;
 
 	var res = encodeURI(fullUrl);
 	console.log("refreshed URL = " + res);
@@ -58,25 +58,33 @@ function transform(toolsServiceUrl) {
 		//$("#response").html(completeResponse);
 
 		var stdout = JSON.stringify(data.result.stdout, undefined, 2);
+		stdout = stdout.substring(1, stdout.length-1);
+		var outputs = stdout.substring(stdout.indexOf("outputs = "),
+				stdout.indexOf("]")+1);
+		console.log("*******outputs = " + outputs);
+
+		// trim whitespace end of string
+		stdout = stdout.replace(/\s*$/,"");
 		stdout = stdout.replace(/\\n/g, '<br/>');
 		console.log("stdout = " + stdout);
 		$("#stdout").html(stdout);
 
-		var outputs = stdout.substring(stdout.indexOf("outputs = "), 
-				stdout.indexOf("Processing"));
-		console.log("outputs = " + outputs);
-
-		outputs = outputs.substring(outputs.indexOf("[") + 1, outputs.indexOf("]"));
+		//outputs = outputs.substring(outputs.indexOf("[") + 1, outputs.indexOf("]"));
+		outputs = outputs.substring(outputs.indexOf("following output:")+18);
+		outputs = outputs.replace(/\\n/g, '');
 		//$("#outputs").html(outputs);
 		console.log("++++++++++++outputs = " + outputs);
 
 		var hash = JSON.stringify(data.result.hash, undefined, 2);
 		console.log("hash = " + hash);
 		//$("#hash").html(hash);
+		//
+		var outdir = JSON.stringify(data.input.keyed.outdir, undefined, 2);
+		console.log("outdir = " + outdir);
 
 		if (outputs!=null) {
 			var filename = outputs.substring(outputs.lastIndexOf("/")+1);
-			$("#download").html("<br>Download: <b>" +
+			$("#download").html("<hr><b>Download: " +
 					"<a href=\"UploadDownloadFileServlet?fileName=" + outputs
 					+ "\">" + filename + "</a></b>");
 		}

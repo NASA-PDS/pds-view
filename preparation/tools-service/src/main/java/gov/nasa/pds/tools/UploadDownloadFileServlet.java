@@ -69,6 +69,10 @@ public class UploadDownloadFileServlet extends HttpServlet {
 			throw new ServletException("Content type is not multipart/form-data");
 		}
 		
+		String resp = "";
+        int i = 1;
+        resp += "<br>Here is information about uploaded files.<br>";
+        
 		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
 		out.write("<html><head></head><body>");
@@ -103,14 +107,16 @@ public class UploadDownloadFileServlet extends HttpServlet {
 				
 				if (fileItemsList.size()<2) 
 					fileToTransform = file.getAbsolutePath();
-				out.write(fileItem.getName() + " uploaded successfully.<br/>");
+				resp += fileItem.getName() + " uploaded successfully.<br>";				
 			}
+			System.out.println("resp = " + resp);
+			request.setAttribute("message", resp);
 		    response.sendRedirect(baseUrl + "/index.jsp?baseUrl=" + baseUrl+"&fileName=" + fileToTransform);
 
 		} catch (FileUploadException e) {
-			out.write("Exception in uploading file.");
+			out.write("Exception in uploading file." + e.getMessage());
 		} catch (Exception e) {
-			out.write("Exception in uploading file.");
+			out.write("Exception in uploading file." + e.getMessage());
 		}		
 		out.write("</body></html>");
 		out.close();
