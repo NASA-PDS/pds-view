@@ -21,6 +21,7 @@
     <title>Operation</title>
         <author email="Paul.Ramirez@jpl.nasa.gov">Paul Ramirez</author>
         <author email="Sean.Hardman@jpl.nasa.gov">Sean Hardman</author>
+        <author email="James.E.Hofman@jpl.nasa.gov">Jim Hofman</author>
   </properties>
 
   <body>
@@ -31,6 +32,9 @@
       <ul>
         <li><a href="#Quick_Start">Quick Start</a></li>
       </ul>
+       <ul>
+        <li><a href="#Feedback">Feedback</a></li>
+      </ul>
     </section>
 
     <section name="Quick Start">
@@ -40,6 +44,28 @@
       <source>
 % python View.py
       </source>
+    </section>
+    <section name="Feedback">
+      <p>The Inspect Tool is under development. Future releases will:      
+      <ul>
+        <li>Improve the user interface</li>
+      </ul>
+      <ul>
+        <li>Add Features</li>
+      </ul>
+       <ul>
+        <li>Allow inspection of PDS 3 files</li>
+      </ul>
+      <ul>
+        <li>Be compatible with Python 3</li>
+      </ul>
+      <ul>
+        <li>Be released as an executable</li>
+      </ul> 
+      </p>   
+      <p>  
+      Please send any feedback (likes/dislikes, bugs, suggested features) to <a href="mailto:james.e.hofman@jpl.nasa.gov">Inspect Tool Feedback</a>
+      </p>
     </section>
   </body>
 </document>
