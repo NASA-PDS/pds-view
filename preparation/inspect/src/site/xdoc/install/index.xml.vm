@@ -20,6 +20,7 @@
   <properties>
     <title>Installation</title>
     <author email="Sean.Hardman@jpl.nasa.gov">Sean Hardman</author>
+    <author email="James.E.Hofman@jpl.nasa.gov">Jim Hofman</author>
   </properties>
 
   <body>
@@ -39,7 +40,7 @@
       </p>
 
       <subsection name="Python">
-        <p>The Inspect Tool software was developed using Python and will run on any platform with a supported Python environment. It is compatible with Python 2.6 or 2.7. It is not compatible with Python 2.5 or earlier versions, nor with Python 3 or later versions. The following commands test the local Python installation in a UNIX-based environment:
+        <p>The Inspect Tool software was developed using Python and will run on any platform with a supported Python environment. It is compatible with Python 2.6 or 2.7 (Python 2.7.12 is recommended).  It is not compatible with Python 2.5 or earlier versions, nor with Python 3 or later versions.  The following commands test the local Python installation in a UNIX-based environment:
         </p>
 
         <source>
@@ -47,25 +48,33 @@
 /usr/bin/python
 
 % python --version
-Python 2.7.2
+Python 2.7.12
         </source>
 
-        <p>The first command above checks whether the <i>python</i> executable is in the environment's path and the second command reports the version. If Python is not installed or the version is not 2.6 or 2.7, Python will need to be downloaded and installed in the current environment. Consult the local system administrator for installation of this software.
+        <p>The first command above checks whether the <i>python</i> executable is in the environment's path and the second command reports the version. If Python is not installed or the version is not 2.7, Python will need to be downloaded and installed in the current environment. Consult the local system administrator for installation of this software.  If you use 
         </p>
       </subsection>
 
       <subsection name="Python Dependencies">
-        <p>The Inspect Tool software has dependencies on a number of Python libraries. More details on each of these dependencies will be provided at a later date. For now, here is the list of dependencies:
+        <p>The Inspect Tool software has dependencies on a number of Python libraries.  In the future the code will be make into a standalone executable.  For now, those with some Python background can run the Inspect Tool after installing the the following modules:
         </p>
 
         <ul>
-          <li>Pds4_tools</li>
-          <li>PyQt4</li>
-          <li>SIP</li>
-          <li>Numpy</li>
-          <li>collections (for OrderedDict)</li>
-          <li>textwrap</li>
+          <li>pds4_tools</li>
+             <p>Module and installation instruction found at <a href="http://sbndev.astro.umd.edu/wiki/Python_PDS4_Tools">Python PDS4 Tools</a></p>   
+          <li>PyQt4 and SIP (PyQt's C++ to Python wrapper code)</li>
+             <p>This is the most difficult installation; installation information is found at: <a href="http://pyqt.sourceforge.net/Docs/PyQt4/installation.html">PyQt4 and SIP instructions.</a> If you get stuck feel free to send an email to <a>"james.e.hofman@jpl.nasa.gov"</a>.</p>
+          <li>OrderedDict</li>
+          <li>Matplotlib</li>
+          <li>Numpy - required by Matplotlib</li>
+          <li>python-dateutil - required by Matplotlib</li>
+          <li>pytz - required by Matplotlib</li>
+          <li>cycler - required by Matplotlib</li>
+          <li>pyparsing - required by Matplotlib </li>   
+                           
         </ul>
+        <p>pip is a package management system used to install and manage python software packages.  It is included in python versions 2.7.9 onward.  It is very easy to use: <a href="http://www.pythonforbeginners.com/pip/">How to use pip</a>.  It can be used install all of the packages listed above with the exception of PyQt4 and SIP.
+        </p>
       </subsection>
     </section>
 
