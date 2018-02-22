@@ -65,6 +65,7 @@ Python 2.7.12
           <li>PyQt4 and SIP (C++ to Python wrapper code (i.e. Qt to PyQt))</li>
              <p>This is the most difficult installation; installation information is found at: <a href="http://pyqt.sourceforge.net/Docs/PyQt4/installation.html">PyQt4 and SIP instructions.</a> If you get stuck feel free to send an email to <a href="mailto:james.e.hofman@jpl.nasa.gov">Installation Help</a>.</p>
           <li>Matplotlib</li>
+             <p> Required by Matplotlib and should be install along with Matplotlib: <a href="https://matplotlib.org/users/installing.html">Installing Matplotlib</a></p>
           <li>Numpy - required by Matplotlib</li>
           <li>python-dateutil - required by Matplotlib</li>
           <li>pytz - required by Matplotlib</li>
