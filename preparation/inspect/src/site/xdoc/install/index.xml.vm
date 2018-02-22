@@ -73,14 +73,22 @@ Python 2.7.12
           <li>pyparsing - required by Matplotlib </li>   
                            
         </ul>
-        <p><i>pip</i> is a package management system used to install and manage python software packages.  It is included in python versions 2.7.9 onward.  It is very easy to use: <a href="http://www.pythonforbeginners.com/pip/">How to use pip</a>.  It can be used install all of the packages listed above with the exception of PyQt4 and SIP.  If you are not sure if you have pip installed on your machine do the following:        
+        <p><i>pip</i> is a package management system used to install and manage python software packages.  It is included in python versions 2.7.9 onward.  It is very easy to use: <a href="http://www.pythonforbeginners.com/pip/">How to use <i>pip</i></a>.  It can be used install all of the packages listed above with the exception of PyQt4 and SIP.  If you are not sure if you have <i>pip</i> installed on your machine do the following:        
         </p>
         <source>
 % which pip  (from Mac or linux)  
 % where pip  (Windows in a command prompt window)
 or
 % python
->>> import pip  (Note: The import command can be used to test for installation of the other packages listed above.)      
+>>> import pip  (Note: The import command can be used to test for installation of the other packages listed above.) 
+        </source>
+        <p>Example of using <i>pip</i> and checking for a successful installation.</p>
+        <source>                
+% pip install matplotlib
+% python
+>>> import matplotlib 
+>>>
+
         </source>
       </subsection>
     </section>
