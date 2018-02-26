@@ -48,7 +48,6 @@ public class SchematronTransformer {
   private Transformer isoTransformer;
   private TransformerFactory transformerFactory;
   private Map<String, Transformer> cachedTransformers;
-  private XMLCatalogResolver resolver;
 
   /**
    * Constructor.
@@ -71,7 +70,6 @@ public class SchematronTransformer {
     isoTransformer = isoFactory.newTransformer(isoSchematron);
     transformerFactory = TransformerFactory.newInstance();
     cachedTransformers = new HashMap<String, Transformer>();
-    this.resolver = null;
   }
 
   /**
@@ -159,14 +157,6 @@ public class SchematronTransformer {
       InputStream in = null;
       URLConnection conn = null;
       try {
-        if (resolver != null) {
-          String resolvedUrl = resolver.resolveSchematron(schematron.toString());
-          if (resolvedUrl == null) {
-            throw new IOException("Schematron was not resolvable through the catalog file.");
-          } else {
-            schematron = new URL(resolvedUrl);
-          }
-        }
         conn = schematron.openConnection();
         in = Utility.openConnection(conn);
         
@@ -201,15 +191,5 @@ public class SchematronTransformer {
       }
     }
     return transformer;
-  }
-  
-  public void setCatalogResolver(List<String> catalogs) {
-    this.resolver = new XMLCatalogResolver();
-    this.resolver.setPreferPublic(true);
-    this.resolver.setCatalogList(catalogs.toArray(new String[0]));
-  }
-
-  public void setCatalogResolver(XMLCatalogResolver resolver) {
-    this.resolver = resolver;
   }
 }

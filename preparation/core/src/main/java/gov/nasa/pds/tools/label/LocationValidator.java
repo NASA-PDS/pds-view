@@ -212,6 +212,7 @@ public class LocationValidator {
 	public void setCatalogs(List<String> catalogFiles) {
 		labelValidator.setCatalogs(catalogFiles.toArray(new String[catalogFiles.size()]));
 		ruleContext.setCatalogs(catalogFiles);
+		ruleContext.setCatalogResolver(labelValidator.getCatalogResolver());
 	}
 
 	public void setSchemaCheck(boolean value, boolean useLabelSchema) {

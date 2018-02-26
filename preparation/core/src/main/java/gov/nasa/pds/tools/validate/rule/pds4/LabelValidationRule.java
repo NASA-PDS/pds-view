@@ -20,6 +20,7 @@ import gov.nasa.pds.tools.label.LabelException;
 import gov.nasa.pds.tools.label.LabelValidator;
 import gov.nasa.pds.tools.label.MissingLabelSchemaException;
 import gov.nasa.pds.tools.label.SchematronTransformer;
+import gov.nasa.pds.tools.label.XMLCatalogResolver;
 import gov.nasa.pds.tools.util.Utility;
 import gov.nasa.pds.tools.util.XMLExtractor;
 import gov.nasa.pds.tools.validate.ValidationResourceManager;
@@ -29,12 +30,14 @@ import gov.nasa.pds.tools.validate.rule.ValidationTest;
 import net.sf.saxon.tinytree.TinyNodeImpl;
 import net.sf.saxon.trans.XPathException;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
@@ -46,7 +49,9 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.stream.StreamSource;
+import javax.xml.xpath.XPathExpressionException;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.ls.LSInput;
@@ -68,6 +73,7 @@ public class LabelValidationRule extends AbstractValidationRule {
   private Map<URL, ExceptionContainer> labelSchemaResults;
   private Map<URL, ExceptionContainer> labelSchematronResults;
   private Map<URL, Transformer> labelSchematrons;
+  private XMLExtractor extractor;
 	
   public LabelValidationRule() throws TransformerConfigurationException {
     schemaValidator = new SchemaValidator();
@@ -75,6 +81,7 @@ public class LabelValidationRule extends AbstractValidationRule {
     labelSchemaResults = new HashMap<URL, ExceptionContainer>();
     labelSchematronResults = new HashMap<URL, ExceptionContainer>();
     labelSchematrons = new HashMap<URL, Transformer>();
+    extractor = null;
   }
   
 	@Override
@@ -103,22 +110,21 @@ public class LabelValidationRule extends AbstractValidationRule {
 	@ValidationTest
 	public void validateLabel() {
 		ExceptionProcessor processor = new ExceptionProcessor(getListener(), getTarget());
-
+		
     LabelValidator validator = ValidationResourceManager.INSTANCE.getResource(LabelValidator.class);
-    if (getContext().getCatalogs() != null) {
-      schematronTransformer.setCatalogResolver(getContext().getCatalogs());
-    }
 		try {
       Document document = null;
-      if (getContext().isForceLabelSchemaValidation()) {
-        ExceptionContainer exceptionContainer = new ExceptionContainer();
+      boolean pass = true;
+      ExceptionContainer exceptionContainer = new ExceptionContainer();
+      if (getContext().getCatalogResolver() != null || 
+          getContext().isForceLabelSchemaValidation()) {
         // Validate the label's schema and schematron first before doing
         // label validation
         boolean hasValidSchemas = validateLabelSchemas(getTarget(),
-            exceptionContainer);
+            exceptionContainer, getContext().getCatalogResolver());
 
         Map<String, Transformer> labelSchematrons = validateLabelSchematrons(
-            getTarget(), exceptionContainer);
+            getTarget(), exceptionContainer, getContext().getCatalogResolver());
 
         if (hasValidSchemas && !labelSchematrons.isEmpty()) {
           CachedEntityResolver resolver = new CachedEntityResolver();
@@ -128,10 +134,13 @@ public class LabelValidationRule extends AbstractValidationRule {
           validator.setCachedLSResourceResolver(
               schemaValidator.getCachedLSResolver());
           validator.setLabelSchematrons(labelSchematrons);
-          // By logging this INFO message, it will allow us to be able to report if a file passed validation.
-          //getListener().addProblem(new LabelException(ExceptionType.INFO, "Processing target", getTarget().toString()));
-          getListener().addLocation(getTarget().toString());
-          document = validator.parseAndValidate(processor, getTarget());
+          if (getContext().isForceLabelSchemaValidation()) {
+            try {
+              schemaValidator.setExternalLocations(getExtractor(getTarget()).getSchemaLocation());
+            } catch (Exception ignore) {
+              //Should not throw an exception
+            }
+          }
         } else {
           // Print any label problems that occurred during schema and schematron
           // validation.
@@ -141,8 +150,10 @@ public class LabelValidationRule extends AbstractValidationRule {
               getListener().addProblem(le);
             }
           }
+          pass = false;
         }
-      } else {
+      }
+      if (pass) {
         // By logging this INFO message, it will allow us to be able to report if a file passed validation.
         //getListener().addProblem(new LabelException(ExceptionType.INFO, "Processing target", getTarget().toString()));
         getListener().addLocation(getTarget().toString());
@@ -169,76 +180,44 @@ public class LabelValidationRule extends AbstractValidationRule {
 	}
 	
   private boolean validateLabelSchemas(URL label,
-      ExceptionContainer labelProblems) {
+      ExceptionContainer labelProblems, XMLCatalogResolver resolver) {
     boolean passFlag = true;
-    List<URL> schemaUrls = new ArrayList<URL>();
     List<StreamSource> sources = new ArrayList<StreamSource>();
-    String schemaLocations = "";
+    Map<String, URL> schemaLocations = new LinkedHashMap<String, URL>();
     try {
-      XMLExtractor extractor = new XMLExtractor(label);
-      schemaLocations = extractor.getSchemaLocation();
+      schemaLocations = getSchemaLocations(label);  
     } catch (Exception e) {
       labelProblems.addException(new LabelException(ExceptionType.FATAL,
-          "Error occurred while attempting to find schemas using the XPath '"
-          + XMLExtractor.SCHEMA_LOCATION_XPATH + "': " + e.getMessage(),
-          label.toString()));
+          e.getMessage(), label.toString()));
       return false;
     }
-    if (schemaLocations == null ||
-        (schemaLocations != null && schemaLocations.isEmpty())) {
-      labelProblems.addException(new LabelException(ExceptionType.ERROR,
-          "No schema(s) found in the label.", label.toString()));
-      return false;
-    } else {
-      StringTokenizer tokenizer = new StringTokenizer(schemaLocations);
-      if ((tokenizer.countTokens() % 2) != 0) {
-        labelProblems.addException(new LabelException(ExceptionType.ERROR,
-            "schemaLocation value does not appear to have matching sets of "
-            + "namespaces to uris: '" + schemaLocations + "'",
-            label.toString()));
-        return false;
-      } else {
-        // While loop that will grab the schema URIs
-        while (tokenizer.hasMoreTokens()) {
-          // First token assumed to be the namespace
-          String namespace = tokenizer.nextToken();
-          // Second token assumed to be the URI
-          String uri = tokenizer.nextToken();
-          URL schemaUrl = null;
-          try {
-            schemaUrl = new URL(uri);
-            schemaUrls.add(schemaUrl);
-          } catch (MalformedURLException mu) {
-            // The schema specification value does not appear to be
-            // a URL. Assume a local reference to the schematron and
-            // attempt to resolve it.
-            try {
-              URL parent = label.toURI().resolve(".").toURL();
-              schemaUrl = new URL(parent, schemaLocations);
-              schemaUrls.add(schemaUrl);
-            } catch (MalformedURLException mue) {
-              labelProblems.addException(new LabelException(ExceptionType.ERROR,
-                  "Cannot resolve schema specification '"
-                      + schemaLocations + "': " + mue.getMessage(),
-                      label.toString()));
-              passFlag = false;
-            } catch (URISyntaxException e) {
-              //Ignore
-            }
+    for (Map.Entry<String, URL> schemaLocation : schemaLocations.entrySet()) {
+      URL schemaUrl = schemaLocation.getValue();
+      ExceptionContainer container = new ExceptionContainer();
+      boolean resolvableUrl = true;
+      if (resolver != null) {
+        String resolvedUrl = null;
+        try {
+          resolvedUrl = resolver.resolveSchema(schemaLocation.getKey(), schemaUrl.toString(), label.toString());
+          if (resolvedUrl != null) {
+            schemaUrl = new URL(resolvedUrl);
+          } else {
+            labelProblems.addException(new LabelException(ExceptionType.ERROR,
+                "Could not resolve schema '"
+                    + schemaLocation.getValue().toString() + "' through the catalog", 
+                    label.toString()));
+            resolvableUrl = false;
           }
+        } catch (IOException io) {
+          labelProblems.addException(new LabelException(ExceptionType.ERROR,
+              "Error while trying to resolve schema '"
+                  + schemaLocation.getValue().toString() + "' through the catalog: "
+                  + io.getMessage(), 
+                  label.toString()));
+          resolvableUrl = false;
         }
       }
-    }
-    if (labelProblems.getExceptions().size() != 0) {
-      passFlag = false;
-    } else {
-      try {
-        schemaValidator.setExternalLocations(schemaLocations);
-      } catch (Exception ignore) {
-        //Should not throw an exception
-      }
-      for (URL schemaUrl : schemaUrls) {
-        ExceptionContainer container = new ExceptionContainer();
+      if (resolvableUrl) {
         schemaValidator.getCachedLSResolver().setExceptionHandler(container);
         LSInput input = schemaValidator.getCachedLSResolver()
             .resolveResource("", "", "", schemaUrl.toString(),
@@ -247,7 +226,7 @@ public class LabelValidationRule extends AbstractValidationRule {
         if (container.getExceptions().size() != 0) {
           try {
             for (LabelException le : container.getExceptions()) {
-              le.setSource(schemaUrl.toURI().toString());
+              le.setSource(label.toURI().toString());
               getListener().addProblem(le);
             }
             if (container.hasError() || container.hasFatal()) {
@@ -267,53 +246,55 @@ public class LabelValidationRule extends AbstractValidationRule {
           streamSource.setSystemId(schemaUrl.toString());
           sources.add(streamSource);
         }
+      } else {
+        passFlag = false;
       }
-      if (passFlag) {
-        for (StreamSource source : sources) {
+    }
+    if (passFlag) {
+      for (StreamSource source : sources) {
+        try {
+          URL schemaUrl = null;
           try {
-            URL schemaUrl = null;
-            try {
-              schemaUrl = new URL(source.getSystemId());
-            } catch(MalformedURLException ignore) {
-              //Should never throw an exception
-            }
-            ExceptionContainer container = new ExceptionContainer();
-            if (labelSchemaResults.containsKey(schemaUrl)) {
-              container = labelSchemaResults.get(schemaUrl);
-              if (container.getExceptions().size() != 0) {
-                for (LabelException le : container.getExceptions()) {
-                  le.setSource(schemaUrl.toURI().toString());
-                  getListener().addProblem(le);
-                }
-                if (container.hasError() || container.hasFatal()) {
-                  passFlag = false;
-                }
-              }
-            } else {
-              try {
-                container = schemaValidator.validate(source);
-              } catch (Exception e) {
-                container.addException(new LabelException(ExceptionType.ERROR,
-                    "Error reading schema: " + e.getMessage(),
-                    schemaUrl.toString()));
-              }
-              if (container.getExceptions().size() != 0) {
-                for (LabelException le : container.getExceptions()) {
-                  le.setSource(schemaUrl.toURI().toString());
-                  getListener().addProblem(le);
-                }
-                if (container.hasError() || container.hasFatal()) {
-                  passFlag = false;
-                }
-              }
-              labelSchemaResults.put(schemaUrl, container);
-            }
-          } catch (URISyntaxException u) {
-            labelProblems.addException(new LabelException(ExceptionType.FATAL,
-                "URI syntax exception occurred for schema '"
-                + source.getSystemId() + "': " + u.getMessage(),
-                label.toString()));
+            schemaUrl = new URL(source.getSystemId());
+          } catch(MalformedURLException ignore) {
+            //Should never throw an exception
           }
+          ExceptionContainer container = new ExceptionContainer();
+          if (labelSchemaResults.containsKey(schemaUrl)) {
+            container = labelSchemaResults.get(schemaUrl);
+            if (container.getExceptions().size() != 0) {
+              for (LabelException le : container.getExceptions()) {
+                le.setSource(schemaUrl.toURI().toString());
+                getListener().addProblem(le);
+              }
+              if (container.hasError() || container.hasFatal()) {
+                passFlag = false;
+              }
+            }
+          } else {
+            try {
+              container = schemaValidator.validate(source);
+            } catch (Exception e) {
+              container.addException(new LabelException(ExceptionType.ERROR,
+                  "Error reading schema: " + e.getMessage(),
+                  schemaUrl.toString()));
+            }
+            if (container.getExceptions().size() != 0) {
+              for (LabelException le : container.getExceptions()) {
+                le.setSource(label.toURI().toString());
+                getListener().addProblem(le);
+              }
+              if (container.hasError() || container.hasFatal()) {
+                passFlag = false;
+              }
+            }
+            labelSchemaResults.put(schemaUrl, container);
+          }
+        } catch (URISyntaxException u) {
+          labelProblems.addException(new LabelException(ExceptionType.FATAL,
+              "URI syntax exception occurred for schema '"
+              + source.getSystemId() + "': " + u.getMessage(),
+              label.toString()));
         }
       }
     }
@@ -321,106 +302,95 @@ public class LabelValidationRule extends AbstractValidationRule {
   }
 
   private Map<String, Transformer> validateLabelSchematrons(URL label,
-      ExceptionContainer labelProblems) {
+      ExceptionContainer labelProblems, XMLCatalogResolver resolver) {
     boolean passFlag = true;
     Map<String, Transformer> results = new HashMap<String, Transformer>();
-    List<TinyNodeImpl> xmlModels = new ArrayList<TinyNodeImpl>();
-    try {
-      XMLExtractor extractor = new XMLExtractor(label);
-      xmlModels = extractor.getNodesFromDoc(XMLExtractor.XML_MODEL_XPATH);
-    } catch (Exception e) {
-      labelProblems.addException(new LabelException(ExceptionType.FATAL,
-          "Error occurred while attempting to find schematrons using the XPath '"
-          + XMLExtractor.XML_MODEL_XPATH + "': " + e.getMessage(),
-          label.toString()));
-      // results should be empty
-      return results;
-    }
-    Pattern pattern = Pattern.compile(
-        "href=\\\"([^=]*)\\\"( schematypens=\\\"([^=]*)\\\")?"
-        );
     List<URL> schematronRefs = new ArrayList<URL>();
-    for (TinyNodeImpl xmlModel : xmlModels) {
-      String filteredData = xmlModel.getStringValue().replaceAll("\\s+", " ");
-      filteredData = filteredData.trim();
-      Matcher matcher = pattern.matcher(filteredData);
-      if (matcher.matches()) {
-        String value = matcher.group(1).trim();
-        URL schematronRef = null;
-        try {
-          schematronRef = new URL(value);
-        } catch (MalformedURLException ue) {
-          // The schematron specification value does not appear to be
-          // a URL. Assume a local reference to the schematron and
-          // attempt to resolve it.
-          try {
-            URL parent = label.toURI().resolve(".").toURL();
-            schematronRef = new URL(parent, value);
-          } catch (MalformedURLException mue) {
-            labelProblems.addException(new LabelException(ExceptionType.ERROR,
-                "Cannot resolve schematron specification '"
-                    + value + "': " + mue.getMessage(),
-                    label.toString(),
-                    label.toString(),
-                    new Integer(xmlModel.getLineNumber()),
-                    null));
-            passFlag = false;
-            continue;
-          } catch (URISyntaxException e) {
-            //Ignore
-          }
+    try {
+      schematronRefs = getSchematrons(label, labelProblems);
+      if (labelProblems.getExceptions().size() != 0) {
+        for (LabelException le : labelProblems.getExceptions()) {
+          getListener().addProblem(le);
         }
-        schematronRefs.add(schematronRef);
+        passFlag = false;
       }
+    } catch (Exception e) {
+      labelProblems.addException(new LabelException(ExceptionType.ERROR, 
+          e.getMessage(), label.toString()));
+      passFlag = false;
     }
-    if (schematronRefs.isEmpty()) {
-      labelProblems.addException(new LabelException(ExceptionType.ERROR,
-          "No schematrons specified in the label", label.toString()));
-    }
-
+    
     //Now validate the schematrons
     for (URL schematronRef : schematronRefs) {
       try {
         ExceptionContainer container = null;
-        if (labelSchematrons.containsKey(schematronRef)) {
-          container = labelSchematronResults.get(schematronRef);
-          if (container.getExceptions().size() != 0) {
-            for (LabelException le : container.getExceptions()) {
-              le.setSource(schematronRef.toURI().toString());
-              getListener().addProblem(le);
+        boolean resolvableUrl = true;
+        if (resolver != null) {
+          String resolvedUrl = null;
+          try {
+            String absoluteUrl = Utility.makeAbsolute(Utility.getParent(label).toString(), schematronRef.toString());
+            resolvedUrl = resolver.resolveSchematron(absoluteUrl);
+            if (resolvedUrl != null) {
+              schematronRef = new URL(resolvedUrl);
+            } else {
+              labelProblems.addException(new LabelException(ExceptionType.ERROR,
+                  "Could not resolve schematron '"
+                      + schematronRef.toString() + "' through the catalog.", 
+                      label.toString()));
+              resolvableUrl = false;
             }
-            if (container.hasError() || container.hasFatal()) {
-              passFlag = false;
+          } catch (IOException io) {
+            labelProblems.addException(new LabelException(ExceptionType.ERROR,
+                "Error while trying to resolve schematron '"
+                    + schematronRef.toString() + "' through the catalog: "
+                    + io.getMessage(), 
+                    label.toString()));
+            resolvableUrl = false;
+          }
+        }
+        if (resolvableUrl) {
+          if (labelSchematrons.containsKey(schematronRef)) {
+            container = labelSchematronResults.get(schematronRef);
+            if (container.getExceptions().size() != 0) {
+              for (LabelException le : container.getExceptions()) {
+                le.setSource(label.toURI().toString());
+                getListener().addProblem(le);
+              }
+              if (container.hasError() || container.hasFatal()) {
+                passFlag = false;
+              }
+            } else {
+              results.put(schematronRef.toString(),
+                  labelSchematrons.get(schematronRef));
             }
           } else {
-            results.put(schematronRef.toString(),
-                labelSchematrons.get(schematronRef));
+            container = new ExceptionContainer();
+            try {
+              Transformer transformer = schematronTransformer.transform(
+                  schematronRef, container);
+              labelSchematrons.put(schematronRef, transformer);
+              results.put(schematronRef.toString(), transformer);
+            } catch (TransformerException te) {
+              //Ignore as the listener handles the exceptions and puts it into
+              //the container
+            } catch (Exception e) {
+              container.addException(new LabelException(ExceptionType.FATAL,
+                  "Error occurred while attempting to read schematron: "
+                  + e.getMessage(), schematronRef.toString()));
+            }
+            if (container.getExceptions().size() != 0) {
+              for (LabelException le : container.getExceptions()) {
+                le.setSource(label.toURI().toString());
+                getListener().addProblem(le);
+              }
+              if (container.hasError() || container.hasFatal()) {
+                passFlag = false;
+              }
+            }
+            labelSchematronResults.put(schematronRef, container);
           }
         } else {
-          container = new ExceptionContainer();
-          try {
-            Transformer transformer = schematronTransformer.transform(
-                schematronRef, container);
-            labelSchematrons.put(schematronRef, transformer);
-            results.put(schematronRef.toString(), transformer);
-          } catch (TransformerException te) {
-            //Ignore as the listener handles the exceptions and puts it into
-            //the container
-          } catch (Exception e) {
-            container.addException(new LabelException(ExceptionType.FATAL,
-                "Error occurred while attempting to read schematron: "
-                + e.getMessage(), schematronRef.toString()));
-          }
-          if (container.getExceptions().size() != 0) {
-            for (LabelException le : container.getExceptions()) {
-              le.setSource(schematronRef.toURI().toString());
-              getListener().addProblem(le);
-            }
-            if (container.hasError() || container.hasFatal()) {
-              passFlag = false;
-            }
-          }
-          labelSchematronResults.put(schematronRef, container);
+          passFlag = false;
         }
       } catch (URISyntaxException u) {
         labelProblems.addException(new LabelException(ExceptionType.FATAL,
@@ -433,5 +403,117 @@ public class LabelValidationRule extends AbstractValidationRule {
       results.clear();
     }
     return results;
+  }
+  
+  private Map<String, URL> getSchemaLocations(URL label) throws Exception {
+    Map<String, URL> schemaLocations = new LinkedHashMap<String, URL>();
+    String value = "";
+    try {
+      XMLExtractor extractor = getExtractor(label);
+      value = extractor.getSchemaLocation();
+    } catch (Exception e) {
+      throw new Exception(
+          "Error occurred while attempting to find schemas using the XPath '"
+          + XMLExtractor.SCHEMA_LOCATION_XPATH + "': " + e.getMessage());
+    }
+    if (value == null || value.isEmpty()) {
+      throw new Exception("No schema(s) found in the label.");
+    } else {
+      StringTokenizer tokenizer = new StringTokenizer(value);
+      if ((tokenizer.countTokens() % 2) != 0) {
+        throw new Exception(
+            "schemaLocation value does not appear to have matching sets of "
+            + "namespaces to uris: '" + schemaLocations + "'");
+      } else {
+        // While loop that will grab the schema URIs
+        while (tokenizer.hasMoreTokens()) {
+          // First token assumed to be the namespace
+          String namespace = tokenizer.nextToken();
+          // Second token assumed to be the URI
+          String uri = tokenizer.nextToken();
+          URL schemaUrl = null;
+          try {
+            schemaUrl = new URL(uri);
+          } catch (MalformedURLException mu) {
+            // The schema specification value does not appear to be
+            // a URL. Assume a local reference to the schematron and
+            // attempt to resolve it.
+            try {
+              URL parent = label.toURI().resolve(".").toURL();
+              schemaUrl = new URL(parent, uri);
+            } catch (MalformedURLException mue) {
+              throw new Exception(
+                  "Cannot resolve schema specification '"
+                      + uri + "': " + mue.getMessage());
+            } catch (URISyntaxException e) {
+              //Ignore
+            }
+          }
+          schemaLocations.put(namespace, schemaUrl);
+        }
+      }
+    }
+    return schemaLocations;
+  }
+  
+  private List<URL> getSchematrons(URL label, ExceptionContainer labelProblems) throws Exception {
+    List<URL> schematronRefs = new ArrayList<URL>();
+    List<TinyNodeImpl> xmlModels = new ArrayList<TinyNodeImpl>();
+    try {
+      XMLExtractor extractor = getExtractor(label);
+      xmlModels = extractor.getNodesFromDoc(XMLExtractor.XML_MODEL_XPATH);
+    } catch (Exception e) {
+      throw new Exception(
+          "Error occurred while attempting to find schematrons using the XPath '"
+          + XMLExtractor.XML_MODEL_XPATH + "': " + e.getMessage());
+    }
+    Pattern pattern = Pattern.compile(
+        "href=\\\"([^=]*)\\\"( schematypens=\\\"([^=]*)\\\")?"
+        );
+    for (TinyNodeImpl xmlModel : xmlModels) {
+      String filteredData = xmlModel.getStringValue().replaceAll("\\s+", " ");
+      filteredData = filteredData.trim();
+      Matcher matcher = pattern.matcher(filteredData);
+      if (matcher.matches()) {
+        String value = matcher.group(1).trim();
+        URL schematronRef = null;
+        URL parent = Utility.getParent(label);
+        try {
+          schematronRef = new URL(value);
+          schematronRef = new URL(Utility.makeAbsolute(parent.toString(), schematronRef.toString()));
+        } catch (MalformedURLException ue) {
+          // The schematron specification value does not appear to be
+          // a URL. Assume a local reference to the schematron and
+          // attempt to resolve it.
+          try {
+            schematronRef = new URL(parent, value);
+          } catch (MalformedURLException mue) {
+            labelProblems.addException(new LabelException(ExceptionType.ERROR,
+                "Cannot resolve schematron specification '"
+                    + value + "': " + mue.getMessage(),
+                    label.toString(),
+                    label.toString(),
+                    new Integer(xmlModel.getLineNumber()),
+                    null));
+            continue;
+          }
+        }
+        schematronRefs.add(schematronRef);
+      }
+    }
+    if (schematronRefs.isEmpty()) {
+      labelProblems.addException(new LabelException(ExceptionType.ERROR,
+          "No schematrons specified in the label", label.toString()));
+    } 
+    return schematronRefs;
+  }
+  
+  private XMLExtractor getExtractor(URL label)
+      throws XPathException, XPathExpressionException {
+    if (extractor == null || 
+        !(label.toString().equals(extractor.getSystemId())) ) {
+      extractor = new XMLExtractor(label);
+    }
+    return extractor;
   }
 }

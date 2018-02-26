@@ -229,4 +229,38 @@ public class Utility {
   public static boolean supportXincludes() {
     return false;
   }
+  
+  /**
+   * Replace backslashes with forward slashes. (URLs always use
+   * forward slashes.)
+   *
+   * @param sysid The input system identifier.
+   * @return The same system identifier with backslashes turned into
+   * forward slashes.
+   */
+  public static String fixSlashes (String sysid) {
+    return sysid.replace('\\', '/');
+  }
+
+  /**
+   * Construct an absolute URI from a relative one, using the current
+   * base URI.
+   *
+   * @param sysid The (possibly relative) system identifier
+   * @return The system identifier made absolute with respect to the
+   * current {@link #base}.
+   * @throws MalformedURLException 
+   */
+  public static String makeAbsolute(String base, String sysid) throws MalformedURLException {
+    URL local = null;
+
+    sysid = fixSlashes(sysid);
+
+    try {
+      local = new URL(new URL(base), sysid);
+      return local.toString();
+    } catch (MalformedURLException e) {
+      throw new MalformedURLException("Malformed URL on system identifier: " + sysid);
+    }
+  }
 }

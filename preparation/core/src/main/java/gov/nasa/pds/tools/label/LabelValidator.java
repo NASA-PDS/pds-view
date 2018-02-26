@@ -231,8 +231,11 @@ public class LabelValidator {
     resolver = new XMLCatalogResolver();
     resolver.setPreferPublic(true);
     resolver.setCatalogList(catalogFiles);
-    schematronTransformer.setCatalogResolver(resolver);
     useLabelSchematron = true;
+  }
+  
+  public XMLCatalogResolver getCatalogResolver() {
+    return this.resolver;
   }
 
   private List<StreamSource> loadSchemaSources(List<URL> schemas)
@@ -636,8 +639,10 @@ public class LabelValidator {
           if (matcher.matches()) {
             String value = matcher.group(1).trim();
             URL schematronRef = null;
+            URL parent = Utility.getParent(url);
             try {
               schematronRef = new URL(value);
+              schematronRef = new URL(Utility.makeAbsolute(parent.toString(), schematronRef.toString()));
             } catch (MalformedURLException ue) {
               // The schematron specification value does not appear to be
               // a URL. Assume a local reference to the schematron and
@@ -665,6 +670,20 @@ public class LabelValidator {
     List<Transformer> transformers = new ArrayList<Transformer>();
     for (String source : schematronSources) {
       try {
+        if (resolver != null) {
+          try {
+            String absoluteUrl = Utility.makeAbsolute(Utility.getParent(url).toString(), source);  
+            String resolvedUrl = resolver.resolveSchematron(absoluteUrl);
+            if (resolvedUrl == null) {
+              throw new Exception("'" + source + "' was not resolvable through the catalog file.");
+            } else {
+              source = resolvedUrl;
+            }
+          } catch (IOException io) {
+            throw new Exception("Error while resolving '" + source.toString()
+              + "' through the catalog: " + io.getMessage());
+          }
+        }
         Transformer transformer = cachedLabelSchematrons.get(source);
         if (transformer != null) {
           transformers.add(transformer);

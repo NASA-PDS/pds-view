@@ -16,6 +16,8 @@
 package gov.nasa.pds.tools.label;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import org.apache.xerces.impl.xs.XSDDescription;
 import org.apache.xerces.util.URI;
@@ -34,6 +36,8 @@ import org.w3c.dom.ls.LSInput;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.ext.EntityResolver2;
+
+import gov.nasa.pds.tools.util.Utility;
 
 
 
@@ -330,53 +334,13 @@ public class XMLCatalogResolver extends CachedLSResourceResolver implements XMLE
       String resolvedId = null;
       
       try {
-        
-        //URIs specified in the catalog might be referencing the system identifiers
-        //so let's use that to do resolution.
-        if (systemId != null) {
-          resolvedId = resolveURI(systemId);
-        }
-        
-        
-        // The namespace is useful for resolving namespace aware
-        // grammars such as XML schema. Let it take precedence over
-        // the external identifier if one exists.
-        if (resolvedId == null) {
-          if (namespaceURI != null) {
-            resolvedId = resolveURI(namespaceURI);
-          }
-        }
-          
-          
-          if (!getUseLiteralSystemId() && baseURI != null) {
-              // Attempt to resolve the system identifier against the base URI.
-              try {
-                  URI uri = new URI(new URI(baseURI), systemId);
-                  systemId = uri.toString();
-              }
-              // Ignore the exception. Fallback to the literal system identifier.
-              catch (URI.MalformedURIException ex) {}
-          }
-      
-          // Resolve against an external identifier if one exists. This
-          // is useful for resolving DTD external subsets and other 
-          // external entities. For XML schemas if there was no namespace 
-          // mapping we might be able to resolve a system identifier 
-          // specified as a location hint.
-          if (resolvedId == null) {
-              if (publicId != null && systemId != null) {
-                  resolvedId = resolvePublic(publicId, systemId);
-              }
-              else if (systemId != null) {
-                  resolvedId = resolveSystem(systemId);
-              }
-          }
+        resolvedId = resolveResource(namespaceURI, publicId, systemId, baseURI);
       }
       // Ignore IOException. It cannot be thrown from this method.
       catch (IOException io) {
         if (getExceptionHandler() != null) {
           getExceptionHandler().addException(
-              new LabelException(ExceptionType.FATAL, 
+              new LabelException(ExceptionType.ERROR, 
                   io.getMessage(), baseURI));
         }
       }
@@ -389,13 +353,68 @@ public class XMLCatalogResolver extends CachedLSResourceResolver implements XMLE
       if (getExceptionHandler() != null) {
         if (systemId != null && namespaceURI != null) {
           getExceptionHandler().addException(
-            new LabelException(ExceptionType.FATAL, 
+            new LabelException(ExceptionType.ERROR, 
                 "Could not resolve uri '" + systemId + "' or namespace '" + namespaceURI + "' with the given catalog file.", baseURI));
         }
       }
       return null;
   }
   
+  private String resolveResource(String namespaceURI, String publicId, 
+      String systemId, String baseURI) throws IOException {
+    String resolvedId = null;
+    //URIs specified in the catalog might be referencing the system identifiers
+    //so let's use that to do resolution.
+    try {
+      systemId = Utility.makeAbsolute(baseURI, systemId);
+    } catch (MalformedURLException mu) {
+      throw new IOException(mu.getMessage());
+    }
+    if (systemId != null) {
+      resolvedId = resolveURI(systemId);
+    }
+    
+    // The namespace is useful for resolving namespace aware
+    // grammars such as XML schema. Let it take precedence over
+    // the external identifier if one exists.
+    if (resolvedId == null) {
+      if (namespaceURI != null) {
+        resolvedId = resolveURI(namespaceURI);
+      }
+    }
+      
+    if (!getUseLiteralSystemId() && baseURI != null) {
+      // Attempt to resolve the system identifier against the base URI.
+      try {
+        URI uri = new URI(new URI(baseURI), systemId);
+        systemId = uri.toString();
+      }
+      // Ignore the exception. Fallback to the literal system identifier.
+      catch (URI.MalformedURIException ex) {}
+    }
+  
+    // Resolve against an external identifier if one exists. This
+    // is useful for resolving DTD external subsets and other 
+    // external entities. For XML schemas if there was no namespace 
+    // mapping we might be able to resolve a system identifier 
+    // specified as a location hint.
+    if (resolvedId == null) {
+      if (publicId != null && systemId != null) {
+        resolvedId = resolvePublic(publicId, systemId);
+      }
+      else if (systemId != null) {
+        resolvedId = resolveSystem(systemId);
+      }
+    }
+    return resolvedId;
+  }
+  
+  
+  public String resolveSchema(String namespaceURI, String systemId, String baseURI)
+      throws IOException {
+    return resolveResource(namespaceURI, null, systemId, baseURI);
+  }
+   
   public String resolveSchematron(String systemId) 
       throws IOException {
     String resolvedId = null;
@@ -417,7 +436,7 @@ public class XMLCatalogResolver extends CachedLSResourceResolver implements XMLE
     }
     return resolvedId;
   }
-  
+    
   /**
    * <p>Resolves an external entity. If the entity cannot be
    * resolved, this method should return <code>null</code>. This
@@ -577,6 +596,7 @@ public class XMLCatalogResolver extends CachedLSResourceResolver implements XMLE
       spf.setValidating(false);
 
       SAXCatalogReader saxReader = new SAXCatalogReader(spf);
+      
       saxReader.setCatalogParser(OASISXMLCatalogReader.namespaceName, "catalog", 
           "org.apache.xml.resolver.readers.OASISXMLCatalogReader");
       catalog.addReader("application/xml", saxReader);
@@ -631,6 +651,4 @@ public class XMLCatalogResolver extends CachedLSResourceResolver implements XMLE
     }
     return resolvedId;
   }
-  
-
 }

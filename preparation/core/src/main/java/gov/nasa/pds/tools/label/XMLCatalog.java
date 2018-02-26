@@ -17,7 +17,7 @@ package gov.nasa.pds.tools.label;
 import java.io.IOException;
 import java.io.FileNotFoundException;
 import java.io.DataInputStream;
-
+import java.io.File;
 import java.util.Enumeration;
 import java.util.Vector;
 
@@ -118,7 +118,11 @@ public class XMLCatalog extends Catalog {
       base = new URL(catalogCwd, fixSlashes(fileName));
     } catch (MalformedURLException e) {
       try {
-        base = new URL("file:" + fixSlashes(fileName));
+        // The commented out code comes from the parent class implementation.
+        // However, this does not work when dealing with Windows paths.
+        
+        //base = new URL("file:" + fixSlashes(fileName));
+        base = new File(fixSlashes(fileName)).toURI().toURL();
       } catch (MalformedURLException e2) {
         catalogManager.debug.message(1, "Malformed URL on catalog filename",
 		      fixSlashes(fileName));

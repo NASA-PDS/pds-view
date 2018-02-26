@@ -14,6 +14,7 @@
 package gov.nasa.pds.tools.validate.rule;
 
 import gov.nasa.pds.tools.label.LocationValidator;
+import gov.nasa.pds.tools.label.XMLCatalogResolver;
 import gov.nasa.pds.tools.validate.ProblemListener;
 import gov.nasa.pds.tools.validate.TargetRegistrar;
 import gov.nasa.pds.tools.validate.crawler.Crawler;
@@ -78,7 +79,11 @@ public class RuleContext extends ContextBase {
    */
   public static final String CHECKSUM_MANIFEST_KEY = "validation.checksum-manifest";
   
+  /** The key used to retrieve the catalog files. */
   public static final String CATALOG_FILES = "validation.catalogs";
+  
+  /** The key used to retrieve the XMLCatalogResolver object. */
+  public static final String CATALOG_RESOLVER = "validation.catalog-resolver";
   
   private boolean rootTarget = false;
 
@@ -277,5 +282,13 @@ public class RuleContext extends ContextBase {
 	
 	public List<String> getCatalogs() {
 	  return (List<String>) getContextValue(CATALOG_FILES, List.class);
+	}
+	
+	public void setCatalogResolver(XMLCatalogResolver catalogResolver) {
+	  putContextValue(CATALOG_RESOLVER, catalogResolver);
+	}
+	
+	public XMLCatalogResolver getCatalogResolver() {
+	  return (XMLCatalogResolver) getContextValue(CATALOG_RESOLVER, XMLCatalogResolver.class);
 	}
 }
