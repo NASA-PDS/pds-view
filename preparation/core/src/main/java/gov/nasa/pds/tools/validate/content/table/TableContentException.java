@@ -14,7 +14,7 @@
 package gov.nasa.pds.tools.validate.content.table;
 
 import gov.nasa.pds.tools.label.ExceptionType;
-import gov.nasa.pds.tools.label.LabelException;
+import gov.nasa.pds.tools.label.ContentException;
 
 /**
  * Class that stores information about an error that has occurred during
@@ -23,9 +23,8 @@ import gov.nasa.pds.tools.label.LabelException;
  * @author mcayanan
  *
  */
-public class TableContentException extends LabelException {
+public class TableContentException extends ContentException {
   private static final long serialVersionUID = -7554382870169790277L;
-  private String label;
   private Integer table;
   private Integer record;
   private Integer field;
@@ -44,8 +43,7 @@ public class TableContentException extends LabelException {
   public TableContentException(ExceptionType exceptionType, String messageKey,
       String source, String label, Integer table, Integer record,
       Integer field) {
-    super(exceptionType, messageKey, source, source, -1, -1);
-    this.label = label;
+    super(exceptionType, messageKey, source, label);
     if (table == null) {
       this.table = -1;
     } else {
@@ -89,13 +87,6 @@ public class TableContentException extends LabelException {
   public TableContentException(ExceptionType exceptionType, String message,
       String source) {
     this(exceptionType, message, source, "", -1, -1, -1);
-  }
-  
-  /**
-   * @return the label uri.
-   */
-  public String getLabel() {
-    return this.label;
   }
 
   /**

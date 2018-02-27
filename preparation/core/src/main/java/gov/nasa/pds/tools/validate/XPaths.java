@@ -78,4 +78,11 @@ public class XPaths {
       FILE_AREA_OBSERVATIONAL + " | " + FILE_AREA_SIP_DEEP_ARCHIVE
       + " | " + FILE_AREA_TRANSFER_MANIFEST + " | "
       + FILE_AREA_INVENTORY + " | " + FILE_AREA_BROWSE;
+  
+  /** Xpath to the Array objects. */
+  public static final String ARRAYS = "//*[starts-with(name(), 'Array')]";
+  
+  /** XPath to the different File_Area elements for tables. */
+  public static final String ARRAY_FILE_AREAS = 
+      FILE_AREA_OBSERVATIONAL + " | " + FILE_AREA_BROWSE;
 }
