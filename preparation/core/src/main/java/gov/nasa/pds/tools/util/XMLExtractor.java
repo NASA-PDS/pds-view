@@ -75,7 +75,7 @@ public class XMLExtractor {
       String definedNamespace = getValueFromDoc("namespace-uri(/*)");
       xpath.getStaticContext().setDefaultElementNamespace(definedNamespace);
     }
-
+    
     /**
      * Constructor.
      *
@@ -321,5 +321,9 @@ public class XMLExtractor {
     */
     public String getTargetNamespace() throws XPathExpressionException, XPathException {
       return getValueFromDoc(TARGET_NAMESPACE);
+    }
+    
+    public String getSystemId() {
+      return this.xml.getSystemId();
     }
 }
