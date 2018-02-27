@@ -249,6 +249,10 @@ public class LocationValidator {
 	  ruleContext.setChecksumManifest(checksums);
 	}
 
+	public void  setCheckData(boolean flag) {
+	  ruleContext.setCheckData(flag);
+	}
+	
 	/**
 	 * Gets a singleton label validator.
 	 * 

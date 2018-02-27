@@ -85,6 +85,9 @@ public class RuleContext extends ContextBase {
   /** The key used to retrieve the XMLCatalogResolver object. */
   public static final String CATALOG_RESOLVER = "validation.catalog-resolver";
   
+  /** The key used to indicate whether to disable data content validation. */
+  public static final String CHECK_DATA_KEY = "validate.check-data";
+  
   private boolean rootTarget = false;
 
   /**
@@ -290,5 +293,13 @@ public class RuleContext extends ContextBase {
 	
 	public XMLCatalogResolver getCatalogResolver() {
 	  return (XMLCatalogResolver) getContextValue(CATALOG_RESOLVER, XMLCatalogResolver.class);
+	}
+	
+	public boolean getCheckData() {
+	  return getContextValue(CHECK_DATA_KEY, Boolean.class);
+	}
+	
+	public void setCheckData(boolean flag) {
+	  putContextValue(CHECK_DATA_KEY, flag);
 	}
 }

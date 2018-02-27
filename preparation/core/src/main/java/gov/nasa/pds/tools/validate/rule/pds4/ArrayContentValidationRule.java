@@ -65,6 +65,9 @@ public class ArrayContentValidationRule extends AbstractValidationRule {
   
   @Override
   public boolean isApplicable(String location) {
+    if (!getContext().getCheckData()) {
+      return false;
+    }
     boolean isApplicable = false;
     // The rule is applicable if a label has been parsed and tables exist in the label.
     if (getContext().containsKey(PDS4Context.LABEL_DOCUMENT)) {
