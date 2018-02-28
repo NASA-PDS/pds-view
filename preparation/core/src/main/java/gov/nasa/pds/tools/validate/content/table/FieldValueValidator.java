@@ -442,32 +442,32 @@ public class FieldValueValidator {
           if (value.trim().matches(p)) {
             Double.parseDouble(value.trim());
           } else {
-            throw new NumberFormatException("Value does not match pattern");
+            throw new NumberFormatException("Value does not match pattern.");
           }
         } else if (specifier.equals("f")) {
           String p = "[-+]?[0-9]+(\\.[0-9]+)";
           if (value.trim().matches(p)) {
             Double.parseDouble(value.trim());
           } else {
-            throw new NumberFormatException("Value does not match pattern");
+            throw new NumberFormatException("Value does not match pattern.");
           }
         } else if (specifier.equals("d")) {
-          Integer.parseInt(value.trim());
+          BigInteger bi = new BigInteger(value.trim());
         } else if (specifier.equals("o")) {
-          int v = Integer.parseInt(value.trim(), 8);
-          if (v < 0) {
-            throw new NumberFormatException("Value is negative.");
+          BigInteger bi = new BigInteger(value.trim());
+          if (bi.signum() == -1) {
+            throw new NumberFormatException("Value must be unsigned.");
           }
         } else if (specifier.equals("x")) {
-          int v = Integer.parseInt(value.trim(), 16);
-          if (v < 0) {
-            throw new NumberFormatException("Value is negative.");
+          BigInteger bi = new BigInteger(value.trim());
+          if (bi.signum() == -1) {
+            throw new NumberFormatException("Value must be unsigned.");
           }
         }
       } catch (NumberFormatException e) {
         addTableException(ExceptionType.ERROR, 
             "The value '" + value.trim() + "' does not match the "
-                + "defined field format specifier '" + specifier + "'.",
+                + "defined field format specifier '" + specifier + "': " + e.getMessage(),
             recordLocation,
             fieldIndex);
       }

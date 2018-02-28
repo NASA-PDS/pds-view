@@ -36,6 +36,9 @@
       <action dev="mcayanan" type="fix" issue="PDS-531">
         Fixed to properly do field format precision checking of real values with exponential notation.
       </action>
+      <action dev="mcayanan" type="fix" issue="PDS-537">
+        Fixed to properly do field format specifier checking of large integer values.
+      </action>
       <action dev="mcayanan" type="add" issue="PDS-542">
         Added the capability to disable content validation.
       </action>      
