@@ -26,6 +26,7 @@ import java.util.regex.Pattern;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 
+import com.google.common.primitives.UnsignedInteger;
 import com.google.common.primitives.UnsignedLong;
 
 import gov.nasa.pds.label.object.FieldDescription;
@@ -481,7 +482,7 @@ public class FieldValueValidator {
       }
       if (precision != -1) {
         if (specifier.matches("[feE]")) {
-          String[] tokens = value.trim().split("[eE]", 1);
+          String[] tokens = value.trim().split("[eE]", 2);
           int length = 0;
           if (tokens[0].indexOf(".") != -1) {
             length = tokens[0].substring(tokens[0].indexOf(".") + 1).length();
