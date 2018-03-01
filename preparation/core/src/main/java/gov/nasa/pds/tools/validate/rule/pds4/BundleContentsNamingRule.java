@@ -64,7 +64,7 @@ public class BundleContentsNamingRule extends AbstractValidationRule {
   private static final String ALLOWED_FILE_NAMES[] = {
     "bundle(_[A-Za-z0-9_.-]*)?\\.xml",
     "readme.html",
-    "readme.txt",
+    "readme(_[A-Za-z0-9_.-]*)?\\.txt"
   };
 
   private static final Pattern[] ALLOWED_FILE_NAME_PATTERNS = new Pattern[ALLOWED_FILE_NAMES.length];
