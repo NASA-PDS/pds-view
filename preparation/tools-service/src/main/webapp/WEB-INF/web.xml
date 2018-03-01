@@ -9,8 +9,8 @@
 	
 	<context-param>
       <param-name>tools.service.url</param-name>
-      <!--param-value>http://localhost:48080/ts/</param-value-->
-      <param-value>http://pds-dev:8080/ts/</param-value>
+      <param-value>http://localhost:8080/ts/</param-value>
+      <!--param-value>http://pds-dev:8080/ts/</param-value-->
   </context-param>
 
 	<servlet>

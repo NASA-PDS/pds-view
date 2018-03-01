@@ -24,13 +24,15 @@
 
   <body>
     <section name="Installation">
-      <p>This document describes how to install the Tools Service contained in the <i>${project.artifactId}</i> package. The following topics can be found in this document:
+      <p>This document describes how to install the Transform Tools Service contained in the <i>${project.artifactId}</i> package. The following topics can be found in this document:
       </p>
 
       <ul>
         <li><a href="#System_Requirements">System Requirements</a></li>
         <li><a href="#Unpacking_the_Package">Unpacking the Package</a></li>
+        <li><a href="#Deploying_the_WRP_Tools_Service">Deploying the WRP Tools Service</a></li>
         <li><a href="#Configuring_the_Environment">Configuring the Environment</a></li>
+        <li><a href="#Deploying_PDS_Transform_tool_with_the_WRP_Tools_Service">Deploying PDS Transform tool with the WRP Tools Service</a></li>
       </ul>
     </section>
 
@@ -77,20 +79,102 @@ or
           <p>The copyright notice from the <a href="http://www.caltech.edu/" target="_blank">California Institute of Technology</a> detailing the restrictions regarding the use and distribution of this software. Although the license is strictly worded, the software has been classified as Technology and Software Publicly Available (TSPA) and is available for <i>anyone</i> to download and use.
           </p>
         </li>
+        <li><b>${project.artifactId}.war</b><br/>
+          <p>This is the Web ARchive (WAR) file containing the Transform Tools Service software including all dependent JAR files.
+          </p>
+        </li>  
+        <li><b>ts.war</b><br/>
+          <p>This is the Web ARchive (WAR) file containing the WRP Tools Service software including all dependent JAR files.
+          </p>
+        </li>        
         <li><b>doc/</b><br/>
           <p>This directory contains a local web site with the program-name documentation and other configuration management related information. Just point the desired web browser to the <i>index.html</i> file in this directory.
           </p>
         </li>
         <li><b>lib/</b><br/>
-          <p>This directory contains the dependent jar files for the software.
+          <p>This directory contains the dependent jar files for the Transform Tools Service software.
+          </p>
+        </li>
+        <li><b>conf/</b><br/>
+          <p>This directory contains the configuration files for the Tools Service software.
           </p>
         </li>
       </ul>
     </section>
-
-    <section name="Configuring the Environment">
-      <p>TBD
+    
+    <section name="Deploying the WRP Tools Service">
+      <p>The WRP Tools Service web application is packaged as a WAR file (<i>ts.war</i>) and is intended for installation under a standard Java Application Server. If there was a previous installation of the Tools Service, each instance of the application should be un-deployed from the Tomcat server. This can be accomplished by deleting the applications directly (assuming the user has appropriate permission) from the <i>$TOMCAT_HOME/webapps</i> directory (the variable $TOMCAT_HOME may not be set in your environment, if not, replace with the absolute path to the Tomcat installation):
       </p>
+
+      <source>
+% cd $TOMCAT_HOME/webapps
+% rm -rf ts ts.war
+      </source>
+
+      <p>Alternatively, if the Tomcat Manager interface was utilized for the deployment, find the Tools Service entries in the Manager interface and select the <i>Undeploy</i> button for each instance to remove the applications from the server.
+      </p>
+
+      <p>In order to deploy the software for either a new or upgrade installation, the WAR file is normally copied directly to the <i>$TOMCAT_HOME/webapps</i> directory (assuming the user has appropriate permission) or installed via the Manager interface. To copy the WAR file directly, perform the following commands:
+      </p>
+
+      <source>
+% cp $TS_WAR_OUTDIR/ts.war $TOMCAT_HOME/webapps
+      </source>
+
+      <p>Once this step is complete, the application is ready for operation. Verify a successful installation by accessing the component from your favorite web browser at the end point <i>http://localhost:8080/ts</i>.
+      </p>
+      
+      <center>
+        <a href="../images/wrp_ts.png" target="_blank"><img alt="WRP Tools Service" src="../images/wrp_ts_scale.png" border="1" /></a><br/>
+        Click the image for a larger version.
+      </center>
     </section>
+    
+    <section name="Configuring the Environment">
+      <p>Modify <i><b>tools.service.url</b></i> and <i><b>tempfile.rootdir</b></i> values in <i>$CATALINA_HOME/webapps/${project.artifactId}/WEB-INF/web.xml</i> if needed.</p>
+      <source>
+&lt;context-param&gt;
+   &lt;param-name&gt;tools.service.url&lt;/param-name&gt;
+   &lt;param-value&gt;http://localhost:8080/ts/&lt;/param-value&gt;
+&lt;/context-param&gt;
+        ...
+        ...
+&lt;context-param&gt;
+   &lt;param-name&gt;tempfile.rootdir&lt;/param-name&gt;
+   &lt;param-value&gt;/tmp&lt;/param-value&gt;
+&lt;/context-param&gt;
+      </source>
+      
+    </section>
+    
+    <section name="Deploying PDS Transform tool with the WRP Tools Service">
+     <p>The Transform Tools Service web application is packaged as a WAR file (<i>${project.artifactId}.war</i>) and is intended for installation under a standard Java Application Server. If there was a previous installation of the Transform Tools Service, each instance of the application should be un-deployed from the Tomcat server. This can be accomplished by deleting the applications directly (assuming the user has appropriate permission) from the <i>$TOMCAT_HOME/webapps</i> directory (the variable $TOMCAT_HOME may not be set in your environment, if not, replace with the absolute path to the Tomcat installation):
+      </p>
+
+      <source>
+% cd $TOMCAT_HOME/webapps
+% rm -rf ${project.artifactId} ${project.artifactId}.war
+      </source>
+
+      <p>Alternatively, if the Tomcat Manager interface was utilized for the deployment, find the Transform Tools Service entries in the Manager interface and select the <i>Undeploy</i> button for each instance to remove the applications from the server.
+      </p>
+
+      <p>In order to deploy the software for either a new or upgrade installation, the WAR file is normally copied directly to the <i>$TOMCAT_HOME/webapps</i> directory (assuming the user has appropriate permission) or installed via the Manager interface. To copy the WAR file directly, perform the following commands:
+      </p>
+
+      <source>
+% cd ${project.artifactId}-${project.version}      
+% cp ${project.artifactId}.war $TOMCAT_HOME/webapps
+      </source>
+
+      <p>Once this step is complete, the application is ready for operation. Verify a successful installation by accessing the component from your favorite web browser at the end point <i>http://localhost:8080/tools-service</i>.
+      </p>
+      
+      <center>
+        <a href="../images/transform_ts.png" target="_blank"><img alt="Transform Tools Service" src="../images/transform_ts_scale.png" border="1" /></a><br/>
+        Click the image for a larger version.
+      </center>
+    </section>
+    
   </body>
 </document>

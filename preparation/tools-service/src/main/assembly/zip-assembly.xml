@@ -34,7 +34,12 @@
         <include>${artifact.artifactId}.war</include>
       </includes>
     </fileSet>
-    <!--fileSet>
+    <fileSet>
+      <directory>${basedir}/src/main/wrp-tools-service</directory>
+      <outputDirectory>/</outputDirectory>
+      <includes/>
+    </fileSet>
+    <fileSet>
       <directory>src/main/resources</directory>
       <outputDirectory>conf/</outputDirectory>
       <includes>
@@ -42,7 +47,7 @@
       </includes>
       <fileMode>644</fileMode>
       <lineEnding>unix</lineEnding>
-    </fileSet-->
+    </fileSet>
     <fileSet>
       <directory>target/site</directory>
       <outputDirectory>doc</outputDirectory>

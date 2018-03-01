@@ -4,7 +4,7 @@
 %>
 <html>
 <head>
-  <title>Transform Tool Service</title>
+  <title>Transform Tools Service</title>
   <link rel="stylesheet" type="text/css" href="style.css" />
   <script src="js/d3.min.js"></script>
   <script src="js/jquery-2.1.4.min.js"></script>
@@ -17,11 +17,11 @@
 		<tr>
 			<td><img src="images/pds4_logo.png" alt="PDS Logo" /></td>
 			<td><img src="images/spacer.gif" alt="Spacer" width="50" /></td>
-			<td><h1>Transform Tool Service</h1></td>
+			<td><h1>Transform Tools Service</h1></td>
 		</tr>
 	</table>
 	<hr />
-	<p>The Transform Tool Service provides the transform capability
+	<p>The Transform Tools Service provides the transform capability
 		for transforming PDS3 and PDS4 product labels and product data into
 		other formats.</p>
 

@@ -10,10 +10,7 @@ function findGetParameter(parameterName) {
 }
 
 function getBaseURL() {
-	//var baseurl = window.location.origin+window.location.pathname;
 	var baseurl = window.location.origin + "/tools-service";
-	//console.log("window.location.origin = " + window.location.origin);
-	//console.log("window.location.pathname = " + window.location.pathname);
 	console.log("baseURL = " + baseurl);
 }
 
@@ -22,7 +19,6 @@ function transform(toolsServiceUrl) {
 	//console.log("cmd: " + cmd);
 	var cmd = "transform";
 	//var base = 'http://localhost:48080/ts/'
-	//if (typeof toolsServiceUrl !== 'undefined')
 	var base = toolsServiceUrl;
 	console.log("tools service url base = " + base);
 
@@ -58,35 +54,37 @@ function transform(toolsServiceUrl) {
 		//$("#response").html(completeResponse);
 
 		var stdout = JSON.stringify(data.result.stdout, undefined, 2);
-		stdout = stdout.substring(1, stdout.length-1);
-		var outputs = stdout.substring(stdout.indexOf("outputs = "),
-				stdout.indexOf("]")+1);
-		console.log("*******outputs = " + outputs);
+        stdout = stdout.substring(1, stdout.length-1);
+        var outputs = stdout.substring(stdout.indexOf("outputs = ")+10,
+                stdout.indexOf("]")+1);       
+        //outputs = outputs.substring(outputs.indexOf("[") + 1, outputs.indexOf("]"));
+        outputs = outputs.substring(1, outputs.length-1);
+        console.log("*******outputs = " + outputs);
 
-		// trim whitespace end of string
-		stdout = stdout.replace(/\s*$/,"");
-		stdout = stdout.replace(/\\n/g, '<br/>');
-		console.log("stdout = " + stdout);
-		$("#stdout").html(stdout);
+        // trim whitespace end of string
+        stdout = stdout.replace(/\s*$/,"");
+        stdout = stdout.replace(/\\n/g, '<br/>');
+        console.log("stdout = " + stdout);
+        $("#stdout").html(stdout);
 
-		//outputs = outputs.substring(outputs.indexOf("[") + 1, outputs.indexOf("]"));
-		outputs = outputs.substring(outputs.indexOf("following output:")+18);
-		outputs = outputs.replace(/\\n/g, '');
-		//$("#outputs").html(outputs);
-		console.log("++++++++++++outputs = " + outputs);
+        var outputs2 = stdout.substring(stdout.indexOf("following output:")+18);
+        outputs2 = outputs2.replace(/\\n/g, '');
+        //$("#outputs").html(outputs);
+        outputs2 = outputs2.substring(0, outputs2.indexOf("<br/>"));
+        console.log("++++++++++++outputs2 = " + outputs2);
 
-		var hash = JSON.stringify(data.result.hash, undefined, 2);
-		console.log("hash = " + hash);
-		//$("#hash").html(hash);
-		//
-		var outdir = JSON.stringify(data.input.keyed.outdir, undefined, 2);
-		console.log("outdir = " + outdir);
+        var hash = JSON.stringify(data.result.hash, undefined, 2);
+        console.log("hash = " + hash);
+        //$("#hash").html(hash);
 
-		if (outputs!=null) {
-			var filename = outputs.substring(outputs.lastIndexOf("/")+1);
-			$("#download").html("<hr><b>Download: " +
-					"<a href=\"UploadDownloadFileServlet?fileName=" + outputs
-					+ "\">" + filename + "</a></b>");
-		}
+        var outdir = JSON.stringify(data.input.keyed.outdir, undefined, 2);
+        console.log("outdir = " + outdir);
+
+        if (outputs!=null) {
+            var filename = outputs.substring(outputs.lastIndexOf("/")+1);
+            $("#download").html("<hr><b>Download: " +
+                    "<a href=\"UploadDownloadFileServlet?fileName=" + outputs
+                    + "\">" + filename + "</a></b>");
+        }
 	});
 }

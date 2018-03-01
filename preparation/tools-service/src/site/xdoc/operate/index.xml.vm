@@ -24,8 +24,47 @@
 
   <body>
     <section name="Operation">
-      <p>This document describes how to operate the Tools Service. ...
+      <ul>
+        <li><a href="#Transform_Tools_Service">Transform Tools Service</a></li>
+        <li><a href="#Validate_Tools_Service">Validate Tools Service</a></li>
+      </ul>
+      
+    </section>
+    
+    <section name="Transform Tools Service">
+      <p>The Transform Tools Service software is a web application for interfacing with the PDS Transform Tool and WRP Tools Service. The main screen of the application is as follows:
       </p>
+      
+      <a href="../images/transform_ts1.png" target="_blank"><img alt="Transform Tools Service Screen Shot" src="../images/transform_ts1_scale.png" border="1" /></a><br/>
+        Click on the image for a larger version.
+      <br/><br/><br/>
+           
+      <ol>
+        <li>Click 'Browse...' button to choose file(s).</li>
+        <li>Click 'Upload File(s)' button to upload file(s).</li>
+        <li>Click 'Continue' button.</li>
+      </ol> 
+      <a href="../images/transform_ts2.png" target="_blank"><img alt="Before transforming" src="../images/transform_ts2_scale.png" border="1" /></a><br/>
+        Click on the image for a larger version.
+      <br/><br/><br/>
+      
+      <ol>
+        <li>Choose a format to transform from the format list.</li>
+        <li>Choose a check box of 'List Objects' if needed.</li>
+        <li>Click 'Transform' button.</li>
+      </ol>
+      <a href="../images/transform_ts3.png" target="_blank"><img alt="After transforming" src="../images/transform_ts3_scale.png" border="1" /></a><br/>
+        Click on the image for a larger version.
+      <br/><br/><br/>
+      
+      <p>Click a link 'Download' from the result page to download a transformed product.</p>
+      <a href="../images/transform_ts4.png" target="_blank"><img alt="After transforming" src="../images/transform_ts4_scale.png" border="1" /></a><br/>
+        Click on the image for a larger version.
+      <br/><br/><br/>
+    </section>
+    
+    <section name="Validate Tools Service">
+      <p>This section will describe how to operate the Validate Tools Service. ...</p>
     </section>
   </body>
 </document>
