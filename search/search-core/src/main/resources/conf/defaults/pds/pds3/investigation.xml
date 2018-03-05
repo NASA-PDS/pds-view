@@ -59,6 +59,9 @@
     <field name="alternate_id" type="string">
       <registryPath>alternate_id</registryPath>
     </field>
+    <field name="alternate_title" type="string">
+      <registryPath>alternate_title</registryPath>
+    </field>
     <field name="citation_keyword" type="string">
       <registryPath>citation_keyword</registryPath>
     </field>
