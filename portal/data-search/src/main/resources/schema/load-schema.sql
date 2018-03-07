@@ -317,6 +317,9 @@ insert into investigation_tools (investigation, title, description, url, rank) v
 
 /* NEAR */
 
+insert into investigation_tools (investigation, title, description, url, rank) values ('NEAR', 'Small Bodies Image Browser at the Small Bodies Node', 'Supports NEAR Shoemaker Mission product browse and download for 433 Eros data.', 'https://sbib.psi.edu/', 1);
+
+
 insert into investigation_tools (investigation, title, description, url, rank) values ('NEAR', 'Near Earth Asteroid Rendezvous (NEAR) Data Archive at the Small Bodies Node', 'Supports NEAR Mission product browse and download for Eros, Mathilde and C/Hyakutake data.', 'https://sbn.psi.edu/pds/resource/near/', 101);
 
 insert into investigation_tools (investigation, title, description, url, rank) values ('NEAR', 'Near Earth Asteroid Rendezvous (NEAR) Archive at the Planetary Plasma Interactions Node', 'The NEAR Archive page provides details on the investigation, instruments and targets associated with the archive as well as additional resources for discovering NEAR data.', 'https://pds-ppi.igpp.ucla.edu/mission/Near_Earth_Asteroid_Rendezvous', 102);
