@@ -124,9 +124,9 @@ insert into investigation_tools (investigation, title, description, url, rank) v
 
 insert into investigation_tools (investigation, title, description, url, rank) values ('Hayabusa', 'Hayabusa Data Archive at the Small Bodies Node', 'Supports Hayabusa Mission product browse and download for Itokawa data.', 'https://pdssbn.astro.umd.edu/data_sb/missions/hayabusa/index.shtml', 101);
 
-/* HST */
+/* Hubble Space Telescope */
 
-insert into investigation_tools (investigation, title, description, url, rank) values ('HST', 'OPUS at the Ring-Moon Systems Node', 'Supports solar system observations by the Hubble Space Telescope (ACS, WFC3, WFPC2). Browse results, and links to STScI for downloads.', 'https://tools.pds-rings.seti.org/opus#/missionid=Hubble', 1);
+insert into investigation_tools (investigation, title, description, url, rank) values ('Hubble Space Telescope', 'OPUS at the Ring-Moon Systems Node', 'Supports solar system observations by the Hubble Space Telescope (ACS, WFC3, WFPC2). Browse results, and links to STScI for downloads.', 'https://tools.pds-rings.seti.org/opus#/missionid=Hubble', 1);
 
 /* IRAS */
 
@@ -157,20 +157,20 @@ insert into investigation_tools (investigation, title, description, url, rank) v
 
 insert into investigation_tools (investigation, title, description, url, rank) values ('LCROSS', 'Lunar Crater Observation And Sensing Satellite (LCROSS) Archive at the Geosciences Node', 'The LCROSS Archive page provides details on the investigation, instruments and targets associated with the archive as well as additional resources for discovering LCROSS data.', 'http://pds-geosciences.wustl.edu/missions/lcross/default.htm', 101);
 
-/* LRO */
+/* Lunar Reconnaissance Orbiter */
 
-insert into investigation_tools (investigation, title, description, url, rank) values ('LRO', 'Lunar Orbital Data Explorer (ODE) at the Geosciences Node', 'Supports search, browse, and download of select PDS data products from the Lunar Reconnaissance Orbiter (LRO) mission, including Diviner, LAMP, Mini-RF, LEND, LOLA, and LROC data.', 'http://ode.rsl.wustl.edu/moon', 1);
+insert into investigation_tools (investigation, title, description, url, rank) values ('Lunar Reconnaissance Orbiter', 'Lunar Orbital Data Explorer (ODE) at the Geosciences Node', 'Supports search, browse, and download of select PDS data products from the Lunar Reconnaissance Orbiter (LRO) mission, including Diviner, LAMP, Mini-RF, LEND, LOLA, and LROC data.', 'http://ode.rsl.wustl.edu/moon', 1);
 
-insert into investigation_tools (investigation, title, description, url, rank) values ('LRO', 'PDS Image Atlas at the Cartography and Imaging Sciences Node', 'Supports Lunar Reconnaissance Orbiter (LRO) LAMP and LROC image product search, browse and download.', 'https://pds-imaging.jpl.nasa.gov/search/?fq=ATLAS_MISSION_NAME%3A%22lunar%20reconnaissance%20orbiter%22&q=*%3A*', 2);
+insert into investigation_tools (investigation, title, description, url, rank) values ('Lunar Reconnaissance Orbiter', 'PDS Image Atlas at the Cartography and Imaging Sciences Node', 'Supports Lunar Reconnaissance Orbiter (LRO) LAMP and LROC image product search, browse and download.', 'https://pds-imaging.jpl.nasa.gov/search/?fq=ATLAS_MISSION_NAME%3A%22lunar%20reconnaissance%20orbiter%22&q=*%3A*', 2);
 
-insert into investigation_tools (investigation, title, description, url, rank) values ('LRO', 'Map-A-Planet 2 (MAP2) at the Cartography and Imaging Sciences Node', 'Supports Lunar Reconnaissance Orbiter (LRO) LOLA and LROC global image product mosaic projection, clipping, processing, and download.', 'https://astrogeology.usgs.gov/search/results?q=MAP2&k1=target&v1=Moon', 3);
+insert into investigation_tools (investigation, title, description, url, rank) values ('Lunar Reconnaissance Orbiter', 'Map-A-Planet 2 (MAP2) at the Cartography and Imaging Sciences Node', 'Supports Lunar Reconnaissance Orbiter (LRO) LOLA and LROC global image product mosaic projection, clipping, processing, and download.', 'https://astrogeology.usgs.gov/search/results?q=MAP2&k1=target&v1=Moon', 3);
 
-insert into investigation_tools (investigation, title, description, url, rank) values ('LRO', 'Planetary Image Locator Tool (PILOT) at the Cartography and Imaging Sciences Node', 'Supports Lunar Reconnaissance Orbiter (LRO) LROC map-based image product locator tool using uniform image geometry to search and download.', 'https://pilot.wr.usgs.gov/', 4);
+insert into investigation_tools (investigation, title, description, url, rank) values ('Lunar Reconnaissance Orbiter', 'Planetary Image Locator Tool (PILOT) at the Cartography and Imaging Sciences Node', 'Supports Lunar Reconnaissance Orbiter (LRO) LROC map-based image product locator tool using uniform image geometry to search and download.', 'https://pilot.wr.usgs.gov/', 4);
 
 
-insert into investigation_tools (investigation, title, description, url, rank) values ('LRO', 'Lunar Reconnaissance Orbiter (LRO) Archive at the Geosciences Node', 'The LRO Archive page provides details on the investigation, instruments and targets associated with the archive as well as additional resources for discovering LRO data.', 'http://pds-geosciences.wustl.edu/missions/lro/default.htm', 101);
+insert into investigation_tools (investigation, title, description, url, rank) values ('Lunar Reconnaissance Orbiter', 'Lunar Reconnaissance Orbiter (LRO) Archive at the Geosciences Node', 'The LRO Archive page provides details on the investigation, instruments and targets associated with the archive as well as additional resources for discovering LRO data.', 'http://pds-geosciences.wustl.edu/missions/lro/default.htm', 101);
 
-insert into investigation_tools (investigation, title, description, url, rank) values ('LRO', 'Lunar Reconnaissance Orbiter (LRO) Archive at the Planetary Plasma Interactions Node', 'The LRO Archive page provides details on the investigation, instruments and targets associated with the archive as well as additional resources for discovering LRO data.', 'https://pds-ppi.igpp.ucla.edu/mission/Lunar_Reconnaissance_Orbiter', 102);
+insert into investigation_tools (investigation, title, description, url, rank) values ('Lunar Reconnaissance Orbiter', 'Lunar Reconnaissance Orbiter (LRO) Archive at the Planetary Plasma Interactions Node', 'The LRO Archive page provides details on the investigation, instruments and targets associated with the archive as well as additional resources for discovering LRO data.', 'https://pds-ppi.igpp.ucla.edu/mission/Lunar_Reconnaissance_Orbiter', 102);
 
 /* Lunar Orbiter */
 
@@ -202,6 +202,44 @@ insert into investigation_tools (investigation, title, description, url, rank) v
 
 insert into investigation_tools (investigation, title, description, url, rank) values ('Mariner', 'Mariner Archive at the Planetary Plasma Interactions Node', 'The Mariner Archive page provides details on the investigation, instruments and targets associated with the archive as well as additional resources for discovering Mariner data.', 'https://pds-ppi.igpp.ucla.edu/mission/Mariner_10', 101);
 
+/* Mars Exploration Rover */
+
+insert into investigation_tools (investigation, title, description, url, rank) values ('Mars Exploration Rover', 'MER Analyst''s Notebook at the Geosciences Node', 'Provides access to the Mars Exploration Rover (MER) Spirit and Opportunity data archives by integrating sequence information, science data, and documentation into standard web-accessible pages to facilitate mission "replay."', 'http://an.rsl.wustl.edu/mer/', 1);
+
+insert into investigation_tools (investigation, title, description, url, rank) values ('Mars Exploration Rover', 'PDS Image Atlas at the Cartography and Imaging Sciences Node', 'Supports Mars Exploration Rover (MER) HAZCAM, MI, NAVCAM, and PANCAM image product search, browse and download.', 'https://pds-imaging.jpl.nasa.gov/search/?fq=ATLAS_MISSION_NAME%3A%22mars%20exploration%20rover%22&q=*%3A*', 2);
+
+
+insert into investigation_tools (investigation, title, description, url, rank) values ('Mars Exploration Rover', 'Mars Exploration Rover (MER) Archive at the Geosciences Node', 'The MER Archive page provides details on the investigation, instruments and targets associated with the archive as well as additional resources for discovering MER data.', 'http://pds-geosciences.wustl.edu/missions/mer/index.htm', 101);
+
+/* Mars Express */
+
+insert into investigation_tools (investigation, title, description, url, rank) values ('Mars Express', 'Mars Orbital Data Explorer (ODE) at the Geosciences Node', 'Supports search, browse, and download of select PDS data products from the Mars Express (MEX) mission, including HRSC, MARSIS, PFS, and OMEGA data.', 'http://ode.rsl.wustl.edu/mars/', 1);
+
+insert into investigation_tools (investigation, title, description, url, rank) values ('Mars Express', 'Map-A-Planet 2 (MAP2) at the Cartography and Imaging Sciences Node', 'Supports Mars Express (MEX) HRSC global image product mosaic projection, clipping, processing, and download.', 'https://astrogeology.usgs.gov/search/results?q=MAP2&k1=target&v1=Mars', 2);
+
+insert into investigation_tools (investigation, title, description, url, rank) values ('Mars Express', 'Planetary Image Locator Tool (PILOT) at the Cartography and Imaging Sciences Node', 'Supports Mars Express (MEX) HRSC map-based image product locator tool using uniform image geometry to search and download.', 'https://pilot.wr.usgs.gov/', 3);
+
+
+insert into investigation_tools (investigation, title, description, url, rank) values ('Mars Express', 'Mars Express (MEX) Archive at the Geosciences Node', 'The MEX Archive page provides details on the investigation, instruments and targets associated with the archive as well as additional resources for discovering MEX data.', 'http://pds-geosciences.wustl.edu/missions/mars_express/default.htm', 101);
+
+insert into investigation_tools (investigation, title, description, url, rank) values ('Mars Express', 'Mars Express (MEX) Archive at the Planetary Plasma Interactions Node', 'The MEX Archive page provides details on the investigation, instruments and targets associated with the archive as well as additional resources for discovering MEX data.', 'https://pds-ppi.igpp.ucla.edu/mission/Mars_Express', 102);
+
+/* Mars Global Surveyor */
+
+insert into investigation_tools (investigation, title, description, url, rank) values ('Mars Global Surveyor', 'Mars Orbital Data Explorer (ODE) at the Geosciences Node', 'Supports search, browse, and download of select PDS data products from the Mars Global Surveyor (MGS) mission, including TES, MOC and MOLA data.', 'http://ode.rsl.wustl.edu/mars/', 1);
+
+insert into investigation_tools (investigation, title, description, url, rank) values ('Mars Global Surveyor', 'PDS Image Atlas at the Cartography and Imaging Sciences Node', 'Supports Mars Global Surveyor (MGS) MOC-NA and WA image product search, browse and download.', 'https://pds-imaging.jpl.nasa.gov/search/?fq=ATLAS_MISSION_NAME%3A%22mars%20global%20surveyor%22&q=*%3A*', 2);
+
+insert into investigation_tools (investigation, title, description, url, rank) values ('Mars Global Surveyor', 'Map-A-Planet 2 (MAP2) at the Cartography and Imaging Sciences Node', 'Supports Mars Global Surveyor (MGS) MOC-WA, MOLA TES albedo and thermal global image product mosaic projection, clipping, processing, and download.', 'https://astrogeology.usgs.gov/search/results?q=MAP2&k1=target&v1=Mars', 3);
+
+insert into investigation_tools (investigation, title, description, url, rank) values ('Mars Global Surveyor', 'Planetary Image Locator Tool (PILOT) at the Cartography and Imaging Sciences Node', 'Supports Mars Global Surveyor (MGS) MOC-NA and WA map-based image product locator tool using uniform image geometry to search and download.', 'https://pilot.wr.usgs.gov/', 4);
+
+insert into investigation_tools (investigation, title, description, url, rank) values ('Mars Global Surveyor', 'TES Search at the Atmospheres Node', 'Supports Mars Global Surveyor (MGS) TES product search and download.', 'https://atmos.nmsu.edu/tes.html', 5);
+
+
+insert into investigation_tools (investigation, title, description, url, rank) values ('Mars Global Surveyor', 'Mars Global Surveyor (MGS) Archive at the Geosciences Node', 'The MGS Archive page provides details on the investigation, instruments and targets associated with the archive as well as additional resources for discovering MGS data.', 'http://pds-geosciences.wustl.edu/missions/mgs/index.htm', 101);
+
+insert into investigation_tools (investigation, title, description, url, rank) values ('Mars Global Surveyor', 'Mars Global Surveyor (MGS) Archive at the Planetary Plasma Interactions Node', 'The MGS Archive page provides details on the investigation, instruments and targets associated with the archive as well as additional resources for discovering MGS data.', 'https://pds-ppi.igpp.ucla.edu/mission/Mars_Global_Surveyor', 102);
 
 /* Mars Odyssey */
 
@@ -220,20 +258,42 @@ insert into investigation_tools (investigation, title, description, url, rank) v
 
 insert into investigation_tools (investigation, title, description, url, rank) values ('Mars Odyssey', 'Mars Odyssey Archive at the Planetary Plasma Interactions Node', 'The 2001 Mars Odyssey Archive page provides details on the investigation, instruments and targets associated with the archive as well as additional resources for discovering 2001 Mars Odyssey data.', 'https://pds-ppi.igpp.ucla.edu/mission/2001_MARS_ODYSSEY', 102);
 
+/* Mars Pathfinder */
+
+insert into investigation_tools (investigation, title, description, url, rank) values ('Mars Pathfinder', 'PDS Image Atlas at the Cartography and Imaging Sciences Node', 'Supports Mars Pathfinder (MPF) APXS, IMP and RVR image product search, browse and download.', 'https://pds-imaging.jpl.nasa.gov/search/?fq=ATLAS_MISSION_NAME%3A%22mars%20pathfinder%22&q=*%3A*', 1);
+
+
+insert into investigation_tools (investigation, title, description, url, rank) values ('Mars Pathfinder', 'Mars Pathfinder (MPF) Archive at the Geosciences Node', 'The MGS Archive page provides details on the investigation, instruments and targets associated with the archive as well as additional resources for discovering MGS data.', 'http://pds-geosciences.wustl.edu/missions/mgs/index.htm', 101);
+
+/* Mars Reconnaissance Orbiter */
+
+insert into investigation_tools (investigation, title, description, url, rank) values ('Mars Reconnaissance Orbiter', 'Mars Orbital Data Explorer (ODE) at the Geosciences Node', 'Supports search, browse, and download of select PDS data products from the Mars Reconnaissance Orbiter (MRO) mission, including CRISM, HiRISE, CTX, SHARAD, MCS, and Gravity/Radio Science data.', 'http://ode.rsl.wustl.edu/mars/', 1);
+
+insert into investigation_tools (investigation, title, description, url, rank) values ('Mars Reconnaissance Orbiter', 'PDS Image Atlas at the Cartography and Imaging Sciences Node', 'Supports Mars Reconnaissance Orbiter (MRO) CTX, HIRISE, and MARCI image product search, browse and download.', 'https://pds-imaging.jpl.nasa.gov/search/?fq=ATLAS_MISSION_NAME%3A%22mars%20reconnaissance%20orbiter%22&q=*%3A*', 2);
+
+insert into investigation_tools (investigation, title, description, url, rank) values ('Mars Reconnaissance Orbiter', 'Map-A-Planet 2 (MAP2) at the Cartography and Imaging Sciences Node', 'Supports Mars Reconnaissance Orbiter (MRO) HRSC and MOLA global image product mosaic projection, clipping, processing, and download.', 'https://astrogeology.usgs.gov/search/results?q=MAP2&k1=target&v1=Mars', 3);
+
+insert into investigation_tools (investigation, title, description, url, rank) values ('Mars Reconnaissance Orbiter', 'Planetary Image Locator Tool (PILOT) at the Cartography and Imaging Sciences Node', 'Supports Mars Reconnaissance Orbiter (MRO) CTX, HIRISE, HIRISE OBS, and MARCI map-based image product locator tool using uniform image geometry to search and download.', 'https://pilot.wr.usgs.gov/', 4);
+
+
+insert into investigation_tools (investigation, title, description, url, rank) values ('Mars Reconnaissance Orbiter', 'Mars Reconnaissance Orbiter (MRO) Archive at the Geosciences Node', 'The MRO Archive page provides details on the investigation, instruments and targets associated with the archive as well as additional resources for discovering MRO data.', 'http://pds-geosciences.wustl.edu/missions/mro/default.htm', 101);
+
+/* Mars Science Laboratory */
+
+insert into investigation_tools (investigation, title, description, url, rank) values ('Mars Science Laboratory', 'MSL Analyst''s Notebook at the Geosciences Node', 'Provides access to the Mars Science Laboratory (MSL) Curiosity data archives by integrating sequence information, science data, and documentation into standard web-accessible pages to facilitate mission "replay."', 'http://an.rsl.wustl.edu/msl', 1);
+
+insert into investigation_tools (investigation, title, description, url, rank) values ('Mars Science Laboratory', 'PDS Image Atlas at the Cartography and Imaging Sciences Node', 'Supports Mars Science Laboratory (MSL) HAZCAM, MAHLI, MARDI, MASTCAM, and NAVCAM image product search, browse and download.', 'https://pds-imaging.jpl.nasa.gov/search/?fq=ATLAS_MISSION_NAME%3A%22mars%20science%20laboratory%22&q=*%3A*', 2);
+
+
+insert into investigation_tools (investigation, title, description, url, rank) values ('Mars Science Laboratory', 'Mars Science Laboratory (MSL) Archive at the Geosciences Node', 'The MSL Archive page provides details on the investigation, instruments and targets associated with the archive as well as additional resources for discovering MSL data.', 'http://pds-geosciences.wustl.edu/missions/msl/index.htm', 101);
+
+insert into investigation_tools (investigation, title, description, url, rank) values ('Mars Science Laboratory', 'Mars Science Laboratory (MSL) Archive at the Planetary Plasma Interactions Node', 'The MSL Archive page provides details on the investigation, instruments and targets associated with the archive as well as additional resources for discovering MSL data.', 'https://pds-ppi.igpp.ucla.edu/mission/Mars_Science_Laboratory', 102);
+
 /* MAVEN */
 
 insert into investigation_tools (investigation, title, description, url, rank) values ('MAVEN', 'Mars Atmosphere & Volatile Evolution Mission (MAVEN)  Archive at the Planetary Plasma Interactions Node', 'The Mariner Archive page provides details on the investigation, instruments and targets associated with the archive as well as additional resources for discovering MAVEN data.', 'http://pds-atmospheres.nmsu.edu/data_and_services/atmospheres_data/MAVEN/maven_main.html', 101);
 
 insert into investigation_tools (investigation, title, description, url, rank) values ('MAVEN', 'Mars Atmosphere & Volatile Evolution Mission (MAVEN)  Archive at the Planetary Plasma Interactions Node', 'The Mariner Archive page provides details on the investigation, instruments and targets associated with the archive as well as additional resources for discovering MAVEN data.', 'https://pds-ppi.igpp.ucla.edu/mission/MAVEN', 102);
-
-/* MER */
-
-insert into investigation_tools (investigation, title, description, url, rank) values ('MER', 'MER Analyst''s Notebook at the Geosciences Node', 'Provides access to the Mars Exploration Rover (MER) Spirit and Opportunity data archives by integrating sequence information, science data, and documentation into standard web-accessible pages to facilitate mission "replay."', 'http://an.rsl.wustl.edu/mer/', 1);
-
-insert into investigation_tools (investigation, title, description, url, rank) values ('MER', 'PDS Image Atlas at the Cartography and Imaging Sciences Node', 'Supports Mars Exploration Rover (MER) HAZCAM, MI, NAVCAM, and PANCAM image product search, browse and download.', 'https://pds-imaging.jpl.nasa.gov/search/?fq=ATLAS_MISSION_NAME%3A%22mars%20exploration%20rover%22&q=*%3A*', 2);
-
-
-insert into investigation_tools (investigation, title, description, url, rank) values ('MER', 'Mars Exploration Rover (MER) Archive at the Geosciences Node', 'The MER Archive page provides details on the investigation, instruments and targets associated with the archive as well as additional resources for discovering MER data.', 'http://pds-geosciences.wustl.edu/missions/mer/index.htm', 101);
 
 /* MESSENGER */
 
@@ -250,70 +310,9 @@ insert into investigation_tools (investigation, title, description, url, rank) v
 
 insert into investigation_tools (investigation, title, description, url, rank) values ('MESSENGER', 'MErcury Surface, Space ENvironment, GEochemistry, and Ranging (MESSENGER) Archive at the Planetary Plasma Interactions Node', 'The MESSENGER Archive page provides details on the investigation, instruments and targets associated with the archive as well as additional resources for discovering MESSENGER data.', 'https://pds-ppi.igpp.ucla.edu/mission/MESSENGER', 102);
 
-/* MEX */
+/* Mid-Course Space Experiment */
 
-insert into investigation_tools (investigation, title, description, url, rank) values ('MEX', 'Mars Orbital Data Explorer (ODE) at the Geosciences Node', 'Supports search, browse, and download of select PDS data products from the Mars Express (MEX) mission, including HRSC, MARSIS, PFS, and OMEGA data.', 'http://ode.rsl.wustl.edu/mars/', 1);
-
-insert into investigation_tools (investigation, title, description, url, rank) values ('MEX', 'Map-A-Planet 2 (MAP2) at the Cartography and Imaging Sciences Node', 'Supports Mars Express (MEX) HRSC global image product mosaic projection, clipping, processing, and download.', 'https://astrogeology.usgs.gov/search/results?q=MAP2&k1=target&v1=Mars', 2);
-
-insert into investigation_tools (investigation, title, description, url, rank) values ('MEX', 'Planetary Image Locator Tool (PILOT) at the Cartography and Imaging Sciences Node', 'Supports Mars Express (MEX) HRSC map-based image product locator tool using uniform image geometry to search and download.', 'https://pilot.wr.usgs.gov/', 3);
-
-
-insert into investigation_tools (investigation, title, description, url, rank) values ('MEX', 'Mars Express (MEX) Archive at the Geosciences Node', 'The MEX Archive page provides details on the investigation, instruments and targets associated with the archive as well as additional resources for discovering MEX data.', 'http://pds-geosciences.wustl.edu/missions/mars_express/default.htm', 101);
-
-insert into investigation_tools (investigation, title, description, url, rank) values ('MEX', 'Mars Express (MEX) Archive at the Planetary Plasma Interactions Node', 'The MEX Archive page provides details on the investigation, instruments and targets associated with the archive as well as additional resources for discovering MEX data.', 'https://pds-ppi.igpp.ucla.edu/mission/Mars_Express', 102);
-
-/* MGS */
-
-insert into investigation_tools (investigation, title, description, url, rank) values ('MGS', 'Mars Orbital Data Explorer (ODE) at the Geosciences Node', 'Supports search, browse, and download of select PDS data products from the Mars Global Surveyor (MGS) mission, including TES, MOC and MOLA data.', 'http://ode.rsl.wustl.edu/mars/', 1);
-
-insert into investigation_tools (investigation, title, description, url, rank) values ('MGS', 'PDS Image Atlas at the Cartography and Imaging Sciences Node', 'Supports Mars Global Surveyor (MGS) MOC-NA and WA image product search, browse and download.', 'https://pds-imaging.jpl.nasa.gov/search/?fq=ATLAS_MISSION_NAME%3A%22mars%20global%20surveyor%22&q=*%3A*', 2);
-
-insert into investigation_tools (investigation, title, description, url, rank) values ('MGS', 'Map-A-Planet 2 (MAP2) at the Cartography and Imaging Sciences Node', 'Supports Mars Global Surveyor (MGS) MOC-WA, MOLA TES albedo and thermal global image product mosaic projection, clipping, processing, and download.', 'https://astrogeology.usgs.gov/search/results?q=MAP2&k1=target&v1=Mars', 3);
-
-insert into investigation_tools (investigation, title, description, url, rank) values ('MGS', 'Planetary Image Locator Tool (PILOT) at the Cartography and Imaging Sciences Node', 'Supports Mars Global Surveyor (MGS) MOC-NA and WA map-based image product locator tool using uniform image geometry to search and download.', 'https://pilot.wr.usgs.gov/', 4);
-
-insert into investigation_tools (investigation, title, description, url, rank) values ('MGS', 'TES Search at the Atmospheres Node', 'Supports Mars Global Surveyor (MGS) TES product search and download.', 'https://atmos.nmsu.edu/tes.html', 5);
-
-
-insert into investigation_tools (investigation, title, description, url, rank) values ('MGS', 'Mars Global Surveyor (MGS) Archive at the Geosciences Node', 'The MGS Archive page provides details on the investigation, instruments and targets associated with the archive as well as additional resources for discovering MGS data.', 'http://pds-geosciences.wustl.edu/missions/mgs/index.htm', 101);
-
-insert into investigation_tools (investigation, title, description, url, rank) values ('MGS', 'Mars Global Surveyor (MGS) Archive at the Planetary Plasma Interactions Node', 'The MGS Archive page provides details on the investigation, instruments and targets associated with the archive as well as additional resources for discovering MGS data.', 'https://pds-ppi.igpp.ucla.edu/mission/Mars_Global_Surveyor', 102);
-
-/* MPF */
-
-insert into investigation_tools (investigation, title, description, url, rank) values ('MPF', 'PDS Image Atlas at the Cartography and Imaging Sciences Node', 'Supports Mars Pathfinder (MPF) APXS, IMP and RVR image product search, browse and download.', 'https://pds-imaging.jpl.nasa.gov/search/?fq=ATLAS_MISSION_NAME%3A%22mars%20pathfinder%22&q=*%3A*', 1);
-
-
-insert into investigation_tools (investigation, title, description, url, rank) values ('MPF', 'Mars Pathfinder (MPF) Archive at the Geosciences Node', 'The MGS Archive page provides details on the investigation, instruments and targets associated with the archive as well as additional resources for discovering MGS data.', 'http://pds-geosciences.wustl.edu/missions/mgs/index.htm', 101);
-
-/* MRO */
-
-insert into investigation_tools (investigation, title, description, url, rank) values ('MRO', 'Mars Orbital Data Explorer (ODE) at the Geosciences Node', 'Supports search, browse, and download of select PDS data products from the Mars Reconnaissance Orbiter (MRO) mission, including CRISM, HiRISE, CTX, SHARAD, MCS, and Gravity/Radio Science data.', 'http://ode.rsl.wustl.edu/mars/', 1);
-
-insert into investigation_tools (investigation, title, description, url, rank) values ('MRO', 'PDS Image Atlas at the Cartography and Imaging Sciences Node', 'Supports Mars Reconnaissance Orbiter (MRO) CTX, HIRISE, and MARCI image product search, browse and download.', 'https://pds-imaging.jpl.nasa.gov/search/?fq=ATLAS_MISSION_NAME%3A%22mars%20reconnaissance%20orbiter%22&q=*%3A*', 2);
-
-insert into investigation_tools (investigation, title, description, url, rank) values ('MRO', 'Map-A-Planet 2 (MAP2) at the Cartography and Imaging Sciences Node', 'Supports Mars Reconnaissance Orbiter (MRO) HRSC and MOLA global image product mosaic projection, clipping, processing, and download.', 'https://astrogeology.usgs.gov/search/results?q=MAP2&k1=target&v1=Mars', 3);
-
-insert into investigation_tools (investigation, title, description, url, rank) values ('MRO', 'Planetary Image Locator Tool (PILOT) at the Cartography and Imaging Sciences Node', 'Supports Mars Reconnaissance Orbiter (MRO) CTX, HIRISE, HIRISE OBS, and MARCI map-based image product locator tool using uniform image geometry to search and download.', 'https://pilot.wr.usgs.gov/', 4);
-
-
-insert into investigation_tools (investigation, title, description, url, rank) values ('MRO', 'Mars Reconnaissance Orbiter (MRO) Archive at the Geosciences Node', 'The MRO Archive page provides details on the investigation, instruments and targets associated with the archive as well as additional resources for discovering MRO data.', 'http://pds-geosciences.wustl.edu/missions/mro/default.htm', 101);
-
-/* MSL */
-
-insert into investigation_tools (investigation, title, description, url, rank) values ('MSL', 'MSL Analyst''s Notebook at the Geosciences Node', 'Provides access to the Mars Science Laboratory (MSL) Curiosity data archives by integrating sequence information, science data, and documentation into standard web-accessible pages to facilitate mission "replay."', 'http://an.rsl.wustl.edu/msl', 1);
-
-insert into investigation_tools (investigation, title, description, url, rank) values ('MSL', 'PDS Image Atlas at the Cartography and Imaging Sciences Node', 'Supports Mars Science Laboratory (MSL) HAZCAM, MAHLI, MARDI, MASTCAM, and NAVCAM image product search, browse and download.', 'https://pds-imaging.jpl.nasa.gov/search/?fq=ATLAS_MISSION_NAME%3A%22mars%20science%20laboratory%22&q=*%3A*', 2);
-
-
-insert into investigation_tools (investigation, title, description, url, rank) values ('MSL', 'Mars Science Laboratory (MSL) Archive at the Geosciences Node', 'The MSL Archive page provides details on the investigation, instruments and targets associated with the archive as well as additional resources for discovering MSL data.', 'http://pds-geosciences.wustl.edu/missions/msl/index.htm', 101);
-
-insert into investigation_tools (investigation, title, description, url, rank) values ('MSL', 'Mars Science Laboratory (MSL) Archive at the Planetary Plasma Interactions Node', 'The MSL Archive page provides details on the investigation, instruments and targets associated with the archive as well as additional resources for discovering MSL data.', 'https://pds-ppi.igpp.ucla.edu/mission/Mars_Science_Laboratory', 102);
-
-/* MSX */
-
-insert into investigation_tools (investigation, title, description, url, rank) values ('MSX', 'Mid-Course Space Experiment (MSX) Data Archive at the Small Bodies Node', 'Supports MSX Mission product browse and download for Asteroids, Comets and Interplanetary Dust data.', 'https://sbn.psi.edu/pds/archive/msx.html', 101);
+insert into investigation_tools (investigation, title, description, url, rank) values ('Mid-Course Space Experiment', 'Mid-Course Space Experiment (MSX) Data Archive at the Small Bodies Node', 'Supports MSX Mission product browse and download for Asteroids, Comets and Interplanetary Dust data.', 'https://sbn.psi.edu/pds/archive/msx.html', 101);
 
 /* NEAR */
 
