@@ -739,12 +739,6 @@ class MainWindow(QMainWindow):
         settings.setValue("MainWindow/Geometry", self.saveGeometry())
         settings.setValue("MainWindow/State", self.saveState())
 
-
-    def popInOut(self, tab):
-        print("Test..")
-        self.tab.Out.emit(self)
-        print("ing")
-
     # for dropping a file onto the main logo window
     def dragEnterEvent(self, event):
         if event.mimeData().hasUrls():
@@ -1280,7 +1274,7 @@ class MainWindow(QMainWindow):
     def is_floating(self):
         print('got to top of isFloating')
         print(self.imageDockWidget.isFloating())
-        self.imageDockWidget.setFloating(True)
+        #self.imageDockWidget.setFloating(True)
         print('tried to change the status')
         print(self.imageDockWidget.isFloating())
         print('did it work?')
@@ -1288,7 +1282,7 @@ class MainWindow(QMainWindow):
             print('got here to setting isFloating')
             self.imageDockWidget.setFloating(True)
         else:
-            self.imageDockWidget.setFloating(True)
+            self.imageDockWidget.setFloating(False)
 
     def renderImage(self, peripheral=None):
         '''
@@ -1328,6 +1322,7 @@ class MainWindow(QMainWindow):
             self.imageDockWidget.setWidget(self.imageWidget)
             self.addDockWidget(Qt.RightDockWidgetArea, self.imageDockWidget)
             self.imageLayout.addWidget(self.imageDockWidget)
+            print("IN RENDERIMAGE:peripheral==NONE")
 
         elif peripheral == 'ColorBar':
             print("GOT TO THE RIGHT PLACE")
@@ -1417,7 +1412,7 @@ class MainWindow(QMainWindow):
 
         #TODO compute the width based on the number of characters in the titles
 
-        self.summaryTable.setSummaryData(self.header, self.summary)
+        self.summaryTable.set_summary_data(self.header, self.summary)
         self.summaryDockWidget.setWindowTitle(self.title)
         self.summaryDockWidget.setWindowIcon(QIcon("./Icons/MagGlass.png"))
         self.summaryDockWidget.setWidget(self.summaryTable)
@@ -1427,33 +1422,14 @@ class MainWindow(QMainWindow):
 
 
 class Tab(QTabWidget):
-#    Out = pyqtSignal(QWidget)
-#    In = pyqtSignal(QWidget)
     def __init__(self, parent=None):
         #QTabWidget.__init__(self)
         super(Tab, self).__init__(parent)
 
-        self.popOutFlag = True
         self.setMovable(True)
         self.sizeHint()
 
-        # TODO - allow tabs to undock and redock
-#        self.popOutButton = QPushButton("-")
-#        self.popOutButton.setFixedWidth(12)
-#        self.popOutButton.setFixedHeight(12)
-
-
-        ##self.popOutButton.clicked.connect(lambda: self.Out.emit(self))
-#        self.popOutButton.clicked.connect(self.popInOut)
-
-#        self.popInButton = QPushButton("+")
-#       self.popInButton.setFixedWidth(12)
-#        self.popInButton.setFixedHeight(12)
-        #self.popInButton.clicked.connect(lambda: self.In.emit(self))
-#        self.popInButton.clicked.connect(self.popInOut)
-
-#        self.tBar = self.tabBar()
-
+#       self.tBar = self.tabBar()
 #       self.installEventFilter(self)
 
 class DockContents(QWidget):
@@ -1538,8 +1514,8 @@ class LabelFrame(QWidget, QObject):
 
     def populateTree(self, dict, parent, name, dataType):
         '''
-        This method uses recursion to obtain all the data from the nested OrderedDict's
-        in the Label Dictionary that is passed in
+        This recursive method obtains all the data is the nested OrderedDict's
+        contained in the Label Dictionary that is passed in.
         This is also used to get label data to be displayed in message boxes (self.parent_child_dict) when columns
         are double clicked.
         :param dict: The Label Dictionary that is made up of nested OrderedDict's
@@ -1625,7 +1601,7 @@ class SummaryTable(QTableWidget):
         self.sizeHint()
 
 
-    def setSummaryData(self, header, data):
+    def set_summary_data(self, header, data):
         for row in range(len(data[0])):
             for col in range(len(data) + 1):
                 if col < (len(data)):
@@ -1639,7 +1615,7 @@ class SummaryTable(QTableWidget):
                     self.btn_sell = QPushButton('View')
                     self.btn_sell.setFixedWidth(80)
                    # self.head.setResizeMode(3, 90)
-                    self.btn_sell.clicked.connect(self.handleButtonClicked)
+                    self.btn_sell.clicked.connect(self.handle_button_clicked)
                     self.setCellWidget(row, col, self.btn_sell)
                     self.update()
 
@@ -1656,9 +1632,8 @@ class SummaryTable(QTableWidget):
         return QSize(horizontal.length() + vertical.width() + frame,
                  vertical.length() + horizontal.height() + frame)
 
-
     @pyqtSlot()
-    def handleButtonClicked(self):
+    def handle_button_clicked(self):
         button = self.sender()
         index = self.indexAt(button.pos())
         self.update(index)
@@ -1686,7 +1661,7 @@ class MyHeader(QHeaderView):
         MyHeader.yPos = point.y()
 
     @staticmethod
-    def getMousePosition(self):
+    def get_mouse_position(self):
         return MyHeader.xPos, MyHeader.yPos
 
 
@@ -1873,7 +1848,7 @@ class ItemTable(QTableView):
                     }
                 """)
 
-            x, y = MyHeader.getMousePosition(self)
+            x, y = MyHeader.get_mouse_position(self)
             messageBox.move(x, y)
             retVal = messageBox.exec_()
 

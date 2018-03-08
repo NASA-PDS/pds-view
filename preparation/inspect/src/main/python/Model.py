@@ -11,15 +11,11 @@ from PyQt4 import QtCore, QtGui
 
 Qt = QtCore.Qt
 
-# from summary_view import open_summary
-
-# structures = pds4_read('../../PDS/SampleImage//virs_cube_64ppd_h02ne.xml')
-
-# noinspection PyCompatibility
 class SummaryItemsModel(QtCore.QAbstractItemModel):
     def __init__(self, fname):
         QtCore.QAbstractItemModel.__init__(self, parent=None)
-       # print("fname: {}".format(fname))
+        # print("fname: {}".format(fname))
+        self.summaryItems = None
         if fname == None:
             print("No file to read.")
         else:
@@ -196,13 +192,13 @@ class SummaryItemsModel(QtCore.QAbstractItemModel):
     def get_table(self, index):
 
         # TODO check this zero index, may not work for all the different cases
-        tableName = str(self.summaryItems[0][index.row()])
+        table_name = str(self.summaryItems[0][index.row()])
 
-        table = self.structure_list[tableName]
-        tableType = self.structure_list[tableName].type
+        table = self.structure_list[table_name]
+        table_type = self.structure_list[table_name].type
 
-        #print('tableName: {}'.format(tableName))
-        #print(type(table))
+        # print('tableName: {}'.format(tableName))
+        # print(type(table))
         title = table.id
 
         # noinspection PyCompatibility,PyCompatibility,PyCompatibility,PyCompatibility,PyCompatibility,PyCompatibility
@@ -212,12 +208,12 @@ class SummaryItemsModel(QtCore.QAbstractItemModel):
             print "No dimenstion is this table."
             dimension = (0, 0)
 
-        return table.data, title, dimension, tableType, tableName
+        return table.data, title, dimension, table_type, table_name
 
 
 class TwoDImage():
     def __init__(self, data, parent=None):
-        QtCore.QAbstractTableModel.__init__(self, parent)
+        QtCore.QAbstractTableModel.__init__(parent)
         self._data = np.array(data)
 
     def get_image_data(self):
@@ -227,6 +223,7 @@ class TwoDImage():
 # noinspection PyCompatibility,PyCompatibility
 class TwoDImageModel(QtCore.QAbstractTableModel):
     '''
+    TwoDImageModel class
     This class handles the modelling of 2D image table data
     Allows large nump[y array to be loaded directly into a tableView
     It is also used for 3D cube data, as the individual slices are 2D images
@@ -259,13 +256,10 @@ class TwoDImageModel(QtCore.QAbstractTableModel):
                 return QtCore.Qt.AlignCenter
         return None
 
-
     def setTableStyle(self, style, color = None, text_color = None):
         self.style_choice = style
 
-
     def write_table_to_csv(self, fname):
-        # noinspection PyCompatibility,PyCompatibility,PyCompatibility,PyCompatibility,PyCompatibility,PyCompatibility
         with open(unicode(fname), 'wb') as stream:
             writer = csv.writer(stream)
             for row in range(self.rowCount()):
@@ -273,7 +267,6 @@ class TwoDImageModel(QtCore.QAbstractTableModel):
                 for column in range(self.columnCount()):
                     item = self._data.item(row, column)
                     if item is not None:
-                        # noinspection PyCompatibility,PyCompatibility,PyCompatibility,PyCompatibility,PyCompatibility,PyCompatibility
                         rowdata.append(unicode(item).encode('utf8'))
                     else:
                         rowdata.append('')
@@ -283,7 +276,6 @@ class TwoDImageModel(QtCore.QAbstractTableModel):
 #        return self.data.min()
 
 
-# noinspection PyCompatibility,PyCompatibility
 class TableModel(QtCore.QAbstractTableModel):
     '''
     This is the model for other types of tables
@@ -304,9 +296,8 @@ class TableModel(QtCore.QAbstractTableModel):
         self.groups = self.getGroupSet()
         self.possible_groups = self.possible_groups(self.table_type)
 
-
         # TODO need to figure our how to read self.sturcture_list[0] in to table (see hello world code)
-        # Probalby do it with by making self.structure_list a class variable.
+        # Probably do it with by making self.structure_list a class variable.
 
         col_len, self.groupFinder, self.headerDict = self.findGroups()
 
@@ -314,9 +305,9 @@ class TableModel(QtCore.QAbstractTableModel):
         self.r = temp[0]
         self.c = int(col_len)
 
-       # print("IN MODEL")
-       # print('row count = {}'.format(self.r))
-       # print('column count = {}'.format(self.c))
+        # print("IN MODEL")
+        # print('row count = {}'.format(self.r))
+        # print('column count = {}'.format(self.c))
 
     def rowCount(self, parent=None):
         return self.r
@@ -361,7 +352,6 @@ class TableModel(QtCore.QAbstractTableModel):
         self. style_choice = style
         self.group_colors = colors
         self.group_text_color = text_color
-
 
     def flatten(self, row):
         '''
@@ -454,16 +444,16 @@ class TableModel(QtCore.QAbstractTableModel):
         print("total")
         print(table.dtype)
         for key in self.keys:
-            #print key
-            #print(table[key].shape)
+            # print key
+            # print(table[key].shape)
             shape = (table[key].shape)
-            #print(shape, key)
+            # print(shape, key)
             group_id = 1
             # shape will only be greater than 1 if there is a group
             if len(shape) > 1:
                 group_num += 1
                 self.groupFinder.append((key, shape[1]))
-                #print(self.groupFinder)
+                # print(self.groupFinder)
                 self.addToGroupSet(col_num, shape[1])
                 col_num += shape[1]
 
@@ -511,18 +501,18 @@ class ImageModel():
 
 def assignTableModel(data, table_type):
     if table_type == 'Array_2D_Image':
-        #print("Length of data: {}".format(len(data)))
+        # print("Length of data: {}".format(len(data)))
         return TwoDImageModel(data)
     elif table_type == 'Array_3D_Spectrum':
-       # print 'Array_3D_Spectrum'
-       # print("Length of data: {}".format(len(data)))
+        # print 'Array_3D_Spectrum'
+        # print("Length of data: {}".format(len(data)))
         return TwoDImageModel(data)
     elif table_type == 'Table_Character':
         return TableModel(data, table_type)
     elif table_type == 'Table_Binary':
         return TableModel(data, table_type)
     else:
-        possible_groups = True
+        # possible_groups = True
         print("In else: table type is, {}".format(table_type))
         return TableModel(data, table_type)
 
