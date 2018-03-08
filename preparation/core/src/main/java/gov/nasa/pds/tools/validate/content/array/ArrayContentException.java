@@ -13,6 +13,8 @@
 // $Id$
 package gov.nasa.pds.tools.validate.content.array;
 
+import java.util.Arrays;
+
 import gov.nasa.pds.tools.label.ContentException;
 import gov.nasa.pds.tools.label.ExceptionType;
 
@@ -25,10 +27,8 @@ import gov.nasa.pds.tools.label.ExceptionType;
 public class ArrayContentException extends ContentException {
   private static final long serialVersionUID = 602027709524944154L;
   private Integer array;
-  private Axis row;
-  private Axis column;
-  private Axis plane;
-  
+  private int[] location;
+   
   /**
    * Constructor.
    * 
@@ -37,50 +37,21 @@ public class ArrayContentException extends ContentException {
    * @param source The url of the data file associated with this message.
    * @param label The url of the label file.
    * @param array The index of the array associated with this message.
-   * @param row The row associated with this message.
-   * @param column The column associated with this message.
+   * @param location The location associated with the message.
    */
   public ArrayContentException(ExceptionType exceptionType, 
       String messageKey, String source, String label, Integer array, 
-      Axis row, Axis column) {
-    this(exceptionType, messageKey, source, label, array, row, column, null);
-  }
-  
-  /**
-   * Constructor.
-   * 
-   * @param exceptionType exception type.
-   * @param messageKey message or message key.
-   * @param source The url of the data file associated with this message.
-   * @param label The url of the label file.
-   * @param array The index of the array associated with this message.
-   * @param row The row associated with this message.
-   * @param column The column associated with this message.
-   * @param plane The plane associated with this message.
-   */
-  public ArrayContentException(ExceptionType exceptionType, 
-      String messageKey, String source, String label, Integer array, 
-      Axis row, Axis column, Axis plane) {
+      int[] location) {
     super(exceptionType, messageKey, source, label);
     if (array == null) {
       this.array = -1;
     } else {
       this.array = array;
     }
-    if (row == null) {
-      this.row = null;
+    if (location != null) {
+      this.location = location;
     } else {
-      this.row = row;
-    }
-    if (column == null) {
-      this.column = null;
-    } else {
-      this.column = column;
-    }
-    if (plane == null) {
-      this.plane = null;
-    } else {
-      this.plane = plane;
+      this.location = null;
     }
   }
   
@@ -93,7 +64,7 @@ public class ArrayContentException extends ContentException {
    */
   public ArrayContentException(ExceptionType exceptionType, String message, 
       String source) {
-    this(exceptionType, message, source, "", null, null, null);
+    this(exceptionType, message, source, "", null, null);
   }
   
   /**
@@ -103,24 +74,19 @@ public class ArrayContentException extends ContentException {
   public Integer getArray() {
     return this.array;
   }
-  
-  /**
-   * 
-   * @return the row.
-   */
-  public Axis getRow() {
-    return this.row;
-  }
-  
-  /**
-   * 
-   * @return the column.
-   */
-  public Axis getColumn() {
-    return this.column;
-  }
-  
-  public Axis getPlane() {
-    return this.plane;
+
+  public String getLocation() {
+    String loc = null;
+    if (this.location != null) {
+      loc = Arrays.toString(this.location);
+      if (this.location.length > 1) {
+        loc = loc.replaceAll("\\[", "\\(");
+        loc = loc.replaceAll("\\]", "\\)");
+      } else {
+        loc = loc.replaceAll("\\[", "");
+        loc = loc.replaceAll("\\]", "");
+      }
+    }
+    return loc;
   }
 }

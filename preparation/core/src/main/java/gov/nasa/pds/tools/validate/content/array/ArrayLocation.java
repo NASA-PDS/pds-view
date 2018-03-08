@@ -13,6 +13,8 @@
 // $Id$
 package gov.nasa.pds.tools.validate.content.array;
 
+import java.util.List;
+
 /**
  * Class that holds a specific location in an Array.
  * 
@@ -28,15 +30,8 @@ public final class ArrayLocation {
   
   /** The index of the table associated with the record. */
   private int array;
-  
-  /** The index of the record. */
-  private Axis plane;  
-  
-  /** The row axis. */
-  private Axis row;
-  
-  /** The column axis. */
-  private Axis column;
+    
+  private int[] location;
   
   /**
    * Constructor.
@@ -44,17 +39,13 @@ public final class ArrayLocation {
    * @param label The url to the label.
    * @param dataFile The url to the data file.
    * @param array The array index.
-   * @param plane The plane axis.
-   * @param row The row axis.
-   * @param column The column axis.
+   * @param location The location.
    */
-  public ArrayLocation(String label, String dataFile, int array, Axis plane, Axis row, Axis column) {
+  public ArrayLocation(String label, String dataFile, int array, int[] location) {
     this.label = label;
     this.dataFile = dataFile;
     this.array = array;
-    this.plane = plane;
-    this.row = row;
-    this.column = column;
+    this.location = location;
   }
   
   /**
@@ -81,27 +72,8 @@ public final class ArrayLocation {
     return this.array;
   }
   
-  /**
-   * 
-   * @return the plane.
-   */
-  public Axis getPlane() {
-    return this.plane;
+  public int[] getLocation() {
+    return this.location;
   }
-  
-  /**
-   * 
-   * @return the row.
-   */
-  public Axis getRow() {
-    return this.row;
-  }
-  
-  /**
-   * 
-   * @return the column.
-   */
-  public Axis getColumn() {
-    return this.column;
-  }
+ 
 }

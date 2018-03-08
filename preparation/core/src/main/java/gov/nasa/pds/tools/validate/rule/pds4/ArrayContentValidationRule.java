@@ -44,6 +44,7 @@ import gov.nasa.pds.label.object.ArrayObject;
 import gov.nasa.pds.objectAccess.ObjectAccess;
 import gov.nasa.pds.objectAccess.ObjectProvider;
 import gov.nasa.pds.objectAccess.ParseException;
+import gov.nasa.pds.objectAccess.DataType.NumericDataType;
 import gov.nasa.pds.tools.label.ExceptionType;
 import gov.nasa.pds.tools.label.LabelException;
 import gov.nasa.pds.tools.label.SourceLocation;
@@ -128,6 +129,14 @@ public class ArrayContentValidationRule extends AbstractValidationRule {
       for (Array array : arrayObjects) {
         try {
           try {
+            // Check if the data type is something we support
+            String dataType = "";
+            try {
+              dataType = array.getElementArray().getDataType();
+              Enum.valueOf(NumericDataType.class, dataType);
+            } catch (IllegalArgumentException a) {
+              throw new IllegalArgumentException(dataType + " is not supported at this time.");
+            }
             //The size of the array object is equal to the element size 
             // times the product of the sizes of all axes 
             // (i.e. total size = number of lines * number of samples * number of bands * element size)
@@ -158,23 +167,17 @@ public class ArrayContentValidationRule extends AbstractValidationRule {
   }
   
   private void addArrayException(ExceptionType exceptionType, String message, String dataFile, int array) {
-    addArrayException(exceptionType, message, dataFile, array, null, null);
+    addArrayException(exceptionType, message, dataFile, array, null);
   }
   
-  private void addArrayException(ExceptionType exceptionType, String message, String dataFile, int array, Axis row, Axis column) {
-    addArrayException(exceptionType, message, dataFile, array, row, column, null);
-  }
-  
-  private void addArrayException(ExceptionType exceptionType, String message, String dataFile, int array, Axis row, Axis column, Axis plane) {
-    getListener().addProblem(
+  private void addArrayException(ExceptionType exceptionType, String message, String dataFile, int array, int[] location) {
+        getListener().addProblem(
         new ArrayContentException(exceptionType, 
             message, 
             dataFile, 
             getTarget().toString(),
             array,
-            row, 
-            column, 
-            plane));
+            location));
   }
   
   private Map<String, Integer> scanArrays(List<FileArea> fileAreas, 
