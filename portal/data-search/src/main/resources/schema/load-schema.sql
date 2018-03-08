@@ -29,6 +29,8 @@ insert into investigation_tools (investigation, title, description, url, rank) v
 
 insert into investigation_tools (investigation, title, description, url, rank) values ('Apollo', 'Apollo Archive at the Geosciences Node', 'The Apollo Archive page provides details on the investigation, instruments and targets associated with the archive as well as additional resources for discovering Apollo data.', 'http://pds-geosciences.wustl.edu/missions/apollo/index.htm', 101);
 
+insert into investigation_tools (investigation, title, description, url, rank) values ('Apollo', 'SPICE Data Holdings at the Navigation and Ancillary Information Facility Node', 'Supports Apollo product browse and download.', 'https://naif.jpl.nasa.gov/naif/data_archived.html', 102);
+
 /* Cassini */
 
 insert into investigation_tools (investigation, title, description, url, rank) values ('Cassini', 'OPUS at the Ring-Moon Systems Node', 'Supports Cassini (CIRS, ISS, UVIS, VIMS), all with enhanced geometric metadata enabling more detailed searches, including surface search constraints for the planet, satellites and rings (e.g., latitudes and longitudes), and expanded sets of viewing and illumination constraints. Browse results and download, including calibrated versions for ISS.', 'https://tools.pds-rings.seti.org/opus#/missionid=Cassini', 1);
@@ -47,6 +49,8 @@ insert into investigation_tools (investigation, title, description, url, rank) v
 insert into investigation_tools (investigation, title, description, url, rank) values ('Cassini', 'Cassini-Huygens Archive at the Planetary Plasma Interactions Node', 'The Cassini-Huygens Archive page provides details on the instruments and targets associated with the archive as well as additional resources for discovering Cassini data.', 'https://pds-ppi.igpp.ucla.edu/mission/Cassini-Huygens', 103);
 
 insert into investigation_tools (investigation, title, description, url, rank) values ('Cassini', 'Dust Data at the Small Bodies Node', 'Supports Cassini CDA and HRD product browse and download.', 'https://sbn.psi.edu/pds/archive/cassini.html', 104);
+
+insert into investigation_tools (investigation, title, description, url, rank) values ('Cassini', 'SPICE Data Holdings at the Navigation and Ancillary Information Facility Node', 'Supports Cassini product browse and download.', 'https://naif.jpl.nasa.gov/naif/data_archived.html', 105);
 
 /* Chandrayaan-1 */
 
@@ -69,6 +73,9 @@ insert into investigation_tools (investigation, title, description, url, rank) v
 
 insert into investigation_tools (investigation, title, description, url, rank) values ('Clementine', 'Planetary Image Locator Tool (PILOT) at the Cartography and Imaging Sciences Node', 'Supports Clementine HIRES, LWIR, NIR, and UVIS map-based image product locator tool using uniform image geometry to search and download.', 'https://pilot.wr.usgs.gov/', 4);
 
+
+insert into investigation_tools (investigation, title, description, url, rank) values ('Clementine', 'SPICE Data Holdings at the Navigation and Ancillary Information Facility Node', 'Supports Apollo product browse and download.', 'https://naif.jpl.nasa.gov/naif/data_archived.html', 101);
+
 /* Dawn */
 
 insert into investigation_tools (investigation, title, description, url, rank) values ('Dawn', 'Small Bodies Image Browser at the Small Bodies Node', 'Supports Dawn Mission product browse and download for Ceres and Vesta data.', 'https://sbib.psi.edu/', 1);
@@ -76,9 +83,13 @@ insert into investigation_tools (investigation, title, description, url, rank) v
 
 insert into investigation_tools (investigation, title, description, url, rank) values ('Dawn', 'Dawn Data Archive at the Small Bodies Node', 'Supports Dawn Mission product browse and download for Ceres and Vesta data.', 'https://sbn.psi.edu/pds/resource/dawn/', 101);
 
+insert into investigation_tools (investigation, title, description, url, rank) values ('Dawn', 'SPICE Data Holdings at the Navigation and Ancillary Information Facility Node', 'Supports Dawn product browse and download.', 'https://naif.jpl.nasa.gov/naif/data_archived.html', 102);
+
 /* Deep Impact */
 
 insert into investigation_tools (investigation, title, description, url, rank) values ('Deep Impact', 'Deep Impact Data Archive at the Small Bodies Node', 'Supports Deep Impact Mission product browse and download for 9P/Tempel 1 (Cruise & Encounter) data.', 'https://pds-smallbodies.astro.umd.edu/data_sb/missions/deepimpact/index.shtml', 101);
+
+insert into investigation_tools (investigation, title, description, url, rank) values ('Deep Impact', 'SPICE Data Holdings at the Navigation and Ancillary Information Facility Node', 'Supports Deep Impact product browse and download.', 'https://naif.jpl.nasa.gov/naif/data_archived.html', 102);
 
 /* Deep Space 1 */
 
@@ -86,9 +97,13 @@ insert into investigation_tools (investigation, title, description, url, rank) v
 
 insert into investigation_tools (investigation, title, description, url, rank) values ('Deep Space 1', 'Deep Space 1 Archive at the Planetary Plasma Interactions Node', 'The Deep Space 1 Archive page provides details on the investigation, instruments and targets associated with the archive as well as additional resources for discovering Deep Space 1 data.', 'https://pds-ppi.igpp.ucla.edu/mission/Deep_Space_1', 102);
 
+insert into investigation_tools (investigation, title, description, url, rank) values ('Deep Space 1', 'SPICE Data Holdings at the Navigation and Ancillary Information Facility Node', 'Supports Deep Space 1 product browse and download.', 'https://naif.jpl.nasa.gov/naif/data_archived.html', 103);
+
 /* EPOXI */
 
 insert into investigation_tools (investigation, title, description, url, rank) values ('EPOXI', 'EPOXI Data Archive at the Small Bodies Node', 'Supports EPOXI Mission product browse and download for 103P/Hartley 2 encounter, C/Garrad (2009 P1) and C/ISON (2012 S1) data.', 'https://pds-smallbodies.astro.umd.edu/data_sb/missions/epoxi/index.shtml', 101);
+
+insert into investigation_tools (investigation, title, description, url, rank) values ('EPOXI', 'SPICE Data Holdings at the Navigation and Ancillary Information Facility Node', 'Supports EPOXI product browse and download.', 'https://naif.jpl.nasa.gov/naif/data_archived.html', 102);
 
 /* Galileo */
 
@@ -105,6 +120,8 @@ insert into investigation_tools (investigation, title, description, url, rank) v
 
 insert into investigation_tools (investigation, title, description, url, rank) values ('Galileo', 'Galileo Orbiter Data Archive at the Small Bodies Node', 'Supports Galileo product browse and download for Ida, Gaspra, small satellites and dust data.', 'https://sbn.psi.edu/pds/archive/galileo.html', 102);
 
+insert into investigation_tools (investigation, title, description, url, rank) values ('Galileo', 'SPICE Data Holdings at the Navigation and Ancillary Information Facility Node', 'Supports Galileo product browse and download.', 'https://naif.jpl.nasa.gov/naif/data_archived.html', 103);
+
 /* Giotto */
 
 insert into investigation_tools (investigation, title, description, url, rank) values ('Giotto', 'Giotto Mission Data Archive at the Small Bodies Node', 'Supports Giotto Mission product browse and download for 1P/Halley and interplanetary dust data.', 'https://pds-smallbodies.astro.umd.edu/data_sb/missions/giotto/index.shtml', 101);
@@ -113,6 +130,8 @@ insert into investigation_tools (investigation, title, description, url, rank) v
 
 insert into investigation_tools (investigation, title, description, url, rank) values ('Giotto', 'Giotto Archive at the Planetary Plasma Interactions Node', 'The Giotto Archive page provides details on the investigation, instruments and targets associated with the archive as well as additional resources for discovering Giotto data.', 'https://pds-ppi.igpp.ucla.edu/mission/GIOTTO', 103);
 
+insert into investigation_tools (investigation, title, description, url, rank) values ('Giotto', 'SPICE Data Holdings at the Navigation and Ancillary Information Facility Node', 'Supports Giotto product browse and download.', 'https://naif.jpl.nasa.gov/naif/data_archived.html', 104);
+
 /* GRAIL */
 
 insert into investigation_tools (investigation, title, description, url, rank) values ('GRAIL', 'Lunar Orbital Data Explorer (ODE) at the Geosciences Node', 'Supports search, browse, and download of select PDS data products from the Gravity Recovery And Interior Laboratory (GRAIL) mission, including Lunar Gravity Ranging System (LGRS) data.', 'http://ode.rsl.wustl.edu/moon', 1);
@@ -120,9 +139,13 @@ insert into investigation_tools (investigation, title, description, url, rank) v
 
 insert into investigation_tools (investigation, title, description, url, rank) values ('GRAIL', 'Gravity Recovery And Interior Laboratory (GRAIL) Archive at the Geosciences Node', 'The GRAIL Archive page provides details on the investigation, instruments and targets associated with the archive as well as additional resources for discovering GRAIL data.', 'http://pds-geosciences.wustl.edu/missions/grail/default.htm', 101);
 
+insert into investigation_tools (investigation, title, description, url, rank) values ('GRAIL', 'SPICE Data Holdings at the Navigation and Ancillary Information Facility Node', 'Supports GRAIL product browse and download.', 'https://naif.jpl.nasa.gov/naif/data_archived.html', 102);
+
 /* Hayabusa */
 
 insert into investigation_tools (investigation, title, description, url, rank) values ('Hayabusa', 'Hayabusa Data Archive at the Small Bodies Node', 'Supports Hayabusa Mission product browse and download for Itokawa data.', 'https://pdssbn.astro.umd.edu/data_sb/missions/hayabusa/index.shtml', 101);
+
+insert into investigation_tools (investigation, title, description, url, rank) values ('Hayabusa', 'SPICE Data Holdings at the Navigation and Ancillary Information Facility Node', 'Supports Hayabusa product browse and download.', 'https://naif.jpl.nasa.gov/naif/data_archived.html', 102);
 
 /* Hubble Space Telescope */
 
@@ -138,6 +161,8 @@ insert into investigation_tools (investigation, title, description, url, rank) v
 
 insert into investigation_tools (investigation, title, description, url, rank) values ('Juno', 'Juno Archive at the Planetary Plasma Interactions Node', 'The Juno Archive page provides details on the investigation, instruments and targets associated with the archive as well as additional resources for discovering Juno data.', 'https://pds-ppi.igpp.ucla.edu/mission/JUNO', 102);
 
+insert into investigation_tools (investigation, title, description, url, rank) values ('Juno', 'SPICE Data Holdings at the Navigation and Ancillary Information Facility Node', 'Supports Juno product browse and download.', 'https://naif.jpl.nasa.gov/naif/data_archived.html', 103);
+
 /* LADEE */
 
 insert into investigation_tools (investigation, title, description, url, rank) values ('LADEE', 'Lunar Atmospheres Data Archive at the Atmospheres Node', 'Supports LADEE Mission product browse and download for NMS and UVS data.', 'https://pds-atmospheres.nmsu.edu/data_and_services/atmospheres_data/LADEE/lunar.html', 101);
@@ -148,6 +173,8 @@ insert into investigation_tools (investigation, title, description, url, rank) v
 
 insert into investigation_tools (investigation, title, description, url, rank) values ('LADEE', 'Lunar Atmosphere and Dust Environment Explorer (LADEE) Archive at the Planetary Plasma Interactions Node', 'The LADEE Archive page provides details on the investigation, instruments and targets associated with the archive as well as additional resources for discovering LADEE data.', 'https://pds-ppi.igpp.ucla.edu/mission/LADEE', 104);
 
+insert into investigation_tools (investigation, title, description, url, rank) values ('LADEE', 'SPICE Data Holdings at the Navigation and Ancillary Information Facility Node', 'Supports LADEE product browse and download.', 'https://naif.jpl.nasa.gov/naif/data_archived.html', 105);
+
 /* LCROSS */
 
 insert into investigation_tools (investigation, title, description, url, rank) values ('LCROSS', 'LCROSS Analyst''s Notebook at the Geosciences Node', 'Provides access to data from the Lunar Crater Observation And Sensing Satellite (LCROSS) mission, including camera, spectrometer, and photometer data.', 'http://an.rsl.wustl.edu/lcross/lcrossbrowser/', 1);
@@ -156,6 +183,24 @@ insert into investigation_tools (investigation, title, description, url, rank) v
 
 
 insert into investigation_tools (investigation, title, description, url, rank) values ('LCROSS', 'Lunar Crater Observation And Sensing Satellite (LCROSS) Archive at the Geosciences Node', 'The LCROSS Archive page provides details on the investigation, instruments and targets associated with the archive as well as additional resources for discovering LCROSS data.', 'http://pds-geosciences.wustl.edu/missions/lcross/default.htm', 101);
+
+/* Lunar Orbiter */
+
+insert into investigation_tools (investigation, title, description, url, rank) values ('Lunar Orbiter', 'Lunar Orbital Data Explorer (ODE) at the Geosciences Node', 'Supports search, browse, and download of select PDS data products from the Lunar Orbiter program, including Lunar Orbiter Camera data.', 'http://ode.rsl.wustl.edu/moon', 1);
+
+
+insert into investigation_tools (investigation, title, description, url, rank) values ('Lunar Orbiter', 'SPICE Data Holdings at the Navigation and Ancillary Information Facility Node', 'Supports Lunar Orbiters 1-5 product browse and download.', 'https://naif.jpl.nasa.gov/naif/data_archived.html', 101);
+
+/* Lunar Prospector */
+
+insert into investigation_tools (investigation, title, description, url, rank) values ('Lunar Prospector', 'Lunar Orbital Data Explorer (ODE) at the Geosciences Node', 'Supports search, browse, and download of select PDS data products from the Lunar Prospector mission. This includes Gamma Ray, Neutron, and Alpha Particle Spectrometer, Magnetometer, Electron Reflectometer, and Doppler Gravity Experiment data.', 'http://ode.rsl.wustl.edu/moon', 1);
+
+
+insert into investigation_tools (investigation, title, description, url, rank) values ('Lunar Prospector', 'Lunar Prospector Archive at the Geosciences Node', 'The Lunar Prospector Archive page provides details on the investigation, instruments and targets associated with the archive as well as additional resources for discovering Lunar Prospector data.', 'http://pds-geosciences.wustl.edu/missions/lunarp/index.htm', 101);
+
+insert into investigation_tools (investigation, title, description, url, rank) values ('Lunar Prospector', 'Lunar Prospector Archive at the Planetary Plasma Interactions Node', 'The Lunar Prospector Archive page provides details on the investigation, instruments and targets associated with the archive as well as additional resources for discovering Lunar Prospector data.', 'https://pds-ppi.igpp.ucla.edu/mission/Lunar_Prospector', 102);
+
+insert into investigation_tools (investigation, title, description, url, rank) values ('Lunar Prospector', 'SPICE Data Holdings at the Navigation and Ancillary Information Facility Node', 'Supports Lunar Prospector product browse and download.', 'https://naif.jpl.nasa.gov/naif/data_archived.html', 103);
 
 /* Lunar Reconnaissance Orbiter */
 
@@ -172,18 +217,7 @@ insert into investigation_tools (investigation, title, description, url, rank) v
 
 insert into investigation_tools (investigation, title, description, url, rank) values ('Lunar Reconnaissance Orbiter', 'Lunar Reconnaissance Orbiter (LRO) Archive at the Planetary Plasma Interactions Node', 'The LRO Archive page provides details on the investigation, instruments and targets associated with the archive as well as additional resources for discovering LRO data.', 'https://pds-ppi.igpp.ucla.edu/mission/Lunar_Reconnaissance_Orbiter', 102);
 
-/* Lunar Orbiter */
-
-insert into investigation_tools (investigation, title, description, url, rank) values ('Lunar Orbiter', 'Lunar Orbital Data Explorer (ODE) at the Geosciences Node', 'Supports search, browse, and download of select PDS data products from the Lunar Orbiter program, including Lunar Orbiter Camera data.', 'http://ode.rsl.wustl.edu/moon', 1);
-
-/* Lunar Prospector */
-
-insert into investigation_tools (investigation, title, description, url, rank) values ('Lunar Prospector', 'Lunar Orbital Data Explorer (ODE) at the Geosciences Node', 'Supports search, browse, and download of select PDS data products from the Lunar Prospector mission. This includes Gamma Ray, Neutron, and Alpha Particle Spectrometer, Magnetometer, Electron Reflectometer, and Doppler Gravity Experiment data.', 'http://ode.rsl.wustl.edu/moon', 1);
-
-
-insert into investigation_tools (investigation, title, description, url, rank) values ('Lunar Prospector', 'Lunar Prospector Archive at the Geosciences Node', 'The Lunar Prospector Archive page provides details on the investigation, instruments and targets associated with the archive as well as additional resources for discovering Lunar Prospector data.', 'http://pds-geosciences.wustl.edu/missions/lunarp/index.htm', 101);
-
-insert into investigation_tools (investigation, title, description, url, rank) values ('Lunar Prospector', 'Lunar Prospector Archive at the Planetary Plasma Interactions Node', 'The Lunar Prospector Archive page provides details on the investigation, instruments and targets associated with the archive as well as additional resources for discovering Lunar Prospector data.', 'https://pds-ppi.igpp.ucla.edu/mission/Lunar_Prospector', 102);
+insert into investigation_tools (investigation, title, description, url, rank) values ('Lunar Reconnaissance Orbiter', 'SPICE Data Holdings at the Navigation and Ancillary Information Facility Node', 'Supports Lunar Reconnaissance Orbiter product browse and download.', 'https://naif.jpl.nasa.gov/naif/data_archived.html', 103);
 
 /* Magellan */
 
@@ -198,9 +232,13 @@ insert into investigation_tools (investigation, title, description, url, rank) v
 
 insert into investigation_tools (investigation, title, description, url, rank) values ('Magellan', 'Magellan Archive at the Planetary Plasma Interactions Node', 'The Magellan Archive page provides details on the investigation, instruments and targets associated with the archive as well as additional resources for discovering Magellan data.', 'https://pds-ppi.igpp.ucla.edu/mission/Magellan', 102);
 
+insert into investigation_tools (investigation, title, description, url, rank) values ('Magellan', 'SPICE Data Holdings at the Navigation and Ancillary Information Facility Node', 'Supports Magellan product browse and download.', 'https://naif.jpl.nasa.gov/naif/data_archived.html', 103);
+
 /* Mariner */
 
 insert into investigation_tools (investigation, title, description, url, rank) values ('Mariner', 'Mariner Archive at the Planetary Plasma Interactions Node', 'The Mariner Archive page provides details on the investigation, instruments and targets associated with the archive as well as additional resources for discovering Mariner data.', 'https://pds-ppi.igpp.ucla.edu/mission/Mariner_10', 101);
+
+insert into investigation_tools (investigation, title, description, url, rank) values ('Mariner', 'SPICE Data Holdings at the Navigation and Ancillary Information Facility Node', 'Supports Mariner product browse and download.', 'https://naif.jpl.nasa.gov/naif/data_archived.html', 105);
 
 /* Mars Exploration Rover */
 
@@ -210,6 +248,8 @@ insert into investigation_tools (investigation, title, description, url, rank) v
 
 
 insert into investigation_tools (investigation, title, description, url, rank) values ('Mars Exploration Rover', 'Mars Exploration Rover (MER) Archive at the Geosciences Node', 'The MER Archive page provides details on the investigation, instruments and targets associated with the archive as well as additional resources for discovering MER data.', 'http://pds-geosciences.wustl.edu/missions/mer/index.htm', 101);
+
+insert into investigation_tools (investigation, title, description, url, rank) values ('Mars Exploration Rover', 'SPICE Data Holdings at the Navigation and Ancillary Information Facility Node', 'Supports Mars Exploration Rovers (Opportunity and Spirit) product browse and download.', 'https://naif.jpl.nasa.gov/naif/data_archived.html', 102);
 
 /* Mars Express */
 
@@ -223,6 +263,8 @@ insert into investigation_tools (investigation, title, description, url, rank) v
 insert into investigation_tools (investigation, title, description, url, rank) values ('Mars Express', 'Mars Express (MEX) Archive at the Geosciences Node', 'The MEX Archive page provides details on the investigation, instruments and targets associated with the archive as well as additional resources for discovering MEX data.', 'http://pds-geosciences.wustl.edu/missions/mars_express/default.htm', 101);
 
 insert into investigation_tools (investigation, title, description, url, rank) values ('Mars Express', 'Mars Express (MEX) Archive at the Planetary Plasma Interactions Node', 'The MEX Archive page provides details on the investigation, instruments and targets associated with the archive as well as additional resources for discovering MEX data.', 'https://pds-ppi.igpp.ucla.edu/mission/Mars_Express', 102);
+
+insert into investigation_tools (investigation, title, description, url, rank) values ('Mars Express', 'SPICE Data Holdings at the Navigation and Ancillary Information Facility Node', 'Supports Mars Express product browse and download.', 'https://naif.jpl.nasa.gov/naif/data_archived.html', 103);
 
 /* Mars Global Surveyor */
 
@@ -241,6 +283,8 @@ insert into investigation_tools (investigation, title, description, url, rank) v
 
 insert into investigation_tools (investigation, title, description, url, rank) values ('Mars Global Surveyor', 'Mars Global Surveyor (MGS) Archive at the Planetary Plasma Interactions Node', 'The MGS Archive page provides details on the investigation, instruments and targets associated with the archive as well as additional resources for discovering MGS data.', 'https://pds-ppi.igpp.ucla.edu/mission/Mars_Global_Surveyor', 102);
 
+insert into investigation_tools (investigation, title, description, url, rank) values ('Mars Global Surveyor', 'SPICE Data Holdings at the Navigation and Ancillary Information Facility Node', 'Supports Mars Global Surveyor product browse and download.', 'https://naif.jpl.nasa.gov/naif/data_archived.html', 103);
+
 /* Mars Odyssey */
 
 insert into investigation_tools (investigation, title, description, url, rank) values ('Mars Odyssey', 'Mars Orbital Data Explorer (ODE) at the Geosciences Node', 'Supports search, browse, and download of select PDS data products from the Mars Odyssey mission, including GRS and THEMIS data.', 'http://ode.rsl.wustl.edu/mars/', 1);
@@ -257,6 +301,8 @@ insert into investigation_tools (investigation, title, description, url, rank) v
 insert into investigation_tools (investigation, title, description, url, rank) values ('Mars Odyssey', 'Mars Odyssey Archive at the Geosciences Node', 'The 2001 Mars Odyssey Archive page provides details on the investigation, instruments and targets associated with the archive as well as additional resources for discovering 2001 Mars Odyssey data.', 'http://pds-geosciences.wustl.edu/missions/odyssey/index.htm', 101);
 
 insert into investigation_tools (investigation, title, description, url, rank) values ('Mars Odyssey', 'Mars Odyssey Archive at the Planetary Plasma Interactions Node', 'The 2001 Mars Odyssey Archive page provides details on the investigation, instruments and targets associated with the archive as well as additional resources for discovering 2001 Mars Odyssey data.', 'https://pds-ppi.igpp.ucla.edu/mission/2001_MARS_ODYSSEY', 102);
+
+insert into investigation_tools (investigation, title, description, url, rank) values ('Mars Odyssey', 'SPICE Data Holdings at the Navigation and Ancillary Information Facility Node', 'Supports Mars Odyssey product browse and download.', 'https://naif.jpl.nasa.gov/naif/data_archived.html', 103);
 
 /* Mars Pathfinder */
 
@@ -278,6 +324,8 @@ insert into investigation_tools (investigation, title, description, url, rank) v
 
 insert into investigation_tools (investigation, title, description, url, rank) values ('Mars Reconnaissance Orbiter', 'Mars Reconnaissance Orbiter (MRO) Archive at the Geosciences Node', 'The MRO Archive page provides details on the investigation, instruments and targets associated with the archive as well as additional resources for discovering MRO data.', 'http://pds-geosciences.wustl.edu/missions/mro/default.htm', 101);
 
+insert into investigation_tools (investigation, title, description, url, rank) values ('Mars Reconnaissance Orbiter', 'SPICE Data Holdings at the Navigation and Ancillary Information Facility Node', 'Supports Mars Reconnaissance Orbiter product browse and download.', 'https://naif.jpl.nasa.gov/naif/data_archived.html', 102);
+
 /* Mars Science Laboratory */
 
 insert into investigation_tools (investigation, title, description, url, rank) values ('Mars Science Laboratory', 'MSL Analyst''s Notebook at the Geosciences Node', 'Provides access to the Mars Science Laboratory (MSL) Curiosity data archives by integrating sequence information, science data, and documentation into standard web-accessible pages to facilitate mission "replay."', 'http://an.rsl.wustl.edu/msl', 1);
@@ -289,11 +337,15 @@ insert into investigation_tools (investigation, title, description, url, rank) v
 
 insert into investigation_tools (investigation, title, description, url, rank) values ('Mars Science Laboratory', 'Mars Science Laboratory (MSL) Archive at the Planetary Plasma Interactions Node', 'The MSL Archive page provides details on the investigation, instruments and targets associated with the archive as well as additional resources for discovering MSL data.', 'https://pds-ppi.igpp.ucla.edu/mission/Mars_Science_Laboratory', 102);
 
+insert into investigation_tools (investigation, title, description, url, rank) values ('Mars Science Laboratory', 'SPICE Data Holdings at the Navigation and Ancillary Information Facility Node', 'Supports Mars Science Laboratory product browse and download.', 'https://naif.jpl.nasa.gov/naif/data_archived.html', 103);
+
 /* MAVEN */
 
-insert into investigation_tools (investigation, title, description, url, rank) values ('MAVEN', 'Mars Atmosphere & Volatile Evolution Mission (MAVEN)  Archive at the Planetary Plasma Interactions Node', 'The Mariner Archive page provides details on the investigation, instruments and targets associated with the archive as well as additional resources for discovering MAVEN data.', 'http://pds-atmospheres.nmsu.edu/data_and_services/atmospheres_data/MAVEN/maven_main.html', 101);
+insert into investigation_tools (investigation, title, description, url, rank) values ('MAVEN', 'Mars Atmosphere & Volatile Evolution Mission (MAVEN)  Archive at the Atmospheres Node', 'The MAVEN Archive page provides details on the investigation, instruments and targets associated with the archive as well as additional resources for discovering MAVEN data.', 'http://pds-atmospheres.nmsu.edu/data_and_services/atmospheres_data/MAVEN/maven_main.html', 101);
 
-insert into investigation_tools (investigation, title, description, url, rank) values ('MAVEN', 'Mars Atmosphere & Volatile Evolution Mission (MAVEN)  Archive at the Planetary Plasma Interactions Node', 'The Mariner Archive page provides details on the investigation, instruments and targets associated with the archive as well as additional resources for discovering MAVEN data.', 'https://pds-ppi.igpp.ucla.edu/mission/MAVEN', 102);
+insert into investigation_tools (investigation, title, description, url, rank) values ('MAVEN', 'Mars Atmosphere & Volatile Evolution Mission (MAVEN)  Archive at the Planetary Plasma Interactions Node', 'The MAVEN Archive page provides details on the investigation, instruments and targets associated with the archive as well as additional resources for discovering MAVEN data.', 'https://pds-ppi.igpp.ucla.edu/mission/MAVEN', 102);
+
+insert into investigation_tools (investigation, title, description, url, rank) values ('MAVEN', 'SPICE Data Holdings at the Navigation and Ancillary Information Facility Node', 'Supports MAVEN product browse and download.', 'https://naif.jpl.nasa.gov/naif/data_archived.html', 103);
 
 /* MESSENGER */
 
@@ -310,6 +362,8 @@ insert into investigation_tools (investigation, title, description, url, rank) v
 
 insert into investigation_tools (investigation, title, description, url, rank) values ('MESSENGER', 'MErcury Surface, Space ENvironment, GEochemistry, and Ranging (MESSENGER) Archive at the Planetary Plasma Interactions Node', 'The MESSENGER Archive page provides details on the investigation, instruments and targets associated with the archive as well as additional resources for discovering MESSENGER data.', 'https://pds-ppi.igpp.ucla.edu/mission/MESSENGER', 102);
 
+insert into investigation_tools (investigation, title, description, url, rank) values ('MESSENGER', 'SPICE Data Holdings at the Navigation and Ancillary Information Facility Node', 'Supports MESSENGER product browse and download.', 'https://naif.jpl.nasa.gov/naif/data_archived.html', 105);
+
 /* Mid-Course Space Experiment */
 
 insert into investigation_tools (investigation, title, description, url, rank) values ('Mid-Course Space Experiment', 'Mid-Course Space Experiment (MSX) Data Archive at the Small Bodies Node', 'Supports MSX Mission product browse and download for Asteroids, Comets and Interplanetary Dust data.', 'https://sbn.psi.edu/pds/archive/msx.html', 101);
@@ -322,6 +376,8 @@ insert into investigation_tools (investigation, title, description, url, rank) v
 insert into investigation_tools (investigation, title, description, url, rank) values ('NEAR', 'Near Earth Asteroid Rendezvous (NEAR) Data Archive at the Small Bodies Node', 'Supports NEAR Mission product browse and download for Eros, Mathilde and C/Hyakutake data.', 'https://sbn.psi.edu/pds/resource/near/', 101);
 
 insert into investigation_tools (investigation, title, description, url, rank) values ('NEAR', 'Near Earth Asteroid Rendezvous (NEAR) Archive at the Planetary Plasma Interactions Node', 'The NEAR Archive page provides details on the investigation, instruments and targets associated with the archive as well as additional resources for discovering NEAR data.', 'https://pds-ppi.igpp.ucla.edu/mission/Near_Earth_Asteroid_Rendezvous', 102);
+
+insert into investigation_tools (investigation, title, description, url, rank) values ('NEAR', 'SPICE Data Holdings at the Navigation and Ancillary Information Facility Node', 'Supports NEAR product browse and download.', 'https://naif.jpl.nasa.gov/naif/data_archived.html', 103);
 
 /* New Horizons */
 
@@ -337,6 +393,8 @@ insert into investigation_tools (investigation, title, description, url, rank) v
 insert into investigation_tools (investigation, title, description, url, rank) values ('New Horizons', 'New Horizons Archive at the Planetary Plasma Interactions Node', 'The New Horizons Archive page provides details on the investigation, instruments and targets associated with the archive as well as additional resources for discovering New Horizons data.', 'https://pds-ppi.igpp.ucla.edu/mission/New_Horizons', 102);
 
 insert into investigation_tools (investigation, title, description, url, rank) values ('New Horizons', 'New Horizons Jupiter Encounter at the Atmospheres Node', 'The New Horizons Jupiter Encounter page provides details on the investigation, instruments and targets associated with the archive as well as additional resources for discovering New Horizons data.', 'http://pds-atmospheres.nmsu.edu/data_and_services/atmospheres_data/NewHorizons/NH_Jupiter.html', 103);
+
+insert into investigation_tools (investigation, title, description, url, rank) values ('New Horizons', 'SPICE Data Holdings at the Navigation and Ancillary Information Facility Node', 'Supports New Horizons product browse and download.', 'https://naif.jpl.nasa.gov/naif/data_archived.html', 104);
 
 /* Phoenix */
 
@@ -355,13 +413,19 @@ insert into investigation_tools (investigation, title, description, url, rank) v
 
 insert into investigation_tools (investigation, title, description, url, rank) values ('Pioneer', 'Pioneer Venus Archive at the Planetary Plasma Intractions Node', 'The Pioneer Venus Archive page provides details on the investigation, instruments and targets associated with the archive as well as additional resources for discovering Pioneer 10 data.', 'https://pds-ppi.igpp.ucla.edu/mission/Pioneer_Venus', 103);
 
+insert into investigation_tools (investigation, title, description, url, rank) values ('Pioneer', 'SPICE Data Holdings at the Navigation and Ancillary Information Facility Node', 'Supports Pioneer 10/11/12 and Pioneer Venus Orbiter product browse and download.', 'https://naif.jpl.nasa.gov/naif/data_archived.html', 105);
+
 /* Rosetta */
 
 insert into investigation_tools (investigation, title, description, url, rank) values ('Rosetta', 'Rosetta Data Archive at the Small Bodies Node', 'Supports Rosetta Mission product browse and download for 67P/Churyumov-Gerasimenko, 2867 Steins, 21Lutetia, 9P/Tempel 1 Cruise and Earth & Mars (includes data on Jupiter) swingby data.', 'https://pds-smallbodies.astro.umd.edu/data_sb/missions/rosetta/index.shtml', 101);
 
+insert into investigation_tools (investigation, title, description, url, rank) values ('Rosetta', 'SPICE Data Holdings at the Navigation and Ancillary Information Facility Node', 'Supports Rosetta product browse and download.', 'https://naif.jpl.nasa.gov/naif/data_archived.html', 102);
+
 /* Stardust */
 
 insert into investigation_tools (investigation, title, description, url, rank) values ('Stardust', 'Stardust Data Archive at the Small Bodies Node', 'Supports Stardust Mission product browse and download for 81P/Wild 2, 5535 Annefrank and cometary dust data.', 'https://pds-smallbodies.astro.umd.edu/data_sb/missions/stardust/index.shtml', 101);
+
+insert into investigation_tools (investigation, title, description, url, rank) values ('Stardust', 'SPICE Data Holdings at the Navigation and Ancillary Information Facility Node', 'Supports Stardust product browse and download.', 'https://naif.jpl.nasa.gov/naif/data_archived.html', 102);
 
 /* Stardust-NExT */
 
@@ -378,6 +442,8 @@ insert into investigation_tools (investigation, title, description, url, rank) v
 insert into investigation_tools (investigation, title, description, url, rank) values ('Vega', 'Vega 1 Archive at the Planetary Plasma Interactions Node', 'The Vega 1 Archive page provides details on the investigation, instruments and targets associated with the archive as well as additional resources for discovering Vega 1 data.', 'https://pds-ppi.igpp.ucla.edu/mission/Vega_1', 101);
 
 insert into investigation_tools (investigation, title, description, url, rank) values ('Vega', 'Vega 2 Archive at the Planetary Plasma Interactions Node', 'The Vega 2 Archive page provides details on the investigation, instruments and targets associated with the archive as well as additional resources for discovering Vega 2 data.', 'https://pds-ppi.igpp.ucla.edu/mission/Vega_2', 102);
+
+insert into investigation_tools (investigation, title, description, url, rank) values ('Vega', 'SPICE Data Holdings at the Navigation and Ancillary Information Facility Node', 'Supports Vega 1/2 product browse and download.', 'https://naif.jpl.nasa.gov/naif/data_archived.html', 103);
 
 /* Viking Lander */
 
@@ -399,6 +465,8 @@ insert into investigation_tools (investigation, title, description, url, rank) v
 
 insert into investigation_tools (investigation, title, description, url, rank) values ('Viking Orbiter', 'Viking Orbiter Archive at the Geosciences Node', 'The Viking Orbiter Archive page provides details on the investigation, instruments and targets associated with the archive as well as additional resources for discovering Viking Orbiter data.', 'http://pds-geosciences.wustl.edu/missions/viking/index.htm', 101);
 
+insert into investigation_tools (investigation, title, description, url, rank) values ('Viking Orbiter', 'SPICE Data Holdings at the Navigation and Ancillary Information Facility Node', 'Supports Viking Orbiter product browse and download.', 'https://naif.jpl.nasa.gov/naif/data_archived.html', 105);
+
 /* Voyager */
 
 insert into investigation_tools (investigation, title, description, url, rank) values ('Voyager', 'PDS Image Atlas at the Cartography and Imaging Sciences Node', 'Supports Voyager ISS-NAC, ISS-WAC, and VG-ISS image product search, browse and download.', 'https://pds-imaging.jpl.nasa.gov/search/?fq=ATLAS_MISSION_NAME%3Avoyager&q=*%3A*', 1);
@@ -413,6 +481,8 @@ insert into investigation_tools (investigation, title, description, url, rank) v
 insert into investigation_tools (investigation, title, description, url, rank) values ('Voyager', 'Voyager Archive at the Atmospheres Node', 'The Voyager Archive page provides details on the investigation, instruments and targets associated with the archive as well as additional resources for discovering Voyager data.', 'https://pds-atmospheres.nmsu.edu/data_and_services/atmospheres_data/Voyager/voyager.html', 101);
 
 insert into investigation_tools (investigation, title, description, url, rank) values ('Voyager', 'Voyager Archive at the Planetary Plasma Interactions Node', 'The Voyager Archive page provides details on the investigation, instruments and targets associated with the archive as well as additional resources for discovering Voyager data.', 'https://pds-ppi.igpp.ucla.edu/mission/Voyager', 102);
+
+insert into investigation_tools (investigation, title, description, url, rank) values ('Voyager', 'SPICE Data Holdings at the Navigation and Ancillary Information Facility Node', 'Supports Voyager 1/2 product browse and download.', 'https://naif.jpl.nasa.gov/naif/data_archived.html', 103);
 
 /*
 ** target_tools
@@ -435,13 +505,39 @@ insert into target_tools (target, title, description, url, rank) values ('Comets
 
 insert into target_tools (target, title, description, url, rank) values ('Comets/Astroids', 'Asteroid Data Holdings at the Planetary Plasma Interactions Node', 'Supports Galileo and NEAR product browse and download.', 'https://pds-ppi.igpp.ucla.edu/search/?t=Asteroid&facet=TARGET_NAME', 104);
 
-insert into target_tools (target, title, description, url, rank) values ('Comets/Astroids', 'SPICE Data Holdings at the Navigation and Ancillary Information Facility Node', 'Supports Dawn, Deep Impact, Deep Space 1, Giotto, Hayabusa, NEAR Shoemaker, OSIRIS-REx, Rosetta, Stardust and Vega 1/2 product browse and download.', 'https://naif.jpl.nasa.gov/naif/data_comet.html', 105);
+insert into target_tools (target, title, description, url, rank) values ('Comets/Astroids', 'SPICE Data Holdings at the Navigation and Ancillary Information Facility Node', 'Supports Dawn, Deep Impact, Deep Space 1, Giotto, Hayabusa, NEAR, OSIRIS-REx, Rosetta, Stardust and Vega 1/2 product browse and download.', 'https://naif.jpl.nasa.gov/naif/data_archived.html', 105);
 
-/* Dust */
+/* Mercury */
 
-insert into target_tools (target, title, description, url, rank) values ('Dust', 'Dust Archive at the Small Bodies Node', 'Supports Cassini, Deep Space 1, Galileo, IRAS, MSX, New Horizons, LADEE, Rosetta, Stardust and Ulysses dust data browse and download.', 'https://sbn.psi.edu/pds/archive/dust.html', 101);
+insert into target_tools (target, title, description, url, rank) values ('Mercury', 'PDS Image Atlas at the Cartography and Imaging Sciences Node', 'Supports MESSENGER image, radar, and imaging spectrometer product search, browse and download.', 'https://pds-imaging.jpl.nasa.gov/search/?fq=TARGET_NAME%3Amercury&fq=ATLAS_MISSION_NAME%3Amessenger&q=*%3A*', 1);
 
-insert into target_tools (target, title, description, url, rank) values ('Dust', 'Dust Data Holdings at the Planetary Plasma Interactions Node', 'Supports Galileo and Ulysses product browse and download.', 'https://pds-ppi.igpp.ucla.edu/search/?t=Dust&facet=TARGET_NAME', 102);
+insert into target_tools (target, title, description, url, rank) values ('Mercury', 'Map-A-Planet 2 (MAP2) at the Cartography and Imaging Sciences Node', 'Supports MESSENGER and Magellan global image mosaic projection, clipping, processing and download.', 'https://astrogeology.usgs.gov/search/results?q=MAP2&k1=target&v1=Mercury', 2);
+
+insert into target_tools (target, title, description, url, rank) values ('Mercury', 'Planetary Image Locator Tool (PILOT) at the Cartography and Imaging Sciences Node', 'Supports Mariner 10 and MESSENGER map-based image product locator tool using uniform image geometry to search and download.', 'https://pilot.wr.usgs.gov', 3);
+
+insert into target_tools (target, title, description, url, rank) values ('Mercury', 'Mercury Orbital Data Explorer (ODE) at the Geosciences Node', 'Supports search, browse, and download of select PDS data products from the MESSENGER mission, including GRS, NS, XRS, MASCS, MDIS, MLA, and radio science data.', 'http://ode.rsl.wustl.edu/mercury/', 4);
+
+
+insert into target_tools (target, title, description, url, rank) values ('Mercury', 'Mercury Data Holdings at the Planetary Plasma Interactions Node', 'Supports Mariner 10 and MESSENGER product browse and download.', 'https://pds-ppi.igpp.ucla.edu/search/?t=Mercury&facet=TARGET_NAME', 101);
+
+insert into target_tools (target, title, description, url, rank) values ('Mercury', 'SPICE Data Holdings at the Navigation and Ancillary Information Facility Node', 'Supports Mariner 10 and MESSENGER product browse and download.', 'https://naif.jpl.nasa.gov/naif/data_archived.html', 102);
+
+/* Venus */
+
+insert into target_tools (target, title, description, url, rank) values ('Venus', 'PDS Image Atlas at the Cartography and Imaging Sciences Node', 'Supports Magellan, Galileo, Cassini, and Messenger image, radar, and imaging spectrometer product search, browse and download.', 'https://pds-imaging.jpl.nasa.gov/search/?fq=TARGET_NAME%3Avenus&q=*%3A*', 1);
+
+insert into target_tools (target, title, description, url, rank) values ('Venus', 'Map-A-Planet 2 (MAP2) at the Cartography and Imaging Sciences Node', 'Supports Magellan global image mosaic projection, clipping, processing and download.', 'https://astrogeology.usgs.gov/search/results?q=MAP2&k1=target&v1=Venus', 2);
+
+insert into target_tools (target, title, description, url, rank) values ('Venus', 'Planetary Image Locator Tool (PILOT) at the Cartography and Imaging Sciences Node', 'Supports Galileo, Cassini, Mariner 10, and MESSENGER map-based image product locator tool using uniform image geometry to search and download.', 'https://pilot.wr.usgs.gov', 3);
+
+insert into target_tools (target, title, description, url, rank) values ('Venus', 'Venus Orbital Data Explorer (ODE) at the Geosciences Node', 'Supports search, browse, and download of select PDS data products from the Magellan and MESSENGER missions. The Venus ODE also supports Earth-based Venus radar observations.', 'http://ode.rsl.wustl.edu/venus/', 4);
+
+insert into target_tools (target, title, description, url, rank) values ('Venus', 'OPUS at the Ring-Moon Systems Node', 'Supports a small number of long range Cassini (ISS ,UVIS,VIMS) observations. Browse results and download including calibrated ISS.', 'https://tools.pds-rings.seti.org/opus#/planet=Venus', 5);
+
+
+insert into target_tools (target, title, description, url, rank) values ('Venus', 'Venus Data Holdings at the Planetary Plasma Interactions Node', 'Supports Cassini, Galileo, MESSENGER, Pioneer Venus Orbiter (PVO) and Venera 15/16 product browse and download.', 'https://pds-ppi.igpp.ucla.edu/search/?t=Venus&facet=TARGET_NAME', 101);
+
+insert into target_tools (target, title, description, url, rank) values ('Venus', 'SPICE Data Holdings at the Navigation and Ancillary Information Facility Node', 'Supports Magellan, Mariner 2, Pioneer Venus Orbiter and Venus Express product browse and download.', 'https://naif.jpl.nasa.gov/naif/data_archived.html', 102);
 
 /* Earth System */
 
@@ -462,30 +558,7 @@ insert into target_tools (target, title, description, url, rank) values ('Earth 
 
 insert into target_tools (target, title, description, url, rank) values ('Earth System', 'Earth (Moon) Data Holdings at the Planetary Plasma Interactions Node', 'Supports Cassini, Galileo, Juno, Lunar Prospector, Lunar Reconnaissance Orbiter (LRO), MESSENGER and NEAR product browse and download.', 'https://pds-ppi.igpp.ucla.edu/search/?t=Earth(Moon)&facet=TARGET_NAME', 101);
 
-insert into target_tools (target, title, description, url, rank) values ('Earth System', 'SPICE Data Holdings at the Navigation and Ancillary Information Facility Node', 'Supports Apollo, Clementine, GRAIL, LADEE, LRO, Lunar Prospector, Lunur Orbiters, Kaguya and SMART-1 product browse and download.', 'https://naif.jpl.nasa.gov/naif/data_lunar.html', 102);
-
-/* KBOs */
-
-insert into target_tools (target, title, description, url, rank) values ('KBOs', 'Transneptunian, Centaur, and Pluto Data Sets at the Small Bodies Node', 'Supports multiple investigations for data browse and download.', 'https://sbn.psi.edu/pds/archive/tnos.html', 101);
-
-/* Jupiter System */
-
-insert into target_tools (target, title, description, url, rank) values ('Jupiter System', 'PDS Image Atlas at the Cartography and Imaging Sciences Node', 'Supports Cassini, Galileo, MGS, MSL, MESSENGER, New Horizons and Voyager image, radar, and imaging spectrometer product search, browse and download.', 'https://pds-imaging.jpl.nasa.gov/search/?fq=TARGET_NAME%3Ajupiter&q=*%3A*', 1);
-
-insert into target_tools (target, title, description, url, rank) values ('Saturn System', 'OPUS at the Ring-Moon Systems Node', 'Supports New Horizons (LORRI), Cassini (ISS, UVIS, VIMS), and Voyager (ISS), all with enhanced geometric metadata which enables more detailed searches, including surface search constraints for the planet, satellites and rings (e.g., latitudes and longitudes).  Also supports LORRI (MVIC) and HST (ACS,WFC3,WFPC2). Browse and download including calibrated Cassini ISS and Voyager ISS. Links to STScI for HST downloads.', 'https://tools.pds-rings.seti.org/opus#/planet=JUPITER', 2);
-
-insert into target_tools (target, title, description, url, rank) values ('Jupiter System', 'Map-A-Planet 2 (MAP2) at the Cartography and Imaging Sciences Node', 'Supports Galileo and Voyager global image mosaic projection, clipping, processing and download.', 'https://astrogeology.usgs.gov/tools/map-a-planet-2', 3);
-
-insert into target_tools (target, title, description, url, rank) values ('Jupiter System', 'Planetary Image Locator Tool (PILOT) at the Cartography and Imaging Sciences Node', 'Supports Cassini, Galileo, MESSENGER, and Voyager map-based image product locator tool using uniform image geometry to search and download.', 'https://pilot.wr.usgs.gov', 4);
-
-
-insert into target_tools (target, title, description, url, rank) values ('Jupiter System', 'Jupiter Data Holdings at the Planetary Plasma Interactions Node', 'Supports Cassini, Galileo, Juno, New Horizons, Pioneer 10/11, Ulysses and Voyager 1/2 product browse and download.', 'https://pds-ppi.igpp.ucla.edu/search/?t=Jupiter&facet=TARGET_NAME', 101);
-
-insert into target_tools (target, title, description, url, rank) values ('Jupiter System', 'Jupiter Data Archive at the Planetary Atmospheres Node', 'Supports access to Cassini, Galileo, Juno, New Horizons, Pioneer and Voyager product browse and download.', 'https://pds-atmospheres.nmsu.edu/data_and_services/atmospheres_data/JUPITER/matrice.html', 102);
-
-insert into target_tools (target, title, description, url, rank) values ('Jupiter System', 'Planetary Satellite Data at the Small Bodies Node', 'Supports data sets containing planetary satellite data for browse and download.', 'https://sbn.psi.edu/pds/archive/sat.html', 103);
-
-insert into target_tools (target, title, description, url, rank) values ('Jupiter System', 'SPICE Data Holdings at the Navigation and Ancillary Information Facility Node', 'Supports Cassini, Galileo, Juno, New Horizons, Pioneer 10/11 and Voyager 1/2 product browse and download.', 'https://naif.jpl.nasa.gov/naif/data_outer.html', 104);
+insert into target_tools (target, title, description, url, rank) values ('Earth System', 'SPICE Data Holdings at the Navigation and Ancillary Information Facility Node', 'Supports Apollo, Clementine, GRAIL, LADEE, LRO, Lunar Prospector, Lunur Orbiters, Kaguya and SMART-1 product browse and download.', 'https://naif.jpl.nasa.gov/naif/data_archived.html', 102);
 
 /* Mars System */
 
@@ -512,52 +585,26 @@ insert into target_tools (target, title, description, url, rank) values ('Mars S
 
 insert into target_tools (target, title, description, url, rank) values ('Mars System', 'Planetary Satellite Data at the Small Bodies Node', 'Supports data sets containing planetary satellite data for browse and download.', 'https://sbn.psi.edu/pds/archive/sat.html', 103);
 
-insert into target_tools (target, title, description, url, rank) values ('Mars System', 'SPICE Data Holdings at the Navigation and Ancillary Information Facility Node', 'Supports ExoMars, InSight, Mariner 9, Mars Climate Orbiter, Mars Exploration Rovers, Mars Express, Mars Global Surveyor, Mars Odyssey, Mars Pathfinder, Mars Polar Lander, Mars Reconnaissance Orbiter, Mars Science Laboratory, MAVEN, Nozomi, Phobos-88, Phoenix, Phobos Sample Return and Viking 1/2 product browse and download.', 'https://naif.jpl.nasa.gov/naif/data_mars.html', 104);
+insert into target_tools (target, title, description, url, rank) values ('Mars System', 'SPICE Data Holdings at the Navigation and Ancillary Information Facility Node', 'Supports ExoMars, InSight, Mariner 9, Mars Climate Orbiter, Mars Exploration Rovers, Mars Express, Mars Global Surveyor, Mars Odyssey, Mars Pathfinder, Mars Polar Lander, Mars Reconnaissance Orbiter, Mars Science Laboratory, MAVEN, Nozomi, Phobos-88, Phoenix, Phobos Sample Return and Viking 1/2 product browse and download.', 'https://naif.jpl.nasa.gov/naif/data_archived.html', 104);
 
-/* Mercury */
+/* Jupiter System */
 
-insert into target_tools (target, title, description, url, rank) values ('Mercury', 'PDS Image Atlas at the Cartography and Imaging Sciences Node', 'Supports MESSENGER image, radar, and imaging spectrometer product search, browse and download.', 'https://pds-imaging.jpl.nasa.gov/search/?fq=TARGET_NAME%3Amercury&fq=ATLAS_MISSION_NAME%3Amessenger&q=*%3A*', 1);
+insert into target_tools (target, title, description, url, rank) values ('Jupiter System', 'PDS Image Atlas at the Cartography and Imaging Sciences Node', 'Supports Cassini, Galileo, MGS, MSL, MESSENGER, New Horizons and Voyager image, radar, and imaging spectrometer product search, browse and download.', 'https://pds-imaging.jpl.nasa.gov/search/?fq=TARGET_NAME%3Ajupiter&q=*%3A*', 1);
 
-insert into target_tools (target, title, description, url, rank) values ('Mercury', 'Map-A-Planet 2 (MAP2) at the Cartography and Imaging Sciences Node', 'Supports MESSENGER and Magellan global image mosaic projection, clipping, processing and download.', 'https://astrogeology.usgs.gov/search/results?q=MAP2&k1=target&v1=Mercury', 2);
+insert into target_tools (target, title, description, url, rank) values ('Jupiter System', 'OPUS at the Ring-Moon Systems Node', 'Supports New Horizons (LORRI), Cassini (ISS, UVIS, VIMS), and Voyager (ISS), all with enhanced geometric metadata which enables more detailed searches, including surface search constraints for the planet, satellites and rings (e.g., latitudes and longitudes).  Also supports LORRI (MVIC) and HST (ACS,WFC3,WFPC2). Browse and download including calibrated Cassini ISS and Voyager ISS. Links to STScI for HST downloads.', 'https://tools.pds-rings.seti.org/opus#/planet=JUPITER', 2);
 
-insert into target_tools (target, title, description, url, rank) values ('Mercury', 'Planetary Image Locator Tool (PILOT) at the Cartography and Imaging Sciences Node', 'Supports Mariner 10 and MESSENGER map-based image product locator tool using uniform image geometry to search and download.', 'https://pilot.wr.usgs.gov', 3);
+insert into target_tools (target, title, description, url, rank) values ('Jupiter System', 'Map-A-Planet 2 (MAP2) at the Cartography and Imaging Sciences Node', 'Supports Galileo and Voyager global image mosaic projection, clipping, processing and download.', 'https://astrogeology.usgs.gov/tools/map-a-planet-2', 3);
 
-insert into target_tools (target, title, description, url, rank) values ('Mercury', 'Mercury Orbital Data Explorer (ODE) at the Geosciences Node', 'Supports search, browse, and download of select PDS data products from the MESSENGER mission, including GRS, NS, XRS, MASCS, MDIS, MLA, and radio science data.', 'http://ode.rsl.wustl.edu/mercury/', 4);
-
-
-insert into target_tools (target, title, description, url, rank) values ('Mercury', 'Mercury Data Holdings at the Planetary Plasma Interactions Node', 'Supports Mariner 10 and MESSENGER product browse and download.', 'https://pds-ppi.igpp.ucla.edu/search/?t=Mercury&facet=TARGET_NAME', 101);
-
-insert into target_tools (target, title, description, url, rank) values ('Mercury', 'SPICE Data Holdings at the Navigation and Ancillary Information Facility Node', 'Supports Mariner 10 and MESSENGER product browse and download.', 'https://naif.jpl.nasa.gov/naif/data_mercury.html', 102);
-
-/* Neptune System */
-
-insert into target_tools (target, title, description, url, rank) values ('Neptune System', 'PDS Image Atlas at the Cartography and Imaging Sciences Node', 'Supports Voyager image, radar, and imaging spectrometer product search, browse and download.', 'https://pds-imaging.jpl.nasa.gov/search/?fq=TARGET%3Aneptune&q=*%3A*', 1);
-
-insert into target_tools (target, title, description, url, rank) values ('Neptune System', 'Planetary Image Locator Tool (PILOT) at the Cartography and Imaging Sciences Node', 'Supports Voyager map-based image product locator tool using uniform image geometry to search and download.', 'https://pilot.wr.usgs.gov', 2);
-
-insert into target_tools (target, title, description, url, rank) values ('Neptune System', 'OPUS at the Ring-Moon Systems Node', 'Supports New Horizons (LORRI) and Voyager (ISS), both with enhanced geometric metadata. Also supports HST (ACS, WFC3, WFPC2). Browse and download including calibrated Voyager ISS. Browse with links to STScI for HST.', 'https://tools.pds-rings.seti.org/opus#/planet=Neptune', 3);
+insert into target_tools (target, title, description, url, rank) values ('Jupiter System', 'Planetary Image Locator Tool (PILOT) at the Cartography and Imaging Sciences Node', 'Supports Cassini, Galileo, MESSENGER, and Voyager map-based image product locator tool using uniform image geometry to search and download.', 'https://pilot.wr.usgs.gov', 4);
 
 
-insert into target_tools (target, title, description, url, rank) values ('Neptune System', 'Neptune Data Holdings at the Planetary Plasma Interactions Node', 'Supports Voyager 2 product browse and download.', 'https://pds-ppi.igpp.ucla.edu/search/?t=Neptune&facet=TARGET_NAME', 101);
+insert into target_tools (target, title, description, url, rank) values ('Jupiter System', 'Jupiter Data Holdings at the Planetary Plasma Interactions Node', 'Supports Cassini, Galileo, Juno, New Horizons, Pioneer 10/11, Ulysses and Voyager 1/2 product browse and download.', 'https://pds-ppi.igpp.ucla.edu/search/?t=Jupiter&facet=TARGET_NAME', 101);
 
-insert into target_tools (target, title, description, url, rank) values ('Neptune System', 'Planetary Satellite Data at the Small Bodies Node', 'Supports data sets containing planetary satellite data for browse and download.', 'https://sbn.psi.edu/pds/archive/sat.html', 102);
+insert into target_tools (target, title, description, url, rank) values ('Jupiter System', 'Jupiter Data Archive at the Planetary Atmospheres Node', 'Supports access to Cassini, Galileo, Juno, New Horizons, Pioneer and Voyager product browse and download.', 'https://pds-atmospheres.nmsu.edu/data_and_services/atmospheres_data/JUPITER/matrice.html', 102);
 
-insert into target_tools (target, title, description, url, rank) values ('Neptune System', 'SPICE Data Holdings at the Navigation and Ancillary Information Facility Node', 'Supports Cassini, Galileo, Juno, New Horizons, Pioneer 10/11 and Voyager 1/2 product browse and download.', 'https://naif.jpl.nasa.gov/naif/data_outer.html', 103);
+insert into target_tools (target, title, description, url, rank) values ('Jupiter System', 'Planetary Satellite Data at the Small Bodies Node', 'Supports data sets containing planetary satellite data for browse and download.', 'https://sbn.psi.edu/pds/archive/sat.html', 103);
 
-/* Particles */
-
-/* Pluto System */
-
-insert into target_tools (target, title, description, url, rank) values ('Pluto System', 'PDS Image Atlas at the Cartography and Imaging Sciences Node', 'Supports Voyager image, radar, and imaging spectrometer product search, browse and download.', 'https://pds-imaging.jpl.nasa.gov/search/?fq=TARGET_NAME%3Apluto&fq=ATLAS_MISSION_NAME%3A%22new%20horizons%22&q=*%3A*', 1);
-
-insert into target_tools (target, title, description, url, rank) values ('Pluto System', 'Map-A-Planet 2 (MAP2) at the Cartography and Imaging Sciences Node', 'Supports New Horizons global image mosaic projection, clipping, processing and download.', 'https://astrogeology.usgs.gov/tools/map-a-planet-2', 2);
-
-insert into target_tools (target, title, description, url, rank) values ('Pluto System', 'OPUS at the Ring-Moon Systems Node', 'Supports New Horizons (LORRI) and Voyager (ISS), both with enhanced geometric metadata. Also supports HST (ACS, WFC3, WFPC2). Browse and download including calibrated Voyager ISS. Browse with links to STScI for HST.', 'https://tools.pds-rings.seti.org/opus#/planet=Pluto', 3);
-
-
-insert into target_tools (target, title, description, url, rank) values ('Pluto System', 'New Horizons data at the Small Bodies Node', 'Provides access to data from the entire mission (Post-launch checkout, Jupiter flyby, Pluto cruise, & Pluto encounter).', 'https://pds-smallbodies.astro.umd.edu/data_sb/missions/newhorizons/index.shtml', 101);
-
-insert into target_tools (target, title, description, url, rank) values ('Pluto System', 'Transneptunian, Centaur, and Pluto Data Sets at the Small Bodies Node', 'Supports multiple investigations for data browse and download.', 'https://sbn.psi.edu/pds/archive/tnos.html', 102);
+insert into target_tools (target, title, description, url, rank) values ('Jupiter System', 'SPICE Data Holdings at the Navigation and Ancillary Information Facility Node', 'Supports Cassini, Galileo, Juno, New Horizons, Pioneer 10/11 and Voyager 1/2 product browse and download.', 'https://naif.jpl.nasa.gov/naif/data_archived.html', 104);
 
 /* Saturn System */
 
@@ -576,11 +623,7 @@ insert into target_tools (target, title, description, url, rank) values ('Saturn
 
 insert into target_tools (target, title, description, url, rank) values ('Saturn System', 'Planetary Satellite Data at the Small Bodies Node', 'Supports data sets containing planetary satellite data for browse and download.', 'https://sbn.psi.edu/pds/archive/sat.html', 103);
 
-insert into target_tools (target, title, description, url, rank) values ('Saturn System', 'SPICE Data Holdings at the Navigation and Ancillary Information Facility Node', 'Supports Cassini, Galileo, Juno, New Horizons, Pioneer 10/11 and Voyager 1/2 product browse and download.', 'https://naif.jpl.nasa.gov/naif/data_outer.html', 104);
-
-/* Solar Wind */
-
-insert into target_tools (target, title, description, url, rank) values ('Solar Wind', 'Solar Wind Data Holdings at the Planetary Plasma Interactions Node', 'Supports Cassini, Juno, MESSENGER, NEAR, New Horizons, Vega 1/2 and Voyager 1/2 product browse and download.', 'https://pds-ppi.igpp.ucla.edu/search/?t=Solar_Wind&facet=TARGET_NAME', 101);
+insert into target_tools (target, title, description, url, rank) values ('Saturn System', 'SPICE Data Holdings at the Navigation and Ancillary Information Facility Node', 'Supports Cassini, Galileo, Juno, New Horizons, Pioneer 10/11 and Voyager 1/2 product browse and download.', 'https://naif.jpl.nasa.gov/naif/data_archived.html', 104);
 
 /* Uranus System */
 
@@ -595,21 +638,48 @@ insert into target_tools (target, title, description, url, rank) values ('Uranus
 
 insert into target_tools (target, title, description, url, rank) values ('Uranus System', 'Planetary Satellite Data at the Small Bodies Node', 'Supports data sets containing planetary satellite data for browse and download.', 'https://sbn.psi.edu/pds/archive/sat.html', 102);
 
-insert into target_tools (target, title, description, url, rank) values ('Uranus System', 'SPICE Data Holdings at the Navigation and Ancillary Information Facility Node', 'Supports Cassini, Galileo, Juno, New Horizons, Pioneer 10/11 and Voyager 1/2 product browse and download.', 'https://naif.jpl.nasa.gov/naif/data_outer.html', 103);
+insert into target_tools (target, title, description, url, rank) values ('Uranus System', 'SPICE Data Holdings at the Navigation and Ancillary Information Facility Node', 'Supports Cassini, Galileo, Juno, New Horizons, Pioneer 10/11 and Voyager 1/2 product browse and download.', 'https://naif.jpl.nasa.gov/naif/data_archived.html', 103);
 
-/* Venus */
+/* Neptune System */
 
-insert into target_tools (target, title, description, url, rank) values ('Venus', 'PDS Image Atlas at the Cartography and Imaging Sciences Node', 'Supports Magellan, Galileo, Cassini, and Messenger image, radar, and imaging spectrometer product search, browse and download.', 'https://pds-imaging.jpl.nasa.gov/search/?fq=TARGET_NAME%3Avenus&q=*%3A*', 1);
+insert into target_tools (target, title, description, url, rank) values ('Neptune System', 'PDS Image Atlas at the Cartography and Imaging Sciences Node', 'Supports Voyager image, radar, and imaging spectrometer product search, browse and download.', 'https://pds-imaging.jpl.nasa.gov/search/?fq=TARGET%3Aneptune&q=*%3A*', 1);
 
-insert into target_tools (target, title, description, url, rank) values ('Venus', 'Map-A-Planet 2 (MAP2) at the Cartography and Imaging Sciences Node', 'Supports Magellan global image mosaic projection, clipping, processing and download.', 'https://astrogeology.usgs.gov/search/results?q=MAP2&k1=target&v1=Venus', 2);
+insert into target_tools (target, title, description, url, rank) values ('Neptune System', 'Planetary Image Locator Tool (PILOT) at the Cartography and Imaging Sciences Node', 'Supports Voyager map-based image product locator tool using uniform image geometry to search and download.', 'https://pilot.wr.usgs.gov', 2);
 
-insert into target_tools (target, title, description, url, rank) values ('Venus', 'Planetary Image Locator Tool (PILOT) at the Cartography and Imaging Sciences Node', 'Supports Galileo, Cassini, Mariner 10, and MESSENGER map-based image product locator tool using uniform image geometry to search and download.', 'https://pilot.wr.usgs.gov', 3);
-
-insert into target_tools (target, title, description, url, rank) values ('Venus', 'Venus Orbital Data Explorer (ODE) at the Geosciences Node', 'Supports search, browse, and download of select PDS data products from the Magellan and MESSENGER missions. The Venus ODE also supports Earth-based Venus radar observations.', 'http://ode.rsl.wustl.edu/venus/', 4);
-
-insert into target_tools (target, title, description, url, rank) values ('Venus', 'OPUS at the Ring-Moon Systems Node', 'Supports a small number of long range Cassini (ISS ,UVIS,VIMS) observations. Browse results and download including calibrated ISS.', 'https://tools.pds-rings.seti.org/opus#/planet=Venus', 5);
+insert into target_tools (target, title, description, url, rank) values ('Neptune System', 'OPUS at the Ring-Moon Systems Node', 'Supports Voyager ISS with enhanced geometric metadata. Also supports HST (ACS, WFC3, WFPC2). Browse and download including calibrated Voyager ISS. Browse with links to STScI for HST.', 'https://tools.pds-rings.seti.org/opus#/planet=Neptune', 3);
 
 
-insert into target_tools (target, title, description, url, rank) values ('Venus', 'Venus Data Holdings at the Planetary Plasma Interactions Node', 'Supports Cassini, Galileo, MESSENGER, Pioneer Venus Orbiter (PVO) and Venera 15/16 product browse and download.', 'https://pds-ppi.igpp.ucla.edu/search/?t=Venus&facet=TARGET_NAME', 101);
+insert into target_tools (target, title, description, url, rank) values ('Neptune System', 'Neptune Data Holdings at the Planetary Plasma Interactions Node', 'Supports Voyager 2 product browse and download.', 'https://pds-ppi.igpp.ucla.edu/search/?t=Neptune&facet=TARGET_NAME', 101);
 
-insert into target_tools (target, title, description, url, rank) values ('Venus', 'SPICE Data Holdings at the Navigation and Ancillary Information Facility Node', 'Supports Magellan, Mariner 2, Pioneer Venus Orbiter and Venus Express product browse and download.', 'https://naif.jpl.nasa.gov/naif/data_venus.html', 102);
+insert into target_tools (target, title, description, url, rank) values ('Neptune System', 'Planetary Satellite Data at the Small Bodies Node', 'Supports data sets containing planetary satellite data for browse and download.', 'https://sbn.psi.edu/pds/archive/sat.html', 102);
+
+insert into target_tools (target, title, description, url, rank) values ('Neptune System', 'SPICE Data Holdings at the Navigation and Ancillary Information Facility Node', 'Supports Cassini, Galileo, Juno, New Horizons, Pioneer 10/11 and Voyager 1/2 product browse and download.', 'https://naif.jpl.nasa.gov/naif/data_archived.html', 103);
+
+/* Pluto System */
+
+insert into target_tools (target, title, description, url, rank) values ('Pluto System', 'PDS Image Atlas at the Cartography and Imaging Sciences Node', 'Supports Voyager image, radar, and imaging spectrometer product search, browse and download.', 'https://pds-imaging.jpl.nasa.gov/search/?fq=TARGET_NAME%3Apluto&fq=ATLAS_MISSION_NAME%3A%22new%20horizons%22&q=*%3A*', 1);
+
+insert into target_tools (target, title, description, url, rank) values ('Pluto System', 'Map-A-Planet 2 (MAP2) at the Cartography and Imaging Sciences Node', 'Supports New Horizons global image mosaic projection, clipping, processing and download.', 'https://astrogeology.usgs.gov/tools/map-a-planet-2', 2);
+
+insert into target_tools (target, title, description, url, rank) values ('Pluto System', 'OPUS at the Ring-Moon Systems Node', 'Supports New Horizons (LORRI) and Voyager (ISS), both with enhanced geometric metadata. Also supports HST (ACS, WFC3, WFPC2). Browse and download including calibrated Voyager ISS. Browse with links to STScI for HST.', 'https://tools.pds-rings.seti.org/opus#/planet=Pluto', 3);
+
+
+insert into target_tools (target, title, description, url, rank) values ('Pluto System', 'New Horizons data at the Small Bodies Node', 'Provides access to data from the entire mission (Post-launch checkout, Jupiter flyby, Pluto cruise, & Pluto encounter).', 'https://pds-smallbodies.astro.umd.edu/data_sb/missions/newhorizons/index.shtml', 101);
+
+insert into target_tools (target, title, description, url, rank) values ('Pluto System', 'Transneptunian, Centaur, and Pluto Data Sets at the Small Bodies Node', 'Supports multiple investigations for data browse and download.', 'https://sbn.psi.edu/pds/archive/tnos.html', 102);
+
+insert into target_tools (target, title, description, url, rank) values ('Pluto System', 'SPICE Data Holdings at the Navigation and Ancillary Information Facility Node', 'Supports Cassini, Galileo, Juno, New Horizons, Pioneer 10/11 and Voyager 1/2 product browse and download.', 'https://naif.jpl.nasa.gov/naif/data_archived.html', 103);
+
+/* KBOs */
+
+insert into target_tools (target, title, description, url, rank) values ('KBOs', 'Transneptunian, Centaur, and Pluto Data Sets at the Small Bodies Node', 'Supports multiple investigations for data browse and download.', 'https://sbn.psi.edu/pds/archive/tnos.html', 101);
+
+/* Dust */
+
+insert into target_tools (target, title, description, url, rank) values ('Dust', 'Dust Archive at the Small Bodies Node', 'Supports Cassini, Deep Space 1, Galileo, IRAS, MSX, New Horizons, LADEE, Rosetta, Stardust and Ulysses dust data browse and download.', 'https://sbn.psi.edu/pds/archive/dust.html', 101);
+
+insert into target_tools (target, title, description, url, rank) values ('Dust', 'Dust Data Holdings at the Planetary Plasma Interactions Node', 'Supports Galileo and Ulysses product browse and download.', 'https://pds-ppi.igpp.ucla.edu/search/?t=Dust&facet=TARGET_NAME', 102);
+
+/* Solar Wind */
+
+insert into target_tools (target, title, description, url, rank) values ('Solar Wind', 'Solar Wind Data Holdings at the Planetary Plasma Interactions Node', 'Supports Cassini, Juno, MESSENGER, NEAR, New Horizons, Vega 1/2 and Voyager 1/2 product browse and download.', 'https://pds-ppi.igpp.ucla.edu/search/?t=Solar_Wind&facet=TARGET_NAME', 101);
