@@ -487,8 +487,6 @@ insert into product (logical_identifier, version_id, title, type, alternate_id) 
 
 insert into product (logical_identifier, version_id, title, type, alternate_id) values ('urn:nasa:pds:maven.static.c:data.cf_16e4d16a16m', '2.0', 'MAVEN STATIC Calibrated Energy Flux: 16 Energy X 64 Solid Angle X 16 Mass Bins Data Collection', 'PDS4-Collection', NULL);
 
-insert into product (logical_identifier, version_id, title, type, alternate_id) values ('urn:nasa:pds:maven.static.c:data.cf_16e4d16a16m', '2.0', 'MAVEN STATIC Calibrated Energy Flux: 16 Energy X 64 Solid Angle X 16 Mass Bins Data Collection', 'PDS4-Collection', NULL);
-
 insert into product (logical_identifier, version_id, title, type, alternate_id) values ('urn:nasa:pds:maven.static.c:data.da_1r', '2.6', 'MAVEN STATIC Event Rate Data Selected Channel Data Collection', 'PDS4-Collection', NULL);
 
 insert into product (logical_identifier, version_id, title, type, alternate_id) values ('urn:nasa:pds:maven.static.c:data.db_1024tof', '2.6', 'MAVEN STATIC Raw Time-of-Flight Data Data Collection', 'PDS4-Collection', NULL);
