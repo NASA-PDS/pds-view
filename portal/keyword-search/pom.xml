@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
 <!-- 
-  Copyright 2017, by the California Institute of Technology.
+  Copyright 2017-2018, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology 
   Transfer at the California Institute of Technology.
@@ -25,15 +25,15 @@
   </parent>
 
   <groupId>gov.nasa.pds.2010.portal</groupId>
-  <artifactId>data-search</artifactId>
+  <artifactId>keyword-search</artifactId>
   <version>1.0.0-dev</version>
   <packaging>pom</packaging>
 
-  <name>Data Search</name>
+  <name>Keyword Search</name>
   <description>
-    The Data Search component is a web application that serves as the search interface for data products.
+    The Keyword Search component is a web application that serves as the search interface for data products.
   </description>
-  <url>https://pds-cm.jpl.nasa.gov/pds4/portal/data-search/</url>
+  <url>https://pds-cm.jpl.nasa.gov/pds4/portal/keyword-search/</url>
 
   <licenses>
     <license>

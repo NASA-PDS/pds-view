@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2017, by the California Institute of Technology.
+  Copyright 2017-2018, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -24,7 +24,7 @@
 
   <body>
     <section name="Installation">
-      <p>This section describes how to install the Data Search software contained in the <i>${project.artifactId}</i> package. The following topics can be found in this section:
+      <p>This section describes how to install the Keyword Search software contained in the <i>${project.artifactId}</i> package. The following topics can be found in this section:
       </p>
 
       <ul>
@@ -35,23 +35,23 @@
     </section>
 
     <section name="System Requirements">
-      <p>The Data Search software was developed using Ajax Solr and jQuery. The application must reside within a PDS web site deployment because it depends on the CSS configuration and server side includes provided by the site.
+      <p>The Keyword Search software was developed using Ajax Solr and jQuery. The application must reside within a PDS web site deployment because it depends on the CSS configuration and server side includes provided by the site.
       </p>
     </section>
 
     <section name="Deploying the Application">
-      <p>The software is not compiled but can instead be deployed with a Subversion "external" directory configuration within the PDS Home site directory structure. The desired end point is <i>tools/data-search</i> within the site. From within the top directory of the PDS site deployment (e.g., /data/www/pds/htdocs), change directories to the <i>tools</i> directory and perform the following commands to configure and retrieve the "external" directory:
+      <p>The software is not compiled but can instead be deployed with a Subversion "external" directory configuration within the PDS Home site directory structure. The desired end point is <i>datasearch/keyword-search</i> within the site. From within the top directory of the PDS site deployment (e.g., /data/www/pds/htdocs), change directories to the <i>tools</i> directory and perform the following commands to configure and retrieve the "external" directory:
       </p>
 
       <source>
 % svn propset svn:externals \
-'data-search https://starcell.jpl.nasa.gov/repo/2010/trunk/portal/data-search/src/main/webapp' .
+'keyword-search https://starcell.jpl.nasa.gov/repo/2010/trunk/portal/keyword-search/src/main/webapp' .
 % svn update
       </source>
     </section>
 
     <section name="Configuring the Application">
-      <p>The application defaults to accessing the Search Service at <i>https://pds.jpl.nasa.gov/services/search/</i>. If this needs to be modified for a given deployment, edit the <i>data-search/js/dataSearch.js</i> file and modify the following block accordingly:
+      <p>The application defaults to accessing the Search Service at <i>https://pds.jpl.nasa.gov/services/search/</i>. If this needs to be modified for a given deployment, edit the <i>keyword-search/js/dataSearch.js</i> file and modify the following block accordingly:
       </p>
 
       <source>

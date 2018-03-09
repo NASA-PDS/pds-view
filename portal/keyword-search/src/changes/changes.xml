@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2017, by the California Institute of Technology.
+  Copyright 2017-2018, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -24,7 +24,7 @@
   <body>
     <release version="1.0.0" date="TBD" description="TBD">
       <action dev="earevalo" type="add">
-        Initial release of the Data Search interface that queries the Search Service for Product_Bundle, Product_Collection and Product_Observational products and displays the results to the user.
+        Initial release of the Keyword Search interface that queries the Search Service for Product_Bundle, Product_Collection and Product_Observational products and displays the results to the user.
       </action>
     </release>
   </body>

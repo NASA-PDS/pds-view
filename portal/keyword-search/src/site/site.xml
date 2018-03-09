@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
 <!-- 
-  Copyright 2017, by the California Institute of Technology.
+  Copyright 2017-2018, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology 
   Transfer at the California Institute of Technology.
@@ -16,25 +16,25 @@
   $Id$
 -->
 
-<project name="Data Search">
+<project name="Keyword Search">
   <bannerLeft>
     <src>images/pds4_logo.png</src>
     <href>https://pds-cm.jpl.nasa.gov/pds4/</href>
   </bannerLeft>
 
   <bannerRight>
-    <name>Data Search</name>
+    <name>Keyword Search</name>
   </bannerRight>
 
   <version/>
 
   <body>
     <links>
-      <item name="Data Search" href="https://pds-cm.jpl.nasa.gov/pds4/portal/data-search/index.html" />
+      <item name="Keyword Search" href="https://pds-cm.jpl.nasa.gov/pds4/portal/keyword-search/index.html" />
     </links>
 
     <menu name="Software Documentation">
-      <item name="About Data Search" href="index.html"/>
+      <item name="About Keyword Search" href="index.html"/>
       <item name="Installation" href="install/index.html"/>
     </menu>
 
