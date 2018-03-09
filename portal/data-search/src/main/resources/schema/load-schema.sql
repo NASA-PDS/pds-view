@@ -111,9 +111,9 @@ insert into investigation_tools (investigation, title, description, url, rank) v
 
 insert into investigation_tools (investigation, title, description, url, rank) values ('Galileo', 'Map-A-Planet 2 (MAP2) at the Cartography and Imaging Sciences Node', 'Supports Galileo SSI global image product mosaic projection, clipping, processing, and download.', 'https://astrogeology.usgs.gov/tools/map-a-planet-2', 2);
 
-insert into investigation_tools (investigation, title, description, url, rank) values ('Galileo', 'OPUS at the Ring-Moon Systems Node', 'Supports Galileo for a subset of the SSI observations. Browse results and download.', 'https://tools.pds-rings.seti.org/opus#/missionid=Galileo', 3);
+insert into investigation_tools (investigation, title, description, url, rank) values ('Galileo', 'Planetary Image Locator Tool (PILOT) at the Cartography and Imaging Sciences Node', 'Supports Galileo SSI map-based image product locator tool using uniform image geometry to search and download.', 'https://pilot.wr.usgs.gov/', 3);
 
-insert into investigation_tools (investigation, title, description, url, rank) values ('Galileo', 'Planetary Image Locator Tool (PILOT) at the Cartography and Imaging Sciences Node', 'Supports Galileo SSI map-based image product locator tool using uniform image geometry to search and download.', 'https://pilot.wr.usgs.gov/', 4);
+insert into investigation_tools (investigation, title, description, url, rank) values ('Galileo', 'OPUS at the Ring-Moon Systems Node', 'Supports Galileo for a subset of the SSI observations. Browse results and download.', 'https://tools.pds-rings.seti.org/opus#/missionid=Galileo', 4);
 
 
 insert into investigation_tools (investigation, title, description, url, rank) values ('Galileo', 'Galileo Archive at the Planetary Plasma Interactions Node', 'The Galileo Archive page provides details on the investigation, instruments and targets associated with the archive as well as additional resources for discovering Galileo data.', 'https://pds-ppi.igpp.ucla.edu/mission/Galileo', 101);
@@ -221,9 +221,9 @@ insert into investigation_tools (investigation, title, description, url, rank) v
 
 /* Magellan */
 
-insert into investigation_tools (investigation, title, description, url, rank) values ('Magellan', 'Venus Orbital Data Explorer (ODE) at the Geosciences Node', 'Supports search, browse, and download of select PDS data products from the Magellan mission, including radar system and radio science subsystem data.', 'http://ode.rsl.wustl.edu/venus', 1);
+insert into investigation_tools (investigation, title, description, url, rank) values ('Magellan', 'PDS Image Atlas at the Cartography and Imaging Sciences Node', 'Supports Magellan SAR image product search, browse and download.', 'https://pds-imaging.jpl.nasa.gov/search/?fq=ATLAS_MISSION_NAME%3Amagellan&q=*%3A*', 1);
 
-insert into investigation_tools (investigation, title, description, url, rank) values ('Magellan', 'PDS Image Atlas at the Cartography and Imaging Sciences Node', 'Supports Magellan SAR image product search, browse and download.', 'https://pds-imaging.jpl.nasa.gov/search/?fq=ATLAS_MISSION_NAME%3Amagellan&q=*%3A*', 2);
+insert into investigation_tools (investigation, title, description, url, rank) values ('Magellan', 'Venus Orbital Data Explorer (ODE) at the Geosciences Node', 'Supports search, browse, and download of select PDS data products from the Magellan mission, including radar system and radio science subsystem data.', 'http://ode.rsl.wustl.edu/venus', 2);
 
 insert into investigation_tools (investigation, title, description, url, rank) values ('Magellan', 'Map-A-Planet 2 (MAP2) at the Cartography and Imaging Sciences Node', 'Supports Magellan SAR global image product mosaic projection, clipping, processing, and download.', 'https://astrogeology.usgs.gov/search/results?q=MAP2&k1=target&v1=Venus', 3);
 
@@ -454,9 +454,9 @@ insert into investigation_tools (investigation, title, description, url, rank) v
 
 /* Viking Orbiter */
 
-insert into investigation_tools (investigation, title, description, url, rank) values ('Viking Orbiter', 'Mars Orbital Data Explorer (ODE) at the Geosciences Node', 'Supports search, browse, and download of select PDS data products from the Viking Orbiter mission, including Visual Imaging Subsystem (VIS) camera data.', 'http://ode.rsl.wustl.edu/mars/', 1);
+insert into investigation_tools (investigation, title, description, url, rank) values ('Viking Orbiter', 'PDS Image Atlas at the Cartography and Imaging Sciences Node', 'Supports Viking Orbiter VIS image product search, browse and download.', 'https://pds-imaging.jpl.nasa.gov/search/?fq=ATLAS_MISSION_NAME%3A%22viking%20orbiter%22&q=*%3A*', 1);
 
-insert into investigation_tools (investigation, title, description, url, rank) values ('Viking Orbiter', 'PDS Image Atlas at the Cartography and Imaging Sciences Node', 'Supports Viking Orbiter VIS image product search, browse and download.', 'https://pds-imaging.jpl.nasa.gov/search/?fq=ATLAS_MISSION_NAME%3A%22viking%20orbiter%22&q=*%3A*', 2);
+insert into investigation_tools (investigation, title, description, url, rank) values ('Viking Orbiter', 'Mars Orbital Data Explorer (ODE) at the Geosciences Node', 'Supports search, browse, and download of select PDS data products from the Viking Orbiter mission, including Visual Imaging Subsystem (VIS) camera data.', 'http://ode.rsl.wustl.edu/mars/', 2);
 
 insert into investigation_tools (investigation, title, description, url, rank) values ('Viking Orbiter', 'Map-A-Planet 2 (MAP2) at the Cartography and Imaging Sciences Node', 'Supports Viking Orbiter VIS global image product mosaic projection, clipping, processing, and download.', 'https://astrogeology.usgs.gov/search/results?q=MAP2&k1=target&v1=Mars', 3);
 
@@ -469,13 +469,13 @@ insert into investigation_tools (investigation, title, description, url, rank) v
 
 /* Voyager */
 
-insert into investigation_tools (investigation, title, description, url, rank) values ('Voyager', 'PDS Image Atlas at the Cartography and Imaging Sciences Node', 'Supports Voyager ISS-NAC, ISS-WAC, and VG-ISS image product search, browse and download.', 'https://pds-imaging.jpl.nasa.gov/search/?fq=ATLAS_MISSION_NAME%3Avoyager&q=*%3A*', 1);
+insert into investigation_tools (investigation, title, description, url, rank) values ('Voyager', 'OPUS at the Ring-Moon Systems Node', 'Supports Voyager ISS, all encounters with enhanced geometric metadata enabling more detailed searches, including surface search constraints for the planet, satellites and rings (e.g., latitudes and longitudes), and expanded sets of viewing and illumination constraints. Browse results and download, including calibrated versions.', 'https://tools.pds-rings.seti.org/opus#/missionid=Voyager', 1);
 
-insert into investigation_tools (investigation, title, description, url, rank) values ('Voyager', 'Map-A-Planet 2 (MAP2) at the Cartography and Imaging Sciences Node', 'Supports Voyager ISS global image product mosaic projection, clipping, processing, and download.', 'https://astrogeology.usgs.gov/tools/map-a-planet-2', 2);
+insert into investigation_tools (investigation, title, description, url, rank) values ('Voyager', 'PDS Image Atlas at the Cartography and Imaging Sciences Node', 'Supports Voyager ISS-NAC, ISS-WAC, and VG-ISS image product search, browse and download.', 'https://pds-imaging.jpl.nasa.gov/search/?fq=ATLAS_MISSION_NAME%3Avoyager&q=*%3A*', 2);
 
-insert into investigation_tools (investigation, title, description, url, rank) values ('Voyager', 'Planetary Image Locator Tool (PILOT) at the Cartography and Imaging Sciences Node', 'Supports Voyager ISS-NAC and WAC map-based image product locator tool using uniform image geometry to search and download.', 'https://pilot.wr.usgs.gov/', 3);
+insert into investigation_tools (investigation, title, description, url, rank) values ('Voyager', 'Map-A-Planet 2 (MAP2) at the Cartography and Imaging Sciences Node', 'Supports Voyager ISS global image product mosaic projection, clipping, processing, and download.', 'https://astrogeology.usgs.gov/tools/map-a-planet-2', 3);
 
-insert into investigation_tools (investigation, title, description, url, rank) values ('Voyager', 'OPUS at the Ring-Moon Systems Node', 'Supports Voyager ISS, all encounters with enhanced geometric metadata enabling more detailed searches, including surface search constraints for the planet, satellites and rings (e.g., latitudes and longitudes), and expanded sets of viewing and illumination constraints. Browse results and download, including calibrated versions.', 'https://tools.pds-rings.seti.org/opus#/missionid=Voyager', 4);
+insert into investigation_tools (investigation, title, description, url, rank) values ('Voyager', 'Planetary Image Locator Tool (PILOT) at the Cartography and Imaging Sciences Node', 'Supports Voyager ISS-NAC and WAC map-based image product locator tool using uniform image geometry to search and download.', 'https://pilot.wr.usgs.gov/', 4);
 
 
 insert into investigation_tools (investigation, title, description, url, rank) values ('Voyager', 'Voyager Archive at the Atmospheres Node', 'The Voyager Archive page provides details on the investigation, instruments and targets associated with the archive as well as additional resources for discovering Voyager data.', 'https://pds-atmospheres.nmsu.edu/data_and_services/atmospheres_data/Voyager/voyager.html', 101);
@@ -509,13 +509,13 @@ insert into target_tools (target, title, description, url, rank) values ('Comets
 
 /* Mercury */
 
-insert into target_tools (target, title, description, url, rank) values ('Mercury', 'PDS Image Atlas at the Cartography and Imaging Sciences Node', 'Supports MESSENGER image, radar, and imaging spectrometer product search, browse and download.', 'https://pds-imaging.jpl.nasa.gov/search/?fq=TARGET_NAME%3Amercury&fq=ATLAS_MISSION_NAME%3Amessenger&q=*%3A*', 1);
+insert into target_tools (target, title, description, url, rank) values ('Mercury', 'Mercury Orbital Data Explorer (ODE) at the Geosciences Node', 'Supports search, browse, and download of select PDS data products from the MESSENGER mission, including GRS, NS, XRS, MASCS, MDIS, MLA, and radio science data.', 'http://ode.rsl.wustl.edu/mercury/', 1);
 
-insert into target_tools (target, title, description, url, rank) values ('Mercury', 'Map-A-Planet 2 (MAP2) at the Cartography and Imaging Sciences Node', 'Supports MESSENGER and Magellan global image mosaic projection, clipping, processing and download.', 'https://astrogeology.usgs.gov/search/results?q=MAP2&k1=target&v1=Mercury', 2);
+insert into target_tools (target, title, description, url, rank) values ('Mercury', 'PDS Image Atlas at the Cartography and Imaging Sciences Node', 'Supports MESSENGER image product search and download.', 'https://pds-imaging.jpl.nasa.gov/search/?fq=TARGET_NAME%3Amercury&fq=ATLAS_MISSION_NAME%3Amessenger&q=*%3A*', 2);
 
-insert into target_tools (target, title, description, url, rank) values ('Mercury', 'Planetary Image Locator Tool (PILOT) at the Cartography and Imaging Sciences Node', 'Supports Mariner 10 and MESSENGER map-based image product locator tool using uniform image geometry to search and download.', 'https://pilot.wr.usgs.gov', 3);
+insert into target_tools (target, title, description, url, rank) values ('Mercury', 'Map-A-Planet 2 (MAP2) at the Cartography and Imaging Sciences Node', 'Supports MESSENGER global image mosaic projection, clipping, processing and download.', 'https://astrogeology.usgs.gov/search/results?q=MAP2&k1=target&v1=Mercury', 3);
 
-insert into target_tools (target, title, description, url, rank) values ('Mercury', 'Mercury Orbital Data Explorer (ODE) at the Geosciences Node', 'Supports search, browse, and download of select PDS data products from the MESSENGER mission, including GRS, NS, XRS, MASCS, MDIS, MLA, and radio science data.', 'http://ode.rsl.wustl.edu/mercury/', 4);
+insert into target_tools (target, title, description, url, rank) values ('Mercury', 'Planetary Image Locator Tool (PILOT) at the Cartography and Imaging Sciences Node', 'Supports Mariner 10 and MESSENGER map-based image product locator tool using uniform image geometry to search and download.', 'https://pilot.wr.usgs.gov', 4);
 
 
 insert into target_tools (target, title, description, url, rank) values ('Mercury', 'Mercury Data Holdings at the Planetary Plasma Interactions Node', 'Supports Mariner 10 and MESSENGER product browse and download.', 'https://pds-ppi.igpp.ucla.edu/search/?t=Mercury&facet=TARGET_NAME', 101);
@@ -526,11 +526,11 @@ insert into target_tools (target, title, description, url, rank) values ('Mercur
 
 insert into target_tools (target, title, description, url, rank) values ('Venus', 'PDS Image Atlas at the Cartography and Imaging Sciences Node', 'Supports Magellan, Galileo, Cassini, and Messenger image, radar, and imaging spectrometer product search, browse and download.', 'https://pds-imaging.jpl.nasa.gov/search/?fq=TARGET_NAME%3Avenus&q=*%3A*', 1);
 
-insert into target_tools (target, title, description, url, rank) values ('Venus', 'Map-A-Planet 2 (MAP2) at the Cartography and Imaging Sciences Node', 'Supports Magellan global image mosaic projection, clipping, processing and download.', 'https://astrogeology.usgs.gov/search/results?q=MAP2&k1=target&v1=Venus', 2);
+insert into target_tools (target, title, description, url, rank) values ('Venus', 'Planetary Image Locator Tool (PILOT) at the Cartography and Imaging Sciences Node', 'Supports Galileo, Cassini, Mariner 10, and MESSENGER map-based image product locator tool using uniform image geometry to search and download.', 'https://pilot.wr.usgs.gov', 2);
 
-insert into target_tools (target, title, description, url, rank) values ('Venus', 'Planetary Image Locator Tool (PILOT) at the Cartography and Imaging Sciences Node', 'Supports Galileo, Cassini, Mariner 10, and MESSENGER map-based image product locator tool using uniform image geometry to search and download.', 'https://pilot.wr.usgs.gov', 3);
+insert into target_tools (target, title, description, url, rank) values ('Venus', 'Venus Orbital Data Explorer (ODE) at the Geosciences Node', 'Supports search, browse, and download of select PDS data products from the Magellan and MESSENGER missions. The Venus ODE also supports Earth-based Venus radar observations.', 'http://ode.rsl.wustl.edu/venus/', 3);
 
-insert into target_tools (target, title, description, url, rank) values ('Venus', 'Venus Orbital Data Explorer (ODE) at the Geosciences Node', 'Supports search, browse, and download of select PDS data products from the Magellan and MESSENGER missions. The Venus ODE also supports Earth-based Venus radar observations.', 'http://ode.rsl.wustl.edu/venus/', 4);
+insert into target_tools (target, title, description, url, rank) values ('Venus', 'Map-A-Planet 2 (MAP2) at the Cartography and Imaging Sciences Node', 'Supports Magellan global image mosaic projection, clipping, processing and download.', 'https://astrogeology.usgs.gov/search/results?q=MAP2&k1=target&v1=Venus', 4);
 
 insert into target_tools (target, title, description, url, rank) values ('Venus', 'OPUS at the Ring-Moon Systems Node', 'Supports a small number of long range Cassini (ISS ,UVIS,VIMS) observations. Browse results and download including calibrated ISS.', 'https://tools.pds-rings.seti.org/opus#/planet=Venus', 5);
 
@@ -541,19 +541,19 @@ insert into target_tools (target, title, description, url, rank) values ('Venus'
 
 /* Earth System */
 
-insert into target_tools (target, title, description, url, rank) values ('Earth System', 'PDS Image Atlas at the Cartography and Imaging Sciences Node', 'Supports Clementine, Cassini, Galileo, LRO, MSL, and Messenger image and imaging spectrometer product search, browse and download.', 'https://pds-imaging.jpl.nasa.gov/search/?fq=TARGET_NAME%3Aearth&q=*%3A*', 1);
+insert into target_tools (target, title, description, url, rank) values ('Earth System', 'Lunar Orbital Data Explorer (ODE) at the Geosciences Node', 'Provides search, display, and download tools for the PDS data archives of the Lunar Reconnaissance Orbiter (LRO), Clementine, Lunar Prospector, Chandrayaan-1, and GRAIL missions to Earth''s moon. The Lunar ODE also supports restored Lunar Orbiter data as well as Earth-based lunar radar observations.', 'http://ode.rsl.wustl.edu/moon', 1);
 
-insert into target_tools (target, title, description, url, rank) values ('Earth System', 'Map-A-Planet 2 (MAP2) at the Cartography and Imaging Sciences Node', 'Supports Clementine, LRO, New Horizons, Apollo, Lunar Orbiter and SELENE/Kaguya global image mosaic projection, clipping, processing and download.', 'https://astrogeology.usgs.gov/search/results?q=MAP2&k1=target&v1=Moon', 2);
+insert into target_tools (target, title, description, url, rank) values ('Earth System', 'PDS Image Atlas at the Cartography and Imaging Sciences Node', 'Supports Clementine, Cassini, Galileo, LRO, MSL, and Messenger image and imaging spectrometer product search, browse and download.', 'https://pds-imaging.jpl.nasa.gov/search/?fq=TARGET_NAME%3Aearth&q=*%3A*', 2);
 
-insert into target_tools (target, title, description, url, rank) values ('Earth System', 'Planetary Image Locator Tool (PILOT) at the Cartography and Imaging Sciences Node', 'Supports Cassini, Chandrayaan-1, Clementine, Galileo, LRO, MRO, and MESSENGER map-based image product locator tool using uniform image geometry to search and download.', 'https://pilot.wr.usgs.gov', 3);
+insert into target_tools (target, title, description, url, rank) values ('Earth System', 'Map-A-Planet 2 (MAP2) at the Cartography and Imaging Sciences Node', 'Supports Clementine, LRO, New Horizons, Apollo, Lunar Orbiter and SELENE/Kaguya global image mosaic projection, clipping, processing and download.', 'https://astrogeology.usgs.gov/search/results?q=MAP2&k1=target&v1=Moon', 3);
 
-insert into target_tools (target, title, description, url, rank) values ('Earth System', 'Lunar Orbital Data Explorer (ODE) at the Geosciences Node', 'Provides search, display, and download tools for the PDS data archives of the Lunar Reconnaissance Orbiter (LRO), Clementine, Lunar Prospector, Chandrayaan-1, and GRAIL missions to Earth''s moon. The Lunar ODE also supports restored Lunar Orbiter data as well as Earth-based lunar radar observations.', 'http://ode.rsl.wustl.edu/moon', 4);
+insert into target_tools (target, title, description, url, rank) values ('Earth System', 'Planetary Image Locator Tool (PILOT) at the Cartography and Imaging Sciences Node', 'Supports Cassini, Chandrayaan-1, Clementine, Galileo, LRO, MRO, and MESSENGER map-based image product locator tool using uniform image geometry to search and download.', 'https://pilot.wr.usgs.gov', 4);
 
-insert into target_tools (target, title, description, url, rank) values ('Earth System', 'OPUS at the Ring-Moon Systems Node', 'Supports a small number of Cassini ISS and HST WFPC2 observations.  Browse and download including calibrated Cassini ISS. Browse with links to STScI for HST downloads.', 'https://tools.pds-rings.seti.org/opus#/planet=Earth', 5);
+insert into target_tools (target, title, description, url, rank) values ('Earth System', 'LCROSS Analyst''s Notebook at the Geosciences Node', 'Provides access to data from the Lunar Crater Observation And Sensing Satellite (LCROSS) mission, including camera, spectrometer, and photometer data.', 'http://an.rsl.wustl.edu/lcross/lcrossbrowser/', 5);
 
-insert into target_tools (target, title, description, url, rank) values ('Earth System', 'LCROSS Analyst''s Notebook at the Geosciences Node', 'Provides access to data from the Lunar Crater Observation And Sensing Satellite (LCROSS) mission, including camera, spectrometer, and photometer data.', 'http://an.rsl.wustl.edu/lcross/lcrossbrowser/', 6);
+insert into target_tools (target, title, description, url, rank) values ('Earth System', 'Apollo Analyst''s Notebook at the Geosciences Node', 'Provides access to data from the Apollo program''s six manned missions to the lunar surface.', 'http://an.rsl.wustl.edu/apollo/', 6);
 
-insert into target_tools (target, title, description, url, rank) values ('Earth System', 'Apollo Analyst''s Notebook at the Geosciences Node', 'Provides access to data from the Apollo program''s six manned missions to the lunar surface.', 'http://an.rsl.wustl.edu/apollo/', 7);
+insert into target_tools (target, title, description, url, rank) values ('Earth System', 'OPUS at the Ring-Moon Systems Node', 'Supports a small number of Cassini ISS and HST WFPC2 observations.  Browse and download including calibrated Cassini ISS. Browse with links to STScI for HST downloads.', 'https://tools.pds-rings.seti.org/opus#/planet=Earth', 7);
 
 
 insert into target_tools (target, title, description, url, rank) values ('Earth System', 'Earth (Moon) Data Holdings at the Planetary Plasma Interactions Node', 'Supports Cassini, Galileo, Juno, Lunar Prospector, Lunar Reconnaissance Orbiter (LRO), MESSENGER and NEAR product browse and download.', 'https://pds-ppi.igpp.ucla.edu/search/?t=Earth(Moon)&facet=TARGET_NAME', 101);
@@ -566,15 +566,15 @@ insert into target_tools (target, title, description, url, rank) values ('Mars S
 
 insert into target_tools (target, title, description, url, rank) values ('Mars System', 'PDS Image Atlas at the Cartography and Imaging Sciences Node', 'Supports Mars Odyssey, Mars Exploration Rover, Mars Global Surveyor, Mars Pathfinder, Mars Reconnaissance Orbiter, Mars Science Laboratory, Phoenix, Viking Lander, Viking Orbiter, and Messenger image and imaging spectrometer product search, browse, and download.', 'https://pds-imaging.jpl.nasa.gov/search/?fq=TARGET_NAME%3Amars&q=*%3A*', 2);
 
-insert into target_tools (target, title, description, url, rank) values ('Mars System', 'MSL Analyst''s Notebook at the Geosciences Node', 'Provides access to the Mars Science Laboratory Curiosity mission data archives by integrating sequence information, science data, and documentation into standard web-accessible pages to facilitate mission "replay".', 'http://an.rsl.wustl.edu/msl', 3);
+insert into target_tools (target, title, description, url, rank) values ('Mars System', 'Map-A-Planet 2 (MAP2) at the Cartography and Imaging Sciences Node', 'Supports Mars Reconnaissance Orbiter, Mars Science Laboratory, Viking, Mars Global Surveyor, Mars Express and Odyssey global image mosaic projection, clipping, processing and download.', 'https://astrogeology.usgs.gov/search/results?q=MAP2&k1=target&v1=Mars', 3);
 
-insert into target_tools (target, title, description, url, rank) values ('Mars System', 'MER Analyst''s Notebook at the Geosciences Node', 'Provides access to the Mars Exploration Rover Spirit and Opportunity mission data archives by integrating sequence information, science data, and documentation into standard web-accessible pages to facilitate mission "replay".', 'http://an.rsl.wustl.edu/mer', 4);
+insert into target_tools (target, title, description, url, rank) values ('Mars System', 'Planetary Image Locator Tool (PILOT) at the Cartography and Imaging Sciences Node', 'Supports Mars Express, Mars Global Surveyor, Mars Reconnaissance Orbiter, MESSENGER, Odyssey and Viking Orbiter map-based image product locator tool using uniform image geometry to search and download.', 'https://pilot.wr.usgs.gov', 4);
 
-insert into target_tools (target, title, description, url, rank) values ('Mars System', 'Phoenix Analyst''s Notebook at the Geosciences Node', 'Provides access to the Phoenix mission data archives by integrating sequence information, science data, and documentation into standard web-accessible pages to facilitate mission "replay".', 'http://an.rsl.wustl.edu/phx', 5);
+insert into target_tools (target, title, description, url, rank) values ('Mars System', 'MSL Analyst''s Notebook at the Geosciences Node', 'Provides access to the Mars Science Laboratory Curiosity mission data archives by integrating sequence information, science data, and documentation into standard web-accessible pages to facilitate mission "replay".', 'http://an.rsl.wustl.edu/msl', 5);
 
-insert into target_tools (target, title, description, url, rank) values ('Mars System', 'Map-A-Planet 2 (MAP2) at the Cartography and Imaging Sciences Node', 'Supports Mars Reconnaissance Orbiter, Mars Science Laboratory, Viking, Mars Global Surveyor, Mars Express and Odyssey global image mosaic projection, clipping, processing and download.', 'https://astrogeology.usgs.gov/search/results?q=MAP2&k1=target&v1=Mars', 6);
+insert into target_tools (target, title, description, url, rank) values ('Mars System', 'MER Analyst''s Notebook at the Geosciences Node', 'Provides access to the Mars Exploration Rover Spirit and Opportunity mission data archives by integrating sequence information, science data, and documentation into standard web-accessible pages to facilitate mission "replay".', 'http://an.rsl.wustl.edu/mer', 6);
 
-insert into target_tools (target, title, description, url, rank) values ('Mars System', 'Planetary Image Locator Tool (PILOT) at the Cartography and Imaging Sciences Node', 'Supports Mars Express, Mars Global Surveyor, Mars Reconnaissance Orbiter, MESSENGER, Odyssey and Viking Orbiter map-based image product locator tool using uniform image geometry to search and download.', 'https://pilot.wr.usgs.gov', 7);
+insert into target_tools (target, title, description, url, rank) values ('Mars System', 'Phoenix Analyst''s Notebook at the Geosciences Node', 'Provides access to the Phoenix mission data archives by integrating sequence information, science data, and documentation into standard web-accessible pages to facilitate mission "replay".', 'http://an.rsl.wustl.edu/phx', 7);
 
 insert into target_tools (target, title, description, url, rank) values ('Mars System', 'OPUS at the Ring-Moon Systems Node', 'Supports HST (ACS, WFC3, WFPC2). Browse results and links to STScI for HST downloads.', 'https://tools.pds-rings.seti.org/opus#/planet=Mars', 8);
 
@@ -593,9 +593,9 @@ insert into target_tools (target, title, description, url, rank) values ('Jupite
 
 insert into target_tools (target, title, description, url, rank) values ('Jupiter System', 'OPUS at the Ring-Moon Systems Node', 'Supports New Horizons (LORRI), Cassini (ISS, UVIS, VIMS), and Voyager (ISS), all with enhanced geometric metadata which enables more detailed searches, including surface search constraints for the planet, satellites and rings (e.g., latitudes and longitudes).  Also supports LORRI (MVIC) and HST (ACS,WFC3,WFPC2). Browse and download including calibrated Cassini ISS and Voyager ISS. Links to STScI for HST downloads.', 'https://tools.pds-rings.seti.org/opus#/planet=JUPITER', 2);
 
-insert into target_tools (target, title, description, url, rank) values ('Jupiter System', 'Map-A-Planet 2 (MAP2) at the Cartography and Imaging Sciences Node', 'Supports Galileo and Voyager global image mosaic projection, clipping, processing and download.', 'https://astrogeology.usgs.gov/tools/map-a-planet-2', 3);
+insert into target_tools (target, title, description, url, rank) values ('Jupiter System', 'Planetary Image Locator Tool (PILOT) at the Cartography and Imaging Sciences Node', 'Supports Cassini, Galileo, MESSENGER, and Voyager map-based image product locator tool using uniform image geometry to search and download.', 'https://pilot.wr.usgs.gov', 3);
 
-insert into target_tools (target, title, description, url, rank) values ('Jupiter System', 'Planetary Image Locator Tool (PILOT) at the Cartography and Imaging Sciences Node', 'Supports Cassini, Galileo, MESSENGER, and Voyager map-based image product locator tool using uniform image geometry to search and download.', 'https://pilot.wr.usgs.gov', 4);
+insert into target_tools (target, title, description, url, rank) values ('Jupiter System', 'Map-A-Planet 2 (MAP2) at the Cartography and Imaging Sciences Node', 'Supports Galileo and Voyager global image mosaic projection, clipping, processing and download.', 'https://astrogeology.usgs.gov/tools/map-a-planet-2', 4);
 
 
 insert into target_tools (target, title, description, url, rank) values ('Jupiter System', 'Jupiter Data Holdings at the Planetary Plasma Interactions Node', 'Supports Cassini, Galileo, Juno, New Horizons, Pioneer 10/11, Ulysses and Voyager 1/2 product browse and download.', 'https://pds-ppi.igpp.ucla.edu/search/?t=Jupiter&facet=TARGET_NAME', 101);
@@ -612,9 +612,9 @@ insert into target_tools (target, title, description, url, rank) values ('Saturn
 
 insert into target_tools (target, title, description, url, rank) values ('Saturn System', 'PDS Image Atlas at the Cartography and Imaging Sciences Node', 'Supports Cassini and Voyager image, radar, and imaging spectrometer product search, browse and download.', 'https://pds-imaging.jpl.nasa.gov/search/?fq=TARGET_NAME%3Asaturn&q=*%3A*', 2);
 
-insert into target_tools (target, title, description, url, rank) values ('Saturn System', 'Map-A-Planet 2 (MAP2) at the Cartography and Imaging Sciences Node', 'Supports Cassini and Voyager global image mosaic projection, clipping, processing and download.', 'https://astrogeology.usgs.gov/tools/map-a-planet-2', 3);
+insert into target_tools (target, title, description, url, rank) values ('Saturn System', 'Planetary Image Locator Tool (PILOT) at the Cartography and Imaging Sciences Node', 'Supports Cassini, MESSENGER and Voyager map-based image product locator tool using uniform image geometry to search and download.', 'https://pilot.wr.usgs.gov', 3);
 
-insert into target_tools (target, title, description, url, rank) values ('Saturn System', 'Planetary Image Locator Tool (PILOT) at the Cartography and Imaging Sciences Node', 'Supports Cassini, MESSENGER and Voyager map-based image product locator tool using uniform image geometry to search and download.', 'https://pilot.wr.usgs.gov', 4);
+insert into target_tools (target, title, description, url, rank) values ('Saturn System', 'Map-A-Planet 2 (MAP2) at the Cartography and Imaging Sciences Node', 'Supports Cassini and Voyager global image mosaic projection, clipping, processing and download.', 'https://astrogeology.usgs.gov/tools/map-a-planet-2', 4);
 
 
 insert into target_tools (target, title, description, url, rank) values ('Saturn System', 'Saturn Data Holdings at the Planetary Plasma Interactions Node', 'Supports Cassini, Pioneer 11 and Voyager 1/2 product browse and download.', 'https://pds-ppi.igpp.ucla.edu/search/?t=Saturn&facet=TARGET_NAME', 101);
@@ -627,11 +627,11 @@ insert into target_tools (target, title, description, url, rank) values ('Saturn
 
 /* Uranus System */
 
-insert into target_tools (target, title, description, url, rank) values ('Uranus System', 'PDS Image Atlas at the Cartography and Imaging Sciences Node', 'Supports Voyager image, radar, and imaging spectrometer product search, browse and download.', 'https://pds-imaging.jpl.nasa.gov/search/?fq=TARGET_NAME%3Auranus&fq=ATLAS_MISSION_NAME%3Avoyager&q=*%3A*', 1);
+insert into target_tools (target, title, description, url, rank) values ('Uranus System', 'PDS Image Atlas at the Cartography and Imaging Sciences Node', 'Supports Voyager image product search, browse and download.', 'https://pds-imaging.jpl.nasa.gov/search/?fq=TARGET_NAME%3Auranus&fq=ATLAS_MISSION_NAME%3Avoyager&q=*%3A*', 1);
 
-insert into target_tools (target, title, description, url, rank) values ('Uranus System', 'Planetary Image Locator Tool (PILOT) at the Cartography and Imaging Sciences Node', 'Supports Voyager map-based image product locator tool using uniform image geometry to search and download.', 'https://pilot.wr.usgs.gov', 2);
+insert into target_tools (target, title, description, url, rank) values ('Uranus System', 'OPUS at the Ring-Moon Systems Node', 'Supports Voyager (ISS) with enhanced geometric metadata. Also supports HST (ACS, WFC3, WFPC2). Browse and download including calibrated Voyager ISS. Browse with links to STScI for HST.', 'https://tools.pds-rings.seti.org/opus#/planet=Uranus', 2);
 
-insert into target_tools (target, title, description, url, rank) values ('Uranus System', 'OPUS at the Ring-Moon Systems Node', 'Supports Voyager (ISS) with enhanced geometric metadata. Also supports HST (ACS, WFC3, WFPC2). Browse and download including calibrated Voyager ISS. Browse with links to STScI for HST.', 'https://tools.pds-rings.seti.org/opus#/planet=Uranus', 3);
+insert into target_tools (target, title, description, url, rank) values ('Uranus System', 'Planetary Image Locator Tool (PILOT) at the Cartography and Imaging Sciences Node', 'Supports Voyager map-based image product locator tool using uniform image geometry to search and download.', 'https://pilot.wr.usgs.gov', 3);
 
 
 insert into target_tools (target, title, description, url, rank) values ('Uranus System', 'Uranus Data Holdings at the Planetary Plasma Interactions Node', 'Supports Voyager 2 product browse and download.', 'https://pds-ppi.igpp.ucla.edu/search/?t=Uranus&facet=TARGET_NAME', 101);
@@ -642,11 +642,11 @@ insert into target_tools (target, title, description, url, rank) values ('Uranus
 
 /* Neptune System */
 
-insert into target_tools (target, title, description, url, rank) values ('Neptune System', 'PDS Image Atlas at the Cartography and Imaging Sciences Node', 'Supports Voyager image, radar, and imaging spectrometer product search, browse and download.', 'https://pds-imaging.jpl.nasa.gov/search/?fq=TARGET%3Aneptune&q=*%3A*', 1);
+insert into target_tools (target, title, description, url, rank) values ('Neptune System', 'PDS Image Atlas at the Cartography and Imaging Sciences Node', 'Supports Voyager image product search, browse and download.', 'https://pds-imaging.jpl.nasa.gov/search/?fq=TARGET%3Aneptune&q=*%3A*', 1);
 
-insert into target_tools (target, title, description, url, rank) values ('Neptune System', 'Planetary Image Locator Tool (PILOT) at the Cartography and Imaging Sciences Node', 'Supports Voyager map-based image product locator tool using uniform image geometry to search and download.', 'https://pilot.wr.usgs.gov', 2);
+insert into target_tools (target, title, description, url, rank) values ('Neptune System', 'OPUS at the Ring-Moon Systems Node', 'Supports Voyager ISS with enhanced geometric metadata. Also supports HST (ACS, WFC3, WFPC2). Browse and download including calibrated Voyager ISS. Browse with links to STScI for HST.', 'https://tools.pds-rings.seti.org/opus#/planet=Neptune', 2);
 
-insert into target_tools (target, title, description, url, rank) values ('Neptune System', 'OPUS at the Ring-Moon Systems Node', 'Supports Voyager ISS with enhanced geometric metadata. Also supports HST (ACS, WFC3, WFPC2). Browse and download including calibrated Voyager ISS. Browse with links to STScI for HST.', 'https://tools.pds-rings.seti.org/opus#/planet=Neptune', 3);
+insert into target_tools (target, title, description, url, rank) values ('Neptune System', 'Planetary Image Locator Tool (PILOT) at the Cartography and Imaging Sciences Node', 'Supports Voyager map-based image product locator tool using uniform image geometry to search and download.', 'https://pilot.wr.usgs.gov', 3);
 
 
 insert into target_tools (target, title, description, url, rank) values ('Neptune System', 'Neptune Data Holdings at the Planetary Plasma Interactions Node', 'Supports Voyager 2 product browse and download.', 'https://pds-ppi.igpp.ucla.edu/search/?t=Neptune&facet=TARGET_NAME', 101);
@@ -657,11 +657,11 @@ insert into target_tools (target, title, description, url, rank) values ('Neptun
 
 /* Pluto System */
 
-insert into target_tools (target, title, description, url, rank) values ('Pluto System', 'PDS Image Atlas at the Cartography and Imaging Sciences Node', 'Supports Voyager image, radar, and imaging spectrometer product search, browse and download.', 'https://pds-imaging.jpl.nasa.gov/search/?fq=TARGET_NAME%3Apluto&fq=ATLAS_MISSION_NAME%3A%22new%20horizons%22&q=*%3A*', 1);
+insert into target_tools (target, title, description, url, rank) values ('Pluto System', 'OPUS at the Ring-Moon Systems Node', 'Supports New Horizons (LORRI) and Voyager (ISS), both with enhanced geometric metadata. Also supports HST (ACS, WFC3, WFPC2). Browse and download including calibrated Voyager ISS. Browse with links to STScI for HST.', 'https://tools.pds-rings.seti.org/opus#/planet=Pluto', 1);
 
-insert into target_tools (target, title, description, url, rank) values ('Pluto System', 'Map-A-Planet 2 (MAP2) at the Cartography and Imaging Sciences Node', 'Supports New Horizons global image mosaic projection, clipping, processing and download.', 'https://astrogeology.usgs.gov/tools/map-a-planet-2', 2);
+insert into target_tools (target, title, description, url, rank) values ('Pluto System', 'PDS Image Atlas at the Cartography and Imaging Sciences Node', 'Supports New Horizons Lorri image product search and download.', 'https://pds-imaging.jpl.nasa.gov/search/?fq=TARGET_NAME%3Apluto&fq=ATLAS_MISSION_NAME%3A%22new%20horizons%22&q=*%3A*', 2);
 
-insert into target_tools (target, title, description, url, rank) values ('Pluto System', 'OPUS at the Ring-Moon Systems Node', 'Supports New Horizons (LORRI) and Voyager (ISS), both with enhanced geometric metadata. Also supports HST (ACS, WFC3, WFPC2). Browse and download including calibrated Voyager ISS. Browse with links to STScI for HST.', 'https://tools.pds-rings.seti.org/opus#/planet=Pluto', 3);
+insert into target_tools (target, title, description, url, rank) values ('Pluto System', 'Map-A-Planet 2 (MAP2) at the Cartography and Imaging Sciences Node', 'Supports New Horizons global image mosaic projection, clipping, processing and download.', 'https://astrogeology.usgs.gov/tools/map-a-planet-2', 3);
 
 
 insert into target_tools (target, title, description, url, rank) values ('Pluto System', 'New Horizons data at the Small Bodies Node', 'Provides access to data from the entire mission (Post-launch checkout, Jupiter flyby, Pluto cruise, & Pluto encounter).', 'https://pds-smallbodies.astro.umd.edu/data_sb/missions/newhorizons/index.shtml', 101);
