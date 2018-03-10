@@ -123,10 +123,13 @@ $password = "p@ssw0rd";
         </p>
 
         <source>
-insert into investigation_tools (investigation, title, description, url, rank) values ('Apollo', 'Apollo Analyst''s Notebook at the Geosciences Node', 'Provides access to data from the Apollo program''s six manned missions to the lunar surface.', 'http://an.rsl.wustl.edu/apollo/', 1);
+insert into investigation_tools (investigation, title, description, url, rank) values 
+('Apollo', 'Apollo Analyst''s Notebook at the Geosciences Node', 
+ 'Provides access to data from the Apollo program''s six manned missions to the lunar surface.', 
+ 'http://an.rsl.wustl.edu/apollo/', 1);
         </source>
 
-        <p>The <i>title</i>, <i>description</i> and <i>url</i> fields are specific to the search tool or resource being described. The <i>investigation</i> field must be identical to the other search tools or resources for the specific investigation. This allows the software to populate the pull-down menu properly and to sort the entries for a specific investigation. The <i>rank</i> field specifies the sort order. Search tools are ranked from 1 to 100 and the resources are ranked from 101 and greater.
+        <p>The <i>title</i>, <i>description</i> and <i>url</i> fields are specific to the search tool or resource being described. The <i>investigation</i> field must be identical to the other search tools and/or resources for the specific investigation. This allows the software to populate the pull-down menu properly and to sort the entries for a specific investigation. The <i>rank</i> field specifies the sort order. Search tools are ranked from 1 to 100 and the resources are ranked from 101 and greater.
         </p>
       </subsection>
 
@@ -135,10 +138,13 @@ insert into investigation_tools (investigation, title, description, url, rank) v
         </p>
 
         <source>
-insert into target_tools (target, title, description, url, rank) values ('Comets/Asteroids', 'Small Bodies Image Browser at the Small Bodies Node', 'Supports Dawn, NEAR Shoemaker product browse and download for Ceres, Vesta and Eros data.', 'https://sbib.psi.edu/', 1);
+insert into target_tools (target, title, description, url, rank) values 
+('Comets/Asteroids', 'Small Bodies Image Browser at the Small Bodies Node', 
+ 'Supports Dawn, NEAR Shoemaker product browse and download for Ceres, Vesta and Eros data.', 
+ 'https://sbib.psi.edu/', 1);
         </source>
 
-        <p>The <i>title</i>, <i>description</i> and <i>url</i> fields are specific to the search tool or resource being described. The <i>target</i> field must be identical to the other search tools or resources for the specific target. This allows the software to populate the pull-down menu properly and to sort the entries for a specific target. The <i>rank</i> field specifies the sort order. Search tools are ranked from 1 to 100 and the resources are ranked from 101 and greater.
+        <p>The <i>title</i>, <i>description</i> and <i>url</i> fields are specific to the search tool or resource being described. The <i>target</i> field must be identical to the other search tools and/or resources for the specific target. This allows the software to populate the pull-down menu properly and to sort the entries for a specific target. The <i>rank</i> field specifies the sort order. Search tools are ranked from 1 to 100 and the resources are ranked from 101 and greater.
         </p>
       </subsection>
     </section>
