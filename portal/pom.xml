@@ -35,6 +35,7 @@
   <url>https://pds-cm.jpl.nasa.gov/pds4/portal/</url>
 
   <modules>
+    <module>data-search</module>
     <module>ds-view</module>
     <module>filter</module>
     <module>dd-search</module>
