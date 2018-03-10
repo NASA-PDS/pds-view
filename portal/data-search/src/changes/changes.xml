@@ -26,6 +26,9 @@
       <action dev="earevalo" type="add">
         Initial release of the Data Search interface that queries a local database for search tools and resources.
       </action>
+      <action dev="shardman" type="add">
+        Populated with the initial set of search tools and resources.
+      </action>
     </release>
   </body>
 </document>

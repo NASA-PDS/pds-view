@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<!-- InstanceBegin template="../Templates/main.dwt" codeOutsideHTMLIsLocked="false" -->
+<head>
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>PDS: Data Search</title>
+<!-- InstanceEndEditable -->
+
+<!--#include virtual="/include/includes.html" -->
+
+<!-- InstanceBeginEditable name="head" -->
+<!-- InstanceEndEditable -->
+<!-- InstanceParam name="menu_section" type="text" value="data" -->
+<!-- InstanceParam name="menu_item" type="text" value="data_data_search" -->
+<!-- InstanceParam name="left_sidebar" type="boolean" value="true" -->
+<!-- InstanceParam name="standard_sidebar" type="boolean" value="true" -->
+<!-- InstanceParam name="standard_page_content" type="boolean" value="true" -->
+<!-- InstanceParam name="custom_page_class" type="text" value="" -->
+
+<!--#include virtual="trackingServiceImports.html" -->
+</head>
+
+<body class="sidebar menu_data menu_item_data_data_search">
+  <!--[if IE]>
+  <div id="IE">
+  <![endif]-->
+
+  <!--#include virtual="/include/header.html" -->
+  <!--#include virtual="/include/main_menu.html" -->
+
+  <div id="submenu">
+    <!--#include virtual="/include/datasearch_menu.html" -->
+    <div class="clear">
+    </div>
+  </div>
+
+  <!-- Sidebar -->
+  <div id="sidebar">
+    <!--#include virtual="/include/standard_sidebar.html" -->
+    <!-- InstanceBeginEditable name="leftSidebar" -->
+    <!-- InstanceEndEditable -->
+  </div>
+
+  <!-- Main content -->
+  <div id="content">
+    <h1>Data Search</h1>
+    <div class="tw-bs">
+      <p>
+        Advanced, focused search tools are available from several PDS discipline nodes. We'll help you get to the ones best suited for your needs. You may also visit the <a href="/tools/data-search/">Keyword Search</a> application if you are looking for a specific collection of data.
+      </p>
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <form class="form-inline">
+            <div class="form-group">
+              <label for="targetSelect">Search based on Target:</label>
+              <select id="targetSelect" class="form-control">
+                <option>All</option>
+              </select>
+            </div>
+            &nbsp;
+            or
+            &nbsp;
+            <div class="form-group">
+              <label for="investigationSelect">Mission:</label>
+              <select id="investigationSelect" class="form-control">
+                <option>All</option>
+              </select>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div id="searchResults">
+        <div id="searchResultsQueryTools">
+        </div>
+        <div id="searchResultsAdditionalTools">
+        </div>
+      </div>
+
+      <div id="detailsTable" class="hidden">
+      </div>
+
+      <button class="btn btn-success hidden" style="border-radius:0;float:right;" id="showTrackingServiceButton">Return</button>
+    </div><!--End tw-bs -->
+  </div><!--End main content -->
+
+
+  <!--#include virtual="/include/footer.html" -->
+
+  <!--[if IE]>
+  </div>
+  <![endif]-->
+</body>
+<!-- InstanceEnd -->
+</html>
