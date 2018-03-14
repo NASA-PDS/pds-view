@@ -45,8 +45,9 @@
   <div id="content">
     <h1>Data Search</h1>
     <div class="tw-bs">
-      <p>
-        Advanced, focused search tools are available from several PDS discipline nodes. We'll help you get to the ones best suited for your needs. You may also visit the <a href="/tools/data-search/">Keyword Search</a> application if you are looking for a specific collection of data.
+      <p>Advanced, focused search tools are available from several PDS discipline nodes. We'll help you get to the ones best suited for your needs. If you don't see the desired mission or target, contact your <a href="/contact/contact.shtml">PDS node</a> or the <a href="mailto:pds_operator@jpl.nasa.gov">PDS Operator</a> at pds_operator@jpl.nasa.gov.
+      </p>
+      <p>You may also visit the <a href="/tools/data-search/">Keyword Search</a> application if you are looking for a specific collection of data.
       </p>
       <div class="panel panel-default">
         <div class="panel-body">
