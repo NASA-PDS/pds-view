@@ -6,7 +6,16 @@
 PARTIAL_EMAIL %{HTTPDUSER}|%{EMAILLOCALPART}@
 
 HTTPD_ADAPTEDLOG %{IPORHOST:clientip} %{NOTSPACE:ident} %{PARTIAL_EMAIL:auth} \[%{HTTPDATE:timestamp}\] "(?:%{WORD:verb} %{NOTSPACE:request}(?: HTTP/%{NUMBER:httpversion})?|%{DATA:rawrequest})" %{NUMBER:response} (?:%{NUMBER:bytes}|-) %{QS:referrer} %{QS:agent}
+HTTPD_MISSINGAUTH %{IPORHOST:clientip} %{HTTPDUSER:ident} \[%{HTTPDATE:timestamp}\] "(?:%{WORD:verb} %{NOTSPACE:request}(?: HTTP/%{NUMBER:httpversion})?|%{DATA:rawrequest})" %{NUMBER:response} (?:%{NUMBER:bytes}|-) %{QS:referrer} %{QS:agent}
 
+GENERIC_SPIDER .*spider.*
+GENERIC_CRAWLER .*crawl.*
 GOOGLEBOT .*googlebot.*
+GOOGLE_CONTENT .*googleusercontent.*
+MSNBOT .*msnbot.*
+APPLEBOT .*applebot.*
+YSE .*yse\.yahoo\.net.*
+BINGBOT .*bingbot.*
+BAIDU .*baiduspider.*
 
-BOTS %{GOOGLEBOT}
+BOTS %{GENERIC_SPIDER}|%{GENERIC_CRAWLER}|%{GOOGLEBOT}|%{GOOGLE_CONTENT}|%{MSNBOT}|%{APPLEBOT}|%{YSE}|%{BINGBOT}|%{BAIDU}
