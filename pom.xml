@@ -61,7 +61,7 @@
     <registry-version>1.13.0</registry-version>
     <search-version>1.11.0</search-version>
     <storage-version>1.2.0</storage-version>
-    <transform-version>1.6.0</transform-version>
+    <transform-version>1.7.0-dev</transform-version>
     <!-- External Dependency Versions -->
     <oodt-version>0.12</oodt-version>
     <product-tools-version>3.6.0</product-tools-version>

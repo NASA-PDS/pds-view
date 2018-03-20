@@ -3,9 +3,9 @@ package gov.nasa.pds.transport;
 import gov.nasa.pds.transform.TransformException;
 import gov.nasa.pds.transform.product.ProductTransformer;
 import gov.nasa.pds.transform.product.ProductTransformerFactory;
-
 import java.io.File;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Properties;
 import java.util.logging.Logger;
 
@@ -59,7 +59,11 @@ public class PdsLabelTransformerHandler extends AbstractPdsGetHandler {
 			
 			File input = new File(inputFilePath);
 			ProductTransformer pt = factory.newInstance(input, this.extension);
-			File output = pt.transform(input, this.getCache(), this.extension);
+			File output = null;
+			List<File> outputs = pt.transform(input, this.getCache(), this.extension);
+			if (!outputs.isEmpty()) {
+			  output = outputs.get(0);
+			}
 			return output;
 
 		} catch(TransformException e) {
