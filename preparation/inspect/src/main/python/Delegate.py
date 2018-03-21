@@ -1,14 +1,13 @@
 # Delegate.py - modified controller model
-#import os
+# import os
 from pds4_tools import *
 from PyQt4 import QtCore, QtGui
 Qt = QtCore.Qt
 
-
 # Delegate to control custom overwritting of columns in tables
 # which have groups.  Groups will be given a unique color so they
 # will be obvious in the table
-#class BackgroundColorDelegate()
+# class BackgroundColorDelegate()
 
 class GroupDelegate(QtGui.QItemDelegate):
     """
@@ -32,8 +31,7 @@ class GroupDelegate(QtGui.QItemDelegate):
         painter.restore()
 
 
-
-#class ResizeTableDelegate(QtGui.QItemDelegate):
+# class ResizeTableDelegate(QtGui.QItemDelegate):
 #    '''
 #    This delegate is used to resize the table to the size of the column title,
 #    it also re-paints the numberic title to the name/title of the field.
@@ -49,10 +47,7 @@ class GroupDelegate(QtGui.QItemDelegate):
 #        size = super(ResizeTableDelegate, self).sizeHint(option, index)
 #        size.setWidth(self.width)
 
-
-
-
-#def sizeHint(self, option, index):
+# def sizeHint(self, option, index):
 #    size = super(ResizeTableDelegate, self).sizeHint(option, index)
 #    if index.column() == self.stretch_column:
 #        total_width = self.table.viewport().size().width()
@@ -69,5 +64,5 @@ class GroupDelegate(QtGui.QItemDelegate):
 #    return size
 
 
-#def getStyleGroup():
+# def getStyleGroup():
 #    return View.MainWindow.style_group
