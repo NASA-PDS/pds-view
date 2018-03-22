@@ -60,7 +60,7 @@ public class HTMLBasedProducts {
 			              "<td>" + p.getVersion() + "</td>" +
 			              "<td>" + p.getIdentifier() + "</td>" +
 			              "<td>" + p.getType() + "</td>" +
-			              "<td>" + p.getAlternate() + "</td>" +
+			              "<td>" + (p.getAlternate() != null ? p.getAlternate() : "") + "</td>" +
 		    			  "<tr>");
 		         count++;
 		    }
@@ -77,13 +77,72 @@ public class HTMLBasedProducts {
  
         return HtmlConstants.PAGE_BEGIN + sb.toString() + HtmlConstants.PAGE_END;
     }
- 
-    @Path("{Delivery}")
+    
+    @Path("type/{Type}")
     @GET
     @Produces("text/html")
-    public String products(@PathParam("Delivery") boolean delivery) {
+    public String products(@PathParam("Type") String type) {
     	//Get a list of products that have associated deliveries.
     	
+    	StringBuilder sb = new StringBuilder();
+    	sb.append("<h1>Tracking Service</h1>" +	
+    			  "<h2>Products that have associated type " + type + "</h2>" +
+	              "<div>" +
+    			  "<table border=\"1\" style=\"width: 90%;border-spacing: 0; font:normal; font-size: 10\" >" +
+    			  "<tr align=\"center\">" +
+    			  "<td width=\"20%\"><b>Title</b></td>"+
+	              "<td width=\"10%\"><b>Version</b></td>" +
+	              "<td width=\"10%\"><b>Logical Identifier</b></td>" +
+	              "<td width=\"10%\"><b>Type</b></td>" +
+	              "<td width=\"10%\"><b>Alternate</b></td>" +
+
+    			  "<tr>");
+
+		Product prod;
+		try {
+			prod = new Product();
+			List<Product> prods = prod.getProducts(type);
+			logger.info("number of products: "  + prods.size());
+			Iterator<Product> itr = prods.iterator();
+			int count = 1;
+			while(itr.hasNext()) {
+		         Product p = itr.next();
+		         logger.debug("Product " + count + ":\n " + p.getIdentifier() + " : " + p.getTitle());
+		         sb.append("<tr>" +
+		    			  "<td><table><tr>" + p.getTitle() + "</br></br>" +
+		    			  					"<a href=\"../../../html/delivery/" + p.getIdentifier() + "/" + p.getVersion() + "\">Deliveries - HTML </a></br>" +
+		    			  					"<a href=\"../../../../json/delivery/" + p.getIdentifier() + "/" + p.getVersion() + "\">Deliveries - JSON</a></br>" +
+		    			  					"<a href=\"../../../html/archivestatus/" + p.getIdentifier() + "/" + p.getVersion() + "/false\">Archive Status</a></br>" +
+		    			  					"<a href=\"../../../html/archivestatus/" + p.getIdentifier() + "/" + p.getVersion() + "/true\">Latest Archive Status</a></br>" +
+		    			  					"<a href=\"../../../html/certificationstatus/" + p.getIdentifier() + "/" + p.getVersion() + "/false\">Certification Status</a></br>" +
+		    			  					"<a href=\"../../../html/certificationstatus/" + p.getIdentifier() + "/" + p.getVersion() + "/true\">Latest Certification Status</a></br>" +
+		    			  					"<a href=\"../../../html/nssdcastatus/" + p.getIdentifier() + "/" + p.getVersion() + "\">NSSDCA Status</a>" +
+		    			  					"</tr></table></td>"+
+			              "<td>" + p.getVersion() + "</td>" +
+			              "<td>" + p.getIdentifier() + "</td>" +
+			              "<td>" + p.getType() + "</td>" +
+			              "<td>" + (p.getAlternate() != null ? p.getAlternate() : "") + "</td>" +
+		    			  "<tr>");
+		         count++;
+		    }
+
+			
+		} catch (ClassNotFoundException e) {
+			logger.error(e);
+		} catch (SQLException e) {
+			logger.error(e);
+		}
+    			
+        
+        sb.append("</table></div>");
+ 
+        return HtmlConstants.PAGE_BEGIN + sb.toString() + HtmlConstants.PAGE_END;
+    }
+    
+    @Path("{instRef : (.+)?}/{investRef : (.+)?}")
+    @GET
+    @Produces("text/html")
+	public String products(@PathParam("instRef") String insRef, @PathParam("investRef") String invRef){
     	StringBuilder sb = new StringBuilder();
     	sb.append("<h1>Tracking Service</h1>" +	
     			  "<h2>Products that have associated deliveries</h2>" +
@@ -101,7 +160,7 @@ public class HTMLBasedProducts {
 		Product prod;
 		try {
 			prod = new Product();
-			List<Product> prods = prod.getProductsAssociatedDeliveriesOrderByTitle(null, null);
+			List<Product> prods = prod.getProductsAssociatedDeliveriesOrderByTitle(insRef, invRef);
 			logger.info("number of products: "  + prods.size());
 			Iterator<Product> itr = prods.iterator();
 			int count = 1;
@@ -110,18 +169,18 @@ public class HTMLBasedProducts {
 		         logger.debug("Product " + count + ":\n " + p.getIdentifier() + " : " + p.getTitle());
 		         sb.append("<tr>" +
 		    			  "<td><table><tr>" + p.getTitle() + "</br></br>" +
-		    			  					"<a href=\"../../html/delivery/" + p.getIdentifier() + "/" + p.getVersion() + "\">Deliveries - HTML </a></br>" +
-		    			  					"<a href=\"../../json/delivery/" + p.getIdentifier() + "/" + p.getVersion() + "\">Deliveries - JSON</a></br>" +
-		    			  					"<a href=\"../../html/archivestatus/" + p.getIdentifier() + "/" + p.getVersion() + "/false\">Archive Status</a></br>" +
-		    			  					"<a href=\"../../html/archivestatus/" + p.getIdentifier() + "/" + p.getVersion() + "/true\">Latest Archive Status</a></br>" +
-		    			  					"<a href=\"../../html/certificationstatus/" + p.getIdentifier() + "/" + p.getVersion() + "/false\">Certification Status</a></br>" +
-		    			  					"<a href=\"../../html/certificationstatus/" + p.getIdentifier() + "/" + p.getVersion() + "/true\">Latest Certification Status</a></br>" +
-		    			  					"<a href=\"../../html/nssdcastatus/" + p.getIdentifier() + "/" + p.getVersion() + "\">NSSDCA Status</a>" +
+		    			  					"<a href=\"../../../html/delivery/" + p.getIdentifier() + "/" + p.getVersion() + "\">Deliveries - HTML </a></br>" +
+		    			  					"<a href=\"../../../json/delivery/" + p.getIdentifier() + "/" + p.getVersion() + "\">Deliveries - JSON</a></br>" +
+		    			  					"<a href=\"../../../html/archivestatus/" + p.getIdentifier() + "/" + p.getVersion() + "/false\">Archive Status</a></br>" +
+		    			  					"<a href=\"../../../html/archivestatus/" + p.getIdentifier() + "/" + p.getVersion() + "/true\">Latest Archive Status</a></br>" +
+		    			  					"<a href=\"../../../html/certificationstatus/" + p.getIdentifier() + "/" + p.getVersion() + "/false\">Certification Status</a></br>" +
+		    			  					"<a href=\"../../../html/certificationstatus/" + p.getIdentifier() + "/" + p.getVersion() + "/true\">Latest Certification Status</a></br>" +
+		    			  					"<a href=\"../../../html/nssdcastatus/" + p.getIdentifier() + "/" + p.getVersion() + "\">NSSDCA Status</a>" +
 		    			  					"</tr></table></td>"+
 			              "<td>" + p.getVersion() + "</td>" +
 			              "<td>" + p.getIdentifier() + "</td>" +
 			              "<td>" + p.getType() + "</td>" +
-			              "<td>" + p.getAlternate() + "</td>" +
+			              "<td>" + (p.getAlternate() != null ? p.getAlternate() : "") + "</td>" +
 		    			  "<tr>");
 		         count++;
 		    }
@@ -138,5 +197,4 @@ public class HTMLBasedProducts {
  
         return HtmlConstants.PAGE_BEGIN + sb.toString() + HtmlConstants.PAGE_END;
     }
- 
 }

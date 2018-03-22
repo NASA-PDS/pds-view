@@ -4,7 +4,6 @@
 package gov.nasa.pds.tracking.tracking.db;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -24,13 +23,13 @@ public class Doi extends DBConnector {
 
 	private final static String TABLENAME = "doi";
 	
-	private final static String LOG_IDENTIFIERCOLUME = "logical_identifier";
-	private final static String VERSIONCOLUME  = "version_id";
-	private final static String DOICOLUME  = "doi";
-	private final static String DATECOLUME  = "registration_date";
-	private final static String URLCOLUME  = "site_url";
-	private final static String EMAILCOLUME  = "electronic_mail_address";
-	private final static String COMMENTCOLUME = "comment";
+	public final static String LOG_IDENTIFIERCOLUME = "logical_identifier";
+	public final static String VERSIONCOLUME  = "version_id";
+	public final static String DOICOLUME  = "doi";
+	public final static String DATECOLUME  = "registration_date";
+	public final static String URLCOLUME  = "site_url";
+	public final static String EMAILCOLUME  = "electronic_mail_address";
+	public final static String COMMENTCOLUME = "comment";
 	
 	private Connection connect = null;
 	private Statement statement = null;
@@ -260,7 +259,42 @@ public class Doi extends DBConnector {
 		
 	}
 	
+	@SuppressWarnings("finally")
+	public List<Doi> getDOIList() {
+		
+		List<Doi> DOIList = new ArrayList<Doi>();
+		Doi doi = null;
+		try {
+			// Setup the connection with the DB
+			connect = getConnection();
+
+			statement = connect.createStatement();
+			
+			resultSet = statement.executeQuery("select * from " + TABLENAME);
+
+			while (resultSet.next()){
+				doi = new Doi();
+				doi.setLog_identifier(resultSet.getString(LOG_IDENTIFIERCOLUME));
+				doi.setVersion(resultSet.getString(VERSIONCOLUME));
+				doi.setDoi(resultSet.getString(DOICOLUME));
+				doi.setDate(resultSet.getString(DATECOLUME));
+				doi.setUrl(resultSet.getString(URLCOLUME));
+				doi.setEmail(resultSet.getString(EMAILCOLUME));
+				doi.setComment(resultSet.getString(COMMENTCOLUME));
+				
+				
+				DOIList.add(doi);
+			}	
+
+		} catch (Exception e) {
+			logger.error(e);
+		} finally {
+			close(statement);
+			return DOIList;
+		}
+	}
 	/**
+	 * DOI Query - Query the doi table for the DOI and associated information of a given product.
 	 * @param logical_identifier
 	 * @param ver
 	 * @return

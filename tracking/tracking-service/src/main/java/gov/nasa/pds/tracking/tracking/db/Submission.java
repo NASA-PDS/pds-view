@@ -25,7 +25,6 @@ public class Submission extends DBConnector {
 	
 	
 	private Connection connect = null;
-	private Statement statement = null;
 	private PreparedStatement prepareStm = null;
 	private ResultSet resultSet = null;
 	

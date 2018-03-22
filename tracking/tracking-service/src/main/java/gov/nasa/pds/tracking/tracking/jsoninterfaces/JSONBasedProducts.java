@@ -56,7 +56,7 @@ public class JSONBasedProducts {
 		         jsonProd.put(Product.VERSIONCOLUMN, p.getVersion());
 		         jsonProd.put(Product.TITLECOLUMN, p.getTitle());
 		         jsonProd.put(Product.TYPECOLUMN, p.getType());
-		         jsonProd.put(Product.ALTERNATECOLUMN, p.getAlternate());
+		         jsonProd.put(Product.ALTERNATECOLUMN, p.getAlternate() != null ? p.getAlternate() : "");
 
 		         jsonProducts.append("products", jsonProd);
 		         count++;
@@ -98,7 +98,7 @@ public class JSONBasedProducts {
 		         jsonProd.put(Product.VERSIONCOLUMN, p.getVersion());
 		         jsonProd.put(Product.TITLECOLUMN, p.getTitle());
 		         jsonProd.put(Product.TYPECOLUMN, p.getType());
-		         jsonProd.put(Product.ALTERNATECOLUMN, p.getAlternate());
+		         jsonProd.put(Product.ALTERNATECOLUMN, p.getAlternate() != null ? p.getAlternate() : "");
 		         
 		         jsonRef = new JSONObject();		         
 		         jsonRef.put(Reference.REFERENCECOLUMN, p.getInstRef());
@@ -128,4 +128,44 @@ public class JSONBasedProducts {
         return Response.status(200).entity(result).build();
 	}
 	
+	@Path("type/{Type}")
+    @GET
+    @Produces("application/json")
+	public Response products(@PathParam("Type") String type)  throws JSONException {	
+		JSONObject jsonProducts = new JSONObject();
+        
+        JSONObject jsonProd = new JSONObject();
+        
+        Product prod;
+		try {
+			prod = new Product();
+			List<Product> prods = prod.getProducts(type);
+			
+			logger.info("number of products: "  + prods.size());
+			Iterator<Product> itr = prods.iterator();
+			int count = 1;
+			
+			while(itr.hasNext()) {
+		         Product p = itr.next();
+		         logger.debug("Product " + count + ":\n " + p.getIdentifier() + " : " + p.getTitle());
+		         
+		         jsonProd = new JSONObject();
+		         jsonProd.put(Product.IDENTIFIERCOLUMN, p.getIdentifier());
+		         jsonProd.put(Product.VERSIONCOLUMN, p.getVersion());
+		         jsonProd.put(Product.TITLECOLUMN, p.getTitle());
+		         jsonProd.put(Product.TYPECOLUMN, p.getType());
+		         jsonProd.put(Product.ALTERNATECOLUMN, p.getAlternate() != null ? p.getAlternate() : "");
+
+		         jsonProducts.append("products", jsonProd);
+		         count++;
+		    }
+			
+		} catch (ClassNotFoundException e) {
+			logger.error(e);
+		} catch (SQLException e) {
+			logger.error(e);
+		}
+        String result = "" + jsonProducts.toString(4);
+        return Response.status(200).entity(result).build();
+	}
 }

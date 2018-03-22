@@ -1,7 +1,6 @@
 package gov.nasa.pds.tracking.tracking.db;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -223,6 +222,7 @@ public class ArchiveStatus extends DBConnector {
 	}
 	
 	/**
+	 * Archive Status Query - Query the archive_status table for the latest archive status of a given product.
 	 * @param logical_identifier
 	 * @param ver
 	 * @return
@@ -263,6 +263,7 @@ public class ArchiveStatus extends DBConnector {
 	}
 	
 	/**
+	 * Archive Status List Query – Query the archive_status table for the archive status progression of a given product.
 	 * @param logical_identifier
 	 * @param ver
 	 * @return

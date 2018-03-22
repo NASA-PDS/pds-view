@@ -104,6 +104,7 @@ public class User extends DBConnector {
 	}
 
 	/**
+	 * User Query – Query the user table for a list of users.
 	 * @return a list of users
 	 */
 	@SuppressWarnings("finally")
@@ -132,6 +133,7 @@ public class User extends DBConnector {
 	}
 	
 /**
+ * User Role Query - Query the user and role tables for a list of roles for a given user.
  * @param role
  * @return a list of roles for a given user (email)
  */
@@ -145,14 +147,17 @@ public List<User> getUserRole(String email){
 		statement = connect.createStatement();
 		String query = "SELECT u." + EMAILCOLUMN + ", u." + NAMECOLUMN + ", r." + Role.REFERENCECOLUMN +
 				" FROM " + TABLENAME + " u, " + ROLETABLENAME + " r" +
-				" WHERE ";
+				" WHERE u." + EMAILCOLUMN + " = '" + email + "' AND u." + EMAILCOLUMN + " = r." + EMAILCOLUMN +
+				" ORDER BY r." + Role.REFERENCECOLUMN;
+		
+		/*		" WHERE ";
 		if (email !=null &&  !email.equalsIgnoreCase("null") && email.length() > 0){
 			query = query + "u." + EMAILCOLUMN + " = '" + email + "' AND ";
 		}
 		
 		query = query + "u." + EMAILCOLUMN + " = r." + EMAILCOLUMN +
 				" ORDER BY r." + Role.REFERENCECOLUMN;
-		
+		*/
 		resultSet = statement.executeQuery(query);
 		
 		while (resultSet.next()) {
@@ -172,6 +177,7 @@ public List<User> getUserRole(String email){
 }
 
 /**
+ * Product instrument/investigation/node Role Query – Query the product, instrument/investigation/node_reference, role and user tables for a list of users with the instrument/investigation/node role for a product.
  * @param log_identifer
  * @param type
  * @return a list of users

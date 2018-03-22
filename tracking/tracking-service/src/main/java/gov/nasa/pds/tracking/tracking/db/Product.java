@@ -221,6 +221,7 @@ public class Product extends DBConnector {
 	}
 	
 	/**
+	 * Product Query - Query the product table for a list of products by type.
 	 * @param type (can be null)
 	 * @return a list of all products by type (optional) order by title
 	 */
@@ -296,6 +297,7 @@ public class Product extends DBConnector {
 	}
 	
 	/**
+	 * Product Delivery Query - Query the product, delivery and *_reference tables for a list of products that have associated deliveries.
 	 * @return a list of all products that have associated deliveries order by title 
 	 */
 	@SuppressWarnings("finally")

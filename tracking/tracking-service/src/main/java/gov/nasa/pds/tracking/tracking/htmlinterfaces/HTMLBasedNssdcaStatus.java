@@ -11,7 +11,6 @@ import javax.ws.rs.Produces;
 
 import org.apache.log4j.Logger;
 
-import gov.nasa.pds.tracking.tracking.db.ArchiveStatus;
 import gov.nasa.pds.tracking.tracking.db.DBConnector;
 import gov.nasa.pds.tracking.tracking.db.NssdcaStatus;
 import gov.nasa.pds.tracking.tracking.utils.HtmlConstants;

@@ -4,7 +4,6 @@
 package gov.nasa.pds.tracking.tracking.db;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -88,13 +87,54 @@ public class Reference extends DBConnector {
 	public Reference() throws ClassNotFoundException, SQLException {
 		// TODO Auto-generated constructor stub
 	}
+
+	public List<Reference> getProductAllReferences(String tableName) {
+		
+		List<Reference> refs = new ArrayList<Reference>();
+
+		if (tableName.equalsIgnoreCase(INST_TABLENAME) || tableName.equalsIgnoreCase(INVES_TABLENAME) 
+				||tableName.equalsIgnoreCase(NODE_TABLENAME)){
+
+			Reference ref = null;
+			try {
+				// Setup the connection with the DB
+				connect = getConnection();
+	
+				statement = connect.createStatement();
+	
+				logger.debug("select * from " + tableName
+												+ " order by " + TITLECOLUMN);
+				
+				resultSet = statement.executeQuery("select * from " + tableName
+												+ " order by " + TITLECOLUMN);
+	
+				while (resultSet.next()) {
+					ref = new Reference();
+	
+					ref.setLog_identifier(resultSet.getString(LOG_IDENTIFIERCOLUMN));
+					ref.setReference(resultSet.getString(REFERENCECOLUMN));
+					ref.setTitle(resultSet.getString(TITLECOLUMN));
+									
+					refs.add(ref);
+				}
+	
+			} catch (Exception e) {
+				logger.error(e);
+			} finally {
+				close(statement);
+			}
+		}else{
+			logger.error("Please check the reference table name: instrument_reference, investigation_reference or node_reference.");
+		}
+		return refs;
+	}
 	
 	/**
+	 * Product instrument/investigation/node Reference Query - Query the instrument_reference table for a list of instrument/investigation/node references for a product.
 	 * @param identifier
 	 * @param tableName
 	 * @return  a list of product references for the logical identifier.
 	 */
-	@SuppressWarnings("finally")
 	public List<Reference> getProductReferences(String identifier, String tableName) {
 		
 		List<Reference> refs = new ArrayList<Reference>();

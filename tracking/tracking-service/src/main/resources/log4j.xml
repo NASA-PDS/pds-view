@@ -7,10 +7,10 @@
         </layout>
     </appender>
     <logger name="gov.nasa.jpl">
-        <level value="info"/>
+        <level value="debug"/>
     </logger>
     <root>
-        <level value="info"/>
+        <level value="debug"/>
         <appender-ref ref="stdout"/>
     </root>
 </log4j:configuration>

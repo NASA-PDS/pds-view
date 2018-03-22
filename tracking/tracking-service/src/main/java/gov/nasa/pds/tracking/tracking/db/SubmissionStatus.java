@@ -23,12 +23,12 @@ public class SubmissionStatus extends DBConnector {
 
 	private static String TABLENAME  = "submission_status";
 	
-	private static String DEL_IDENTIFIERCOLUME = "delivery_identifier";
-	private static String SUBMISSIONDATECOLUME = "submission_date_time";
-	private static String STATUSDATECOLUME = "status_date_time";
-	private static String STATUSCOLUME = "status";
-	private static String EMAILCOLUME = "electronic_mail_address";
-	private static String COMMENTCOLUME = "comment";
+	public static final String DEL_IDENTIFIERCOLUME = "delivery_identifier";
+	public static final String SUBMISSIONDATECOLUME = "submission_date_time";
+	public static final String STATUSDATECOLUME = "status_date_time";
+	public static final String STATUSCOLUME = "status";
+	public static final String EMAILCOLUME = "electronic_mail_address";
+	public static final String COMMENTCOLUME = "comment";
 	
 	private Connection connect = null;
 	private Statement statement = null;
@@ -134,7 +134,44 @@ public class SubmissionStatus extends DBConnector {
 		// TODO Auto-generated constructor stub
 	}
 	
+	@SuppressWarnings("finally")
+	public List<SubmissionStatus> getSubmissionStatus() {
+
+		List<SubmissionStatus> statuses = new ArrayList<SubmissionStatus>();
+		SubmissionStatus status = null;
+		try {
+			// Setup the connection with the DB
+			connect = getConnection();
+
+			statement = connect.createStatement();
+
+			/*System.out.println("select * from " + TABLENAME
+											+ " order by " + STATUSDATECOLUME);*/
+			resultSet = statement.executeQuery("select * from " + TABLENAME
+											+ " order by " + STATUSDATECOLUME);
+
+			while (resultSet.next()) {
+				status = new SubmissionStatus();
+
+				status.setDel_identifier(resultSet.getInt(DEL_IDENTIFIERCOLUME));
+				status.setSubmissionDate(resultSet.getString(SUBMISSIONDATECOLUME));
+				status.setStatusDate(resultSet.getString(STATUSDATECOLUME));
+				status.setStatus(resultSet.getString(STATUSCOLUME));
+				status.setEmail(resultSet.getString(EMAILCOLUME));
+				status.setComment(resultSet.getString(COMMENTCOLUME));
+				
+				statuses.add(status);
+			}
+
+		} catch (Exception e) {
+			logger.error(e);
+		} finally {
+			close(statement);
+			return statuses;
+		}
+	}
 	/**
+	 * Delivery Status Query - Query the submission_status table for the status progression of a delivery for a given product.
 	 * @return a list of submission status objects for the delivery.
 	 */
 	@SuppressWarnings("finally")

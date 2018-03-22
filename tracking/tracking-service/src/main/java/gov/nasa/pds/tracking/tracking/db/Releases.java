@@ -4,7 +4,6 @@
 package gov.nasa.pds.tracking.tracking.db;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -23,7 +22,6 @@ public class Releases extends DBConnector {
 	public static Logger logger = Logger.getLogger(NssdcaStatus.class);
 
 	private static final String TABLENAME = "releases";
-	private static final String PRODUCTTABLENAME= "product";
   	  
 	public static final String LOGIDENTIFIERCOLUME = "logical_identifier";
 	public static final String VERSIONCOLUME = "version_id";
@@ -181,7 +179,42 @@ public class Releases extends DBConnector {
 	    }
 	}
 	
+	@SuppressWarnings("finally")
+	public List<Releases> getReleasesList() {
+		
+		List<Releases> rels = new ArrayList<Releases>();
+		Releases rel = null;
+		try {
+			// Setup the connection with the DB
+			connect = getConnection();
+
+			statement = connect.createStatement();
+			
+			resultSet = statement.executeQuery("select * from " + TABLENAME + " order by " + DATECOLUME);
+
+			while (resultSet.next()){
+				rel = new Releases();
+
+				rel.setLogIdentifier(resultSet.getString(LOGIDENTIFIERCOLUME));
+				rel.setVersion(resultSet.getString(VERSIONCOLUME));
+				rel.setName(resultSet.getString(NAMECOLUME));
+				rel.setDescription(resultSet.getString(Releases.DESCCOLUME));
+				rel.setEmail(resultSet.getString(EMAILCOLUME));
+				rel.setComment(resultSet.getString(COMMENTCOLUME));
+				rel.setDate(resultSet.getString(DATECOLUME));
+				
+				rels.add(rel);
+			}	
+
+		} catch (Exception e) {
+			logger.error(e);
+		} finally {
+			close(statement);
+			return rels;
+		}
+	}
 	/**
+	 * Release Query - Query the releases table for the latest release of a given product.
 	 * @param logical_identifier
 	 * @param ver
 	 * @return
@@ -224,6 +257,7 @@ public class Releases extends DBConnector {
 	}
 	
 	/**
+	 * Release List Query - Query the releases table for the release progression of a given product.
 	 * @param logical_identifier
 	 * @param ver
 	 * @return

@@ -21,7 +21,7 @@ public class ServicesHomePage {
 	              "<li><a href=\"html/products\">All products</a><br/></li>" +
 	              "</div>" +
 	              "<p></p><div>" +
-	              "<li><a href=\"html/products/true\">All products that have associated deliveries</a><br/></li>" +
+	              "<li><a href=\"html/products/null/null\">All products that have associated deliveries</a><br/></li>" +
 	              "</div>" +
 	              "<p></p><h2>JSON</h2><div>" +
 	              "<li><a href=\"json/products\">All products</a><br/></li>" +
@@ -45,9 +45,9 @@ public class ServicesHomePage {
 	              "<p></p><div>" + 
 	              "<li><a href=\"json/Users\">All Users</a><br/></li>" +
 	              "</div>" +
-	              "<p></p><div>" + 
+	              /*"<p></p><div>" + 
 	              "<li><a href=\"json/Users/null\">All Users with Role</a><br/></li>" +
-	              "</div>" +
+	              "</div>" +*/
 	              "<p></p><div>" + 
 	              "<li><a href=\"json/Users/sean.hardman@jpl.nasa.gov\">User Role for sean.hardman@jpl.nasa.gov</a><br/></li>" +
 	              "</div>"	              +
@@ -81,9 +81,9 @@ public class ServicesHomePage {
 	              "<p></p><div>" + 
 	              "<li><a href=\"xml/Users\">All Users</a><br/></li>" +
 	              "</div>" +
-	              "<p></p><div>" + 
+	              /*"<p></p><div>" + 
 	              "<li><a href=\"xml/Users/null\">All Users with Role</a><br/></li>" +
-	              "</div>" +
+	              "</div>" +*/
 	              "<p></p><div>" + 
 	              "<li><a href=\"xml/Users/sean.hardman@jpl.nasa.gov\">User Role for sean.hardman@jpl.nasa.gov</a><br/></li>" +
 	              "</div>"	              +

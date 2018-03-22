@@ -1,7 +1,6 @@
 package gov.nasa.pds.tracking.tracking.db;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -174,6 +173,7 @@ public class CertificationStatus extends DBConnector {
 	}
 	
 	/**
+	 * Certification Status Query - Query the certification_status table for the latest certification status of a given product.
 	 * @param logical_identifier
 	 * @param ver
 	 * @return
@@ -215,6 +215,7 @@ public class CertificationStatus extends DBConnector {
 	}
 	
 	/**
+	 * Certification Status List Query - Query the certification_status table for the certification status progression of a given product.
 	 * @param logical_identifier
 	 * @param ver
 	 * @return

@@ -17,7 +17,6 @@ import org.apache.log4j.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import gov.nasa.pds.tracking.tracking.db.Delivery;
 import gov.nasa.pds.tracking.tracking.db.Reference;
 import gov.nasa.pds.tracking.tracking.db.Role;
 import gov.nasa.pds.tracking.tracking.db.User;

@@ -7,7 +7,6 @@
 package gov.nasa.pds.tracking.tracking.db;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -279,6 +278,7 @@ public class Delivery extends DBConnector {
 		}
 	}
 	/**
+	 * Delivery Query - Query the delivery table for a list of deliveries for a given product.
 	 * @return a list of delivery objects with the logical identifier and version id .
 	 */
 	@SuppressWarnings("finally")

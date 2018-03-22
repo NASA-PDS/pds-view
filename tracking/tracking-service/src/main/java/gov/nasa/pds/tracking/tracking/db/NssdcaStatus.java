@@ -1,7 +1,6 @@
 package gov.nasa.pds.tracking.tracking.db;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -193,6 +192,7 @@ public class NssdcaStatus extends DBConnector {
 	
 	
 	/**
+	 * NSSDCA Query - Query the nssdca table for the NSSDCA information of a given product.
 	 * @param logical_identifier
 	 * @param ver
 	 * @return
