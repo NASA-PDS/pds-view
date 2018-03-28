@@ -610,9 +610,11 @@
    <field name="file_ref_size" type="int" indexed="true" stored="true" multiValued="true" />
    <field name="file_ref_url" type="lowercase" indexed="true" stored="true" multiValued="true" />
    <field name="instrument_description" type="text_general" indexed="false" stored="true" multiValued="true" />
+   <field name="instrument_host_id" type="string" indexed="true" stored="true" multiValued="true" />
    <field name="instrument_host_name" type="text_general" indexed="true" stored="true" multiValued="true" />
    <field name="instrument_host_serial_number" type="lowercase" indexed="false" stored="true" multiValued="true" />
    <field name="instrument_host_type" type="text_en_splitting" indexed="true" stored="true" multiValued="true" />
+   <field name="instrument_id" type="string" indexed="true" stored="true" multiValued="true" />
    <field name="instrument_name" type="text_general" indexed="true" stored="true" multiValued="true" />
    <field name="instrument_serial_number" type="lowercase" indexed="false" stored="true" multiValued="true" />
    <field name="instrument_type" type="text_en_splitting" indexed="true" stored="true" multiValued="true" />
@@ -907,6 +909,7 @@
   
   <!-- Target -->
   <copyField source="target_name" dest="target" />
+  <copyField source="alternate_title" dest="target" />
   
   <!-- Target Type -->
   <copyField source="target_ref_target_type" dest="target-type" />
@@ -914,10 +917,7 @@
   
   <!-- Term -->
   <copyField source="citation_keyword" dest="term" />
-  
-  <!-- Title -->
-  <copyField source="alternate_title" dest="title" />
-  
+    
   <!-- And the spell-check field -->
   <copyField source="target_name" dest="spell" />
   <copyField source="agency_name" dest="spell" />  
