@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2016-2017, by the California Institute of Technology.
+  Copyright 2016-2018, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -22,7 +22,7 @@
     <author email="Sean.Hardman@jpl.nasa.gov">Sean Hardman</author>
   </properties>
   <body>
-    <release version="0.5.0" date="TBD" description="TBD">
+    <release version="0.5.0" date="2018-03-30" description="This release of the Transport Service is a component of the integrated release 8.1.0 of the PDS4 System. This is an operational release of the system components to date.">
     </release>
 
     <release version="0.4.0" date="2017-09-29" description="This release of the Transport Service is a component of the integrated release 8.0.0 of the PDS4 System. This is an operational release of the system components to date.">

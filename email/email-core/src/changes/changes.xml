@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2016-2017, by the California Institute of Technology.
+  Copyright 2016-2018, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -23,9 +23,6 @@
   </properties>
 
   <body>
-    <release version="0.2.0" date="TBD" description="TBD">
-    </release>
-
     <release version="0.1.0" date="2017-09-29" description="This release of the Email Core is a component of the integrated release 8.0.0 of the PDS4 System. This is an operational release of the system components to date.">
       <action dev="hyunlee" type="add" issue="PDS-461">
         Added the capability to accept email requests from Java applications. 

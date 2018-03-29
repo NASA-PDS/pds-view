@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
 <!--
-  Copyright 2010-2017, by the California Institute of Technology.
+  Copyright 2010-2018, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology
   Transfer at the California Institute of Technology.
@@ -54,19 +54,19 @@
 
   <properties>
     <!-- Internal Dependency Version -->
-    <pds4-tools-version>0.10.0-dev</pds4-tools-version>
-    <core-version>1.13.0-dev</core-version>
-    <email-version>0.1.0</email-version>
-    <generate-version>0.13.0</generate-version>
-    <registry-version>1.13.0</registry-version>
-    <search-version>1.11.0</search-version>
+    <pds4-tools-version>0.10.0</pds4-tools-version>
+    <core-version>1.13.0</core-version>
+    <email-version>0.2.0</email-version>
+    <generate-version>0.14.0</generate-version>
+    <registry-version>1.14.0</registry-version>
+    <search-version>1.12.0</search-version>
     <storage-version>1.2.0</storage-version>
-    <transform-version>1.7.0-dev</transform-version>
+    <transform-version>1.7.0</transform-version>
     <!-- External Dependency Versions -->
     <oodt-version>0.12</oodt-version>
     <product-tools-version>3.6.0</product-tools-version>
     <vicario-version>4.1</vicario-version>
-    <model-version>1900</model-version>
+    <model-version>1A00</model-version>
   </properties>
 
   <developers>
