@@ -145,7 +145,7 @@
         <checksumPolicy>warn</checksumPolicy>
       </releases>
       <snapshots>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
       </snapshots>
     </repository>
   </repositories>
