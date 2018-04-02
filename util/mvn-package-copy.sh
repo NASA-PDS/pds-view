@@ -49,6 +49,7 @@ cp ../../preparation/core/target/core*bin* .
 cp ../../preparation/generate/target/generate*bin* .
 cp ../../preparation/inspect/target/inspect*bin* .
 cp ../../preparation/pds4-tools/target/pds4-tools*bin* .
+cp ../../preparation/tools-service/target/tools-service*bin* .
 cp ../../preparation/transform/target/transform*bin* .
 cp ../../preparation/validate/target/validate*bin* .
 

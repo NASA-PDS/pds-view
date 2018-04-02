@@ -93,6 +93,9 @@ mvn deploy
 cd ../pds4-tools
 mvn site
 mvn deploy
+cd ../tools-service
+mvn site
+mvn deploy
 cd ../transform
 mvn site
 mvn deploy
