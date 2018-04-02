@@ -13,17 +13,14 @@
 // $Id$
 package gov.nasa.pds.tools.validate.content.array;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
-import java.util.Stack;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.Range;
 
 import com.google.common.primitives.UnsignedInteger;
@@ -31,14 +28,12 @@ import com.google.common.primitives.UnsignedLong;
 import com.sun.media.jai.codec.SeekableStream;
 
 import gov.nasa.arc.pds.xml.generated.Array;
-import gov.nasa.arc.pds.xml.generated.AxisArray;
 import gov.nasa.arc.pds.xml.generated.ElementArray;
 import gov.nasa.arc.pds.xml.generated.ObjectStatistics;
 import gov.nasa.arc.pds.xml.generated.SpecialConstants;
 import gov.nasa.pds.label.object.ArrayObject;
 import gov.nasa.pds.objectAccess.DataType.NumericDataType;
 import gov.nasa.pds.tools.label.ExceptionType;
-import gov.nasa.pds.tools.label.LabelException;
 import gov.nasa.pds.tools.validate.ProblemListener;
 
 /**
@@ -93,128 +88,22 @@ public class ArrayContentValidator {
     try {
       si = SeekableStream.wrapInputStream(arrayObject.getInputStream(), false);
       process(array, si, dimensions, new int[dimensions.length], 0, dimensions.length - 1); 
-      /*
-      for (plane = start_plane; plane < planes.getElement(); plane++) {
-        for (row = start_row; row < rows.getElement(); row++) {
-          for (column = 0; column < columns.getElement(); column++) {
-            ArrayLocation location = new ArrayLocation(label.toString(), 
-                dataFile.toString(), arrayIndex, 
-                new Axis(planes.getName(), (plane+1)), 
-                new Axis(rows.getName(), (row+1)), 
-                new Axis(columns.getName(), (column+1)));
-            Number value = null;
-            Range rangeChecker = null;
-            switch (dataType) {
-            case SignedByte:
-              value = si.readByte();
-              rangeChecker = Range.between(Byte.MIN_VALUE, Byte.MAX_VALUE);
-              break;
-            case UnsignedByte:
-              value = si.readUnsignedByte();
-              rangeChecker = Range.between(0, 255);
-              break;
-            case UnsignedLSB2:
-              value = si.readUnsignedShortLE();
-              rangeChecker = Range.between(0, 65535);
-              break;
-            case SignedLSB2:
-              value = si.readShortLE();
-              rangeChecker = Range.between(Short.MIN_VALUE, Short.MAX_VALUE);
-              break;
-            case UnsignedMSB2:
-              value = si.readUnsignedShort();
-              rangeChecker = Range.between(0, 65535);
-              break;              
-            case SignedMSB2:
-              value = si.readShort();
-              rangeChecker = Range.between(Short.MIN_VALUE, Short.MAX_VALUE);
-              break;
-            case UnsignedLSB4:
-              value = si.readUnsignedIntLE();
-              rangeChecker = Range.between(UnsignedInteger.ZERO, UnsignedInteger.MAX_VALUE);
-              break;
-            case SignedLSB4:
-              value = si.readIntLE();
-              rangeChecker = Range.between(Integer.MIN_VALUE, Integer.MAX_VALUE);
-              break;
-            case UnsignedMSB4:
-              value = si.readUnsignedInt();
-              rangeChecker = Range.between(UnsignedInteger.ZERO, UnsignedInteger.MAX_VALUE);
-              break;
-            case SignedMSB4:
-              value = si.readInt();
-              rangeChecker = Range.between(Integer.MIN_VALUE, Integer.MAX_VALUE);
-              break;
-            case UnsignedLSB8:
-              value = UnsignedLong.valueOf(si.readLongLE());
-              rangeChecker = Range.between(UnsignedLong.ZERO, UnsignedLong.MAX_VALUE);
-              break;
-            case SignedLSB8:
-              value = Long.valueOf(si.readLongLE());
-              rangeChecker = Range.between(Long.MIN_VALUE, Long.MAX_VALUE);
-              break;
-            case UnsignedMSB8:
-              value = UnsignedLong.valueOf(si.readLong());
-              rangeChecker = Range.between(UnsignedLong.ZERO, UnsignedLong.MAX_VALUE);
-              break;        
-            case SignedMSB8:
-              value = Long.valueOf(si.readLong());
-              rangeChecker = Range.between(Long.MIN_VALUE, Long.MAX_VALUE);
-              break;
-            case IEEE754LSBSingle:
-              value = si.readFloatLE();
-              rangeChecker = Range.between(Long.MIN_VALUE, Long.MAX_VALUE);
-              break;
-            case IEEE754MSBSingle:
-              value = si.readFloat();
-              rangeChecker = Range.between(Long.MIN_VALUE, Long.MAX_VALUE);
-              break;
-            case IEEE754LSBDouble:
-              value = si.readDoubleLE();
-              rangeChecker = Range.between(Double.MIN_VALUE, Double.MAX_VALUE);
-              break;
-            case IEEE754MSBDouble:
-              value = si.readDouble();
-              rangeChecker = Range.between(Double.MIN_VALUE, Double.MAX_VALUE);
-              break;
-            }
-            boolean isSpecialConstant = false;
-            if (array.getSpecialConstants() != null) {
-              isSpecialConstant = isSpecialConstant(value, array.getSpecialConstants());
-            }
-            if (!isSpecialConstant) {
-              if (!rangeChecker.contains(value)) {
-                  addArrayException(ExceptionType.ERROR,
-                    "Value is not within the valid range of the data type '"
-                      + dataType.name() + "': " + value.toString(),
-                    location
-                     );
-              }
-              if (array.getObjectStatistics() != null) {
-                // At this point, it seems like it only makes sense
-                // to check that the values are within the min/max values
-                checkObjectStats(value, array.getElementArray(),
-                    array.getObjectStatistics(), location);
-              }
-            } else {
-              addArrayException(ExceptionType.INFO,
-                  "Value is a special constant defined in the label: "
-                      + value.toString(),
-                  location
-              );              
-            }
-          }
-        }
-      }
-      */
     } catch (IOException io) {
-      listener.addProblem(new LabelException(ExceptionType.FATAL, 
-          "Error occurred while reading data file: " + io.getMessage(), 
-          label.toString()));
+      listener.addProblem(new ArrayContentException(ExceptionType.FATAL, 
+          "Error occurred while reading data file: " + io.getMessage(),
+          dataFile.toString(),
+          label.toString(),
+          arrayIndex,
+          null));
     } catch (Exception e) {
-      listener.addProblem(new LabelException(ExceptionType.FATAL, 
-          "Error occurred while reading data file: " + e.getMessage(), 
-          label.toString()));
+      listener.addProblem(new ArrayContentException(ExceptionType.FATAL, 
+          "Error occurred while reading data file: " + e.getMessage(),
+          dataFile.toString(),
+          label.toString(),
+          arrayIndex,
+          null));
+    } finally {
+      IOUtils.closeQuietly(si);
     }
   }
   
@@ -232,85 +121,97 @@ public class ArrayContentValidator {
         for (int j = 0; j < position.length; j++) {
           position_1based[j] = position[j] + 1;
         }
- //       System.out.println(Arrays.toString(position_1based)); //max depth reached, print now
+        //System.out.println(Arrays.toString(position_1based)); //max depth reached, print now
         ArrayLocation location = new ArrayLocation(label.toString(), 
             dataFile.toString(), arrayIndex, 
             position_1based);
         Number value = null;
         Range rangeChecker = null;
-        switch (dataType) {
-        case SignedByte:
-          value = si.readByte();
-          rangeChecker = Range.between(Byte.MIN_VALUE, Byte.MAX_VALUE);
-          break;
-        case UnsignedByte:
-          value = si.readUnsignedByte();
-          rangeChecker = Range.between(0, 255);
-          break;
-        case UnsignedLSB2:
-          value = si.readUnsignedShortLE();
-          rangeChecker = Range.between(0, 65535);
-          break;
-        case SignedLSB2:
-          value = si.readShortLE();
-          rangeChecker = Range.between(Short.MIN_VALUE, Short.MAX_VALUE);
-          break;
-        case UnsignedMSB2:
-          value = si.readUnsignedShort();
-          rangeChecker = Range.between(0, 65535);
-          break;              
-        case SignedMSB2:
-          value = si.readShort();
-          rangeChecker = Range.between(Short.MIN_VALUE, Short.MAX_VALUE);
-          break;
-        case UnsignedLSB4:
-          value = si.readUnsignedIntLE();
-          rangeChecker = Range.between(UnsignedInteger.ZERO, UnsignedInteger.MAX_VALUE);
-          break;
-        case SignedLSB4:
-          value = si.readIntLE();
-          rangeChecker = Range.between(Integer.MIN_VALUE, Integer.MAX_VALUE);
-          break;
-        case UnsignedMSB4:
-          value = si.readUnsignedInt();
-          rangeChecker = Range.between(UnsignedInteger.ZERO, UnsignedInteger.MAX_VALUE);
-          break;
-        case SignedMSB4:
-          value = si.readInt();
-          rangeChecker = Range.between(Integer.MIN_VALUE, Integer.MAX_VALUE);
-          break;
-        case UnsignedLSB8:
-          value = UnsignedLong.valueOf(si.readLongLE());
-          rangeChecker = Range.between(UnsignedLong.ZERO, UnsignedLong.MAX_VALUE);
-          break;
-        case SignedLSB8:
-          value = Long.valueOf(si.readLongLE());
-          rangeChecker = Range.between(Long.MIN_VALUE, Long.MAX_VALUE);
-          break;
-        case UnsignedMSB8:
-          value = UnsignedLong.valueOf(si.readLong());
-          rangeChecker = Range.between(UnsignedLong.ZERO, UnsignedLong.MAX_VALUE);
-          break;        
-        case SignedMSB8:
-          value = Long.valueOf(si.readLong());
-          rangeChecker = Range.between(Long.MIN_VALUE, Long.MAX_VALUE);
-          break;
-        case IEEE754LSBSingle:
-          value = si.readFloatLE();
-          rangeChecker = Range.between(Long.MIN_VALUE, Long.MAX_VALUE);
-          break;
-        case IEEE754MSBSingle:
-          value = si.readFloat();
-          rangeChecker = Range.between(Long.MIN_VALUE, Long.MAX_VALUE);
-          break;
-        case IEEE754LSBDouble:
-          value = si.readDoubleLE();
-          rangeChecker = Range.between(Double.MIN_VALUE, Double.MAX_VALUE);
-          break;
-        case IEEE754MSBDouble:
-          value = si.readDouble();
-          rangeChecker = Range.between(Double.MIN_VALUE, Double.MAX_VALUE);
-          break;
+        try {
+          switch (dataType) {
+          case SignedByte:
+            value = si.readByte();
+            rangeChecker = Range.between(Byte.MIN_VALUE, Byte.MAX_VALUE);
+            break;
+          case UnsignedByte:
+            value = si.readUnsignedByte();
+            rangeChecker = Range.between(0, 255);
+            break;
+          case UnsignedLSB2:
+            value = si.readUnsignedShortLE();
+            rangeChecker = Range.between(0, 65535);
+            break;
+          case SignedLSB2:
+            value = si.readShortLE();
+            rangeChecker = Range.between(Short.MIN_VALUE, Short.MAX_VALUE);
+            break;
+          case UnsignedMSB2:
+            value = si.readUnsignedShort();
+            rangeChecker = Range.between(0, 65535);
+            break;              
+          case SignedMSB2:
+            value = si.readShort();
+            rangeChecker = Range.between(Short.MIN_VALUE, Short.MAX_VALUE);
+            break;
+          case UnsignedLSB4:
+            value = si.readUnsignedIntLE();
+            rangeChecker = Range.between(UnsignedInteger.ZERO, UnsignedInteger.MAX_VALUE);
+            break;
+          case SignedLSB4:
+            value = si.readIntLE();
+            rangeChecker = Range.between(Integer.MIN_VALUE, Integer.MAX_VALUE);
+            break;
+          case UnsignedMSB4:
+            value = si.readUnsignedInt();
+            rangeChecker = Range.between(UnsignedInteger.ZERO, UnsignedInteger.MAX_VALUE);
+            break;
+          case SignedMSB4:
+            value = si.readInt();
+            rangeChecker = Range.between(Integer.MIN_VALUE, Integer.MAX_VALUE);
+            break;
+          case UnsignedLSB8:
+            value = UnsignedLong.valueOf(si.readLongLE());
+            rangeChecker = Range.between(UnsignedLong.ZERO, UnsignedLong.MAX_VALUE);
+            break;
+          case SignedLSB8:
+            value = Long.valueOf(si.readLongLE());
+            rangeChecker = Range.between(Long.MIN_VALUE, Long.MAX_VALUE);
+            break;
+          case UnsignedMSB8:
+            value = UnsignedLong.valueOf(si.readLong());
+            rangeChecker = Range.between(UnsignedLong.ZERO, UnsignedLong.MAX_VALUE);
+            break;        
+          case SignedMSB8:
+            value = Long.valueOf(si.readLong());
+            rangeChecker = Range.between(Long.MIN_VALUE, Long.MAX_VALUE);
+            break;
+          case IEEE754LSBSingle:
+            value = Float.valueOf(si.readFloatLE());
+            rangeChecker = Range.between(Float.MIN_VALUE, Float.MAX_VALUE);
+            break;
+          case IEEE754MSBSingle:
+            value = Float.valueOf(si.readFloat());
+            rangeChecker = Range.between(Float.MIN_VALUE, Float.MAX_VALUE);
+            break;
+          case IEEE754LSBDouble:
+            value = Double.valueOf(si.readDoubleLE());
+            rangeChecker = Range.between(Double.MIN_VALUE, Double.MAX_VALUE);
+            break;
+          case IEEE754MSBDouble:
+            value = Double.valueOf(si.readDouble());
+            rangeChecker = Range.between(Double.MIN_VALUE, Double.MAX_VALUE);
+            break;
+          }
+        } catch (EOFException ee) {
+          String loc = Arrays.toString(location.getLocation());
+          if (location.getLocation().length > 1) {
+            loc = loc.replaceAll("\\[", "\\(");
+            loc = loc.replaceAll("\\]", "\\)");
+          } else {
+            loc = loc.replaceAll("\\[", "");
+            loc = loc.replaceAll("\\]", "");
+          }
+          throw new IOException("End of file reached while trying to read data at location " + loc);
         }
        // System.out.println("Value: " + value.toString());
         boolean isSpecialConstant = false;
