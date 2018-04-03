@@ -96,6 +96,10 @@ class MainWindow(QMainWindow):
         self.height = 0
 
         self.clear_bounding_box = False
+        self.indices = None  # selected indices from the table
+
+        self.bounding_box_rectangle = None   # This is used to match an image selection to the table
+        self.allow_rect = False
 
         self.logo = QLabel()
         try:
@@ -228,13 +232,13 @@ class MainWindow(QMainWindow):
 
         self.tableOptionsMenu = self.menuBar().addMenu("Table Options")
         # Show selection bounding box
-        self.showBoundingBoxAction = self.create_action("Draw table selection bounding box", self.get_selection,
+        self.showBoundingBoxAction = self.create_action("Draw bounding box on image of table selection", self.get_selection,
                                                         icon="ShowSelection",
-                                                        tip="Draw bounding box in image around table selection")
+                                                        tip="Draw bounding box on image of selected table data")
 
-        self.hideBoundingBoxAction = self.create_action("Hide table selection bounding box", self.hide_selection,
+        self.hideBoundingBoxAction = self.create_action("Hide bounding box of table selection", self.hide_selection,
                                                         icon="HideSelection",
-                                                        tip="Hide bounding box in image around table selection")
+                                                        tip="Hide bounding box on image of selected table data")
 
         self.tableOptionsMenu.addAction(self.showBoundingBoxAction)
         self.tableOptionsMenu.addAction(self.hideBoundingBoxAction)
@@ -318,6 +322,27 @@ class MainWindow(QMainWindow):
             self.normalizationActionDict['Square Root'].setEnabled(False)
 
         self.imageOptionsMenu.addSeparator()
+
+
+
+        # Show mouse selected bounding box and make selection in the table
+        self.showMouseSelectionAction = self.create_action("Highlight mouse selection in table", self.get_mouse_selection,
+                                                        icon="ShowMouseSelection",
+                                                        tip="Draw bounding box and clear corresponding table selection")
+
+        self.hideMouseSelectionAction = self.create_action("Hide bounding box and clear table selection", self.clear_mouse_selection,
+                                                        icon="HideMouseSelection",
+                                                        tip="Clear bounding box and clear corresponding table selection")
+
+        self.imageOptionsMenu.addAction(self.showMouseSelectionAction)
+        self.imageOptionsMenu.addAction(self.hideMouseSelectionAction)
+        self.hideMouseSelectionAction.setDisabled(True)
+
+
+
+
+
+
 
         # Add the 'Color Maps' menu bar items
         self.invert_colormap = False
@@ -413,7 +438,6 @@ class MainWindow(QMainWindow):
         self.layoutActionList[self.default_theme].setChecked(True)
         self.layoutActionList['sgi'].setDisabled(True)
 
-
         # 'View' menu item
         self.toolBarActionList = {}
         self.screenOptionActionList = {}
@@ -468,7 +492,7 @@ class MainWindow(QMainWindow):
         self.add_actions(self.fileToolBar, (self.fileOpenAction, self.fileSaveTableAsAction,
                                             self.fileQuitAction, None))
 
-        self.inital_gray_scale_setting()
+        self.initial_gray_scale_setting()
         self.setWindowTitle("PDS Inspect Tool")
         self.setWindowIcon(QIcon("./Icons/MagGlass.png"))
 
@@ -609,7 +633,7 @@ class MainWindow(QMainWindow):
             self.cmap = self.cmap[:-2]
         self.select_color_map(self.cmap)
 
-    def inital_gray_scale_setting(self):
+    def initial_gray_scale_setting(self):
         # This is called to reset the checkboxes when a new file is opened.
         self.invertColorAction.setChecked(False)
         self.colorActionList['gray'].setChecked(True)
@@ -652,7 +676,7 @@ class MainWindow(QMainWindow):
         self.clear_layout(self.threeDTableLayout)
         self.clear_layout(self.imageLayout)
         self.clear_layout(self.imageInfoLayout)
-        self.inital_gray_scale_setting()
+        self.initial_gray_scale_setting()
         self._norm = mpl.colors.Normalize(clip=False)  # Linear normalization
         self._interpolation = 'none'
         self.labelActionList['Object Label'].setChecked(True)
@@ -712,6 +736,36 @@ class MainWindow(QMainWindow):
             self.tableWidget.tableModel.write_table_to_csv(fname)
         return False
 
+
+
+
+    def save_view(self):
+        outputimg = QPixmap(self.view.width(), self.view.height())
+        painter = QPainter(outputimg)
+        targetrect = QRectF(0, 0, self.view.width(), self.view.height())
+        sourcerect = QRect(0, 0, self.view.width(), self.view.height())
+        self.view.render(painter, targetrect, sourcerect)
+        fname = 'worldwindow_view.png'
+        fname = QFileDialog.getSaveFileName(self, 'Save image file',
+                                            fname, 'Image Files (*.png *.jpg *.bmp)')
+        if fname != '':
+            fname = str(fname)
+            i = fname.rfind('.')
+            if i < 0:
+                fname = fname + '.png'
+                i = fname.rfind('.')
+            outputimg.save(fname, fname[i + 1:])
+            try:
+                comment = 'View saved to ' + fname[fname.rfind('/') + 1:]
+            except:
+                comment = 'View saved to ' + fname
+            self.view.emit(SIGNAL('statusmsg'), comment)
+        painter.end()
+
+
+
+
+
     def file_save_as(self):
         # print('Not finished yet')
         # return
@@ -723,7 +777,7 @@ class MainWindow(QMainWindow):
         formats = (["*.{}".format(format.data().decode("ascii").lower())
                     for format in QImageWriter.supportedImageFormats()])
         fname = QFileDialog.getSaveFileName(self,
-                                            "Image Changer - Save Image", fname,
+                                            "Save Image as:", fname,
                                             "Image files ({})".format(" ".join(formats)))
         if fname:
             if "." not in fname:
@@ -734,7 +788,7 @@ class MainWindow(QMainWindow):
         return False
 
     def addRecentFile(self, fname):
-        print('ADDING recent file to list. filename: {}'.format(fname))
+        # print('ADDING recent file to list. filename: {}'.format(fname))
         if fname is None:
             return
         if fname not in self.recentFiles:
@@ -760,12 +814,12 @@ class MainWindow(QMainWindow):
                 action = QAction(QIcon(":/icon.png"), "&{} {}".format(i + 1, QFileInfo(fname).fileName()), self)
                 action.setData(fname)
                 self.connect(action, SIGNAL("triggered()"),
-                             self.loadFile)
+                             self.load_file)
                 self.fileMenu.addAction(action)
         self.fileMenu.addSeparator()
         self.fileMenu.addAction(self.fileMenuActions[-1])
 
-    def loadFile(self, fname=None):
+    def load_file(self, fname=None):
         if fname is None:
             action = self.sender()
             if isinstance(action, QAction):
@@ -777,7 +831,7 @@ class MainWindow(QMainWindow):
         if fname:
             self.filename = None
             self.addRecentFile(fname)
-            print("Got into loadFile()")
+            print("Got into load_file()")
 
     def closeEvent(self, event):
         print'Close Event.'
@@ -837,12 +891,14 @@ class MainWindow(QMainWindow):
         rows = set()
         columns = set()
         self.indices = self.tableWidget.selectionModel.selectedIndexes()
+
         if self.indices:
             for index in self.indices:
                 rows.add(index.row())
                 columns.add(index.column())
             self.start_x = min(columns) + 1
             self.start_y = max(rows) + 1
+            print("BB startx, starty: {} {}".format(self.start_x, self.start_y))
             self.width = max(columns) - self.start_x
             self.height = (self.start_y - min(rows)) * -1
             # print('({},{}), width = {}, height = {}'.format(self.start_x, self.start_y, self.width, -self.height))
@@ -852,6 +908,7 @@ class MainWindow(QMainWindow):
             self.tabFrame.setCurrentIndex(self.image_index)
             self.hideBoundingBoxAction.setDisabled(False)
             self.showBoundingBoxAction.setDisabled(True)
+            self.showMouseSelectionAction.setDisabled(True)
         else:
             print('Add a message box:  No table fields selected in table.')
 
@@ -861,7 +918,76 @@ class MainWindow(QMainWindow):
             self.draw_2d_image(self, redraw=True, drawBoundingBox=False)
             self.hideBoundingBoxAction.setDisabled(True)
             self.showBoundingBoxAction.setDisabled(False)
+            self.showMouseSelectionAction.setDisabled(False)
+        self.tableWidget.clearSelection()
 
+    def check_for_selection(self):
+        '''
+        This is used to clear previous selections if a new bounding box is dragged out
+        :return:
+        '''
+        # print('ok checking')
+        # print('bounding_box_rectange is : {}'.format(self.bounding_box_rectangle))
+        if self.bounding_box_rectangle is not None:
+         #   self.bounding_box_rectangle.remove()
+            self.allow_rect = True  # allow rectangle drawing over the 2d image
+            self.draw_2d_image(None, redraw=False)
+            self.bounding_box_rectangle = None
+
+    def make_selection(self, x1, y1, x2, y2):
+        parent = QModelIndex()
+        # I don't understand why I have to swap x,y pairs to get the correct topLeft and bottomRight
+        # But it works - perhaps because of the origin coordinates
+        x1, y1 = y1, x1
+        x2, y2 = y2, x2
+        print("(%3.2f, %3.2f) ---> (%3.2f, %3.2f)" % (x1, y1, x2, y2))
+        topLeft = self.tableWidget.tableModel.index(x1, y1, parent)
+        bottomRight = self.tableWidget.tableModel.index(x2, y2, parent)
+        selection = QItemSelection(topLeft, bottomRight)
+        self.tableWidget.selectionModel.select(selection, QItemSelectionModel.SelectCurrent)
+        # Move view in the table to the top left corner of the selection
+        self.tableWidget.verticalSliderBar.setSliderPosition(x1-2)
+        self.tableWidget.horizontalSliderBar.setSliderPosition(y1-2)
+
+
+    def line_select_callback(self, eclick, erelease):
+        # print('ok, select callback hit')
+        # print('x: .{}'.format(eclick.xdata))
+        # print('y: .{}'.format(erelease.ydata))
+        x1, y1 = eclick.xdata, eclick.ydata
+        x2, y2 = erelease.xdata, erelease.ydata
+
+        # print("(%3.2f, %3.2f) --> (%3.2f, %3.2f)" % (x1, y1, x2, y2))
+        # print(" The button you used were: %s %s" % (eclick.button, erelease.button))
+        self.bounding_box_rectangle = plt.Rectangle((min(x1, x2), min(y1, y2)), np.abs(x1 - x2), np.abs(y1 - y2),
+                                                    linewidth=1, edgecolor='r', facecolor='none',
+                                                    alpha=.8, fill=False)
+        # print('coordinates for rect: {},{} : {},{}'.format(min(x1, x2), min(y1, y2), np.abs(x1 - x2), np.abs(y1 - y2)))
+        self.axes.add_patch(self.bounding_box_rectangle)
+        # self.tableWidget.make_selection(int(x1), int(y1), int(x2), int(y2))
+        self.make_selection(int(x1), int(y1), int(x2), int(y2))
+
+    def clear_table_selection(self):
+        self.tableWidget.clearSelection()
+
+    def get_mouse_selection(self):
+        if self.indices:
+            self.hide_selection()   # remove an selection from 'Table Options'
+        self.check_for_selection()         # check for and clear any current mouse selection
+        self.allow_rect = True             # allow rectangle drawing over the 2d image
+        self.draw_2d_image(None, redraw=False)
+        self.hideMouseSelectionAction.setDisabled(False)
+        self.showMouseSelectionAction.setDisabled(True)
+        self.showBoundingBoxAction.setDisabled(True)
+
+    def clear_mouse_selection(self):
+        self.clear_table_selection()
+        self.bounding_box_rectangle.remove()
+        self.allow_rect = False
+        self.draw_2d_image(None, redraw=False)
+        self.hideMouseSelectionAction.setDisabled(True)
+        self.showMouseSelectionAction.setDisabled(False)
+        self.showBoundingBoxAction.setDisabled(False)
 
     def handle_view_clicked(self, index):
         '''
@@ -932,7 +1058,7 @@ class MainWindow(QMainWindow):
             if label == 'separator':
                 continue
             ret = self.model.get_label(self.current_index.row(), label)
-            if ret == None:
+            if ret is None:
                 self.labelActionList[label].setDisabled(True)
             else:
                 self.labelActionList[label].setDisabled(False)
@@ -1045,7 +1171,7 @@ class MainWindow(QMainWindow):
         sending_button = self.sender()
         button_number = int(sending_button.objectName())
         # print('Button number: {}'.format(button_number))
-        #set up the table for rendering
+        # set up the table for rendering
         self.draw_indexed_table(data, button_number - 1)
         # except:
         #     print("3D table array button click did not work")
@@ -1087,6 +1213,7 @@ class MainWindow(QMainWindow):
 
         title = self.summary[0][0]  # this is the title of the 3D table
 
+
     def draw_table(self, index):
         '''
         :param index:
@@ -1100,13 +1227,13 @@ class MainWindow(QMainWindow):
             # If we have an 'Array_3D_Specturm" we have to make a new tab with a button for each element
             if self.table_type == 'Array_3D_Spectrum':
                 self.draw_table_array(dimension[0], self.table)
-             #   self.current_view = self.three_d_table_index
+                # self.current_view = self.three_d_table_index
                 return
             elif self.table_type == 'Table_Binary' or self.table_type == 'Table Delimited':
                 if self.threeDTabInPlace:
                     self.tabFrame.removeTab(1)
                     self.threeDTabInPlace = False
-              #      self.current_view = self.table_index
+                    # self.current_view = self.table_index
             num_rows    = dimension[0]
             num_columns = dimension[1]
             self.tableWidget = ItemTable(self, self.table, self.title, num_rows, num_columns, self.table_type)
@@ -1261,7 +1388,6 @@ class MainWindow(QMainWindow):
 
     # TODO figure out how to freeze/thaw the display for image updates
 
-
     # TODO break image stuff into it's own class or multiple methods for differnt types of images
     def draw_2d_image(self, image_array, index = -1, redraw=False, drawBoundingBox=False):
         if redraw == False:
@@ -1316,7 +1442,6 @@ class MainWindow(QMainWindow):
 
         if self.clear_bounding_box:
             self.rect.set_visible(False)
-            self.rect.
 
         if not self.cb_removed:
             # self.cbar = self.figure.colorbar(self.image, orientation=self.color_bar_orientation)
@@ -1324,6 +1449,14 @@ class MainWindow(QMainWindow):
 
         self.current_view = self.image_index
         self.render_image()
+
+        # print("allow_rect: {}".format(self.allow_rect))
+        if self.allow_rect:
+            # This is used to drag a bounding box on the image from which a table selection will be made
+            self.rs = RectangleSelector(self.axes, self.line_select_callback,
+                                        drawtype='box', useblit=False, button=[1],
+                                        minspanx=2, minspany=2, spancoords='pixels',
+                                        interactive=True)
 
     def is_floating(self):
         # print('got to top of isFloating')
@@ -1726,8 +1859,8 @@ class ItemTable(QTableView):
         self.object = f_arg  # Needed so it is possible to emit a signal to the main window
         self.table = args[0]
         title = args[1]
-        rows = args[2]
-        columns = args[3]
+        self.rows = args[2]
+        self.columns = args[3]
         self.table_type = args[4]
         self.showHeaders = False
         self.newKey = ''
@@ -1738,9 +1871,6 @@ class ItemTable(QTableView):
         # print("Table type: {}".format(self.table_type))
 
         self.tableModel = Model.assignTableModel(self.table, self.table_type)
-
-        #  test = self.tableModel.get_table()
-        #  print('Stop')
 
         if self.table_type not in self.image_types:  # No image in this file
             # get the column header information
@@ -1780,6 +1910,8 @@ class ItemTable(QTableView):
         self.horizontalSliderBar.setValue(ItemTable.sliderXVal)
 
         self.doubleClicked.connect(self.getIndex)
+
+
 
     # Use this static method to update the slider position for all new instances
     # This allows the user to set the position if he uses the checkbox
@@ -1946,6 +2078,21 @@ class ItemTable(QTableView):
             stream = io.BytesIO()
             csv.writer(stream).writerows(table)
             QApp.app.clipboard().setText(stream.getvalue())
+
+    def make_selection(self, x1, y1, x2, y2):
+        parent = QModelIndex()
+        topLeft = self.model.index(x1, y1, parent)
+        bottomRight = self.model.index(x2, y2, parent)
+        selection = QItemSelection(topLeft, bottomRight)
+        self.selectModel(selection, QItemSelectionModel.Select)
+
+
+         # Make table selection based on rectangle pulled down on image.
+         #rect = QRect(x1, y1, x2, y2)
+         #rect = QRect(10, 10, 100,100)
+         #print(rect)
+         #self.setSelection(rect, QItemSelectionModel.Select)
+
 
 class TextWindow(QTextBrowser):
     textFont = QFont()
