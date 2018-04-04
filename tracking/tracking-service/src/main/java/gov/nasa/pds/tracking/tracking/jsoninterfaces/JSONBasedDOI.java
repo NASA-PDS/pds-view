@@ -64,7 +64,7 @@ public class JSONBasedDOI {
 		         jsonDOI.put(Doi.EMAILCOLUME, d.getEmail());
 		         jsonDOI.put(Doi.COMMENTCOLUME, d.getComment() != null ? d.getComment() : "");
 		         
-		         jsonDOIs.append("Doi", jsonDOI);
+		         jsonDOIs.append("doi", jsonDOI);
 		         count++;
 		    }
 			
@@ -115,7 +115,7 @@ public class JSONBasedDOI {
 		         jsonDOI.put(Doi.EMAILCOLUME, d.getEmail());
 		         jsonDOI.put(Doi.COMMENTCOLUME, d.getComment() != null ? d.getComment() : "");
 		         
-		         jsonDOIs.append("Doi", jsonDOI);
+		         jsonDOIs.append("doi", jsonDOI);
 		         count++;
 		    }
 			

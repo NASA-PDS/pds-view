@@ -82,6 +82,7 @@ public class JSONBasedSubmissionStatus {
 			subMStatus = new SubmissionStatus();
 			List<SubmissionStatus> subMStatuses = subMStatus.getDeliveryStatus(id);
 			logger.info("number of Submission Status: "  + subMStatuses.size());
+			
 			Iterator<SubmissionStatus> itr = subMStatuses.iterator();
 			int count = 1;
 			

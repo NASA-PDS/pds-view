@@ -141,7 +141,7 @@ public class JSONBasedReferences {
 				jsonRef.put(Reference.REFERENCECOLUMN, r.getReference());
 				jsonRef.put(Reference.TITLECOLUMN, r.getTitle());
 
-				jsonRefs.append("Reference", jsonRef);
+				jsonRefs.append(refTableName, jsonRef);
 		        count++;
 		    }
 			

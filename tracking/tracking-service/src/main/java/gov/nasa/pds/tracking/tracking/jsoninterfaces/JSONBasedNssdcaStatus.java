@@ -64,7 +64,7 @@ public class JSONBasedNssdcaStatus {
 		         jsonNStatus.put(NssdcaStatus.EMAILCOLUMN, ns.getEmail());		         
 		         jsonNStatus.put(NssdcaStatus.COMMENTCOLUMN, ns.getComment() != null ? ns.getComment() : "");
 		         
-		     	 jsonNStatuses.append("Certification Status", jsonNStatus);
+		     	 jsonNStatuses.append("NSSDCA Status", jsonNStatus);
 		         count++;
 		    }
 			
@@ -115,7 +115,7 @@ public class JSONBasedNssdcaStatus {
 		         jsonNStatus.put(NssdcaStatus.EMAILCOLUMN, ns.getEmail());		         
 		         jsonNStatus.put(NssdcaStatus.COMMENTCOLUMN, ns.getComment() != null ? ns.getComment() : "");
 		         
-		     	 jsonNStatuses.append("Certification Status", jsonNStatus);
+		     	 jsonNStatuses.append("NSSDCA Status", jsonNStatus);
 		         count++;
 		    }
 			

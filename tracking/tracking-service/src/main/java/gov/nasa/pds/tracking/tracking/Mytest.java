@@ -10,11 +10,11 @@ import org.apache.log4j.Logger;
 import gov.nasa.pds.tracking.tracking.db.ArchiveStatus;
 import gov.nasa.pds.tracking.tracking.db.CertificationStatus;
 import gov.nasa.pds.tracking.tracking.db.Delivery;
-import gov.nasa.pds.tracking.tracking.db.Doi;
-import gov.nasa.pds.tracking.tracking.db.NssdcaStatus;
+//import gov.nasa.pds.tracking.tracking.db.Doi;
+//import gov.nasa.pds.tracking.tracking.db.NssdcaStatus;
 import gov.nasa.pds.tracking.tracking.db.Product;
 import gov.nasa.pds.tracking.tracking.db.Reference;
-import gov.nasa.pds.tracking.tracking.db.Releases;
+//import gov.nasa.pds.tracking.tracking.db.Releases;
 import gov.nasa.pds.tracking.tracking.db.Role;
 import gov.nasa.pds.tracking.tracking.db.Submission;
 import gov.nasa.pds.tracking.tracking.db.SubmissionStatus;
@@ -79,6 +79,7 @@ public class Mytest {
 			logger.error(e);
 		}
 	}
+	@SuppressWarnings("unused")
 	private void getProducts(String type) {
 		// Get all Products in the product table
 		Product prod;
@@ -129,6 +130,7 @@ public class Mytest {
 		}
 
 	}
+	@SuppressWarnings("unused")
 	private void getDeliveryStatus(String identifier) {
 		SubmissionStatus status;
 		try {
@@ -571,6 +573,7 @@ public class Mytest {
 
 	}
 
+	@SuppressWarnings("unused")
 	private void updateUser(String email, String name) {
 		User user;
 		try {
@@ -583,6 +586,7 @@ public class Mytest {
 		
 	}
 
+	@SuppressWarnings("unused")
 	private void insertUser(String email, String name) {
 		User user;
 		try {
@@ -595,6 +599,7 @@ public class Mytest {
 		
 	}
 
+	@SuppressWarnings("unused")
 	private void updateSubmissionStatus(int deliveryIdentifier, String subDateTime, String statusDateTime, String status, String email,
 			String comment) {
 		SubmissionStatus submS;
@@ -607,6 +612,7 @@ public class Mytest {
 		}
 	}
 	
+	@SuppressWarnings("unused")
 	private void insertSubmissionStatus(int deliveryIdentifier, String subDateTime, String statusDateTime, String status, String email,
 			String comment) {
 		SubmissionStatus submS;
@@ -619,6 +625,7 @@ public class Mytest {
 		}
 	}
 
+	@SuppressWarnings("unused")
 	private void insertSubmission(int deliveryIdentifier, String subDateTime) {
 		Submission subm;
 		try {
@@ -666,6 +673,7 @@ public class Mytest {
 		
 	}
 
+	@SuppressWarnings("unused")
 	private void updateProduct(String logicalIdentifier, String versionId, String title, String type, String alternateId) {
 		Product product;
 		try {
@@ -677,6 +685,7 @@ public class Mytest {
 		}
 	}
 
+	@SuppressWarnings("unused")
 	private void InsertProduct(String logicalIdentifier, String versionId, String title, String type, String alternateId) {
 		Product product;
 		try {
@@ -689,6 +698,7 @@ public class Mytest {
 		
 	}
 
+	@SuppressWarnings("unused")
 	private void updateDelivery(String name, String startDateTime, String stopDateTime,
 			String source, String target, String dueDate, String DelIdentifier) {
 		Delivery del;
@@ -702,6 +712,7 @@ public class Mytest {
 		}		
 	}
 
+	@SuppressWarnings("unused")
 	private int InsertDelivery(String logicalIdentifier, String versionId, String name, String startDateTime, String stopDateTime,
 			String source, String target, String dueDate) {
 		Delivery del;
