@@ -175,6 +175,7 @@ public class TableDataContentValidationRule extends AbstractValidationRule {
           dataFile.toString(),
           tableIndex,
           -1);
+          tableIndex++;
           continue;
         }
         int recordLength = -1;
