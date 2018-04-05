@@ -156,6 +156,8 @@ public class ArrayContentValidationRule extends AbstractValidationRule {
             }
           } catch (IllegalArgumentException ae) {
             addArrayException(ExceptionType.FATAL, "Error while reading array: " + ae.getMessage(), dataFile.toString(), arrayIndex);
+          } catch (UnsupportedOperationException ue) {
+            addArrayException(ExceptionType.WARNING, ue.getMessage(), dataFile.toString(), arrayIndex);
           }
         } catch (IOException io) {
           addArrayException(ExceptionType.FATAL, io.getMessage(), dataFile.toString(), arrayIndex);
