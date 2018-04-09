@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2017, by the California Institute of Technology.
+  Copyright 2017-2018, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology
   Transfer at the California Institute of Technology.
@@ -40,7 +40,7 @@
       <includes/>
     </fileSet>
     <fileSet>
-      <directory>src/main/resources/conf</directory>
+      <directory>src/main/resources</directory>
       <outputDirectory>conf/</outputDirectory>
       <includes>
         <include>**</include>
