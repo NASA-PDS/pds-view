@@ -32,7 +32,7 @@ public class HTMLBasedNssdcaStatus  extends DBConnector {
               "<td width=\"10%\"><b>Email</b></td>" +
               "<td width=\"10%\"><b>Comment</b></td>" +              
               "<td width=\"10%\"><b>Logical Identifier</b></td>" +
-			  "<tr>";
+			  "</tr>";
 	
     @GET
     @Produces("text/html")
@@ -66,7 +66,7 @@ public class HTMLBasedNssdcaStatus  extends DBConnector {
 			              "<td>" + ns.getEmail() + "</td>" +
 			              "<td>" + ns.getComment() + "</td>" +
 			              "<td>" + ns.getLogIdentifier() + "</td>" +			              
-		    			  "<tr>");
+		    			  "</tr>");
 
 		    }
 		} catch (ClassNotFoundException e) {
@@ -117,7 +117,7 @@ public class HTMLBasedNssdcaStatus  extends DBConnector {
 				              "<td>" + ns.getEmail() + "</td>" +
 				              "<td>" + ns.getComment() + "</td>" +
 				              "<td>" + ns.getLogIdentifier() + "</td>" +			              
-			    			  "<tr>");
+			    			  "</tr>");
 				}
 	
 		} catch (ClassNotFoundException e) {
@@ -171,7 +171,7 @@ public class HTMLBasedNssdcaStatus  extends DBConnector {
 			              "<td>" + ns.getEmail() + "</td>" +
 			              "<td>" + ns.getComment() + "</td>" +
 			              "<td>" + ns.getLogIdentifier() + "</td>" +			              
-		    			  "<tr>");
+		    			  "</tr>");
 
 		    }
 				

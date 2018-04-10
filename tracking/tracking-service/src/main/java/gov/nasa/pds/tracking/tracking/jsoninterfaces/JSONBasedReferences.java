@@ -72,7 +72,7 @@ public class JSONBasedReferences {
 			
 			while(itr.hasNext()) {
 				Reference r = itr.next();
-		        logger.debug("instrument Reference " + countInve + ":\n " + r.getLog_identifier() + " : " + r.getReference());
+		        logger.debug("investigation Reference " + countInve + ":\n " + r.getLog_identifier() + " : " + r.getReference());
 		         
 		        jsonReference = new JSONObject();		         
 		        jsonReference.put(Reference.LOG_IDENTIFIERCOLUMN, r.getLog_identifier());

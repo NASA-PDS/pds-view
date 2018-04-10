@@ -35,8 +35,7 @@ public class HTMLBasedProducts {
 	              "<td width=\"10%\"><b>Logical Identifier</b></td>" +
 	              "<td width=\"10%\"><b>Type</b></td>" +
 	              "<td width=\"10%\"><b>Alternate</b></td>" +
-
-    			  "<tr>");
+    			  "</tr>");
 
 		Product prod;
 		try {
@@ -61,7 +60,7 @@ public class HTMLBasedProducts {
 			              "<td>" + p.getIdentifier() + "</td>" +
 			              "<td>" + p.getType() + "</td>" +
 			              "<td>" + (p.getAlternate() != null ? p.getAlternate() : "") + "</td>" +
-		    			  "<tr>");
+		    			  "</tr>");
 		         count++;
 		    }
 
@@ -95,8 +94,7 @@ public class HTMLBasedProducts {
 	              "<td width=\"10%\"><b>Logical Identifier</b></td>" +
 	              "<td width=\"10%\"><b>Type</b></td>" +
 	              "<td width=\"10%\"><b>Alternate</b></td>" +
-
-    			  "<tr>");
+    			  "</tr>");
 
 		Product prod;
 		try {
@@ -122,7 +120,7 @@ public class HTMLBasedProducts {
 			              "<td>" + p.getIdentifier() + "</td>" +
 			              "<td>" + p.getType() + "</td>" +
 			              "<td>" + (p.getAlternate() != null ? p.getAlternate() : "") + "</td>" +
-		    			  "<tr>");
+		    			  "</tr>");
 		         count++;
 		    }
 
@@ -154,8 +152,7 @@ public class HTMLBasedProducts {
 	              "<td width=\"10%\"><b>Logical Identifier</b></td>" +
 	              "<td width=\"10%\"><b>Type</b></td>" +
 	              "<td width=\"10%\"><b>Alternate</b></td>" +
-
-    			  "<tr>");
+    			  "</tr>");
 
 		Product prod;
 		try {
@@ -181,7 +178,7 @@ public class HTMLBasedProducts {
 			              "<td>" + p.getIdentifier() + "</td>" +
 			              "<td>" + p.getType() + "</td>" +
 			              "<td>" + (p.getAlternate() != null ? p.getAlternate() : "") + "</td>" +
-		    			  "<tr>");
+		    			  "</tr>");
 		         count++;
 		    }
 

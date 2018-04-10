@@ -43,20 +43,20 @@ public class ServicesHomePage {
 	              "<li><a href=\"json/delivery\">All Deliveries</a><br/></li>" +
 	              "</div>" +
 	              "<p></p><div>" + 
-	              "<li><a href=\"json/Users\">All Users</a><br/></li>" +
+	              "<li><a href=\"json/users\">All Users</a><br/></li>" +
 	              "</div>" +
 	              /*"<p></p><div>" + 
-	              "<li><a href=\"json/Users/null\">All Users with Role</a><br/></li>" +
+	              "<li><a href=\"json/users/null\">All Users with Role</a><br/></li>" +
 	              "</div>" +*/
 	              "<p></p><div>" + 
-	              "<li><a href=\"json/Users/sean.hardman@jpl.nasa.gov\">User Role for sean.hardman@jpl.nasa.gov</a><br/></li>" +
+	              "<li><a href=\"json/users/sean.hardman@jpl.nasa.gov\">User Role for sean.hardman@jpl.nasa.gov</a><br/></li>" +
 	              "</div>"	              +
 	              "<p></p><div>" +
-	              "<li><a href=\"json/Users/urn:nasa:pds:context_pds3:data_set:data_set.jno-e-j-ss-wav-2-edr-v1.0/" + Reference.INST_TABLENAME + "\">" +
+	              "<li><a href=\"json/users/urn:nasa:pds:context_pds3:data_set:data_set.jno-e-j-ss-wav-2-edr-v1.0/" + Reference.INST_TABLENAME + "\">" +
 	              	"Product (urn:nasa:pds:context_pds3:data_set:data_set.jno-e-j-ss-wav-2-edr-v1.0) Instrument Role Query</a><br/></li>" +
-	              "<li><a href=\"json/Users/urn:nasa:pds:context_pds3:data_set:data_set.jno-e-j-ss-wav-2-edr-v1.0/" + Reference.INVES_TABLENAME + "\">" + 
+	              "<li><a href=\"json/users/urn:nasa:pds:context_pds3:data_set:data_set.jno-e-j-ss-wav-2-edr-v1.0/" + Reference.INVES_TABLENAME + "\">" + 
             		"Product (urn:nasa:pds:context_pds3:data_set:data_set.jno-e-j-ss-wav-2-edr-v1.0) Investigation Role Query</a><br/></li>" +
-            	  "<li><a href=\"json/Users/urn:nasa:pds:context_pds3:data_set:data_set.jno-e-j-ss-wav-2-edr-v1.0/" + Reference.NODE_TABLENAME + "\">" + 
+            	  "<li><a href=\"json/users/urn:nasa:pds:context_pds3:data_set:data_set.jno-e-j-ss-wav-2-edr-v1.0/" + Reference.NODE_TABLENAME + "\">" + 
             		"Product (urn:nasa:pds:context_pds3:data_set:data_set.jno-e-j-ss-wav-2-edr-v1.0) Node Role Query</a><br/></li>" +
 	              "</div>" +
 	              "<p></p><h2>XML</h2><div>" +
@@ -79,20 +79,20 @@ public class ServicesHomePage {
 	              "<li><a href=\"xml/delivery\">All Deliveries</a><br/></li>" +
 	              "</div>" +
 	              "<p></p><div>" + 
-	              "<li><a href=\"xml/Users\">All Users</a><br/></li>" +
+	              "<li><a href=\"xml/users\">All Users</a><br/></li>" +
 	              "</div>" +
 	              /*"<p></p><div>" + 
-	              "<li><a href=\"xml/Users/null\">All Users with Role</a><br/></li>" +
+	              "<li><a href=\"xml/users/null\">All Users with Role</a><br/></li>" +
 	              "</div>" +*/
 	              "<p></p><div>" + 
-	              "<li><a href=\"xml/Users/sean.hardman@jpl.nasa.gov\">User Role for sean.hardman@jpl.nasa.gov</a><br/></li>" +
+	              "<li><a href=\"xml/users/sean.hardman@jpl.nasa.gov\">User Role for sean.hardman@jpl.nasa.gov</a><br/></li>" +
 	              "</div>"	              +
 	              "<p></p><div>" +
-	              "<li><a href=\"xml/Users/urn:nasa:pds:context_pds3:data_set:data_set.jno-e-j-ss-wav-2-edr-v1.0/" + Reference.INST_TABLENAME + "\">" +
+	              "<li><a href=\"xml/users/urn:nasa:pds:context_pds3:data_set:data_set.jno-e-j-ss-wav-2-edr-v1.0/" + Reference.INST_TABLENAME + "\">" +
 	              	"Product (urn:nasa:pds:context_pds3:data_set:data_set.jno-e-j-ss-wav-2-edr-v1.0) Instrument Role Query </a><br/></li>" +
-	              "<li><a href=\"xml/Users/urn:nasa:pds:context_pds3:data_set:data_set.jno-e-j-ss-wav-2-edr-v1.0/" + Reference.INVES_TABLENAME + "\">" + 
+	              "<li><a href=\"xml/users/urn:nasa:pds:context_pds3:data_set:data_set.jno-e-j-ss-wav-2-edr-v1.0/" + Reference.INVES_TABLENAME + "\">" + 
             		"Product (urn:nasa:pds:context_pds3:data_set:data_set.jno-e-j-ss-wav-2-edr-v1.0) Investigation Role Query</a><br/></li>" +
-            	  "<li><a href=\"xml/Users/urn:nasa:pds:context_pds3:data_set:data_set.jno-e-j-ss-wav-2-edr-v1.0/" + Reference.NODE_TABLENAME + "\">" + 
+            	  "<li><a href=\"xml/users/urn:nasa:pds:context_pds3:data_set:data_set.jno-e-j-ss-wav-2-edr-v1.0/" + Reference.NODE_TABLENAME + "\">" + 
             		"Product (urn:nasa:pds:context_pds3:data_set:data_set.jno-e-j-ss-wav-2-edr-v1.0) Node Role Query</a><br/></li>" +
 	              "</div>"
               + HtmlConstants.PAGE_END;

@@ -25,7 +25,7 @@ import gov.nasa.pds.tracking.tracking.db.User;
  * @author danyu dan.yu@jpl.nasa.gov
  *
  */
-@Path("json/Users")
+@Path("json/users")
 public class JSONBasedUsers {
 
 	public static Logger logger = Logger.getLogger(JSONBasedUsers.class);

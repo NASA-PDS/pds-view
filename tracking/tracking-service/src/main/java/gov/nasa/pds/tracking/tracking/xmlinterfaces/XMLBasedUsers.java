@@ -35,7 +35,7 @@ import gov.nasa.pds.tracking.tracking.db.User;
  * @author danyu dan.yu@jpl.nasa.gov
  *
  */
-@Path("xml/Users")
+@Path("xml/users")
 public class XMLBasedUsers {
 
 	public static Logger logger = Logger.getLogger(XMLBasedUsers.class);

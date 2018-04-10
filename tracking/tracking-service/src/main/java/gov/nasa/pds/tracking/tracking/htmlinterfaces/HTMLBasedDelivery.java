@@ -28,7 +28,7 @@ public class HTMLBasedDelivery {
               "<td width=\"10%\"><b>Due Date</b></td>" +
               "<td width=\"10%\"><b>Logical Identifier</b></td>" +
               "<td width=\"10%\"><b>Delivery Identifier</b></td>" +
-			  "<tr>";
+			  "</tr>";
 	
     @GET
     @Produces("text/html")
@@ -63,7 +63,7 @@ public class HTMLBasedDelivery {
 			              "<td>" + d.getDueDate() + "</td>" +
 			              "<td>" + d.getLogIdentifier() + "</td>" +
 			              "<td>" + d.getDelIdentifier() + "</td>" +
-		    			  "<tr>");
+		    			  "</tr>");
 		         count++;
 		    }
 
@@ -114,7 +114,7 @@ public class HTMLBasedDelivery {
 			              "<td>" + d.getDueDate() + "</td>" +
 			              "<td>" + d.getLogIdentifier() + "</td>" +
 			              "<td>" + d.getDelIdentifier() + "</td>" +
-		    			  "<tr>");
+		    			  "</tr>");
 		         count++;
 		    }
 
@@ -167,7 +167,7 @@ public class HTMLBasedDelivery {
 			              "<td>" + d.getDueDate() + "</td>" +
 			              "<td>" + d.getLogIdentifier() + "</td>" +
 			              "<td>" + d.getDelIdentifier() + "</td>" +
-		    			  "<tr>");
+		    			  "</tr>");
 		         count++;
 		    }
 

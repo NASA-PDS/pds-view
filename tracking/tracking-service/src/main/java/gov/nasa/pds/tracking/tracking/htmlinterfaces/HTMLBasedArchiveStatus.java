@@ -33,7 +33,7 @@ public class HTMLBasedArchiveStatus  extends DBConnector {
               "<td width=\"10%\"><b>Email</b></td>" +
               "<td width=\"10%\"><b>Comment</b></td>" +              
               "<td width=\"10%\"><b>Logical Identifier</b></td>" +
-			  "<tr>";
+			  "</tr>";
 	
     /**
      * @return
@@ -70,7 +70,7 @@ public class HTMLBasedArchiveStatus  extends DBConnector {
 				              "<td>" + as.getEmail() + "</td>" +
 				              "<td>" + as.getComment() + "</td>" +
 				              "<td>" + as.getLogIdentifier() + "</td>" +			              
-			    			  "<tr>");
+			    			  "</tr>");
 	
 			    }
 			
@@ -123,7 +123,7 @@ public class HTMLBasedArchiveStatus  extends DBConnector {
 				              "<td>" + as.getEmail() + "</td>" +
 				              "<td>" + as.getComment() + "</td>" +
 				              "<td>" + as.getLogIdentifier() + "</td>" +			              
-			    			  "<tr>");
+			    			  "</tr>");
 				}
 	
 		} catch (ClassNotFoundException e) {
@@ -190,7 +190,7 @@ public class HTMLBasedArchiveStatus  extends DBConnector {
 				              "<td>" + as.getEmail() + "</td>" +
 				              "<td>" + as.getComment() + "</td>" +
 				              "<td>" + as.getLogIdentifier() + "</td>" +			              
-			    			  "<tr>");
+			    			  "</tr>");
 				}
 	
 		} catch (ClassNotFoundException e) {
@@ -241,7 +241,7 @@ public class HTMLBasedArchiveStatus  extends DBConnector {
 				              "<td>" + as.getEmail() + "</td>" +
 				              "<td>" + as.getComment() + "</td>" +
 				              "<td>" + as.getLogIdentifier() + "</td>" +			              
-			    			  "<tr>");
+			    			  "</tr>");
 				}
 	
 		} catch (ClassNotFoundException e) {

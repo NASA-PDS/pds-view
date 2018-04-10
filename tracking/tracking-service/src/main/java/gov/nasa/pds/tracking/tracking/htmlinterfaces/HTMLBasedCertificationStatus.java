@@ -33,7 +33,7 @@ public class HTMLBasedCertificationStatus  extends DBConnector {
               "<td width=\"10%\"><b>Email</b></td>" +
               "<td width=\"10%\"><b>Comment</b></td>" +              
               "<td width=\"10%\"><b>Logical Identifier</b></td>" +
-			  "<tr>";
+			  "</tr>";
 	
     @GET
     @Produces("text/html")
@@ -67,7 +67,7 @@ public class HTMLBasedCertificationStatus  extends DBConnector {
 				              "<td>" + cs.getEmail() + "</td>" +
 				              "<td>" + cs.getComment() + "</td>" +
 				              "<td>" + cs.getLogIdentifier() + "</td>" +			              
-			    			  "<tr>");
+			    			  "</tr>");
 	
 			    }
 		} catch (ClassNotFoundException e) {
@@ -133,7 +133,7 @@ public class HTMLBasedCertificationStatus  extends DBConnector {
 				              "<td>" + cs.getEmail() + "</td>" +
 				              "<td>" + cs.getComment() + "</td>" +
 				              "<td>" + cs.getLogIdentifier() + "</td>" +			              
-			    			  "<tr>");
+			    			  "</tr>");
 				}
 	
 		} catch (ClassNotFoundException e) {
@@ -182,7 +182,7 @@ public class HTMLBasedCertificationStatus  extends DBConnector {
 			              "<td>" + cs.getEmail() + "</td>" +
 			              "<td>" + cs.getComment() + "</td>" +
 			              "<td>" + cs.getLogIdentifier() + "</td>" +			              
-		    			  "<tr>");
+		    			  "</tr>");
 
 		    }				
 		} catch (ClassNotFoundException e) {
