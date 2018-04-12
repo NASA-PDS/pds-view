@@ -6,15 +6,38 @@
 <%@ page language="java" session="true" isThreadSafe="true"
 	info="PDS Search" isErrorPage="false"
 	contentType="text/html; charset=ISO-8859-1"
-	import="java.net.*,java.util.*,java.io.*"%>
-<%
+	import="java.net.*,java.util.*,java.io.*,java.lang.*"%>
 
+<%!
+// Blank out the parameter name if any of the bad characters are present
+// that facilitate Cross-Site Scripting and Blind SQL Injection.
+public String clean(String str) {
+  char badChars [] = {'|', ';', '$', '@', '\'', '"', '<', '>', '(', ')', ',', '\\', /* CR */ '\r' , /* LF */ '\n' , /* Backspace */ '\b'};
+  String decodedStr = "";
+
+  try {
+    if (str != null) {
+      decodedStr = URLDecoder.decode(str);
+      for(int i = 0; i < badChars.length; i++) {
+        if (decodedStr.indexOf(badChars[i]) >= 0) {
+          return "";
+        }
+      }
+    }
+  } catch (IllegalArgumentException e) {
+    return "";
+  }
+  return decodedStr;
+}
+%>
+
+<%
 String pdshome = application.getInitParameter("pdshome.url");
 String contextPath = request.getContextPath() + "/";
 
 String qString = request.getParameter("q");
 String query = "", newQString = "";
-if (qString == null) {
+if (qString == null || qString == "") {
   response.sendRedirect("index.jsp");
   return;
 }
@@ -25,21 +48,22 @@ ignoredParams.add("in");
 ignoredParams.add("words");
 ignoredParams.add("search_scope");
 
-
 // Loop through request params to ignore params that come from search
 // Allows for parameters to be appended to search-service query
 query = "";
 Map<String, String[]> params = request.getParameterMap();
 for (String name : params.keySet()) {
-  if (!ignoredParams.contains(name)) {
-    for (String value : Arrays.asList(params.get(name))) {
-      if (value != null) {
-        query += name + "=" + URLEncoder.encode(value, "UTF-8")+ "&";
+  name = clean(name);
+  if (name != "") {
+    if (!ignoredParams.contains(name)) {
+      for (String value : Arrays.asList(params.get(name))) {
+        if (value != null) {
+          query += name + "=" + URLEncoder.encode(value, "UTF-8")+ "&";
+        }
       }
     }
-  }
+  } 
 }
-
 %>
 
 <head>
