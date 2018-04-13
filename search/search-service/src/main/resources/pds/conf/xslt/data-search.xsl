@@ -187,7 +187,7 @@
         </strong>
         (<xsl:value-of select="$ds_result_time" /> seconds)
     </p>
-    
+<!-- Comment out the Archive Info and Search Tools blocks
     <xsl:if test="response/result/doc[(arr|str)[@name='data_product_type']='Resource']">
       <div style="margin-top: 1em; padding: .25em; font-size: 100%; border: 1px solid #E0E000; background: #FFFFE0;">Archive Information</div>
       <p style="margin-top: .5em; margin-bottom: .5em;">These web pages provide detailed information for the matching investigations. If no page looks appropriate, you can browse the matching search tools and data sets, below.</p>
@@ -206,7 +206,7 @@
       <ul class="results">
         <xsl:apply-templates select="response/result/doc[(arr|str)[@name='data_product_type']='Product_Context_Search_Tool']"/>
       </ul>
-      
+-->        
       <xsl:if test="count(response/result/doc[(arr|str)[@name='data_product_type']='Product_Context_Search_Tool']) > 2">
         <div class="more-tools"><a class="tools-button">More related search tools...</a></div>
       </xsl:if>
