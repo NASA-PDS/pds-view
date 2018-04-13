@@ -48,6 +48,7 @@ ignoredParams.add("in");
 ignoredParams.add("words");
 ignoredParams.add("search_scope");
 
+
 // Loop through request params to ignore params that come from search
 // Allows for parameters to be appended to search-service query
 query = "";
@@ -62,8 +63,9 @@ for (String name : params.keySet()) {
         }
       }
     }
-  } 
+  }
 }
+
 %>
 
 <head>
@@ -74,7 +76,7 @@ for (String name : params.keySet()) {
 <!-- InstanceBeginEditable name="head" -->
 <!-- InstanceEndEditable -->
 <!-- InstanceParam name="menu_section" type="text" value="data" -->
-<!-- InstanceParam name="menu_item" type="text" value="data_data_search" -->
+<!-- InstanceParam name="menu_item" type="text" value="data_keyword_search" -->
 <!-- InstanceParam name="left_sidebar" type="boolean" value="false" -->
 <!-- InstanceParam name="standard_sidebar" type="boolean" value="false" -->
 <!-- InstanceParam name="standard_page_content" type="boolean" value="false" -->
@@ -89,37 +91,13 @@ $(function() {
     var query = '<%= query %>';
 		$.get('../search-service/pds/archive-filter?' + query, function(data) {
 			$('.output').html(data);
-			//alert('Load was performed.');
 		});
-	
-		$('div').on('click', 'a.tools-button', function() {
-			$('.tool').slideToggle('fast', function() {
-				if ($('.tool').is(":visible")) {
-					$('a.tools-button').text("Hide");
-				} else {
-					$('a.tools-button').text("More related search tools...");
-				}
-			});
-
-		});
-
-		$('div').on('click', 'a.info-button', function() {
-			$('.info').slideToggle('fast', function() {
-				if ($('.info').is(":visible")) {
-					$('a.info-button').text("Hide");
-				} else {
-					$('a.info-button').text("More related archive resources...");
-				}
-			});
-
-		});
-
 	});
 </script>
 
 </head>
 
-<body class="fullWidth  menu_data menu_item_data_data_search sidebar">
+<body class="fullWidth  menu_data menu_item_data_keyword_search sidebar">
 	<!--[if IE]>
 <div id="IE">
 <![endif]-->
@@ -131,7 +109,7 @@ $(function() {
 
 
 
-		<c:import url="/data_menu.html" context="/include" />
+		<c:import url="/datasearch_menu.html" context="/include" />
 
 
 		<!-- <ul id="submenu_standards"><li>&nbsp;</li></ul> -->

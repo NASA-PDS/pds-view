@@ -13,12 +13,12 @@ String contextPath = request.getContextPath() + "/";
 
 <head>
 <!-- InstanceBeginEditable name="doctitle" -->
-<title>PDS: Data Search</title>
+<title>PDS: Keyword Search</title>
 <!-- InstanceEndEditable -->
 <c:import url="/includes.html" context="/include" />
 <!-- InstanceBeginEditable name="head" --><!-- InstanceEndEditable -->
 <!-- InstanceParam name="menu_section" type="text" value="data" -->
-<!-- InstanceParam name="menu_item" type="text" value="data_data_search" -->
+<!-- InstanceParam name="menu_item" type="text" value="data_keyword_search" -->
 <!-- InstanceParam name="left_sidebar" type="boolean" value="true" -->
 <!-- InstanceParam name="standard_sidebar" type="boolean" value="true" -->
 <!-- InstanceParam name="standard_page_content" type="boolean" value="true" -->
@@ -26,7 +26,7 @@ String contextPath = request.getContextPath() + "/";
 </head>
 
 
-<body class="sidebar  menu_data menu_item_data_data_search ">
+<body class="sidebar  menu_data menu_item_data_keyword_search ">
 <!--[if IE]>
 <div id="IE">
 <![endif]--> 
@@ -35,7 +35,7 @@ String contextPath = request.getContextPath() + "/";
 <c:import url="/main_menu.html" context="/include" />
 
 <div id="submenu">
-<c:import url="/data_menu.html" context="/include" />
+<c:import url="/datasearch_menu.html" context="/include" />
 <!-- <ul id="submenu_standards"><li>&nbsp;</li></ul> -->
 <div class="clear"></div>
 </div>
@@ -49,16 +49,18 @@ String contextPath = request.getContextPath() + "/";
 
 <!-- Main content -->
 <div id="content">
-  <h1><a name="mainContent"></a><!-- InstanceBeginEditable name="pageTitle" -->Data Search<!-- InstanceEndEditable --></h1>
+  <h1><a name="mainContent"></a><!-- InstanceBeginEditable name="pageTitle" -->Keyword Search<!-- InstanceEndEditable --></h1>
   <div>
     <!-- InstanceBeginEditable name="content" -->
-    <p>This interface allows the user to search the holdings of the PDS archive. Results from a search include links to related archive information, search tools and data sets available from the PDS archive. In addition to PDS data, the results also include links to data sets curated by the European Space Agency.
+    <p>This interface allows the user to search the holdings of the PDS archive. Results from a search include links to data sets available from the PDS archive. In addition to PDS data, the results also include links to data sets curated by other international space agencies.</p>
+
+    <p>You may also visit the <a href="/datasearch/data-search">Data Search</a> application if you are looking for search tools or other resources.</p>
 
     <form action="search.jsp" method="get">
       <input type="text" name="q" size="60" />&nbsp;&nbsp;<input type="submit" value="Search" />
     </form>
 
-    <p style="margin-top: 2em; margin-bottom: .5em;">Begin your search with one of the quick searches on the left, or try any of the following:</p>
+    <p style="margin-top: 2em; margin-bottom: .5em;">Begin your search by entering a keyword in the text box above. The following are some examples of supported keywords and search examples:</p>
 
     <div id="IEBug">
       <ul>
