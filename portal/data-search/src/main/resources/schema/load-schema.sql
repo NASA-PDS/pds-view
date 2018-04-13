@@ -33,7 +33,7 @@ insert into investigation_tools (investigation, title, description, url, rank) v
 
 /* Cassini */
 
-insert into investigation_tools (investigation, title, description, url, rank) values ('Cassini', 'OPUS at the Ring-Moon Systems Node', 'Supports Cassini (CIRS, ISS, UVIS, VIMS), all with enhanced geometric metadata enabling more detailed searches, including surface search constraints for the planet, satellites and rings (e.g., latitudes and longitudes), and expanded sets of viewing and illumination constraints. Browse results and download, including calibrated versions for ISS.', 'https://tools.pds-rings.seti.org/opus#/missionid=Cassini', 1);
+insert into investigation_tools (investigation, title, description, url, rank) values ('Cassini', 'OPUS at the Ring-Moon Systems Node', 'Supports Cassini (ISS, UVIS, VIMS), all with enhanced geometric metadata enabling more detailed searches, including surface search constraints for the planet, satellites and rings (e.g., latitudes and longitudes), and expanded sets of viewing and illumination constraints. Browse results and download, including calibrated versions for ISS.', 'https://tools.pds-rings.seti.org/opus#/missionid=Cassini', 1);
 
 insert into investigation_tools (investigation, title, description, url, rank) values ('Cassini', 'PDS Image Atlas at the Cartography and Imaging Sciences Node', 'Supports Cassini ISS NAC and WAC, VIMS-IR and VIS, and RADAR image product search, browse and download.', 'https://pds-imaging.jpl.nasa.gov/search/?fq=ATLAS_MISSION_NAME%3Acassini&q=*%3A*', 2);
 
@@ -608,7 +608,7 @@ insert into target_tools (target, title, description, url, rank) values ('Jupite
 
 /* Saturn System */
 
-insert into target_tools (target, title, description, url, rank) values ('Saturn System', 'OPUS at the Ring-Moon Systems Node', 'Supports Cassini (CIRS, ISS, UVIS, VIMS) and Voyager (ISS), all with enhanced geometric metadata which enables more detailed searches, including surface search constraints for the planet, satellites and rings (e.g., latitudes and longitudes). Also supports HST (ACS, WFC3, WFPC2). Browse and download including calibrated Cassini ISS and Voyager ISS. Links to STScI for HST downloads.', 'https://tools.pds-rings.seti.org/opus#/planet=Saturn', 1);
+insert into target_tools (target, title, description, url, rank) values ('Saturn System', 'OPUS at the Ring-Moon Systems Node', 'Supports Cassini (ISS, UVIS, VIMS) and Voyager (ISS), all with enhanced geometric metadata which enables more detailed searches, including surface search constraints for the planet, satellites and rings (e.g., latitudes and longitudes). Also supports HST (ACS, WFC3, WFPC2). Browse and download including calibrated Cassini ISS and Voyager ISS. Links to STScI for HST downloads.', 'https://tools.pds-rings.seti.org/opus#/planet=Saturn', 1);
 
 insert into target_tools (target, title, description, url, rank) values ('Saturn System', 'PDS Image Atlas at the Cartography and Imaging Sciences Node', 'Supports Cassini and Voyager image, radar, and imaging spectrometer product search, browse and download.', 'https://pds-imaging.jpl.nasa.gov/search/?fq=TARGET_NAME%3Asaturn&q=*%3A*', 2);
 

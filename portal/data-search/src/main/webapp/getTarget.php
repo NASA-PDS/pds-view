@@ -2,7 +2,7 @@
 $servername = "localhost";
 $dbname = "search";
 $username = "registry";
-$password = "kerAshyoc";
+$password = "p@ssw0rd";
 
 if($_SERVER["REQUEST_METHOD"] == "POST") {
   $target = $_POST['target'];
