@@ -1,5 +1,5 @@
 #!/bin/sh
-# Copyright 2010-2017, by the California Institute of Technology. 
+# Copyright 2010-2018, by the California Institute of Technology. 
 # ALL RIGHTS RESERVED. United States Government sponsorship acknowledged. 
 # Any commercial use must be negotiated with the Office of Technology Transfer 
 # at the California Institute of Technology. 
@@ -113,6 +113,8 @@ cp -r model/model-ontology/target/site/* $1/model/model-ontology
 echo "Deploying Portal component sites to the deployment directory."
 mkdir -p $1/portal
 cp -r portal/target/site/* $1/portal
+mkdir -p $1/portal/data-search
+cp -r portal/data-search/target/site/* $1/portal/data-search
 mkdir -p $1/portal/dd-search
 cp -r portal/dd-search/target/site/* $1/portal/dd-search
 mkdir -p $1/portal/ds-view
