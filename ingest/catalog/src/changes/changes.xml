@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2009-2017, by the California Institute of Technology.
+  Copyright 2009-2018, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology
   Transfer at the California Institute of Technology.
@@ -23,6 +23,9 @@
   </properties>
 
   <body>
+    <release version="1.16.0" date="TBD" description="TBD">
+    </release>
+
     <release version="1.15.0" date="2018-03-30" description="This release of the Catalog Tool is a component of the integrated release 8.1.0 of the PDS4 System. This is an operational release of the system components to date.">
     </release>
 
