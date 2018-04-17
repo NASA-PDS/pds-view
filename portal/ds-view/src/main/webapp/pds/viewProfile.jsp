@@ -19,11 +19,11 @@
    </SCRIPT>
 </head>
 
-<body class="menu_data menu_item_data_data_search ">
+<body class="menu_data menu_item_data_keyword_search ">
 
 <c:import url="/header.html" context="/include" />
 <c:import url="/main_menu.html" context="/include" />
-<c:import url="/data_menu.html" context="/include" />
+<c:import url="/datasearch_menu.html" context="/include" />
 
 <!-- Main content -->
 <div id="content">

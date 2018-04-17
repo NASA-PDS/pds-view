@@ -325,7 +325,7 @@ body.menu_item_contact_contact #contact_contact,
 body.menu_item_contact_feedback #contact_feedback,
 body.menu_item_data_asteroids #data_asteroids,
 body.menu_item_data_data_search #data_data_search,
-/* body.menu_item_data_form_search #data_form_search, */
+body.menu_item_data_keyword_search #data_keyword_search,
 body.menu_item_data_how_to_search #data_how_to_search,
 body.menu_item_data_data_set_status #data_data_set_status,
 body.menu_item_data_data_release_summary #data_data_release_summary,

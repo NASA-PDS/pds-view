@@ -105,7 +105,7 @@ function changeSearchSpec()
 
 <c:import url="/header.html" context="/include" />
 <c:import url="/main_menu.html" context="/include" />
-<c:import url="/data_menu.html" context="/include" />
+<c:import url="/datasearch_menu.html" context="/include" />
    
 <!-- Main content -->
 <div id="content">
