@@ -24,11 +24,17 @@
 
   <body>
     <release version="1.13.0" date="TBD" description="TBD">
+      <action dev="shardman" type="update">
+        Updated for the web site redesign.
+      </action>
     </release>
 
     <release version="1.12.0" date="2018-03-30" description="This release of the Search User Interface is a component of the integrated release 8.1.0 of the PDS4 System. This is an operational release of the system components to date.">
       <action dev="shardman" type="update" issue="PDS-528">
         Added some detail to the "More" links in the Search UI.
+      </action>
+      <action dev="shardman" type="update">
+        Added a method for cleaning the parameter names prior to passing the query onto the Search Service.
       </action>
     </release>
 

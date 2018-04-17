@@ -89,7 +89,7 @@ for (String name : params.keySet()) {
 $(function() {
     //var query = window.location.href.slice(window.location.href.indexOf('?') + 1).split('@@');
     var query = '<%= query %>';
-		$.get('../search-service/pds/archive-filter?' + query, function(data) {
+		$.get('/services/search/pds/archive-filter?' + query, function(data) {
 			$('.output').html(data);
 		});
 	});
