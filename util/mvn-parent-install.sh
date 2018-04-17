@@ -20,13 +20,17 @@
 cd ..
 
 # Install the parent POMs locally. Only necessary for versioned parents.
+# Also install the model-dmdocument plugin.
+
 cd email
 mvn --non-recursive install clean
 cd ..
 
 cd model
 mvn --non-recursive install clean
-cd ..
+cd model-dmdocument
+mvn install clean
+cd ../..
 
 cd registry
 mvn --non-recursive install clean
