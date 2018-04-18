@@ -607,7 +607,7 @@
    <field name="file_name" type="lowercase" indexed="true" stored="true" multiValued="true" />
    <field name="file_ref_location" type="lowercase" indexed="true" stored="true" multiValued="true" />
    <field name="file_ref_name" type="lowercase" indexed="true" stored="true" multiValued="true" />
-   <field name="file_ref_size" type="int" indexed="true" stored="true" multiValued="true" />
+   <field name="file_ref_size" type="long" indexed="true" stored="true" multiValued="true" />
    <field name="file_ref_url" type="lowercase" indexed="true" stored="true" multiValued="true" />
    <field name="instrument_description" type="text_general" indexed="false" stored="true" multiValued="true" />
    <field name="instrument_host_id" type="string" indexed="true" stored="true" multiValued="true" />
