@@ -31,9 +31,6 @@ insert into investigation_tools (investigation, title, description, url, rank) v
 
 insert into investigation_tools (investigation, title, description, url, rank) values ('Apollo', 'SPICE Data Holdings at the Navigation and Ancillary Information Facility Node', 'Supports Apollo SPICE product browse and download.', 'https://naif.jpl.nasa.gov/naif/data_archived.html', 102);
 
-insert into investigation_tools (investigation, title, description, url, rank) values ('Apollo', 'Test record insertion for Population Procedure', 'Let us hope I don''t break this thing.', 'https://pds.jpl.nasa.gov/', 2);
-
-
 /* Cassini */
 
 insert into investigation_tools (investigation, title, description, url, rank) values ('Cassini', 'OPUS at the Ring-Moon Systems Node', 'Supports Cassini (ISS, UVIS, VIMS), all with enhanced geometric metadata enabling more detailed searches, including surface search constraints for the planet, satellites and rings (e.g., latitudes and longitudes), and expanded sets of viewing and illumination constraints. Browse results and download, including calibrated versions for ISS.', 'https://tools.pds-rings.seti.org/opus#/missionid=Cassini', 1);
