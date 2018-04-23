@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2017 by the California Institute of Technology.
+  Copyright 2017-2018 by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -24,15 +24,14 @@
 
   <body>
     <section name="Installation">
-      <p>This document describes how to install the Transform Tools Service contained in the <i>${project.artifactId}</i> package. The following topics can be found in this document:
+      <p>This document describes how to install the software contained in the <i>${project.artifactId}</i> package. The following topics can be found in this document:
       </p>
 
       <ul>
         <li><a href="#System_Requirements">System Requirements</a></li>
         <li><a href="#Unpacking_the_Package">Unpacking the Package</a></li>
         <li><a href="#Deploying_the_WRP_Tools_Service">Deploying the WRP Tools Service</a></li>
-        <li><a href="#Configuring_the_Environment">Configuring the Environment</a></li>
-        <li><a href="#Deploying_PDS_Transform_tool_with_the_WRP_Tools_Service">Deploying PDS Transform tool with the WRP Tools Service</a></li>
+        <li><a href="#Deploying_the_PDS_Tools_Service">Deploying the PDS Tools Service</a></li>
       </ul>
     </section>
 
@@ -80,11 +79,11 @@ or
           </p>
         </li>
         <li><b>${project.artifactId}.war</b><br/>
-          <p>This is the Web ARchive (WAR) file containing the Transform Tools Service software including all dependent JAR files.
+          <p>This is the Web ARchive (WAR) file containing the PDS Tools Service software including all dependent JAR files.
           </p>
         </li>  
         <li><b>ts.war</b><br/>
-          <p>This is the Web ARchive (WAR) file containing the WRP Tools Service software including all dependent JAR files.
+          <p>This is the Web ARchive (WAR) file containing the Web Resource Platform (WRP) Tools Service software including all dependent JAR files.
           </p>
         </li>        
         <li><b>doc/</b><br/>
@@ -92,7 +91,7 @@ or
           </p>
         </li>
         <li><b>lib/</b><br/>
-          <p>This directory contains the dependent jar files for the Transform Tools Service software.
+          <p>This directory contains the dependent jar files for the PDS Tools Service software.
           </p>
         </li>
         <li><b>conf/</b><br/>
@@ -118,7 +117,29 @@ or
       </p>
 
       <source>
-% cp $TS_WAR_OUTDIR/ts.war $TOMCAT_HOME/webapps
+% cd ${project.artifactId}-${project.version}      
+% cp ts.war $TOMCAT_HOME/webapps
+      </source>
+
+      <p>The configuration for the Tools Service may need to be modified based on the directory location where the <i>${project.artifactId}</i> package is installed. This configuration can be modified by editing the <i>$CATALINA_HOME/webapps/ts/WEB-INF/web.xml</i> file and updating the following parameters:
+      </p>
+
+      <source>
+...
+  &lt;servlet-name&gt;TsInfoServlet&lt;/servlet-name&gt;
+  &lt;servlet-class&gt;gov.nasa.jpl.wrp.ts.TsInfoServlet&lt;/servlet-class&gt;
+  &lt;init-param&gt;
+    &lt;param-name&gt;application_conf_dir&lt;/param-name&gt;
+    &lt;param-value&gt;/usr/local/${project.artifactId}-${project.version}/conf&lt;/param-value&gt;
+  &lt;/init-param&gt;
+...
+  &lt;servlet-name&gt;TsServlet&lt;/servlet-name&gt;
+  &lt;servlet-class&gt;gov.nasa.jpl.wrp.ts.TsServlet&lt;/servlet-class&gt;
+  &lt;init-param&gt;
+    &lt;param-name&gt;application_conf_dir&lt;/param-name&gt;
+    &lt;param-value&gt;/usr/local/${project.artifactId}-${project.version}/conf&lt;/param-value&gt;
+  &lt;/init-param&gt;
+...
       </source>
 
       <p>Once this step is complete, the application is ready for operation. Verify a successful installation by accessing the component from your favorite web browser at the end point <i>http://localhost:8080/ts</i>.
@@ -130,24 +151,7 @@ or
       </center>
     </section>
     
-    <section name="Configuring the Environment">
-      <p>Modify <i><b>tools.service.url</b></i> and <i><b>tempfile.rootdir</b></i> values in <i>$CATALINA_HOME/webapps/${project.artifactId}/WEB-INF/web.xml</i> if needed.</p>
-      <source>
-&lt;context-param&gt;
-   &lt;param-name&gt;tools.service.url&lt;/param-name&gt;
-   &lt;param-value&gt;http://localhost:8080/ts/&lt;/param-value&gt;
-&lt;/context-param&gt;
-        ...
-        ...
-&lt;context-param&gt;
-   &lt;param-name&gt;tempfile.rootdir&lt;/param-name&gt;
-   &lt;param-value&gt;/tmp&lt;/param-value&gt;
-&lt;/context-param&gt;
-      </source>
-      
-    </section>
-    
-    <section name="Deploying PDS Transform tool with the WRP Tools Service">
+    <section name="Deploying the PDS Tools Service">
      <p>The Transform Tools Service web application is packaged as a WAR file (<i>${project.artifactId}.war</i>) and is intended for installation under a standard Java Application Server. If there was a previous installation of the Transform Tools Service, each instance of the application should be un-deployed from the Tomcat server. This can be accomplished by deleting the applications directly (assuming the user has appropriate permission) from the <i>$TOMCAT_HOME/webapps</i> directory (the variable $TOMCAT_HOME may not be set in your environment, if not, replace with the absolute path to the Tomcat installation):
       </p>
 
@@ -167,6 +171,23 @@ or
 % cp ${project.artifactId}.war $TOMCAT_HOME/webapps
       </source>
 
+      <p>The configuration for the Tools Service may need to be modified, if needed. This configuration can be modified by editing the <i>$CATALINA_HOME/webapps/${project.artifactId}/WEB-INF/web.xml</i> file and updating the following parameters:
+      </p>
+
+      <source>
+...
+  &lt;context-param&gt;
+     &lt;param-name&gt;tools.service.url&lt;/param-name&gt;
+     &lt;param-value&gt;http://localhost:8080/ts/&lt;/param-value&gt;
+  &lt;/context-param&gt;
+...
+  &lt;context-param&gt;
+     &lt;param-name&gt;tempfile.rootdir&lt;/param-name&gt;
+     &lt;param-value&gt;/tmp&lt;/param-value&gt;
+  &lt;/context-param&gt;
+...
+      </source>
+
       <p>Once this step is complete, the application is ready for operation. Verify a successful installation by accessing the component from your favorite web browser at the end point <i>http://localhost:8080/tools-service</i>.
       </p>
       
@@ -175,6 +196,5 @@ or
         Click the image for a larger version.
       </center>
     </section>
-    
   </body>
 </document>

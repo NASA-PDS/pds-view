@@ -5,12 +5,11 @@
       version="3.0"-->
 <web-app>
 
-	<display-name>Transform Tools Service UI Web Application</display-name>
+	<display-name>PDS Tools Service</display-name>
 	
 	<context-param>
       <param-name>tools.service.url</param-name>
       <param-value>http://localhost:8080/ts/</param-value>
-      <!--param-value>http://pds-dev:8080/ts/</param-value-->
   </context-param>
 
 	<servlet>
@@ -26,7 +25,6 @@
 	<context-param>
 	    <param-name>tempfile.rootdir</param-name>
 		<param-value>/tmp</param-value>
-		<!--param-value>/home/pds4/ToolsService/temp</param-value-->
     </context-param>
 
 	<!--context-param>

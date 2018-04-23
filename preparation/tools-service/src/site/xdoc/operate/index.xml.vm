@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2017, by the California Institute of Technology.
+  Copyright 2017-2018, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -24,15 +24,17 @@
 
   <body>
     <section name="Operation">
+      <p>The Tools Service offers access to both the Transform Tool and the Validate Tool via the PDS Tools Service or the WRP Tools Service applications.
+      </p>
+
       <ul>
-        <li><a href="#Transform_Tools_Service">Transform Tools Service</a></li>
-        <li><a href="#Validate_Tools_Service">Validate Tools Service</a></li>
+        <li><a href="#Transform_Tool_Service">Transform Tool Service</a></li>
+        <li><a href="#Validate_Tool_Service">Validate Tool Service</a></li>
       </ul>
-      
     </section>
     
-    <section name="Transform Tools Service">
-      <p>The Transform Tools Service software is a web application for interfacing with the PDS Transform Tool and WRP Tools Service. The main screen of the application is as follows:
+    <section name="Transform Tool Service">
+      <p>The Transform Tool Service is accessed via the PDS Tools Service which interfaces with WRP Tools Service to perform the transformations. The main screen of the application is as follows:
       </p>
       
       <a href="../images/transform_ts1.png" target="_blank"><img alt="Transform Tools Service Screen Shot" src="../images/transform_ts1_scale.png" border="1" /></a><br/>
@@ -63,8 +65,19 @@
       <br/><br/><br/>
     </section>
     
-    <section name="Validate Tools Service">
-      <p>This section will describe how to operate the Validate Tools Service. ...</p>
+    <section name="Validate Tool Service">
+      <p>The Validate Tool Service software will eventually be a part of the PDS Tools Service which interfaces with the WRP Tools Service. In this release though, the Validate Tool can be called directly from the WRP Tools Service with REST-based request. The following is an example of validating a URL-referenced product via the service:</p>
+
+      <p>
+http://localhost:8080/ts/validate?target="https://starbase.jpl.nasa.gov/pds4/1700/dph_example_archive_VG2PLS/data/ele_mom_tblChar.xml"&amp;options=f
+      </p>
+
+      <p>The above command returns the results in JSON format:
+      </p>
+
+      <p>
+{"application":"validate-1.13.0","result":{"stdout":"{\n  \"title\": \"PDS Validation Tool Report\",\n  \"configuration\": {\n    \"version\": \"1.13.0\",\n    \"date\": \"2018-04-23T22:53:25Z\"\n  },\n  \"parameters\": {\n    \"targets\": \"[https://starbase.jpl.nasa.gov/pds4/1700/dph_example_archive_VG2PLS/data/ele_mom_tblChar.xml]\",\n    \"severityLevel\": \"WARNING\",\n    \"recurseDirectories\": \"true\",\n    \"fileFiltersUsed\": \"[*.xml, *.XML]\",\n    \"forceMode\": \"on\",\n    \"dataContentValidation\": \"on\"\n  },\n  \"productLevelValidationResults\": [\n    {\n      \"status\": \"PASS\",\n      \"label\": \"https://starbase.jpl.nasa.gov/pds4/1700/dph_example_archive_VG2PLS/data/ele_mom_tblChar.xml\",\n      \"messages\": [],\n      \"fragments\": [],\n      \"dataContents\": []\n    }\n  ],\n  \"summary\": {\n    \"totalErrors\": 0,\n    \"totalWarnings\": 0\n  }\n}","rv":0,"success":true,"stderr":"","hash":"43efe3bb2d29203da55093a6d095776f"},"error":{"type":"n/a","message":""},"input":{"keyed":{"target":"\"https://starbase.jpl.nasa.gov/pds4/1700/dph_example_archive_VG2PLS/data/ele_mom_tblChar.xml\"","options":"f"}},"method":"GET","ts":{"application":"wrp-tools-service","version":"pdseng"}}
+      </p>
     </section>
   </body>
 </document>
