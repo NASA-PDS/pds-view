@@ -31,6 +31,7 @@
         <li><a href="#System_Requirements">System Requirements</a></li>
         <li><a href="#Unpacking_the_Package">Unpacking the Package</a></li>
         <li><a href="#Deploying_the_WRP_Tools_Service">Deploying the WRP Tools Service</a></li>
+        <li><a href="#Configuring_WRP_Tools_Service_Tools">Configuring WRP Tools Service Tools</a></li>
         <li><a href="#Deploying_the_PDS_Tools_Service">Deploying the PDS Tools Service</a></li>
       </ul>
     </section>
@@ -149,6 +150,38 @@ or
         <a href="../images/wrp_ts.png" target="_blank"><img alt="WRP Tools Service" src="../images/wrp_ts_scale.png" border="1" /></a><br/>
         Click the image for a larger version.
       </center>
+    </section>
+
+    <section name="Configuring WRP Tools Service Tools">
+      <p>The WRP Tools Service comes configured to access the following command-line tools:
+      </p>
+
+      <ul>
+        <li>PDS4 Transform Tool (conf/transform.conf)</li>
+        <li>PDS4 Validate Tool (conf/validate.conf)</li>
+        <li>PDS3 Label Validation Tool (conf/vtool.conf)</li>
+        <li>PDS4 Transform Tool via API Prototype (conf/transform-java.conf)</li>
+      </ul>
+
+      <p>In order to access these tools in the user's local environment, the <i>path</i> variable in each of the configuration files (found in the <i>conf</i> directory of the distribution) need to be modified to reference the tool executable in the user's local environment (these tools need to be installed separately). The configuration file for the Transform Tool (transform.conf) is displayed below as an example:
+      </p>
+
+      <source>
+type = executable
+
+version = 1.7.0
+
+description = PDS4 Transform Tool
+
+path = /usr/local/transform-1.7.0/bin/transform
+
+arguments = -t &lt;target> [-f=&lt;format-type>] [-o=&lt;outdir>] [-n=&lt;index>] [-&lt;options>(a|O)] [-d=&lt;datafile>]
+
+success_exit_status_codes = 0
+      </source>
+
+      <p>In order to add a new tool to the service, create a configuration file like the one above detailing the tools location and arguments. More details regarding the addition of new tools will be supplied at a later date.
+      </p>
     </section>
     
     <section name="Deploying the PDS Tools Service">
