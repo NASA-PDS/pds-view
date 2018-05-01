@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2017, by the California Institute of Technology.
+  Copyright 2017-2018, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology 
   Transfer at the California Institute of Technology.
@@ -24,7 +24,7 @@
 
   <body>
     <section name="About Tools Service">
-      <p>The Tools Service provides a service-based interface to selected PDS tools. The core functionality for this service is satisfied by the AMMOS Web Resource Platform (WRP) Tools Service.
+      <p>The Tools Service provides a service-based interface to selected PDS tools. The core functionality for this service is satisfied by the AMMOS Web Resource Platform (WRP) Tools Service. The service is currently a prototype and comes configured with minimal support for interfacing with the Validate Tool and the Transform Tool.
       </p>
 
       <p>Please send comments, change requests and bug reports to the <a href="mailto:pds_operator@jpl.nasa.gov">PDS Operator</a> at pds_operator@jpl.nasa.gov.
