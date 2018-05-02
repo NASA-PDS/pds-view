@@ -30,7 +30,7 @@
   <!--#include virtual="/include/main_menu.html" -->
 
   <div id="submenu">
-    <!--#include virtual="/include/tool_menu.html" -->
+    <!--#include virtual="/include/tools_menu.html" -->
     <div class="clear">
     </div>
   </div>
