@@ -22,8 +22,8 @@
     <author email="Sean.Hardman@jpl.nasa.gov">Sean Hardman</author>
   </properties>
   <body>
-    <release version="2.12.0" date="TBD" description="TBD">
-      <action dev="shardman" type="add" issue="PDS-494">
+    <release version="2.11.1" date="2018-05-01" description="This release of Data Set View is an interim point build of the component. This is an operational release of the system components to date.">
+      <action dev="shardman" type="update">
         Updated for the web site redesign.
       </action>
     </release>
