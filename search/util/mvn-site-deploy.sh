@@ -1,5 +1,5 @@
 #!/bin/sh
-# Copyright 2011-2012, by the California Institute of Technology. 
+# Copyright 2011-2018, by the California Institute of Technology. 
 # ALL RIGHTS RESERVED. United States Government sponsorship acknowledged. 
 # Any commercial use must be negotiated with the Office of Technology Transfer 
 # at the California Institute of Technology. 
@@ -19,7 +19,10 @@
 cd ..
 mvn clean
 
+mvn --non-recursive install clean
 cd search-core
+mvn install clean
+cd ../search-protocol
 mvn install clean
 cd ..
 
