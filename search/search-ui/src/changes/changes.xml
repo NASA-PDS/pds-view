@@ -23,7 +23,7 @@
   </properties>
 
   <body>
-    <release version="1.13.0" date="TBD" description="TBD">
+    <release version="1.12.1" date="2018-05-01" description="This release of Search User Interface is a component of an interim point build for the Search components. This is an operational release of the system components to date.">
       <action dev="shardman" type="update">
         Updated for the web site redesign.
       </action>

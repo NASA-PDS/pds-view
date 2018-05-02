@@ -1,8 +1,7 @@
 The Search Metrics package provides functionality for for interogating the 
 contents of a Search Service instance. The functionality for this service is 
-satisfied by the Lucidworks Banana package.
-
-The software is packaged in a WAR file.
+satisfied by the Lucidworks Banana package. The software is packaged in a WAR 
+file.
 
 The software can be compiled with the "mvn compile" command but in order 
 to create the WAR file, you must execute the "mvn compile war:war" command. 
