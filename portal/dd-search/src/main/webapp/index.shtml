@@ -11,7 +11,7 @@
 <!-- InstanceBeginEditable name="head" -->
 <!-- InstanceEndEditable -->
 <!-- InstanceParam name="menu_section" type="text" value="tools" -->
-<!-- InstanceParam name="menu_item" type="text" value="tools_data_dictionary_lookup" -->
+<!-- InstanceParam name="menu_item" type="text" value="tools_data_dictionary_search" -->
 <!-- InstanceParam name="left_sidebar" type="boolean" value="true" -->
 <!-- InstanceParam name="standard_sidebar" type="boolean" value="true" -->
 <!-- InstanceParam name="standard_page_content" type="boolean" value="true" -->
@@ -20,7 +20,7 @@
 <!--#include virtual="dataDictionarySearchImports.html" -->
 </head>
 
-<body class="sidebar  menu_tools menu_item_tools_data_dictionary_lookup ">
+<body class="sidebar  menu_tools menu_item_tools_data_dictionary_search">
   <!--[if IE]>
   <div id="IE">
   <![endif]-->
