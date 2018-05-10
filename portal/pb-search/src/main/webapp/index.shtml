@@ -8,14 +8,14 @@
 <!--#include virtual="phone_book_imports.html" -->
 
 <!-- InstanceBeginEditable name="head" --><!-- InstanceEndEditable -->
-<!-- InstanceParam name="menu_section" type="text" value="about" -->
-<!-- InstanceParam name="menu_item" type="text" value="about_phone_book" -->
+<!-- InstanceParam name="menu_section" type="text" value="contact" -->
+<!-- InstanceParam name="menu_item" type="text" value="contact_contact" -->
 <!-- InstanceParam name="left_sidebar" type="boolean" value="true" -->
 <!-- InstanceParam name="standard_sidebar" type="boolean" value="true" -->
 </head>
 
 
-<body class="sidebar  menu_about menu_item_about_phone_book">
+<body class="sidebar  menu_contact menu_item_contact_contact">
 <!--[if IE]>
 <div id="IE">
 <![endif]--> 
@@ -25,7 +25,6 @@
 <!--#include virtual="/include/main_menu.html" -->
 
 <div id="submenu">
-  <!--#include virtual="/include/about_menu.html" -->
   <div class="clear">
   </div>
 </div>
