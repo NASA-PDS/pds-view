@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Copyright 2010, by the California Institute of Technology.
+  Copyright 2010-2018, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology 
   Transfer at the California Institute of Technology.
@@ -18,13 +18,12 @@
 <document>
   <properties>
     <title>About Core Library</title>
-    <author email="Paul.Ramirez@jpl.nasa.gov">Paul Ramirez</author>
     <author email="Sean.Hardman@jpl.nasa.gov">Sean Hardman</author>
   </properties>
 
   <body>
     <section name="About Core Library">
-      <p>The Core Library contains a software library with functionality for product label design, generation, transformation and validation as well as package formation.
+      <p>Software for validating PDS4 product labels. The associated specific schema for the product label specifies syntactic and semantic constraints. This software is packaged as a Java library and is called by the Validate Tool to perform the majority of its validation steps.
       </p>
 
       <p>Please send comments, change requests and bug reports to the <a href="mailto:pds_operator@jpl.nasa.gov">PDS Operator</a> at pds_operator@jpl.nasa.gov.
