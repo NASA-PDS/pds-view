@@ -140,7 +140,7 @@ public class DateTimeValidator {
     boolean success = false;
     if (DATE_TIME_FORMATS.containsKey(type.getXMLType())) {
       for (String format : DATE_TIME_FORMATS.get(type.getXMLType())) {
-        DateTimeFormatter dtFormatter = DateTimeFormat.forPattern(format);
+        DateTimeFormatter dtFormatter = DateTimeFormat.forPattern(format).withZoneUTC();
         try {
           dtFormatter.parseDateTime(value.trim());
           success = true;
