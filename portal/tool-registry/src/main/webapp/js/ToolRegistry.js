@@ -12,6 +12,7 @@ var Manager;
       solrUrl: 'https://pds.jpl.nasa.gov/services/search/'
       //search?product-class=Product_Service&return-type=xml
     });
+    Manager.resultsList = [];
 
     Manager.addWidget(new AjaxSolr.ResultWidget({
       id: 'result',

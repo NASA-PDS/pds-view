@@ -26,7 +26,7 @@ AjaxSolr.DetailLinkSearchWidget = AjaxSolr.AbstractTextWidget.extend({
 
     setDetailDiv: function(id){
         this.detailLinkId = id;
-        var product = self.manager.response.response.docs[id];
+        var product = self.manager.resultsList[id];
 
         this.setTitle(product);
         console.log("product", product);

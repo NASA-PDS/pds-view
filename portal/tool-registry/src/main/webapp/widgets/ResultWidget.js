@@ -32,8 +32,8 @@
 			//Compare the request numbers. The highest is the latest search result.
 			if(parseInt(requestNumber, 10) > this.lastRequestNumber){
 				this.lastRequestNumber = requestNumber;
+				this.manager.resultsList = this.manager.response.response.docs;
 
-				console.log("response:", this.manager.response.response.docs);
 				$(this.target).empty();
 				this.setResultHeaders($(this.target));
 				for (var i = 0, l = this.manager.response.response.docs.length; i < l; i++){
