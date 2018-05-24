@@ -353,6 +353,7 @@
           </reportSet>
         </reportSets>
       </plugin>
+      <!-- Disable due to issue with building in Java 1.8.
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
@@ -366,6 +367,7 @@
           <findbugsXmlOutput>true</findbugsXmlOutput>
         </configuration>
       </plugin>
+      -->
     </plugins>
   </reporting>
 </project>
