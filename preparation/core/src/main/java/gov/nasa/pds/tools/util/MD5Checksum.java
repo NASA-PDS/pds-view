@@ -14,6 +14,7 @@
 
 package gov.nasa.pds.tools.util;
 
+import java.io.BufferedInputStream;
 import java.io.InputStream;
 import java.net.URL;
 import java.security.MessageDigest;
@@ -53,9 +54,10 @@ public class MD5Checksum {
    * @throws Exception If an error occurred while calculating the checksum.
    */
   private static byte[] createChecksum(URL url) throws Exception {
-    InputStream input = null;
+    BufferedInputStream input = null;
     try {
-      input =  url.openStream();
+      InputStream stream =  Utility.openConnection(url.openConnection());
+      input = new BufferedInputStream(stream);
       byte[] buffer = new byte[1024];
       MessageDigest md5 = MessageDigest.getInstance("MD5");
       int bytesRead = 0;

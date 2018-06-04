@@ -52,7 +52,6 @@ import gov.nasa.pds.tools.util.Utility;
 import gov.nasa.pds.tools.validate.XPaths;
 import gov.nasa.pds.tools.validate.content.array.ArrayContentException;
 import gov.nasa.pds.tools.validate.content.array.ArrayContentValidator;
-import gov.nasa.pds.tools.validate.content.array.Axis;
 import gov.nasa.pds.tools.validate.rule.AbstractValidationRule;
 import gov.nasa.pds.tools.validate.rule.ValidationTest;
 
@@ -135,32 +134,53 @@ public class ArrayContentValidationRule extends AbstractValidationRule {
               dataType = array.getElementArray().getDataType();
               Enum.valueOf(NumericDataType.class, dataType);
             } catch (IllegalArgumentException a) {
-              throw new IllegalArgumentException(dataType + " is not supported at this time.");
+              throw new IllegalArgumentException(dataType
+                  + " is not supported at this time.");
             }
             //The size of the array object is equal to the element size 
             // times the product of the sizes of all axes 
-            // (i.e. total size = number of lines * number of samples * number of bands * element size)
-            ArrayObject ao = new ArrayObject(Utility.getParent(getTarget()), 
-                getFileObject(fileArea), array, array.getOffset().getValue());
-            
-            //Array elements have values which conform to their data type
-            
-            //Verify that the elements match the object statistics defined 
-            //within their associated label, if they exist
-            if (!array.getAxisArraies().isEmpty()) {
-              ArrayContentValidator validator = new ArrayContentValidator(
-                getListener(), getTarget(), dataFile, arrayIndex);
-              validator.validate(array, ao);
-            } else {
-              addArrayException(ExceptionType.FATAL, "Missing Axis_Array area.", dataFile.toString(), arrayIndex);              
+            // (i.e. total size = 
+            // number of lines * number of samples
+            //               * number of bands * element size)
+            ArrayObject ao = null;
+            try {
+              ao = new ArrayObject(Utility.getParent(getTarget()), 
+                  getFileObject(fileArea), array, array.getOffset().getValue());
+              
+              //Array elements have values which conform to their data type
+              
+              //Verify that the elements match the object statistics defined 
+              //within their associated label, if they exist
+              if (!array.getAxisArraies().isEmpty()) {
+                ArrayContentValidator validator = new ArrayContentValidator(
+                  getListener(), getTarget(), dataFile, arrayIndex);
+                validator.validate(array, ao);
+              } else {
+                addArrayException(ExceptionType.FATAL, 
+                    "Missing Axis_Array area.", dataFile.toString(), 
+                    arrayIndex);
+              }
+            } finally {
+              if (ao != null) {
+                ao.closeChannel();
+              }
             }
           } catch (IllegalArgumentException ae) {
-            addArrayException(ExceptionType.FATAL, "Error while reading array: " + ae.getMessage(), dataFile.toString(), arrayIndex);
+            addArrayException(ExceptionType.FATAL, "Error while reading array: "
+                + ae.getMessage(), dataFile.toString(), arrayIndex);
           } catch (UnsupportedOperationException ue) {
-            addArrayException(ExceptionType.WARNING, ue.getMessage(), dataFile.toString(), arrayIndex);
+            addArrayException(ExceptionType.WARNING, ue.getMessage(), 
+                dataFile.toString(), arrayIndex);
+          } catch (OutOfMemoryError me) {
+            addArrayException(ExceptionType.FATAL, 
+                "Out of memory error occurred while processing array. "
+                    + "Please adjust the JVM Heap "
+                    + "Space settings and try again.", dataFile.toString(), 
+                    arrayIndex);
           }
         } catch (IOException io) {
-          addArrayException(ExceptionType.FATAL, io.getMessage(), dataFile.toString(), arrayIndex);
+          addArrayException(ExceptionType.FATAL, io.getMessage(), 
+              dataFile.toString(), arrayIndex);
         }
         arrayIndex++;
       }
@@ -168,11 +188,13 @@ public class ArrayContentValidationRule extends AbstractValidationRule {
     }
   }
   
-  private void addArrayException(ExceptionType exceptionType, String message, String dataFile, int array) {
+  private void addArrayException(ExceptionType exceptionType, String message, 
+      String dataFile, int array) {
     addArrayException(exceptionType, message, dataFile, array, null);
   }
   
-  private void addArrayException(ExceptionType exceptionType, String message, String dataFile, int array, int[] location) {
+  private void addArrayException(ExceptionType exceptionType, String message,
+      String dataFile, int array, int[] location) {
         getListener().addProblem(
         new ArrayContentException(exceptionType, 
             message, 
@@ -227,11 +249,13 @@ public class ArrayContentValidationRule extends AbstractValidationRule {
     return file;
   }
   
-  private List<FileArea> getArrayFileAreas(ObjectProvider objectAccess) throws ParseException {
+  private List<FileArea> getArrayFileAreas(ObjectProvider objectAccess)
+      throws ParseException {
     List<FileArea> results = new ArrayList<FileArea>();
     Product product = objectAccess.getProduct(getTarget(), Product.class);
     if (product instanceof ProductObservational) {
-      results.addAll(((ProductObservational) product).getFileAreaObservationals());
+      results.addAll(((ProductObservational) product)
+          .getFileAreaObservationals());
     } else if (product instanceof ProductBrowse) {
       results.addAll(((ProductBrowse) product).getFileAreaBrowses());
     }

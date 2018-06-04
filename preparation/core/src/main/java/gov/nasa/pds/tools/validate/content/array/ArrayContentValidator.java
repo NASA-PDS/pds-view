@@ -13,7 +13,6 @@
 // $Id$
 package gov.nasa.pds.tools.validate.content.array;
 
-import java.io.EOFException;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -83,11 +82,10 @@ public class ArrayContentValidator {
     for (int i = 0; i < dimensions.length; i++) {
       dimensions[i] = array.getAxisArraies().get(i).getElements();
     }
-    SeekableStream si = null;
     
     try {
-      si = SeekableStream.wrapInputStream(arrayObject.getInputStream(), false);
-      process(array, si, dimensions, new int[dimensions.length], 0, dimensions.length - 1); 
+      process(array, arrayObject, dimensions, new int[dimensions.length], 0, 
+          dimensions.length - 1); 
     } catch (IOException io) {
       listener.addProblem(new ArrayContentException(ExceptionType.FATAL, 
           "Error occurred while reading data file: " + io.getMessage(),
@@ -103,25 +101,24 @@ public class ArrayContentValidator {
           arrayIndex,
           null));
     } finally {
-      IOUtils.closeQuietly(si);
+      arrayObject.closeChannel();
     }
   }
   
-  private void process(Array array, SeekableStream si, int[] dimensions, int[] position, int depth, int maxDepth)
-      throws IOException {
+  private void process(Array array, ArrayObject arrayObject, int[] dimensions, 
+      int[] position, int depth, int maxDepth) throws IOException {
     NumericDataType dataType = Enum.valueOf(NumericDataType.class, 
         array.getElementArray().getDataType());
     for (int i = 0; i < dimensions[depth]; i++ ) {
       if( depth < maxDepth ) { //max depth not reached, do another recursion
         position[depth] = i;
-        process(array, si, dimensions, position, depth + 1, maxDepth);
+        process(array, arrayObject, dimensions, position, depth + 1, maxDepth);
       } else {
         position[depth] = i;
         int[] position_1based = new int[position.length];
         for (int j = 0; j < position.length; j++) {
           position_1based[j] = position[j] + 1;
         }
-        //System.out.println(Arrays.toString(position_1based)); //max depth reached, print now
         ArrayLocation location = new ArrayLocation(label.toString(), 
             dataFile.toString(), arrayIndex, 
             position_1based);
@@ -130,79 +127,85 @@ public class ArrayContentValidator {
         try {
           switch (dataType) {
           case SignedByte:
-            value = si.readByte();
+            value = (byte) arrayObject.getInt(position);
             rangeChecker = Range.between(Byte.MIN_VALUE, Byte.MAX_VALUE);
             break;
           case UnsignedByte:
-            value = si.readUnsignedByte();
+            value = arrayObject.getInt(position);
             rangeChecker = Range.between(0, 255);
             break;
           case UnsignedLSB2:
-            value = si.readUnsignedShortLE();
+            value = arrayObject.getInt(position);
             rangeChecker = Range.between(0, 65535);
             break;
           case SignedLSB2:
-            value = si.readShortLE();
+            value = (short) arrayObject.getInt(position);
             rangeChecker = Range.between(Short.MIN_VALUE, Short.MAX_VALUE);
             break;
           case UnsignedMSB2:
-            value = si.readUnsignedShort();
+            value = arrayObject.getInt(position);
             rangeChecker = Range.between(0, 65535);
             break;              
           case SignedMSB2:
-            value = si.readShort();
+            value = (short) arrayObject.getInt(position);
             rangeChecker = Range.between(Short.MIN_VALUE, Short.MAX_VALUE);
             break;
           case UnsignedLSB4:
-            value = si.readUnsignedIntLE();
-            rangeChecker = Range.between(UnsignedInteger.ZERO, UnsignedInteger.MAX_VALUE);
+            value = UnsignedInteger.valueOf(arrayObject.getLong(position));
+            rangeChecker = Range.between(UnsignedInteger.ZERO, 
+                UnsignedInteger.MAX_VALUE);
             break;
           case SignedLSB4:
-            value = si.readIntLE();
+            value = arrayObject.getInt(position);
             rangeChecker = Range.between(Integer.MIN_VALUE, Integer.MAX_VALUE);
             break;
           case UnsignedMSB4:
-            value = si.readUnsignedInt();
-            rangeChecker = Range.between(UnsignedInteger.ZERO, UnsignedInteger.MAX_VALUE);
+            value = UnsignedInteger.valueOf(arrayObject.getLong(position));
+            rangeChecker = Range.between(UnsignedInteger.ZERO, 
+                UnsignedInteger.MAX_VALUE);
             break;
           case SignedMSB4:
-            value = si.readInt();
+            value = arrayObject.getInt(position);
             rangeChecker = Range.between(Integer.MIN_VALUE, Integer.MAX_VALUE);
             break;
           case UnsignedLSB8:
-            value = UnsignedLong.valueOf(si.readLongLE());
-            rangeChecker = Range.between(UnsignedLong.ZERO, UnsignedLong.MAX_VALUE);
+            value = UnsignedLong.valueOf(
+                Long.toUnsignedString(arrayObject.getLong(position)));
+            rangeChecker = Range.between(UnsignedLong.ZERO, 
+                UnsignedLong.MAX_VALUE);
             break;
           case SignedLSB8:
-            value = Long.valueOf(si.readLongLE());
+            value = arrayObject.getLong(position);
             rangeChecker = Range.between(Long.MIN_VALUE, Long.MAX_VALUE);
             break;
           case UnsignedMSB8:
-            value = UnsignedLong.valueOf(si.readLong());
-            rangeChecker = Range.between(UnsignedLong.ZERO, UnsignedLong.MAX_VALUE);
+            value = UnsignedLong.valueOf(
+                Long.toUnsignedString(arrayObject.getLong(position)));
+            rangeChecker = Range.between(UnsignedLong.ZERO, 
+                UnsignedLong.MAX_VALUE);
             break;        
           case SignedMSB8:
-            value = Long.valueOf(si.readLong());
+            value = arrayObject.getLong(position);
             rangeChecker = Range.between(Long.MIN_VALUE, Long.MAX_VALUE);
             break;
           case IEEE754LSBSingle:
-            value = Float.valueOf(si.readFloatLE());
-            rangeChecker = Range.between(Float.MIN_VALUE, Float.MAX_VALUE);
+            value = (float) arrayObject.getDouble(position);
+            rangeChecker = Range.between(-Float.MAX_VALUE, Float.MAX_VALUE);
             break;
           case IEEE754MSBSingle:
-            value = Float.valueOf(si.readFloat());
-            rangeChecker = Range.between(Float.MIN_VALUE, Float.MAX_VALUE);
+            value = (float) arrayObject.getDouble(position);
+            rangeChecker = Range.between(-Float.MAX_VALUE, Float.MAX_VALUE);
             break;
           case IEEE754LSBDouble:
-            value = Double.valueOf(si.readDoubleLE());
-            rangeChecker = Range.between(Double.MIN_VALUE, Double.MAX_VALUE);
+            value = arrayObject.getDouble(position);
+            rangeChecker = Range.between(-Double.MAX_VALUE, Double.MAX_VALUE);
             break;
           case IEEE754MSBDouble:
-            value = Double.valueOf(si.readDouble());
-            rangeChecker = Range.between(Double.MIN_VALUE, Double.MAX_VALUE);
+            value = arrayObject.getDouble(position);
+            rangeChecker = Range.between(-Double.MAX_VALUE, Double.MAX_VALUE);
             break;
           }
-        } catch (EOFException ee) {
+        } catch (Exception ee) {
           String loc = Arrays.toString(location.getLocation());
           if (location.getLocation().length > 1) {
             loc = loc.replaceAll("\\[", "\\(");
@@ -211,9 +214,9 @@ public class ArrayContentValidator {
             loc = loc.replaceAll("\\[", "");
             loc = loc.replaceAll("\\]", "");
           }
-          throw new IOException("End of file reached while trying to read data at location " + loc);
+          throw new IOException("Error occurred while trying to "
+              + "read data at location " + loc + ": " + ee.getMessage());
         }
-       // System.out.println("Value: " + value.toString());
         boolean isSpecialConstant = false;
         if (array.getSpecialConstants() != null) {
           isSpecialConstant = isSpecialConstant(value, array.getSpecialConstants());
