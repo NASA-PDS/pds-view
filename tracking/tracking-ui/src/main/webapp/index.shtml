@@ -11,7 +11,7 @@
 <!-- InstanceBeginEditable name="head" -->
 <!-- InstanceEndEditable -->
 <!-- InstanceParam name="menu_section" type="text" value="tools" -->
-<!-- InstanceParam name="menu_item" type="text" value="tools_data_dictionary_lookup" -->
+<!-- InstanceParam name="menu_item" type="text" value="tools_about" -->
 <!-- InstanceParam name="left_sidebar" type="boolean" value="true" -->
 <!-- InstanceParam name="standard_sidebar" type="boolean" value="true" -->
 <!-- InstanceParam name="standard_page_content" type="boolean" value="true" -->
@@ -20,7 +20,7 @@
 <!--#include virtual="trackingServiceImports.html" -->
 </head>
 
-<body class="sidebar  menu_tools menu_item_tools_data_dictionary_lookup ">
+<body class="sidebar  menu_tools menu_item_tools_about ">
   <!--[if IE]>
   <div id="IE">
   <![endif]-->
@@ -29,7 +29,7 @@
   <!--#include virtual="/include/main_menu.html" -->
 
   <div id="submenu">
-    <!--#include virtual="/include/tool_menu.html" -->
+    <!--#include virtual="/include/tools_menu.html" -->
     <div class="clear">
     </div>
   </div>
