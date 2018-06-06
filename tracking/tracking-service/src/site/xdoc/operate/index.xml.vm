@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2016-2017, by the California Institute of Technology.
+  Copyright 2016-2018, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -24,8 +24,93 @@
 
   <body>
     <section name="Operation">
-      <p>This document describes how to operate the Tracking Service. ...
+      <p>This document describes how to operate the Tracking Service software. The following topics can be found in this document:
       </p>
+
+      <ul>
+        <li><a href="#Interface">Interface</a></li>
+        <li><a href="#Delivery Queries">Delivery Queries</a></li>
+        <li><a href="#Status Queries">Status Queries</a></li>
+      </ul>
+    </section>
+
+    <section name="Interface">
+      <p>The Tracking Service provides a REST-based interface accessible via HTTP for interacting with the service. Because the REST-based interface operates over HTTP, there are several options for interacting with the Tracking Service:
+      </p>
+
+      <ul>
+        <li>Tracking User Interface<br/>
+          <p>The <a href="../../tracking-ui/">tracking-ui</a> component offers a Graphical User Interface (GUI) for interacting with the service.
+          </p>
+        </li>
+        <li>Web Browser<br/>
+          <p>Any standard web browser (e.g., Firefox, Safari, Internet Explorer, etc.) will allow interaction with the query and retrieval interfaces of the service.
+          </p>
+        </li>
+        <li>cURL<br/>
+          <p>The <a href="http://curl.haxx.se/" target="_blank">cURL</a> utility offers the most flexible means for interacting with the service. The utility comes installed on most UNIX-based platforms and is available for download for the Windows platform. The examples in the sections that follow utilize <i>cURL</i> to interact with the service. <!-- If <i>cURL</i> is not installed on the local machine but <i>Wget</i> is, see the <a href="index-wget.html">Using Wget</a> section for converting <i>cURL</i> commands to <i>Wget</i> commands. -->
+          </p>
+        </li>
+      </ul>
+
+      <p>The base URL will vary based on the underlying implementation and its deployment. The main deployment of the Tracking Service for PDS will have the following as its base URL:
+      </p>
+
+      <source>
+https://pds.nasa.gov/services/tracking
+      </source>
+
+      <p>For the examples that follow, the base URL is represented as <i>&lt;base_url&gt;</i>.
+      </p>
+    </section>
+
+    <section name="Parameters">
+      <p>This section details the parameters utilized in the examples found in this document.
+      </p>
+
+      <table>
+        <tr><th>Parameter</th><th>Description</th></tr>
+        <tr><td>delivery_identifier</td><td>The unique identifier for a delivery which is generated automatically.</td></tr>
+        <tr><td>electronic_mail_address</td><td>The unique identifier for a user within the PDS4 system representing their electronic mail address.</td></tr>
+        <tr><td>flag</td><td>A flag indicating true or false. Valid values are <i>true</i> and <i>false</i>.</td></tr>
+        <tr><td>logical_identifier</td><td>The unique identifier for a product within the PDS4 system. Commonly referred to as the LID and formatted as a URN (e.g., urn:nasa:pds:…).</td></tr>
+        <tr><td>product_type</td><td>The type of the product. The valid values are <i>PDS3-Data-Set</i>, <i>PDS4-Bundle</i>, <i>PDS4-Collection</i>, <i>PDS4-Data</i>, <i>PDS4-Document</i>, <i>Model</i> and <i>Software</i>.</td></tr>
+        <tr><td>reference_type</td><td>The type of reference. Valid values are <i>instrument_reference</i>, <i>investigation_reference</i> and <i>node_reference</i>.</td></tr>
+        <tr><td>return_type</td><td>The format of the content returned from the query. Valid values are <i>html</i>, <i>json</i> and <i>xml</i>.</td></tr>
+        <tr><td>version_id</td><td>The version identifier provides the version of the product, expressed in the PDS [m.n] notation (e.g., 1.0).</td></tr>
+      </table>
+
+    </section>
+
+    <section name="Delivery Queries">
+      <p>TBD
+      </p>
+
+      <subsection name="Delivery Query">
+        <p>This interface retrieves a list of deliveries for a given product.
+        </p>
+
+        <source>
+https://&lt;base_url&gt;/&lt;return_type&gt;/delivery/[logical_identifier/version_id]
+        </source>
+
+        <p>When the optional parameters, <i>logical_identifier</i> and <i>version_id</i>, are not specified, the query returns the list of all deliveries. When both parameters are specified, the query returns the list of deliveries for the specified product.
+        </p>
+      </subsection>
+    </section>
+
+    <section name="Status Queries">
+      <p>TBD
+      </p>
+
+      <subsection name="Archive Status Query">
+        <p>This interface retrieves the latest archive status of a given product.
+        </p>
+
+        <source>
+        </source>
+
+      </subsection>
     </section>
   </body>
 </document>
