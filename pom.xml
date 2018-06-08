@@ -108,6 +108,15 @@
       </roles>
     </developer>
     <developer>
+      <name>Jim Hofman</name>
+      <id>jehofman</id>
+      <email>James.E.Hofman@jpl.nasa.gov</email>
+      <organization>NASA Jet Propulsion Laboratory</organization>
+      <roles>
+        <role>Developer</role>
+      </roles>
+    </developer>
+    <developer>
       <name>Sean Kelly</name>
       <id>kelly</id>
       <email>Sean.Kelly@jpl.nasa.gov</email>
@@ -195,7 +204,6 @@
       <organization>NASA Jet Propulsion Laboratory</organization>
       <roles>
         <role>Former Developer</role>
-        <role>Former System Design Working Group Member</role>
       </roles>
     </developer>
     <developer>
@@ -203,6 +211,14 @@
       <id>mrose</id>
       <email>Mark.Rose@nasa.gov</email>
       <organization>NASA Ames Research Center</organization>
+      <roles>
+        <role>Former Developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Julie Wang</name>
+      <id>jwang</id>
+      <organization>NASA Jet Propulsion Laboratory</organization>
       <roles>
         <role>Former Developer</role>
       </roles>
