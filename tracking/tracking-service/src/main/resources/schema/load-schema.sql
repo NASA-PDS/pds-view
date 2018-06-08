@@ -770,6 +770,30 @@ insert into submission_status (delivery_identifier, submission_date_time, status
 insert into submission_status (delivery_identifier, submission_date_time, status_date_time, status, electronic_mail_address, comment)
   select delivery_identifier, '2018-02-28T00:00:00', '2018-03-01T00:00:00', 'Accepted', 'sean.hardman@jpl.nasa.gov', 'Initial Juno delivery information.' from delivery where logical_identifier = 'urn:nasa:pds:context_pds3:data_set:data_set.jno-j-uvs-2-edr-v1.0' and version_id = '1.0' and name = 'Perijove 7/8';
 
+/* Test for multiple submissions. */
+
+insert into submission (delivery_identifier, submission_date_time)
+  select delivery_identifier, '2018-06-12T00:00:00' from delivery where logical_identifier = 'urn:nasa:pds:context_pds3:data_set:data_set.jno-j-uvs-2-edr-v1.0' and version_id = '1.0' and name = 'Perijove 9/10';
+
+insert into submission_status (delivery_identifier, submission_date_time, status_date_time, status, electronic_mail_address, comment)
+  select delivery_identifier, '2018-06-12T00:00:00', '2018-06-12T00:00:00', 'Submitted', 'sean.hardman@jpl.nasa.gov', 'Test for multiple submissions.' from delivery where logical_identifier = 'urn:nasa:pds:context_pds3:data_set:data_set.jno-j-uvs-2-edr-v1.0' and version_id = '1.0' and name = 'Perijove 9/10';
+
+insert into submission_status (delivery_identifier, submission_date_time, status_date_time, status, electronic_mail_address, comment)
+  select delivery_identifier, '2018-06-12T00:00:00', '2018-06-13T00:00:00', 'Rejected', 'sean.hardman@jpl.nasa.gov', 'Test for multiple submissions.' from delivery where logical_identifier = 'urn:nasa:pds:context_pds3:data_set:data_set.jno-j-uvs-2-edr-v1.0' and version_id = '1.0' and name = 'Perijove 9/10';
+
+insert into submission_status (delivery_identifier, submission_date_time, status_date_time, status, electronic_mail_address, comment)
+  select delivery_identifier, '2018-06-12T00:00:00', '2018-06-14T00:00:00', 'Withdrawn', 'sean.hardman@jpl.nasa.gov', 'Test for multiple submissions.' from delivery where logical_identifier = 'urn:nasa:pds:context_pds3:data_set:data_set.jno-j-uvs-2-edr-v1.0' and version_id = '1.0' and name = 'Perijove 9/10';
+
+
+insert into submission (delivery_identifier, submission_date_time)
+  select delivery_identifier, '2018-06-15T00:00:00' from delivery where logical_identifier = 'urn:nasa:pds:context_pds3:data_set:data_set.jno-j-uvs-2-edr-v1.0' and version_id = '1.0' and name = 'Perijove 9/10';
+
+insert into submission_status (delivery_identifier, submission_date_time, status_date_time, status, electronic_mail_address, comment)
+  select delivery_identifier, '2018-06-15T00:00:00', '2018-06-15T00:00:00', 'Submitted', 'sean.hardman@jpl.nasa.gov', 'Test for multiple submissions.' from delivery where logical_identifier = 'urn:nasa:pds:context_pds3:data_set:data_set.jno-j-uvs-2-edr-v1.0' and version_id = '1.0' and name = 'Perijove 9/10';
+
+insert into submission_status (delivery_identifier, submission_date_time, status_date_time, status, electronic_mail_address, comment)
+  select delivery_identifier, '2018-06-15T00:00:00', '2018-06-16T00:00:00', 'Accepted', 'sean.hardman@jpl.nasa.gov', 'Test for multiple submissions.' from delivery where logical_identifier = 'urn:nasa:pds:context_pds3:data_set:data_set.jno-j-uvs-2-edr-v1.0' and version_id = '1.0' and name = 'Perijove 9/10';
+
 /* RDR */
 
 insert into submission (delivery_identifier, submission_date_time)
