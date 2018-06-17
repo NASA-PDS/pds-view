@@ -6,6 +6,7 @@ var lastInvestigation = "all";
 
 var productsUrl = "https://pds-gamma.jpl.nasa.gov/services/tracking/json/products";
 var deliveryUrl = "https://pds-gamma.jpl.nasa.gov/services/tracking/json/delivery";
+var submissionsUrl = "https://pds-gamma.jpl.nasa.gov/services/tracking/json/submissionstatus";
 
 (function ($) {
     $( document ).ready(function() {
@@ -23,9 +24,15 @@ var deliveryUrl = "https://pds-gamma.jpl.nasa.gov/services/tracking/json/deliver
             showTrackingTable();
         });
 
+        $("#showDeliverySubmissionsButton").on("click", function(){
+            showDeliveryTable();
+        });
+
         $( "#trackingServiceTable" ).on("click", ".listTitle", function() {
             var logicalIdentifier = $(this).data("id");
             var dataVersion = $(this).data("version");
+
+            console.log("tracking table clicked", logicalIdentifier);
             $.ajax({
                 type: "GET",
                 url: deliveryUrl + "/" + logicalIdentifier + "/" + dataVersion,
@@ -35,6 +42,22 @@ var deliveryUrl = "https://pds-gamma.jpl.nasa.gov/services/tracking/json/deliver
                 }
             });
         });
+
+        $( "#deliveryTable" ).on("click", ".listTitle", function() {
+          var deliveryIdentifier = $(this).data("delivery_identifier");
+          console.log("deliveryTableClicked " + deliveryIdentifier, submissionsUrl + "/" + deliveryIdentifier);
+
+          $.ajax({
+              type: "GET",
+              //url: submissionsUrl + "/" + /*deliveryIdentifier*/173,
+              url: submissionsUrl + "/" + deliveryIdentifier,
+              datatype: "json",
+              success: function(data) {
+                displaySubmissionsList(data);
+              }
+          });
+        });
+
     });
 })(jQuery);
 
@@ -71,12 +94,6 @@ function displayTrackingList(json){
     }
 }
 
-function showTrackingTable(){
-  $("#trackingServiceTable").removeClass("hidden");
-  $("#deliveryTable").addClass("hidden");
-  $("#showTrackingServiceButton").addClass("hidden");
-}
-
 function displayDeliveryList(data){
   $("#deliveryTable").empty();
   showDeliveryTable();
@@ -91,7 +108,7 @@ function displayDeliveryList(data){
       var tbody = $('<tbody></tbody');
       for(i=0; i<json.length; i++){
           var row = $('<tr>' +
-                      '<td>' + json[i].name + '</td>' +
+                      '<td><a class="listTitle" data-delivery_identifier=' + json[i].delivery_identifier + '>' + json[i].name + '</a></td>' +
                       '<td>' + json[i].start_date_time + '</td>' +
                       '<td>' + json[i].stop_date_time + '</td>' +
                       '<td>' + json[i].source + '</td>' +
@@ -109,10 +126,87 @@ function displayDeliveryList(data){
   }
 }
 
+function displaySubmissionsList(json){
+    $("#submissionsTable").empty();
+    showSubmissionsTable();
+    console.log("submissionJson", json);
+    json = json["Submission Status"];
+
+
+    if (json){
+      if(json.length > 0){
+
+        var table = $('<table></table>').addClass('table');
+        var thead = $('<thead><tr><th>Date</th><th>Status</th><th>Comment</th><th>Email</th></tr></thead>');
+
+        var tbody = $('<tbody></tbody');
+
+        for(i=0; i<json.length; i++){
+            var rowClass = "";
+            var status = json[i].status;
+            if(status === "Submitted"){
+                rowClass = "";
+            }
+            if(status === "Rejected"){
+                rowClass = "danger";
+            }
+            if(status === "Withdrawn"){
+                rowClass = "active";
+            }
+            if(status === "Accepted"){
+                rowClass = "success";
+            }
+
+            var row = $('<tr class="' + rowClass + '">' +
+                        '<td>' + json[i].status_date_time + '</td>' +
+                        '<td>' + json[i].status + '</td>' +
+                        '<td>' + json[i].comment + '</td>' +
+                        '<td>' + json[i].electronic_mail_address + '</td>' +
+                        '</tr>');
+            tbody.append(row);
+        }
+
+        table.append(thead);
+        table.append(tbody);
+
+        $('#submissionsTable').append(table);
+      }
+      else{
+        showNoSubmissionResultsText();
+      }
+    }
+    else{
+      showNoSubmissionResultsText();
+    }
+}
+
+function showNoSubmissionResultsText(){
+    var noSubmissionMessage = $('<p><span class="label label-warning">There are no submissions.</span><p>').addClass('noSubmissionMessage');
+    $('#submissionsTable').append(noSubmissionMessage);
+}
+
+function showTrackingTable(){
+  $("#trackingServiceTable").removeClass("hidden");
+  $("#deliveryTable").addClass("hidden");
+  $("#submissionsTable").addClass("hidden");
+  $("#showTrackingServiceButton").addClass("hidden");
+  $("#showDeliverySubmissionsButton").addClass("hidden");
+}
+
 function showDeliveryTable(){
   $("#deliveryTable").removeClass("hidden");
   $("#showTrackingServiceButton").removeClass("hidden");
+  $("#showDeliverySubmissionsButton").addClass("hidden");
   $("#trackingServiceTable").addClass("hidden");
+  $("#submissionsTable").addClass("hidden");
+}
+
+function showSubmissionsTable(){
+  $("#submissionsTable").removeClass("hidden");
+  $("#showDeliverySubmissionsButton").removeClass("hidden");
+  $("#showTrackingServiceButton").addClass("hidden");
+  $("#trackingServiceTable").addClass("hidden");
+  $("#deliveryTable").addClass("hidden");
 }
 
 function setUpFilters(data){
