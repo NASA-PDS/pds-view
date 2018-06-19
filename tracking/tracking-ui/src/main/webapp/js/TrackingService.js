@@ -31,6 +31,12 @@ var submissionsUrl = "https://pds-gamma.jpl.nasa.gov/services/tracking/json/subm
         $( "#trackingServiceTable" ).on("click", ".listTitle", function() {
             var logicalIdentifier = $(this).data("id");
             var dataVersion = $(this).data("version");
+            var title = $(this).data("title");
+            var parentData = {
+              "id": logicalIdentifier,
+              "version": dataVersion,
+              "title": title
+            };
 
             console.log("tracking table clicked", logicalIdentifier);
             $.ajax({
@@ -38,13 +44,23 @@ var submissionsUrl = "https://pds-gamma.jpl.nasa.gov/services/tracking/json/subm
                 url: deliveryUrl + "/" + logicalIdentifier + "/" + dataVersion,
                 datatype: "json",
                 success: function(data) {
-                  displayDeliveryList(data);
+                  displayDeliveryList(data, parentData);
                 }
             });
         });
 
         $( "#deliveryTable" ).on("click", ".listTitle", function() {
           var deliveryIdentifier = $(this).data("delivery_identifier");
+          var deliveryName = $(this).data("delivery_name");
+          var parentVersion = $(this).data("parent_version");
+          var parentTitle = $(this).data("parent_title");
+          var parentData = {
+            "id": deliveryIdentifier,
+            "deliveryName": deliveryName,
+            "parentVersion": parentVersion,
+            "parentTitle": parentTitle
+          };
+
           console.log("deliveryTableClicked " + deliveryIdentifier, submissionsUrl + "/" + deliveryIdentifier);
 
           $.ajax({
@@ -53,7 +69,7 @@ var submissionsUrl = "https://pds-gamma.jpl.nasa.gov/services/tracking/json/subm
               url: submissionsUrl + "/" + deliveryIdentifier,
               datatype: "json",
               success: function(data) {
-                displaySubmissionsList(data);
+                displaySubmissionsList(data, parentData);
               }
           });
         });
@@ -74,12 +90,12 @@ function displayTrackingList(json){
       if(json.length > 0){
 
         var table = $('<table></table>').addClass('table table-striped');
-        var thead = $('<thead><tr><th>Title</th><th>type</th><th>version</th></tr></thead>');
+        var thead = $('<thead><tr><th>Title</th><th>Type</th><th>Version</th></tr></thead>');
 
         var tbody = $('<tbody></tbody');
         for(i=0; i<json.length; i++){
             var row = $('<tr>' +
-                        '<td><a class="listTitle" data-version=' + json[i].version_id + ' data-id=' + json[i].logical_identifier + '>' + json[i].title + '</a></td>' +
+                        '<td><a class="listTitle" data-version="' + json[i].version_id + '" data-id="' + json[i].logical_identifier + '" data-title="' + json[i].title + '">' + json[i].title + '</a></td>' +
                         '<td>' + json[i].type + '</td>' +
                         '<td>' + json[i].version_id + '</td>' +
                         '</tr>');
@@ -94,13 +110,15 @@ function displayTrackingList(json){
     }
 }
 
-function displayDeliveryList(data){
+function displayDeliveryList(data, parentData){
   $("#deliveryTable").empty();
   showDeliveryTable();
 
   json = data.delivery;
+  console.log("deliveryJson", json);
   if (json){
     if(json.length > 0){
+      var content = $('<p>Deliveries for product ' + parentData.title + ' with version ' + parentData.version + '</p>');
 
       var table = $('<table></table>').addClass('table table-striped');
       var thead = $('<thead><tr><th>Name</th><th>Start Date</th><th>Stop Date</th><th>Source</th><th>Target</th><th>Due Date</th></tr></thead>');
@@ -108,7 +126,7 @@ function displayDeliveryList(data){
       var tbody = $('<tbody></tbody');
       for(i=0; i<json.length; i++){
           var row = $('<tr>' +
-                      '<td><a class="listTitle" data-delivery_identifier=' + json[i].delivery_identifier + '>' + json[i].name + '</a></td>' +
+                      '<td><a class="listTitle" data-delivery_identifier="' + json[i].delivery_identifier + '" data-parent_title="' + parentData.title + '" data-parent_version="' + parentData.version + '" data-delivery_name="' + json[i].name + '">' + json[i].name + '</a></td>' +
                       '<td>' + json[i].start_date_time + '</td>' +
                       '<td>' + json[i].stop_date_time + '</td>' +
                       '<td>' + json[i].source + '</td>' +
@@ -121,20 +139,22 @@ function displayDeliveryList(data){
       table.append(thead);
       table.append(tbody);
 
+      $('#deliveryTable').append(content);
       $('#deliveryTable').append(table);
     }
   }
 }
 
-function displaySubmissionsList(json){
+function displaySubmissionsList(json, parentData){
     $("#submissionsTable").empty();
     showSubmissionsTable();
     console.log("submissionJson", json);
     json = json["Submission Status"];
-
+    console.log("parent data", parentData);
 
     if (json){
       if(json.length > 0){
+        var content = $('<p>Submissions for delivery ' + parentData.deliveryName + ' of product ' + parentData.parentTitle + ' with version ' + parentData.parentVersion + '</p>');
 
         var table = $('<table></table>').addClass('table');
         var thead = $('<thead><tr><th>Date</th><th>Status</th><th>Comment</th><th>Email</th></tr></thead>');
@@ -169,6 +189,7 @@ function displaySubmissionsList(json){
         table.append(thead);
         table.append(tbody);
 
+        $('#submissionsTable').append(content);
         $('#submissionsTable').append(table);
       }
       else{
