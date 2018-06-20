@@ -73,8 +73,8 @@
       <div id="submissionsTable" class="hidden">
       </div>
 
-      <button class="btn btn-success hidden" style="border-radius:0;float:right;" id="showTrackingServiceButton">Return</button>
-      <button class="btn btn-success hidden" style="border-radius:0;float:right;" id="showDeliverySubmissionsButton">Return</button>
+      <button class="btn btn-success returnButton hidden" style="border-radius:0;float:right;" id="showTrackingServiceButton">Return</button>
+      <button class="btn btn-success returnButton hidden" style="border-radius:0;float:right;" id="showDeliverySubmissionsButton">Return</button>
     </div><!--End tw-bs -->
   </div><!--End main content -->
 

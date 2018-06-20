@@ -7,6 +7,7 @@ var lastInvestigation = "all";
 var productsUrl = "https://pds-gamma.jpl.nasa.gov/services/tracking/json/products";
 var deliveryUrl = "https://pds-gamma.jpl.nasa.gov/services/tracking/json/delivery";
 var submissionsUrl = "https://pds-gamma.jpl.nasa.gov/services/tracking/json/submissionstatus";
+var emailUrl = "https://pds-gamma.jpl.nasa.gov/services/tracking/json/users";
 
 (function ($) {
     $( document ).ready(function() {
@@ -157,7 +158,7 @@ function displaySubmissionsList(json, parentData){
         var content = $('<p>Submissions for delivery ' + parentData.deliveryName + ' of product ' + parentData.parentTitle + ' with version ' + parentData.parentVersion + '</p>');
 
         var table = $('<table></table>').addClass('table');
-        var thead = $('<thead><tr><th>Date</th><th>Status</th><th>Comment</th><th>Email</th></tr></thead>');
+        var thead = $('<thead><tr><th>Date</th><th>Status</th><th>Comment</th><th>Name</th></tr></thead>');
 
         var tbody = $('<tbody></tbody');
 
@@ -177,13 +178,21 @@ function displaySubmissionsList(json, parentData){
                 rowClass = "success";
             }
 
-            var row = $('<tr class="' + rowClass + '">' +
-                        '<td>' + json[i].status_date_time + '</td>' +
-                        '<td>' + json[i].status + '</td>' +
-                        '<td>' + json[i].comment + '</td>' +
-                        '<td>' + json[i].electronic_mail_address + '</td>' +
-                        '</tr>');
+            var row = $('<tr></tr>').addClass(rowClass);
+            var dateTimeCell = $('<td>' + json[i].status_date_time + '</td>');
+            var statusCell = $('<td>' + json[i].status + '</td>');
+            var commentCell = $('<td>' + json[i].comment + '</td>');
+            var emailCell = $('<td></td>');
+
+            row.append(dateTimeCell);
+            row.append(statusCell);
+            row.append(commentCell);
+            row.append(emailCell);
+
             tbody.append(row);
+
+            var getEmailUrl = emailUrl + "/" + json[i].electronic_mail_address;
+            getEmailAddress(getEmailUrl, emailCell);
         }
 
         table.append(thead);
@@ -199,6 +208,19 @@ function displaySubmissionsList(json, parentData){
     else{
       showNoSubmissionResultsText();
     }
+}
+
+function getEmailAddress(getEmailUrl, emailCell){
+  $.ajax({
+      type: "GET",
+      url: getEmailUrl,
+      datatype: "json",
+      success: function(data) {
+        var userName = data.Users[0].name;
+        console.log("setting emailCell", emailCell);
+        emailCell.html(userName);
+      }
+  });
 }
 
 function showNoSubmissionResultsText(){
