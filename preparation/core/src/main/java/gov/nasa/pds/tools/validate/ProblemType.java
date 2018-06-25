@@ -177,12 +177,6 @@ public enum ProblemType {
   
   BLANK_FIELD_VALUE("table.info.blank_field_value"),
   
-  FIELD_VALUE_FORMAT_MATCH("table.info.field_value_format_match"),
-  
-  FIELD_VALUE_IN_MIN_MAX_RANGE("table.info.field_value_in_min_max_range"),
-  
-  FIELD_VALUE_DATA_TYPE_MATCH("table.info.field_value_matches_data_type"),
-  
   MEMBER_FOUND("integrity.info.member_found"),
   
   REFERENCED_MEMBER("integrity.info.referenced_member"),
@@ -195,6 +189,12 @@ public enum ProblemType {
   RECORD_MATCH("table.debug.record_match"),
   
   GOOD_RECORD_LENGTH("table.debug.good_record_length"),
+  
+  FIELD_VALUE_FORMAT_MATCH("table.debug.field_value_format_match"),
+  
+  FIELD_VALUE_IN_MIN_MAX_RANGE("table.debug.field_value_in_min_max_range"),
+  
+  FIELD_VALUE_DATA_TYPE_MATCH("table.debug.field_value_matches_data_type"),
   
   BIT_FIELD_MATCH("table.debug.bit_field_match");
   
