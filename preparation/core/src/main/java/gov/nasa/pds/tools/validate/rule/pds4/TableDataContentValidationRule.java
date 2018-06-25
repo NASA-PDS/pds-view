@@ -232,7 +232,7 @@ public class TableDataContentValidationRule extends AbstractValidationRule {
           if (table instanceof TableBinary) {
             try {
               while ( (record = reader.readNext()) != null ) {
-                fieldValueValidator.validate(record, reader.getFields());
+                fieldValueValidator.validate(record, reader.getFields(), false);
               }
             } catch (BufferUnderflowException be) {
               throw new IOException(

@@ -129,6 +129,18 @@ public class FieldValueValidator {
    * @param fields An array of the field descriptions.
    */
   public void validate(TableRecord record, FieldDescription[] fields) {
+    validate(record, fields, true);
+  }
+  
+  /**
+   * Validates the field values in the given record.
+   * 
+   * @param record The record containing the fields to validate.
+   * @param fields An array of the field descriptions.
+   * @param checkFieldFormat A flag to determine whether to check the field
+   *  values against its specified field format, if present in the label.
+   */
+  public void validate(TableRecord record, FieldDescription[] fields, boolean checkFieldFormat) {
     for (int i = 0; i < fields.length; i++) {
       try {
         String value = record.getString(i+1);
@@ -168,7 +180,7 @@ public class FieldValueValidator {
           }
           // Check that the format of the field value in the table matches 
           // the defined formation of the field
-          if (!fields[i].getFormat().isEmpty()) {
+          if (checkFieldFormat && (!fields[i].getFormat().isEmpty())) {
             checkFormat(value, fields[i].getFormat(), i + 1, 
                 record.getLocation());        
           }
