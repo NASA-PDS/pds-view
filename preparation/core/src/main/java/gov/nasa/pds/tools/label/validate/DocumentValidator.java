@@ -1,4 +1,4 @@
-//  Copyright 2009-2013, by the California Institute of Technology.
+//  Copyright 2009-2018, by the California Institute of Technology.
 //  ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
 //  Any commercial use must be negotiated with the Office of Technology
 //  Transfer at the California Institute of Technology.
@@ -14,8 +14,7 @@
 //
 package gov.nasa.pds.tools.label.validate;
 
-import gov.nasa.pds.tools.label.ExceptionHandler;
-
+import gov.nasa.pds.tools.validate.ProblemHandler;
 import net.sf.saxon.om.DocumentInfo;
 
 public interface DocumentValidator {
@@ -23,10 +22,10 @@ public interface DocumentValidator {
   /**
    * Method signature for checking to see if a label is valid.
    *
-   * @param container An exception container.
+   * @param handler A problem handler.
    * @param xml An object representation of a parsed xml document.
    *
    * @return flag indicating whether or not the step in validation was passed.
    */
-  public boolean validate(ExceptionHandler container, DocumentInfo xml);
+  public boolean validate(ProblemHandler handler, DocumentInfo xml);
 }

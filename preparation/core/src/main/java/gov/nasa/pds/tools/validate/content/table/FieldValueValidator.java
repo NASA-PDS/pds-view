@@ -1,4 +1,4 @@
-// Copyright 2006-2017, by the California Institute of Technology.
+// Copyright 2006-2018, by the California Institute of Technology.
 // ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
 // Any commercial use must be negotiated with the Office of Technology Transfer
 // at the California Institute of Technology.
@@ -26,7 +26,6 @@ import java.util.regex.Pattern;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 
-import com.google.common.primitives.UnsignedInteger;
 import com.google.common.primitives.UnsignedLong;
 
 import gov.nasa.pds.label.object.FieldDescription;
@@ -35,6 +34,7 @@ import gov.nasa.pds.label.object.RecordLocation;
 import gov.nasa.pds.label.object.TableRecord;
 import gov.nasa.pds.tools.label.ExceptionType;
 import gov.nasa.pds.tools.validate.ProblemListener;
+import gov.nasa.pds.tools.validate.ProblemType;
 import gov.nasa.pds.tools.validate.rule.pds4.DateTimeValidator;
 
 /**
@@ -46,20 +46,28 @@ import gov.nasa.pds.tools.validate.rule.pds4.DateTimeValidator;
  */
 public class FieldValueValidator {
   /** List of invalid values. */
-  private final List<String> INF_NAN_VALUES = Arrays.asList("INF", "-INF", "+INF", "NAN", "-NAN", "+NAN");
+  private final List<String> INF_NAN_VALUES = Arrays.asList(
+      "INF", "-INF", "+INF", "NAN", "-NAN", "+NAN");
   
   /** List of valid datetime formats. */
-  private static final Map<String, String> DATE_TIME_VALID_FORMATS = new HashMap<String, String>();
+  private static final Map<String, String> DATE_TIME_VALID_FORMATS = 
+      new HashMap<String, String>();
   static{
-    DATE_TIME_VALID_FORMATS.put(FieldType.ASCII_DATE_DOY.getXMLType(), "YYYY[Z], YYYY-DOY[Z]");
-    DATE_TIME_VALID_FORMATS.put(FieldType.ASCII_DATE_TIME_DOY.getXMLType(), 
-        "YYYY[Z], YYYY-DOYThh[Z], YYYY-DOYThh:mm[Z], YYYY-DOYThh:mm:ss[.fff][Z]");
-    DATE_TIME_VALID_FORMATS.put(FieldType.ASCII_DATE_TIME_DOY_UTC.getXMLType(), 
+    DATE_TIME_VALID_FORMATS.put(
+        FieldType.ASCII_DATE_DOY.getXMLType(), "YYYY[Z], YYYY-DOY[Z]");
+    DATE_TIME_VALID_FORMATS.put(
+        FieldType.ASCII_DATE_TIME_DOY.getXMLType(), 
+        "YYYY[Z], YYYY-DOYThh[Z], YYYY-DOYThh:mm[Z], "
+        + "YYYY-DOYThh:mm:ss[.fff][Z]");
+    DATE_TIME_VALID_FORMATS.put(
+        FieldType.ASCII_DATE_TIME_DOY_UTC.getXMLType(), 
         "YYYYZ, YYYY-DOYThhZ, YYYY-DOYThh:mmZ, YYYY-DOYThh:mm:ss[.fff]Z");
     DATE_TIME_VALID_FORMATS.put(FieldType.ASCII_DATE_TIME_YMD.getXMLType(), 
-        "YYYY[Z], YYYY-MM-DDThh[Z], YYYY-MM-DDThh:mm[Z], YYYY-MM-DDThh:mm:ss[.fff][Z]");
+        "YYYY[Z], YYYY-MM-DDThh[Z], YYYY-MM-DDThh:mm[Z], "
+        + "YYYY-MM-DDThh:mm:ss[.fff][Z]");
     DATE_TIME_VALID_FORMATS.put(FieldType.ASCII_DATE_TIME_YMD_UTC.getXMLType(), 
-        "YYYYZ, YYYY-MM-DDThhZ, YYYY-MM-DDThh:mmZ, YYYY-MM-DDThh:mm:ss[.fff]Z");
+        "YYYYZ, YYYY-MM-DDThhZ, YYYY-MM-DDThh:mmZ, "
+        + "YYYY-MM-DDThh:mm:ss[.fff]Z");
     DATE_TIME_VALID_FORMATS.put(FieldType.ASCII_DATE_YMD.getXMLType(), 
         "YYYY[Z], YYYY-MM[Z], YYYY-MM-DD[Z]");
   }
@@ -67,24 +75,42 @@ public class FieldValueValidator {
   /** Container to capture messages. */
   private ProblemListener listener;
   
-  private static final Pattern formatPattern = Pattern.compile("%([\\+,-])?([0-9]+)(\\.([0-9]+))?([doxfeEs])");
-  private static final Pattern leadingWhiteSpacePattern = Pattern.compile("\\s+.*");
-  private static final Pattern trailingWhiteSpacePattern = Pattern.compile(".*\\s+");
-  private static final Pattern asciiIntegerPattern = Pattern.compile("[+-]?\\d+");
-  private static final Pattern asciiNonNegativeIntPattern = Pattern.compile("[+]?\\d+");
-  private static final Pattern asciiReal = Pattern.compile("[-+]?[0-9]+(\\.?[0-9]+)?([eE][-+]?[0-9]+)?");
-  private static final Pattern asciiNumericBase2Pattern = Pattern.compile("[0-1]{1,255}");
-  private static final Pattern asciiNumericBase8Pattern = Pattern.compile("[0-7]{1,255}");
-  private static final Pattern asciiNumericBase16Pattern = Pattern.compile("[0-9a-fA-F]{1,255}");
-  private static final Pattern asciiMd5ChecksumPattern = Pattern.compile("[0-9a-fA-F]{32}");
-  private static final Pattern asciiDoiPattern = Pattern.compile("10\\.\\S+/\\S+");
-  private static final Pattern asciiLidPattern = Pattern.compile("urn:[a-z]+:[a-z]+:([0-9a-z-._]:?)+");
-  private static final Pattern asciiLidVidPattern = Pattern.compile("urn:[a-z]+:[a-z]+:([0-9a-z-._]:?)+::[1-9][0-9]*\\.[0-9]+");
-  private static final Pattern asciiLidVidLidPattern = Pattern.compile("urn:[a-z]+:[a-z]+:([0-9a-z-._]:?)+::[1-9][0-9]*\\.[0-9]+");
-  private static final Pattern asciiVidPattern = Pattern.compile("[1-9][0-9]*\\.[0-9]+(\\.[0-9]+)?(\\.[0-9]+)?");
-  private static final Pattern asciiDirPathNamePattern = Pattern.compile("[A-Za-z0-9][A-Za-z0-9_-]*[A-Za-z0-9]");
-  private static final Pattern asciiFileNamePattern = Pattern.compile("[A-Za-z0-9][A-Za-z0-9-_\\.]*[A-Za-z0-9]\\.[A-Za-z0-9]+");
-  private static final Pattern dirPattern = Pattern.compile("/?([A-Za-z0-9][A-Za-z0-9_-]*[A-Za-z0-9]/?)*");
+  private static final Pattern formatPattern = Pattern.compile(
+      "%([\\+,-])?([0-9]+)(\\.([0-9]+))?([doxfeEs])");
+  private static final Pattern leadingWhiteSpacePattern = Pattern.compile(
+      "\\s+.*");
+  private static final Pattern trailingWhiteSpacePattern = Pattern.compile(
+      ".*\\s+");
+  private static final Pattern asciiIntegerPattern = Pattern.compile(
+      "[+-]?\\d+");
+  private static final Pattern asciiNonNegativeIntPattern = Pattern.compile(
+      "[+]?\\d+");
+  private static final Pattern asciiReal = Pattern.compile(
+      "[-+]?[0-9]+(\\.?[0-9]+)?([eE][-+]?[0-9]+)?");
+  private static final Pattern asciiNumericBase2Pattern = Pattern.compile(
+      "[0-1]{1,255}");
+  private static final Pattern asciiNumericBase8Pattern = Pattern.compile(
+      "[0-7]{1,255}");
+  private static final Pattern asciiNumericBase16Pattern = Pattern.compile(
+      "[0-9a-fA-F]{1,255}");
+  private static final Pattern asciiMd5ChecksumPattern = Pattern.compile(
+      "[0-9a-fA-F]{32}");
+  private static final Pattern asciiDoiPattern = Pattern.compile(
+      "10\\.\\S+/\\S+");
+  private static final Pattern asciiLidPattern = Pattern.compile(
+      "urn:[a-z]+:[a-z]+:([0-9a-z-._]:?)+");
+  private static final Pattern asciiLidVidPattern = Pattern.compile(
+      "urn:[a-z]+:[a-z]+:([0-9a-z-._]:?)+::[1-9][0-9]*\\.[0-9]+");
+  private static final Pattern asciiLidVidLidPattern = Pattern.compile(
+      "urn:[a-z]+:[a-z]+:([0-9a-z-._]:?)+::[1-9][0-9]*\\.[0-9]+");
+  private static final Pattern asciiVidPattern = Pattern.compile(
+      "[1-9][0-9]*\\.[0-9]+(\\.[0-9]+)?(\\.[0-9]+)?");
+  private static final Pattern asciiDirPathNamePattern = Pattern.compile(
+      "[A-Za-z0-9][A-Za-z0-9_-]*[A-Za-z0-9]");
+  private static final Pattern asciiFileNamePattern = Pattern.compile(
+      "[A-Za-z0-9][A-Za-z0-9-_\\.]*[A-Za-z0-9]\\.[A-Za-z0-9]+");
+  private static final Pattern dirPattern = Pattern.compile(
+      "/?([A-Za-z0-9][A-Za-z0-9_-]*[A-Za-z0-9]/?)*");
   
   /**
    * Constructor.
@@ -106,24 +132,27 @@ public class FieldValueValidator {
     for (int i = 0; i < fields.length; i++) {
       try {
         String value = record.getString(i+1);
-        // Check that the length of the field value does not exceed the maximum
-        // field length, if specified
+        // Check that the length of the field value does not exceed the
+        // maximum field length, if specified
         if (fields[i].getMaxLength() != -1) {
           if (value.trim().length() > fields[i].getMaxLength()) {
             String message = "The length of the value '" + value.trim()
               + "' exceeds the defined max field length (expected max "
-              + fields[i].getMaxLength() + ", got " + value.trim().length() + ")"; 
-            addTableException(ExceptionType.ERROR, 
-                    message,
-                    record.getLocation(),
-                    (i + 1));              
+              + fields[i].getMaxLength()
+              + ", got " + value.trim().length() + ")"; 
+            addTableProblem(ExceptionType.ERROR,
+                ProblemType.FIELD_VALUE_TOO_LONG,
+                message,
+                record.getLocation(),
+                (i + 1));              
           }        
         }
         // Check that the value of the field matches the defined data type
         if (!value.trim().isEmpty()) {
           try {
             checkType(value.trim(), fields[i].getType());
-            addTableException(ExceptionType.DEBUG, 
+            addTableProblem(ExceptionType.DEBUG,
+                ProblemType.FIELD_VALUE_DATA_TYPE_MATCH,
                 "Value '" + value.trim() + "' matches its data type '"
                     + fields[i].getType().getXMLType() + "'.",
                 record.getLocation(),
@@ -131,29 +160,36 @@ public class FieldValueValidator {
           } catch (Exception e) {
             String message = "Value does not match its data type '"
                 + fields[i].getType().getXMLType() + "': " + e.getMessage(); 
-            addTableException(ExceptionType.ERROR, 
-                    message,
-                    record.getLocation(),
-                    (i + 1));
+            addTableProblem(ExceptionType.ERROR,
+                ProblemType.FIELD_VALUE_DATA_TYPE_MISMATCH,
+                message,
+                record.getLocation(),
+                (i + 1));
           }
-          // Check that the format of the field value in the table matches the defined formation of the field
+          // Check that the format of the field value in the table matches 
+          // the defined formation of the field
           if (!fields[i].getFormat().isEmpty()) {
-            checkFormat(value, fields[i].getFormat(), i + 1, record.getLocation());        
+            checkFormat(value, fields[i].getFormat(), i + 1, 
+                record.getLocation());        
           }
           // Check that the field value is within the defined min/max values
-          if (fields[i].getMinimum() != null || fields[i].getMaximum() != null) {
-            checkMinMax(value.trim(), fields[i].getMinimum(), fields[i].getMaximum(), 
-              i + 1, record.getLocation());            
+          if (fields[i].getMinimum() != null || 
+              fields[i].getMaximum() != null) {
+            checkMinMax(value.trim(), fields[i].getMinimum(), 
+                fields[i].getMaximum(), i + 1, record.getLocation());            
           } 
         } else {
-          addTableException(ExceptionType.INFO, "Field is blank.", 
+          addTableProblem(ExceptionType.INFO, 
+              ProblemType.BLANK_FIELD_VALUE,
+              "Field is blank.", 
               record.getLocation(), (i+1));
         }
       } catch (Exception e) {
-        addTableException(ExceptionType.ERROR, 
-                "Error while getting field value: " + e.getMessage(),
-                record.getLocation(),
-                (i + 1));
+        addTableProblem(ExceptionType.ERROR,
+            ProblemType.BAD_FIELD_READ,
+            "Error while getting field value: " + e.getMessage(),
+            record.getLocation(),
+            (i + 1));
       }
     }
   }
@@ -174,15 +210,19 @@ public class FieldValueValidator {
       if (minimum != null) {
         if (number.doubleValue() < minimum.doubleValue()) {
           String message = "Field has a value '" + value
-              + "' that is less than the defined minimum value '" + minimum.toString() +  "'. "; 
-          addTableException(ExceptionType.ERROR, 
-                  message,
-                  recordLocation,
-                  fieldIndex);
+              + "' that is less than the defined minimum value '"
+              + minimum.toString() +  "'. "; 
+          addTableProblem(ExceptionType.ERROR,
+              ProblemType.FIELD_VALUE_OUT_OF_MIN_MAX_RANGE,
+              message,
+              recordLocation,
+              fieldIndex);
         } else {
           String message = "Field has a value '" + value
-              + "' that is greater than the defined minimum value '" + minimum.toString() +  "'. "; 
-          addTableException(ExceptionType.DEBUG, 
+              + "' that is greater than the defined minimum value '"
+              + minimum.toString() +  "'. "; 
+          addTableProblem(ExceptionType.DEBUG,
+              ProblemType.FIELD_VALUE_IN_MIN_MAX_RANGE,
               message,
               recordLocation,
               fieldIndex);          
@@ -191,28 +231,34 @@ public class FieldValueValidator {
       if (maximum != null) {
         if (number.doubleValue() > maximum.doubleValue()) {
           String message = "Field has a value '" + value
-              + "' that is greater than the defined maximum value '" + maximum.toString() +  "'. "; 
-          addTableException(ExceptionType.ERROR,
-             message,
-             recordLocation,
-             fieldIndex);
+              + "' that is greater than the defined maximum value '"
+              + maximum.toString() +  "'. "; 
+          addTableProblem(ExceptionType.ERROR,
+              ProblemType.FIELD_VALUE_OUT_OF_MIN_MAX_RANGE,
+              message,
+              recordLocation,
+              fieldIndex);
         } else {
           String message = "Field has a value '" + value
-              + "' that is less than the defined maximum value '" + maximum.toString() +  "'. "; 
-          addTableException(ExceptionType.DEBUG,
-             message,
-             recordLocation,
-             fieldIndex);          
+              + "' that is less than the defined maximum value '"
+              + maximum.toString() +  "'. "; 
+          addTableProblem(ExceptionType.DEBUG,
+              ProblemType.FIELD_VALUE_IN_MIN_MAX_RANGE,
+              message,
+              recordLocation,
+              fieldIndex);          
         }
       }
     } else {
       // Value cannot be converted to a number
       String message = "Cannot cast field value '" + value
-          + "' to a Number data type to validate against the min/max values defined in the label.";
-      addTableException(ExceptionType.ERROR,
-              message,
-              recordLocation,
-              fieldIndex);
+          + "' to a Number data type to validate against the min/max"
+          + " values defined in the label.";
+      addTableProblem(ExceptionType.ERROR,
+          ProblemType.FIELD_VALUE_NOT_A_NUMBER,
+          message,
+          recordLocation,
+          fieldIndex);
     }
   }
   
@@ -225,7 +271,8 @@ public class FieldValueValidator {
    * @throws Exception If the value was found to be invalid.
    */
   private void checkType(String value, FieldType type) throws Exception {
-    //File and directory naming rules are checked in the FileAndDirectoryNamingRule class
+    //File and directory naming rules are checked in the
+    //FileAndDirectoryNamingRule class
     if (INF_NAN_VALUES.contains(value)) {
       throw new Exception(value + " is not allowed");
     }
@@ -237,17 +284,21 @@ public class FieldValueValidator {
           throw new Exception("Could not convert to long: " + value);
         }
       } else {
-        throw new Exception("'" + value + "' does not match the pattern '" + asciiIntegerPattern.toString() + "'");
+        throw new Exception("'" + value + "' does not match the pattern '"
+            + asciiIntegerPattern.toString() + "'");
       }
-    } else if (FieldType.ASCII_NONNEGATIVE_INTEGER.getXMLType().equals(type.getXMLType())) {
+    } else if (FieldType.ASCII_NONNEGATIVE_INTEGER.getXMLType()
+        .equals(type.getXMLType())) {
       if (asciiNonNegativeIntPattern.matcher(value).matches()) {
         try {
           UnsignedLong.valueOf(value);
         } catch (NumberFormatException e) {
-          throw new Exception("Could not convert to an unsigned long: " + value);
+          throw new Exception("Could not convert to an unsigned long: "
+              + value);
         }
       } else {
-        throw new Exception("'" + value + "' does not match the pattern '" + asciiNonNegativeIntPattern.toString() + "'");        
+        throw new Exception("'" + value + "' does not match the pattern '"
+            + asciiNonNegativeIntPattern.toString() + "'");        
       }
     } else if (FieldType.ASCII_REAL.getXMLType().equals(type.getXMLType())) {
       if (asciiReal.matcher(value).matches()) {
@@ -257,50 +308,64 @@ public class FieldValueValidator {
           throw new Exception("Could not convert to a double: " + value);
         }
       } else {
-        throw new Exception("'" + value + "' does not match the pattern '" + asciiReal.toString() + "'");        
+        throw new Exception("'" + value + "' does not match the pattern '"
+            + asciiReal.toString() + "'");        
       }
-    } else if (FieldType.ASCII_NUMERIC_BASE2.getXMLType().equals(type.getXMLType())) {
+    } else if (FieldType.ASCII_NUMERIC_BASE2.getXMLType()
+        .equals(type.getXMLType())) {
       if (asciiNumericBase2Pattern.matcher(value).matches()) {
         try {
           new BigInteger(value, 2);
         } catch (NumberFormatException e) {
-          throw new Exception("Could not convert to a base-2 integer: " + value);
+          throw new Exception("Could not convert to a base-2 integer: "
+              + value);
         }
       } else {
-        throw new Exception("'" + value + "' does not match the pattern '" + asciiNumericBase2Pattern.toString() + "'");
+        throw new Exception("'" + value + "' does not match the pattern '"
+            + asciiNumericBase2Pattern.toString() + "'");
       }
-    } else if (FieldType.ASCII_NUMERIC_BASE8.getXMLType().equals(type.getXMLType())) {
+    } else if (FieldType.ASCII_NUMERIC_BASE8.getXMLType()
+        .equals(type.getXMLType())) {
       if (asciiNumericBase8Pattern.matcher(value).matches()) {
         try {
           new BigInteger(value, 8);
         } catch (NumberFormatException e) {
-          throw new Exception("Could not convert to a base-8 integer: " + value);
+          throw new Exception("Could not convert to a base-8 integer: "
+              + value);
         }
       } else {
-        throw new Exception("'" + value + "' does not match the pattern '" + asciiNumericBase8Pattern.toString() + "'");
+        throw new Exception("'" + value + "' does not match the pattern '"
+            + asciiNumericBase8Pattern.toString() + "'");
       }
-    } else if (FieldType.ASCII_NUMERIC_BASE16.getXMLType().equals(type.getXMLType())) {
+    } else if (FieldType.ASCII_NUMERIC_BASE16.getXMLType()
+        .equals(type.getXMLType())) {
       if (asciiNumericBase16Pattern.matcher(value).matches()) {
         try {
           new BigInteger(value, 16);
         } catch (NumberFormatException e) {
-          throw new Exception("Could not convert to a base-16 integer: " + value);
+          throw new Exception("Could not convert to a base-16 integer: "
+              + value);
         }
       } else {
-        throw new Exception("'" + value + "' does not match the pattern '" + asciiNumericBase16Pattern.toString() + "'");
+        throw new Exception("'" + value + "' does not match the pattern '"
+            + asciiNumericBase16Pattern.toString() + "'");
       }
-    } else if (FieldType.ASCII_MD5_CHECKSUM.getXMLType().equals(type.getXMLType())) {
+    } else if (FieldType.ASCII_MD5_CHECKSUM.getXMLType()
+        .equals(type.getXMLType())) {
 
       if (asciiMd5ChecksumPattern.matcher(value).matches()) {
         try {
           new BigInteger(value, 16);
         } catch (NumberFormatException e) {
-          throw new Exception("Could not convert to a base-16 integer: " + value);
+          throw new Exception("Could not convert to a base-16 integer: "
+              + value);
         }
       } else {
-        throw new Exception("'" + value + "' does not match the pattern '" + asciiMd5ChecksumPattern.toString() + "'");
+        throw new Exception("'" + value + "' does not match the pattern '"
+            + asciiMd5ChecksumPattern.toString() + "'");
       }
-    } else if (FieldType.ASCII_ANYURI.getXMLType().equals(type.getXMLType())) {
+    } else if (FieldType.ASCII_ANYURI.getXMLType()
+        .equals(type.getXMLType())) {
       try {
         URI uri = new URI(value);
       } catch (URISyntaxException e) {
@@ -308,27 +373,33 @@ public class FieldValueValidator {
       }
     } else if (FieldType.ASCII_DOI.getXMLType().equals(type.getXMLType())) {
       if (!asciiDoiPattern.matcher(value).matches()) {
-        throw new Exception("'" + value + "' does not match the pattern '" + asciiDoiPattern.toString() + "'");
+        throw new Exception("'" + value + "' does not match the pattern '"
+            + asciiDoiPattern.toString() + "'");
       }
     } else if (FieldType.ASCII_LID.getXMLType().equals(type.getXMLType())) {
       if (!asciiLidPattern.matcher(value).matches()) {
-        throw new Exception("'" + value + "' does not match the pattern '" + asciiLidPattern.toString() + "'");
+        throw new Exception("'" + value + "' does not match the pattern '"
+            + asciiLidPattern.toString() + "'");
       }
     } else if (FieldType.ASCII_LIDVID.getXMLType().equals(type.getXMLType())) {
       if (!asciiLidVidPattern.matcher(value).matches()) {
-        throw new Exception("'" + value + "' does not match the pattern '" + asciiLidVidPattern.toString() + "'");
+        throw new Exception("'" + value + "' does not match the pattern '"
+            + asciiLidVidPattern.toString() + "'");
       }      
-    } else if (FieldType.ASCII_LIDVID_LID.getXMLType().equals(type.getXMLType())) {
+    } else if (FieldType.ASCII_LIDVID_LID.getXMLType()
+        .equals(type.getXMLType())) {
       // Can accept a LID or LIDVID?
       if (!asciiLidVidLidPattern.matcher(value).matches()) {
         if (!asciiLidPattern.matcher(value).matches()) {
-          throw new Exception("'" + value + "' does not match the patterns '" + asciiLidVidPattern.toString()
-              + "' or '" + asciiLidPattern.toString() + "'");
+          throw new Exception("'" + value + "' does not match the patterns '"
+              + asciiLidVidPattern.toString() + "' or '"
+              + asciiLidPattern.toString() + "'");
         }
       }
     } else if (FieldType.ASCII_VID.getXMLType().equals(type.getXMLType())) {
       if (!asciiVidPattern.matcher(value).matches()) {
-        throw new Exception("'" + value + "' does not match the pattern '" + asciiVidPattern.toString() + "'");
+        throw new Exception("'" + value + "' does not match the pattern '"
+            + asciiVidPattern.toString() + "'");
       }
     } else if (FieldType.ASCII_STRING.getXMLType().equals(type.getXMLType())) {
       StringBuffer buffer = new StringBuffer(value);
@@ -337,7 +408,8 @@ public class FieldValueValidator {
           if (value.length() > 100) {
             value = value.substring(0, 100) + "...";
           }
-          throw new Exception("'" + value + "' contains non-ASCII character: " + buffer.charAt(i));
+          throw new Exception("'" + value + "' contains non-ASCII character: "
+              + buffer.charAt(i));
         }
       }   
     } else if (FieldType.UTF8_STRING.getXMLType().equals(type.getXMLType())) {
@@ -347,51 +419,67 @@ public class FieldValueValidator {
         }        
         throw new Exception("'" + value + "' contains whitespace character(s)");
       }
-    } else if (FieldType.ASCII_DATE_DOY.getXMLType().equals(type.getXMLType()) || 
-        FieldType.ASCII_DATE_TIME_DOY.getXMLType().equals(type.getXMLType()) || 
-        FieldType.ASCII_DATE_TIME_DOY_UTC.getXMLType().equals(type.getXMLType()) ||
-        FieldType.ASCII_DATE_TIME_YMD.getXMLType().equals(type.getXMLType()) || 
-        FieldType.ASCII_DATE_TIME_YMD_UTC.getXMLType().equals(type.getXMLType()) ||
+    } else if (FieldType.ASCII_DATE_DOY.getXMLType()
+        .equals(type.getXMLType()) || 
+        FieldType.ASCII_DATE_TIME_DOY.getXMLType()
+        .equals(type.getXMLType()) || 
+        FieldType.ASCII_DATE_TIME_DOY_UTC.getXMLType()
+        .equals(type.getXMLType()) ||
+        FieldType.ASCII_DATE_TIME_YMD.getXMLType()
+        .equals(type.getXMLType()) || 
+        FieldType.ASCII_DATE_TIME_YMD_UTC.getXMLType()
+        .equals(type.getXMLType()) ||
         FieldType.ASCII_DATE_YMD.getXMLType().equals(type.getXMLType())) {
       if(!DateTimeValidator.isValid(type, value)) {
-        throw new Exception("Could not parse " + value + " using these patterns '"
+        throw new Exception("Could not parse " + value
+            + " using these patterns '"
             + DATE_TIME_VALID_FORMATS.get(type.getXMLType()) + "'");
       }
-    } else if (FieldType.ASCII_DIRECTORY_PATH_NAME.getXMLType().equals(type.getXMLType())) {
+    } else if (FieldType.ASCII_DIRECTORY_PATH_NAME.getXMLType().equals(
+        type.getXMLType())) {
       String[] dirs = value.split("/");
       for (int i = 0; i < dirs.length; i++) {
         if (!asciiDirPathNamePattern.matcher(dirs[i]).matches()) {
-          throw new Exception(dirs[i] + " does not match the pattern '" + asciiDirPathNamePattern.toString() + "'");
+          throw new Exception(dirs[i] + " does not match the pattern '"
+              + asciiDirPathNamePattern.toString() + "'");
         }
         if (dirs[i].length() > 255) {
           throw new Exception(dirs[i] + " is longer than 255 characters");
         }
       }
-    } else if (FieldType.ASCII_FILE_NAME.getXMLType().equals(type.getXMLType())) {
+    } else if (FieldType.ASCII_FILE_NAME.getXMLType()
+        .equals(type.getXMLType())) {
       if (!asciiFileNamePattern.matcher(value).matches()) {
-        throw new Exception(value + " does not match the pattern '" + asciiFileNamePattern.toString() + "'");        
+        throw new Exception(value + " does not match the pattern '"
+            + asciiFileNamePattern.toString() + "'");        
       }
       if (value.length() > 255) {
         throw new Exception(value + " is longer than 255 characters");
       }      
-    } else if (FieldType.ASCII_FILE_SPECIFICATION_NAME.getXMLType().equals(type.getXMLType())) {
+    } else if (FieldType.ASCII_FILE_SPECIFICATION_NAME.getXMLType()
+        .equals(type.getXMLType())) {
       String dir = FilenameUtils.getFullPath(value);
       if (!dir.isEmpty()) {
         if (dir.length() > 255) {
-          throw new Exception("The directory spec '" + dir + "' is longer than 255 characters");
+          throw new Exception("The directory spec '" + dir
+              + "' is longer than 255 characters");
         }
         if (!dirPattern.matcher(dir).matches()) {
-          throw new Exception("The directory spec '" + dir + "' does not match the pattern '" + dirPattern + "'");  
+          throw new Exception("The directory spec '" + dir
+              + "' does not match the pattern '" + dirPattern + "'");  
         }
       }
       String name = FilenameUtils.getName(value);
       if (name.isEmpty()) {
         throw new Exception("No filename spec found in '" + value + "'."); 
       } else if (!asciiFileNamePattern.matcher(name).matches()) {
-        throw new Exception("The filename spec '" + name + "' does not match the pattern '" + asciiFileNamePattern.toString() + "'");        
+        throw new Exception("The filename spec '" + name
+            + "' does not match the pattern '"
+            + asciiFileNamePattern.toString() + "'");       
       }
       if (name.length() > 255) {
-        throw new Exception("The filename spec '" + name + "' is longer than 255 characters");
+        throw new Exception("The filename spec '" + name
+            + "' is longer than 255 characters");
       }
     }
   }
@@ -420,7 +508,8 @@ public class FieldValueValidator {
         if ("+".equals(justified)) {
           //check if there is trailing whitespace
           if (trailingWhiteSpacePattern.matcher(value).matches()) {
-            addTableException(ExceptionType.ERROR, 
+            addTableProblem(ExceptionType.ERROR,
+                ProblemType.FIELD_VALUE_NOT_RIGHT_JUSTIFIED,
                     "The value '" + value + "' is not right-justified.",
                     recordLocation,
                     fieldIndex);
@@ -428,7 +517,8 @@ public class FieldValueValidator {
           }
         } else if ("-".equals(justified)) {
           if (leadingWhiteSpacePattern.matcher(value).matches()) {
-            addTableException(ExceptionType.ERROR, 
+            addTableProblem(ExceptionType.ERROR,
+                ProblemType.FIELD_VALUE_NOT_LEFT_JUSTIFIED,
                 "The value '" + value + "' is not left-justified.",
                 recordLocation,
                 fieldIndex);    
@@ -465,19 +555,22 @@ public class FieldValueValidator {
           }
         }
       } catch (NumberFormatException e) {
-        addTableException(ExceptionType.ERROR, 
+        addTableProblem(ExceptionType.ERROR,
+            ProblemType.FIELD_VALUE_FORMAT_SPECIFIER_MISMATCH,
             "The value '" + value.trim() + "' does not match the "
-                + "defined field format specifier '" + specifier + "': " + e.getMessage(),
+                + "defined field format specifier '" + specifier + "': "
+                + e.getMessage(),
             recordLocation,
             fieldIndex);
       }
       if (value.trim().length() > width) {
-        addTableException(ExceptionType.ERROR, 
-                "The length of the value '" + value.trim() + "' exceeds the max "
+        addTableProblem(ExceptionType.ERROR,
+            ProblemType.FIELD_VALUE_TOO_LONG,
+            "The length of the value '" + value.trim() + "' exceeds the max "
                 + "width set in the defined field format "
                 + "(max " + width + ", got " + value.trim().length() + ").",
-                recordLocation,
-                fieldIndex);
+             recordLocation,
+             fieldIndex);
         isValid = false;
       }
       if (precision != -1) {
@@ -488,21 +581,25 @@ public class FieldValueValidator {
             length = tokens[0].substring(tokens[0].indexOf(".") + 1).length();
           }
           if (length != precision) {
-            addTableException(ExceptionType.ERROR, 
-                    "The number of digits to the right of the decimal point "
+            addTableProblem(ExceptionType.ERROR,
+                ProblemType.FIELD_VALUE_FORMAT_PRECISION_MISMATCH,
+                "The number of digits to the right of the decimal point "
                     + "in the value '" + value.trim() + "' does not equal the "
                     + "precision set in the defined field format "
                     + "(expected " + precision + ", got " + length + ").",
-                    recordLocation,
-                    fieldIndex);
+                recordLocation,
+                fieldIndex);
             isValid = false;
           }
         }
       }
       if (isValid) {
-        addTableException(ExceptionType.DEBUG, 
-            "Value '" + value + "' conforms to the defined field format '" + format + "'",
-            recordLocation, fieldIndex);
+        addTableProblem(ExceptionType.DEBUG,
+            ProblemType.FIELD_VALUE_FORMAT_MATCH,
+            "Value '" + value + "' conforms to the defined field format '"
+                + format + "'",
+            recordLocation, 
+            fieldIndex);
       }
     }
   }
@@ -515,10 +612,12 @@ public class FieldValueValidator {
    * @param recordLocation The record location where the field is located.
    * @param field The index of the field.
    */
-  private void addTableException(ExceptionType exceptionType, String message, 
+  private void addTableProblem(ExceptionType exceptionType, 
+      ProblemType problemType, String message, 
       RecordLocation recordLocation, int field) {
     listener.addProblem(
-        new TableContentException(exceptionType, 
+        new TableContentProblem(exceptionType,
+            problemType,
             message,
             recordLocation.getDataFile(),
             recordLocation.getLabel(),

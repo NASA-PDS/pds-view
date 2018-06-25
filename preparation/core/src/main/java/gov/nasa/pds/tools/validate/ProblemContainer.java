@@ -1,4 +1,4 @@
-// Copyright 2006-2017, by the California Institute of Technology.
+// Copyright 2006-2018, by the California Institute of Technology.
 // ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
 // Any commercial use must be negotiated with the Office of Technology Transfer
 // at the California Institute of Technology.
@@ -14,7 +14,6 @@
 package gov.nasa.pds.tools.validate;
 
 import gov.nasa.pds.tools.label.ExceptionType;
-import gov.nasa.pds.tools.label.LabelException;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -28,6 +27,7 @@ public class ProblemContainer implements ProblemListener {
 	private List<ValidationProblem> problems = new ArrayList<ValidationProblem>();
 
   private int errorCount;
+  private int fatalCount;
   private int warningCount;
   private int infoCount;
 
@@ -42,19 +42,18 @@ public class ProblemContainer implements ProblemListener {
     case WARNING:
       ++warningCount;
       break;
+    case FATAL:
+      ++fatalCount;
     default:
       ++errorCount;
       break;
     }
 	}
-
-	public void addProblem(LabelException exception) {
-	  //TODO: How to map LabelException to ValidationProblem?
-	}
 	
 	public void addLocation(String location) {
 	  //TODO
 	}
+	
 	
 	/**
 	 * Gets the problems encountered.
@@ -89,14 +88,46 @@ public class ProblemContainer implements ProblemListener {
     return errorCount;
   }
 
+  public Boolean hasError() {
+    if (errorCount > 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  
+  public Boolean hasFatal() {
+    if (fatalCount > 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  
   @Override
   public int getWarningCount() {
     return warningCount;
   }
 
+  public Boolean hasWarning() {
+    if (warningCount > 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  
   @Override
   public int getInfoCount() {
     return infoCount;
+  }
+  
+  public Boolean hasInfo() {
+    if (infoCount > 0) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   @Override

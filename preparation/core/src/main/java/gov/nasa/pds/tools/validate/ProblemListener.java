@@ -1,4 +1,4 @@
-// Copyright 2006-2017, by the California Institute of Technology.
+// Copyright 2006-2018, by the California Institute of Technology.
 // ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
 // Any commercial use must be negotiated with the Office of Technology Transfer
 // at the California Institute of Technology.
@@ -14,36 +14,20 @@
 package gov.nasa.pds.tools.validate;
 
 import gov.nasa.pds.tools.label.ExceptionType;
-import gov.nasa.pds.tools.label.LabelException;
 
 import java.util.Collection;
 
 /**
  * Defines an interface for receiving problems during the validation.
  */
-public interface ProblemListener {
-
-	/**
-	 * Indicates another problem during the validation.
-	 *
-	 * @param problem the validation problem encountered
-	 */
-	void addProblem(ValidationProblem problem);
-
-	 /**
-   * Indicates another problem during the validation.
-   *
-   * @param exception the label exception encountered.
-   */
-	void addProblem(LabelException exception);
-	
+public interface ProblemListener extends ProblemHandler {
   /**
    * Adds a location to the listener.
    *
    * @param location the location of the label being validated.
    */
-	void addLocation(String location);
-	
+  void addLocation(String location);
+  
 	/**
 	 * Gets the number of error problems encountered.
 	 *

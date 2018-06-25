@@ -1,4 +1,4 @@
-// Copyright 2006-2017, by the California Institute of Technology.
+// Copyright 2006-2018, by the California Institute of Technology.
 // ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
 // Any commercial use must be negotiated with the Office of Technology Transfer
 // at the California Institute of Technology.
@@ -147,7 +147,7 @@ public class RawTableReader extends TableReader {
   public FixedTableRecord toRecord(String line, int row) {
     FixedTableRecord record = null;
     record = new FixedTableRecord(line.getBytes(), getFieldMap(), getFields());
-    record.setLocation(new RecordLocation(label.toString(), dataFile.toString(), 
+    record.setLocation(new RecordLocation(label, dataFile, 
         table, row));
     return record;
   }
@@ -172,7 +172,8 @@ public class RawTableReader extends TableReader {
    * 
    * @return a table record, with the location set.
    */
-  public TableRecord getRecord(int index) throws IllegalArgumentException, IOException {
+  public TableRecord getRecord(int index) 
+      throws IllegalArgumentException, IOException {
     TableRecord record = super.getRecord(index);
     record.setLocation(getLocation());
     return record;
@@ -183,7 +184,7 @@ public class RawTableReader extends TableReader {
    * @return the location of the record.
    */
   private RecordLocation getLocation() {
-    return new RecordLocation(label.toString(), dataFile.toString(), 
+    return new RecordLocation(label, dataFile, 
         table, getCurrentRow());
   }
 }

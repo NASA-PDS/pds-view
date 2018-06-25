@@ -22,7 +22,7 @@ public final class PDS4Problems {
     /** Indicates a label that does not have the required extension. */
     public static final ProblemDefinition INVALID_LABEL_EXTENSION = new ProblemDefinition(
     		ExceptionType.ERROR,
-            ProblemType.FILE_NAMING_PROBLEM,
+            ProblemType.BAD_EXTENSION,
             "Label file names must end with the extension '.xml'",
             Standard.PDS4_STANDARDS_REFERENCE,
             "3"
@@ -49,7 +49,7 @@ public final class PDS4Problems {
 	/** Indicates a file name that exceeds the maximum length. */
 	public static final ProblemDefinition FILE_NAME_TOO_LONG = new ProblemDefinition(
 			ExceptionType.ERROR,
-			ProblemType.FILE_NAMING_PROBLEM,
+			ProblemType.FILE_NAME_TOO_LONG,
 			"File name must be no longer than 255 characters",
 			Standard.PDS4_STANDARDS_REFERENCE,
 			"6C.1.1"
@@ -58,7 +58,7 @@ public final class PDS4Problems {
 	/** Indicates a file name that includes illegal characters. */
 	public static final ProblemDefinition FILE_NAME_USES_INVALID_CHARACTER = new ProblemDefinition(
 			ExceptionType.ERROR,
-			ProblemType.FILE_NAMING_PROBLEM,
+			ProblemType.FILE_NAME_HAS_INVALID_CHARS,
 			"File name uses invalid character",
 			Standard.PDS4_STANDARDS_REFERENCE,
 			"6C.1.1"
@@ -79,7 +79,7 @@ public final class PDS4Problems {
 	/** Indicates a file name that is explicitly disallowed by the standard. */
 	public static final ProblemDefinition UNALLOWED_FILE_NAME = new ProblemDefinition(
 			ExceptionType.ERROR,
-			ProblemType.FILE_NAMING_PROBLEM,
+			ProblemType.UNALLOWED_FILE_NAME,
 			"File name is not allowed",
 			Standard.PDS4_STANDARDS_REFERENCE,
 			"6C.1.2"
@@ -88,7 +88,7 @@ public final class PDS4Problems {
 	/** Indicates a file name that includes a disallowed base name. */
 	public static final ProblemDefinition UNALLOWED_BASE_NAME = new ProblemDefinition(
 			ExceptionType.ERROR,
-			ProblemType.FILE_NAMING_PROBLEM,
+			ProblemType.UNALLOWED_BASE_NAME,
 			"File base name is not allowed",
 			Standard.PDS4_STANDARDS_REFERENCE,
 			"6C.1.4"
@@ -97,7 +97,7 @@ public final class PDS4Problems {
 	/** Indicates a directory name that exceeds the maximum length. */
 	public static final ProblemDefinition DIRECTORY_NAME_TOO_LONG = new ProblemDefinition(
 			ExceptionType.ERROR,
-			ProblemType.FILE_NAMING_PROBLEM,
+			ProblemType.DIR_NAME_TOO_LONG,
 			"Directory name is longer than 255 characters",
 			Standard.PDS4_STANDARDS_REFERENCE,
 			"6C.2.1"
@@ -106,7 +106,7 @@ public final class PDS4Problems {
 	/** Indicates a directory name that includes a disallowed character. */
 	public static final ProblemDefinition DIRECTORY_NAME_USES_INVALID_CHARACTER = new ProblemDefinition(
 			ExceptionType.ERROR,
-			ProblemType.FILE_NAMING_PROBLEM,
+			ProblemType.DIR_NAME_HAS_INVALID_CHARS,
 			"Directory name uses invalid character",
 			Standard.PDS4_STANDARDS_REFERENCE,
 			"6C.2.1"
@@ -127,7 +127,7 @@ public final class PDS4Problems {
     /** Indicates a directory name that is explicitly disallowed by the standard. */
     public static final ProblemDefinition UNALLOWED_BUNDLE_SUBDIRECTORY_NAME = new ProblemDefinition(
     		ExceptionType.ERROR,
-            ProblemType.FILE_NAMING_PROBLEM,
+            ProblemType.UNALLOWED_BUNDLE_SUBDIR_NAME,
             "Directory name is not allowed except in the bundle root directory",
             Standard.PDS4_STANDARDS_REFERENCE,
             "6C.2.2"
@@ -145,7 +145,7 @@ public final class PDS4Problems {
     /** Indicates a directory name that is explicitly disallowed by the standard. */
     public static final ProblemDefinition UNALLOWED_DIRECTORY_NAME = new ProblemDefinition(
     		ExceptionType.ERROR,
-            ProblemType.FILE_NAMING_PROBLEM,
+            ProblemType.UNALLOWED_DIRECTORY_NAME,
             "Directory name is not allowed",
             Standard.PDS4_STANDARDS_REFERENCE,
             "6C.2.3"
@@ -154,7 +154,7 @@ public final class PDS4Problems {
     /** Indicates a collection directory that has an invalid name. */
     public static final ProblemDefinition INVALID_COLLECTION_NAME = new ProblemDefinition(
     		ExceptionType.ERROR,
-            ProblemType.FILE_NAMING_PROBLEM,
+            ProblemType.INVALID_COLLECTION_NAME,
             "Collection directory name is not valid",
             Standard.PDS4_STANDARDS_REFERENCE,
             "2B.2.2.1"
@@ -163,7 +163,7 @@ public final class PDS4Problems {
     /** Indicates an unexpected file in the root directory of a bundle. */
     public static final ProblemDefinition UNEXPECTED_FILE_IN_BUNDLE_ROOT = new ProblemDefinition(
     		ExceptionType.ERROR,
-            ProblemType.FILE_NAMING_PROBLEM,
+            ProblemType.UNEXPECTED_FILE_IN_BUNDLE_ROOT,
             "File is not valid in bundle root directory",
             Standard.PDS4_STANDARDS_REFERENCE,
             "2B.2.2.1"

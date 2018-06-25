@@ -1,4 +1,4 @@
-//	Copyright 2009-2016, by the California Institute of Technology.
+//	Copyright 2009-2018, by the California Institute of Technology.
 //	ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
 //	Any commercial use must be negotiated with the Office of Technology
 //	Transfer at the California Institute of Technology.
@@ -21,17 +21,18 @@ import gov.nasa.pds.tools.label.validate.ExternalValidator;
 import gov.nasa.pds.tools.util.LabelParser;
 import gov.nasa.pds.tools.util.Utility;
 import gov.nasa.pds.tools.util.VersionInfo;
-import gov.nasa.pds.tools.util.XMLErrorListener;
 import gov.nasa.pds.tools.util.XMLExtractor;
+import gov.nasa.pds.tools.validate.ProblemContainer;
+import gov.nasa.pds.tools.validate.ProblemDefinition;
+import gov.nasa.pds.tools.validate.ProblemHandler;
+import gov.nasa.pds.tools.validate.ProblemType;
+import gov.nasa.pds.tools.validate.ValidationProblem;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,11 +58,7 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
-import net.sf.saxon.Configuration;
-import net.sf.saxon.event.ParseOptions;
 import net.sf.saxon.om.DocumentInfo;
-import net.sf.saxon.trans.XPathException;
-import net.sf.saxon.xpath.XPathEvaluator;
 
 import org.w3c.dom.Attr;
 import org.w3c.dom.CharacterData;
@@ -104,8 +101,10 @@ public class LabelValidator {
   private Boolean useLabelSchematron;
   private Map<String, Transformer> cachedLabelSchematrons;
 
-  public static final String SCHEMA_CHECK = "gov.nasa.pds.tools.label.SchemaCheck";
-  public static final String SCHEMATRON_CHECK = "gov.nasa.pds.tools.label.SchematronCheck";
+  public static final String SCHEMA_CHECK = 
+      "gov.nasa.pds.tools.label.SchemaCheck";
+  public static final String SCHEMATRON_CHECK = 
+      "gov.nasa.pds.tools.label.SchematronCheck";
 
   private List<ExternalValidator> externalValidators;
   private List<DocumentValidator> documentValidators;
@@ -150,7 +149,8 @@ public class LabelValidator {
     cachedLSResolver = new CachedLSResourceResolver();
     validatingSchema = null;
     // Support for XSD 1.1
-    schemaFactory = SchemaFactory.newInstance("http://www.w3.org/XML/XMLSchema/v1.1");
+    schemaFactory = SchemaFactory.newInstance(
+        "http://www.w3.org/XML/XMLSchema/v1.1");
 
     // We need a SAX parser factory to do the validating parse
     // to create the DOM tree, so we can insert line numbers
@@ -158,12 +158,14 @@ public class LabelValidator {
     saxParserFactory = SAXParserFactory.newInstance();
     saxParserFactory.setNamespaceAware(true);
     saxParserFactory.setXIncludeAware(Utility.supportXincludes());
-    saxParserFactory.setValidating(false); // The parser doesn't validate - we use a Validator instead.
+ // The parser doesn't validate - we use a Validator instead.
+    saxParserFactory.setValidating(false);
 
     // Don't add xml:base attributes to xi:include content, or it messes up
     // PDS4 validation.
     try {
-      saxParserFactory.setFeature("http://apache.org/xml/features/xinclude/fixup-base-uris", false);
+      saxParserFactory.setFeature(
+          "http://apache.org/xml/features/xinclude/fixup-base-uris", false);
     } catch (SAXNotRecognizedException e) {
       // should never happen, and can't recover
     } catch (SAXNotSupportedException e) {
@@ -291,31 +293,33 @@ public class LabelValidator {
     return sources;
   }
 
-  public synchronized void validate(ExceptionHandler exceptionHandler, File labelFile)
+  public synchronized void validate(ProblemHandler handler, File labelFile)
   throws SAXException, IOException, ParserConfigurationException,
   TransformerException, MissingLabelSchemaException {
-    validate(exceptionHandler, labelFile.toURI().toURL());
+    validate(handler, labelFile.toURI().toURL());
   }
 
   /**
    * Validates the label against schema and schematron constraints.
    *
-   * @param exceptionHandler
+   * @param handler
    *          a handler to receive errors during the validation
    * @param url
    *          label to validate
    *
    * @throws SAXException if there are parsing exceptions
    * @throws IOException if there are I/O errors during the parse
-   * @throws ParserConfigurationException if the parser configuration is invalid
-   * @throws TransformerException if there is an error during Schematron transformation
+   * @throws ParserConfigurationException if the parser configuration is 
+   * invalid
+   * @throws TransformerException if there is an error during Schematron 
+   * transformation
    * @throws MissingLabelSchemaException if the label schema cannot be found
    */
-  public synchronized void validate(ExceptionHandler exceptionHandler, URL url)
+  public synchronized void validate(ProblemHandler handler, URL url)
       throws SAXException, IOException, ParserConfigurationException,
       TransformerException, MissingLabelSchemaException {
 
-    parseAndValidate(exceptionHandler, url);
+    parseAndValidate(handler, url);
 
   }
 
@@ -323,7 +327,8 @@ public class LabelValidator {
    * Parses and validates a label against the schema and Schematron files,
    * and returns the parsed XML.
    *
-   * @param exceptionHandler an exception handler to receive errors during the validation
+   * @param handler an problem handler to receive errors during the 
+   * validation
    * @param url the URL of the label to validate
    * @return the XML document represented by the label
    * @throws SAXException if there are parsing exceptions
@@ -332,7 +337,7 @@ public class LabelValidator {
    * @throws TransformerException if there is an error during Schematron transformation
    * @throws MissingLabelSchemaException if the label schema cannot be found
    */
-  public synchronized Document parseAndValidate(ExceptionHandler exceptionHandler, URL url)
+  public synchronized Document parseAndValidate(ProblemHandler handler, URL url)
       throws SAXException, IOException, ParserConfigurationException,
       TransformerException, MissingLabelSchemaException {
     List<String> labelSchematronRefs = new ArrayList<String>();
@@ -340,13 +345,13 @@ public class LabelValidator {
     
     // Are we perfoming schema validation?
     if (performsSchemaValidation()) {
-      createParserIfNeeded(exceptionHandler);
+      createParserIfNeeded(handler);
 
       // Capture messages in a container
-      if (exceptionHandler != null) {
-        ErrorHandler handler = new LabelErrorHandler(exceptionHandler);
-        cachedParser.setErrorHandler(handler);
-        cachedValidatorHandler.setErrorHandler(handler);
+      if (handler != null) {
+        ErrorHandler eh = new LabelErrorHandler(handler);
+        cachedParser.setErrorHandler(eh);
+        cachedValidatorHandler.setErrorHandler(eh);
 
       }
 
@@ -359,7 +364,7 @@ public class LabelValidator {
       cachedValidatorHandler.setDocumentLocator(locator);
       if (resolver != null) {
         cachedValidatorHandler.setResourceResolver(resolver);
-        resolver.setExceptionHandler(exceptionHandler);
+        resolver.setProblemHandler(handler);
       } else {
         cachedValidatorHandler.setResourceResolver(cachedLSResolver);
       }
@@ -381,12 +386,12 @@ public class LabelValidator {
       xml = docBuilder.newDocument();
       reader.setContentHandler(new DocumentCreator(xml));
       // Capture messages in a container
-      if (exceptionHandler != null) {
-        reader.setErrorHandler(new LabelErrorHandler(exceptionHandler));
+      if (handler != null) {
+        reader.setErrorHandler(new LabelErrorHandler(handler));
       }
       if (resolver != null) {
         reader.setEntityResolver(resolver);
-        resolver.setExceptionHandler(exceptionHandler);
+        resolver.setProblemHandler(handler);
       } else if (useLabelSchema) {
         reader.setEntityResolver(cachedEntityResolver);
       }
@@ -402,12 +407,12 @@ public class LabelValidator {
       // Look for schematron files specified in a label
       if (useLabelSchematron) {
         labelSchematronRefs = getSchematrons(xml.getChildNodes(), url,
-            exceptionHandler);
+            handler);
       }
       if (cachedSchematron.isEmpty()) {
         if (useLabelSchematron) {
           cachedSchematron = loadLabelSchematrons(labelSchematronRefs, url,
-              exceptionHandler);
+              handler);
         } else if ( (userSchematronTransformers.isEmpty()) &&
             (userSchematronFiles == null) ) {
           // If user does not provide schematron then use ones in jar if available
@@ -428,7 +433,7 @@ public class LabelValidator {
               StreamSource source = new StreamSource(schematron.toString());
               source.setSystemId(schematron.toString());
               Transformer transformer = schematronTransformer.transform(
-                  source, exceptionHandler);
+                  source, handler);
               transformers.add(transformer);
             }
             cachedSchematron = transformers;
@@ -441,7 +446,7 @@ public class LabelValidator {
             cachedSchematron = userSchematronTransformers;
           } else {
             cachedSchematron = loadLabelSchematrons(labelSchematronRefs, url,
-              exceptionHandler);
+              handler);
           }
         }
       }
@@ -451,21 +456,21 @@ public class LabelValidator {
         // Apply the rules specified in the schematron file
         schematron.transform(new DOMSource(xml), result);
         // Output is svrl:schematron-output document
-        // Select out svrl:failed-assert nodes and put into exception container
+        // Select out svrl:failed-assert nodes and put into problem container
         Document reportDoc = (Document) result.getNode();
         NodeList nodes = reportDoc.getElementsByTagNameNS(
             "http://purl.oclc.org/dsdl/svrl", "failed-assert");
         for (int i = 0; i < nodes.getLength(); i++) {
           Node node = nodes.item(i);
           // Add an error for each failed asssert
-          exceptionHandler.addException(processFailedAssert(url, node, xml));
+          handler.addProblem(processFailedAssert(url, node, xml));
         }
       }
     }
     if (!externalValidators.isEmpty()) {
       // Perform any other additional checks that were added
       for(ExternalValidator ev : externalValidators) {
-        ev.validate(exceptionHandler, url);
+        ev.validate(handler, url);
       }
     }
 
@@ -475,14 +480,14 @@ public class LabelValidator {
       saxSource.setSystemId(url.toString());
       DocumentInfo docInfo = LabelParser.parse(saxSource);
       for (DocumentValidator dv : documentValidators) {
-        dv.validate(exceptionHandler, docInfo);
+        dv.validate(handler, docInfo);
       }
     }
 
     return xml;
   }
 
-  private void createParserIfNeeded(ExceptionHandler exceptionHandler)
+  private void createParserIfNeeded(ProblemHandler handler)
       throws SAXNotRecognizedException, SAXNotSupportedException, SAXException,
       IOException, ParserConfigurationException {
     // Do we have a schema we have loaded previously?
@@ -495,9 +500,9 @@ public class LabelValidator {
             resolver);
       }
       // Allow errors that happen in the schema to be logged there
-      if (exceptionHandler != null) {
-        schemaFactory.setErrorHandler(new LabelErrorHandler(exceptionHandler));
-        cachedLSResolver = new CachedLSResourceResolver(exceptionHandler);
+      if (handler != null) {
+        schemaFactory.setErrorHandler(new LabelErrorHandler(handler));
+        cachedLSResolver = new CachedLSResourceResolver(handler);
         schemaFactory.setResourceResolver(cachedLSResolver);
       } else {
         cachedLSResolver = new CachedLSResourceResolver();
@@ -625,7 +630,7 @@ public class LabelValidator {
   }
 
   public List<String> getSchematrons(NodeList nodeList, URL url,
-      ExceptionHandler exceptionHandler) {
+      ProblemHandler handler) {
     List<String> results = new ArrayList<String>();
 
     for (int i = 0; i < nodeList.getLength(); i++) {
@@ -650,10 +655,14 @@ public class LabelValidator {
               try {
                 schematronRef = new URL(url, value);
               } catch (MalformedURLException mue) {
-                exceptionHandler.addException(new LabelException(ExceptionType.ERROR,
-                    "Cannot resolve schematron specification '"
-                        + value + "': " + mue.getMessage(),
-                        url.toString()));
+                handler.addProblem(
+                    new ValidationProblem(
+                        new ProblemDefinition(
+                            ExceptionType.ERROR,
+                            ProblemType.SCHEMATRON_ERROR,
+                            "Cannot resolve schematron specification '"
+                                + value + "': " + mue.getMessage()),
+                        url));
                 continue;
               }
             }
@@ -666,7 +675,7 @@ public class LabelValidator {
   }
 
   private List<Transformer> loadLabelSchematrons(List<String> schematronSources,
-      URL url, ExceptionHandler exceptionHandler) {
+      URL url, ProblemHandler handler) {
     List<Transformer> transformers = new ArrayList<Transformer>();
     for (String source : schematronSources) {
       try {
@@ -700,8 +709,11 @@ public class LabelValidator {
       } catch (Exception e) {
         String message = "Error occurred while loading schematron: "
             + e.getMessage();
-        exceptionHandler.addException(new LabelException(ExceptionType.ERROR,
-            message, url.toString()));
+        handler.addProblem(new ValidationProblem(
+            new ProblemDefinition(ExceptionType.ERROR,
+                ProblemType.SCHEMATRON_ERROR,
+                message), 
+            url));
       }
     }
     return transformers;
@@ -714,14 +726,14 @@ public class LabelValidator {
    * @param node The node object containing the failed assert message.
    * @param doc the original document that was being validated, used to obtain line numbers, or null for no document
    *
-   * @return A LabelException object.
+   * @return A ValidationProblem object.
    */
-  private LabelException processFailedAssert(URL url, Node node, Document doc) {
+  private ValidationProblem processFailedAssert(URL url, Node node, Document doc) {
     Integer lineNumber = -1;
     Integer columnNumber = -1;
     String message = node.getTextContent().trim();
-    String sourceUrl = url.toString();
-
+    URL sourceUrl = url;
+    ProblemType problemType = ProblemType.SCHEMATRON_ERROR;
     ExceptionType exceptionType = ExceptionType.ERROR;
     if (node.getAttributes().getNamedItem("role") != null) {
       String type = node.getAttributes().getNamedItem("role")
@@ -729,8 +741,10 @@ public class LabelValidator {
       if ("warn".equalsIgnoreCase(type) ||
           "warning".equalsIgnoreCase(type)) {
         exceptionType = ExceptionType.WARNING;
+        problemType = ProblemType.SCHEMATRON_WARNING;
       } else if ("info".equalsIgnoreCase(type)) {
         exceptionType = ExceptionType.INFO;
+        problemType = ProblemType.SCHEMATRON_INFO;
       }
     }
 
@@ -747,21 +761,25 @@ public class LabelValidator {
       lineNumber = sourceLoc.getLineNumber();
       columnNumber = sourceLoc.getColumnNumber();
       if (sourceLoc.getUrl() != null) {
-        sourceUrl = sourceLoc.getUrl();
+        try {
+          sourceUrl = new URL(sourceLoc.getUrl());
+        } catch (MalformedURLException e) {
+          // Ignore. Should not happen!!!
+        }
       }
     } else {
       String test = node.getAttributes().getNamedItem("test").getTextContent();
       message = String.format("%s [Context: \"%s\"; Test: \"%s\"]", message, location, test);
     }
     
-
-    return new LabelException(
-        exceptionType,
-        message,
-        "",
-        sourceUrl,
-        lineNumber,
-        columnNumber
+    return new ValidationProblem(
+        new ProblemDefinition(
+            exceptionType, 
+            problemType,
+            message),
+       sourceUrl,
+       lineNumber,
+       columnNumber
     );
 
   }
@@ -833,10 +851,10 @@ public class LabelValidator {
   public static void main(String[] args) throws Exception {
     LabelValidator lv = new LabelValidator();
     lv.setCatalogs(new String[]{args[1]});
-    ExceptionContainer container = new ExceptionContainer();
+    ProblemContainer container = new ProblemContainer();
     lv.validate(container, new File(args[0]));
-    for (LabelException ex : container.getExceptions()) {
-      System.out.println(ex.getMessage());
+    for (ValidationProblem problem : container.getProblems()) {
+      System.out.println(problem.getMessage());
     }
   }
 

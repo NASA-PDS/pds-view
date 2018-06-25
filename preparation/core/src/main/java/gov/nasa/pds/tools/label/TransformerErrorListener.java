@@ -1,4 +1,4 @@
-//  Copyright 2009-2014, by the California Institute of Technology.
+//  Copyright 2009-2018, by the California Institute of Technology.
 //  ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
 //  Any commercial use must be negotiated with the Office of Technology
 //  Transfer at the California Institute of Technology.
@@ -14,9 +14,17 @@
 //
 package gov.nasa.pds.tools.label;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+
 import javax.xml.transform.ErrorListener;
 import javax.xml.transform.SourceLocator;
 import javax.xml.transform.TransformerException;
+
+import gov.nasa.pds.tools.validate.ProblemDefinition;
+import gov.nasa.pds.tools.validate.ProblemHandler;
+import gov.nasa.pds.tools.validate.ProblemType;
+import gov.nasa.pds.tools.validate.ValidationProblem;
 
 /**
  * Listener class to simply throw exceptions when an error occurs when
@@ -27,44 +35,66 @@ import javax.xml.transform.TransformerException;
  *
  */
 public class TransformerErrorListener implements ErrorListener {
-  private ExceptionHandler exceptions;
+  private ProblemHandler handler;
 
   /**
    * Constructor.
    *
-   * @param exceptions A container to hold problems that occur during
+   * @param handler A container to hold problems that occur during
    * the transform process.
    */
-  public TransformerErrorListener(ExceptionHandler exceptions) {
-    this.exceptions = exceptions;
+  public TransformerErrorListener(ProblemHandler handler) {
+    this.handler = handler;
   }
 
   @Override
   public void error(TransformerException exception)
       throws TransformerException {
     SourceLocator locator = exception.getLocator();
-    exceptions.addException(new LabelException(ExceptionType.ERROR,
-        exception.getMessage(), locator.getPublicId(),
-        locator.getSystemId(), locator.getLineNumber(),
-        locator.getColumnNumber()));
+    addProblem(ExceptionType.ERROR,
+        ProblemType.SCHEMATRON_ERROR,
+        exception.getMessage(), 
+        locator.getSystemId(), 
+        locator.getLineNumber(),
+        locator.getColumnNumber());
   }
 
   @Override
-  public void fatalError(TransformerException exception) throws TransformerException {
+  public void fatalError(TransformerException exception) 
+      throws TransformerException {
     SourceLocator locator = exception.getLocator();
-    exceptions.addException(new LabelException(ExceptionType.FATAL,
-        exception.getMessage(), locator.getPublicId(),
-        locator.getSystemId(), locator.getLineNumber(),
-        locator.getColumnNumber()));
+    addProblem(ExceptionType.FATAL,
+        ProblemType.SCHEMATRON_ERROR,
+        exception.getMessage(), 
+        locator.getSystemId(), 
+        locator.getLineNumber(),
+        locator.getColumnNumber());
   }
 
   @Override
-  public void warning(TransformerException exception) throws TransformerException {
+  public void warning(TransformerException exception) 
+      throws TransformerException {
     SourceLocator locator = exception.getLocator();
-    exceptions.addException(new LabelException(ExceptionType.WARNING,
-        exception.getMessage(), locator.getPublicId(),
-        locator.getSystemId(), locator.getLineNumber(),
-        locator.getColumnNumber()));
+    addProblem(ExceptionType.WARNING,
+        ProblemType.SCHEMATRON_WARNING,
+        exception.getMessage(), 
+        locator.getSystemId(), 
+        locator.getLineNumber(),
+        locator.getColumnNumber());
   }
 
+  private void addProblem(ExceptionType severity, ProblemType type, 
+      String message, String systemId, int lineNumber, int columnNumber) {
+    URL url = null;
+    try {
+      url = new URL(systemId);
+    } catch (MalformedURLException mu) {
+      //Ignore. Should not happen!!!
+    }
+    handler.addProblem(new ValidationProblem(
+        new ProblemDefinition(severity, type, message), 
+        url, 
+        lineNumber, 
+        columnNumber));
+  }
 }

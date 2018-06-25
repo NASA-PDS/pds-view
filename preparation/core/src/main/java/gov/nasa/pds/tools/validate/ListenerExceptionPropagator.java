@@ -1,4 +1,4 @@
-// Copyright 2006-2017, by the California Institute of Technology.
+// Copyright 2006-2018, by the California Institute of Technology.
 // ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
 // Any commercial use must be negotiated with the Office of Technology Transfer
 // at the California Institute of Technology.
@@ -16,8 +16,6 @@ package gov.nasa.pds.tools.validate;
 import java.util.Collection;
 
 import gov.nasa.pds.tools.label.ExceptionType;
-import gov.nasa.pds.tools.label.LabelException;
-import gov.nasa.pds.tools.label.ValidateExceptionHandler;
 
 /**
  * Listener class intended to propagate the problems to a handler for
@@ -28,59 +26,34 @@ import gov.nasa.pds.tools.label.ValidateExceptionHandler;
  */
 public class ListenerExceptionPropagator implements ProblemListener {
   
-  private ValidateExceptionHandler handler;
+  private ValidateProblemHandler handler;
   int errorCount;
   int warningCount;
   int infoCount;
 
-  public ListenerExceptionPropagator(ValidateExceptionHandler handler) {
+  public ListenerExceptionPropagator(ValidateProblemHandler handler) {
     this.handler = handler;
   }
 
   @Override
   public void addProblem(ValidationProblem problem) {
-    ExceptionType type;
-    
     switch (problem.getProblem().getSeverity()) {
+    case FATAL:
+      ++errorCount;
+      break;
     case ERROR:
-      type = ExceptionType.ERROR;
       ++errorCount;
       break;
     case WARNING:
-      type = ExceptionType.WARNING;
       ++warningCount;
       break;
     default:
-      type = ExceptionType.INFO;
       ++infoCount;
       break;
     }
-    LabelException ex = new LabelException(
-        type,
-        problem.getMessage(),
-        "",
-        problem.getTarget().getLocation(),
-        problem.getLineNumber(),
-        problem.getColumnNumber()
-    );
-    handler.addException(ex);
+    handler.addProblem(problem);
   }
   
-  
-  
-  @Override
-  public void addProblem(LabelException exception) {
-    ExceptionType type = exception.getExceptionType();
-    if (ExceptionType.FATAL.equals(type) || ExceptionType.ERROR.equals(type)) {
-      ++errorCount;
-    } else if (ExceptionType.WARNING.equals(type)) {
-      ++warningCount;
-    } else {
-      ++infoCount;
-    }
-    handler.addException(exception); 
-  }
-
   @Override
   public int getErrorCount() {
     return errorCount;

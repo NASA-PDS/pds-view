@@ -13,7 +13,7 @@
 // $Id$
 package gov.nasa.pds.tools.validate.content.array;
 
-import java.util.List;
+import java.net.URL;
 
 /**
  * Class that holds a specific location in an Array.
@@ -23,14 +23,15 @@ import java.util.List;
  */
 public final class ArrayLocation {
   /** The label associated with the data. */
-  private String label;
+  private URL label;
   
   /** The data file associated with the record. */
-  private String dataFile;
+  private URL dataFile;
   
   /** The index of the table associated with the record. */
   private int array;
     
+  /** The array location. */
   private int[] location;
   
   /**
@@ -41,7 +42,7 @@ public final class ArrayLocation {
    * @param array The array index.
    * @param location The location.
    */
-  public ArrayLocation(String label, String dataFile, int array, int[] location) {
+  public ArrayLocation(URL label, URL dataFile, int array, int[] location) {
     this.label = label;
     this.dataFile = dataFile;
     this.array = array;
@@ -52,7 +53,7 @@ public final class ArrayLocation {
    * 
    * @return the label.
    */
-  public String getLabel() {
+  public URL getLabel() {
     return this.label;
   }
   
@@ -60,7 +61,7 @@ public final class ArrayLocation {
    * 
    * @return the data file.
    */
-  public String getDataFile() {
+  public URL getDataFile() {
     return this.dataFile;
   }
   
@@ -72,6 +73,10 @@ public final class ArrayLocation {
     return this.array;
   }
   
+  /**
+   * 
+   * @return the array location.
+   */
   public int[] getLocation() {
     return this.location;
   }

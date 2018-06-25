@@ -22,6 +22,9 @@ import org.junit.runners.JUnit4;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
+import gov.nasa.pds.tools.validate.ProblemContainer;
+import gov.nasa.pds.tools.validate.ValidationProblem;
+
 @RunWith(JUnit4.class)
 public class LabelValidatorTest {
 
@@ -36,7 +39,7 @@ public class LabelValidatorTest {
 	@Test
 	public void testSimpleProduct() throws IOException, MalformedURLException, SAXException, ParserConfigurationException, TransformerException, MissingLabelSchemaException {
 		LabelValidator validator = new LabelValidator();
-		ExceptionContainer container = new ExceptionContainer();
+		ProblemContainer container = new ProblemContainer();
 		validator.setSchema(Collections.singletonList(new File("src/test/resources/PDS4_PDS_1301.xsd").toURI().toURL()));
 		validator.setSchematrons(Collections.singletonList(pds4Schematron));
 		validator.validate(container, new File("src/test/resources/SimpleProduct.xml"));
@@ -45,12 +48,12 @@ public class LabelValidatorTest {
 		assertThat(container.hasError(), is(false));
 	}
 
-  private void showExceptions(ExceptionContainer container) {
-    for (LabelException exception : container.getExceptions()) {
+  private void showExceptions(ProblemContainer container) {
+    for (ValidationProblem problem : container.getProblems()) {
       System.out.println(
-          String.format("%s:%d:%d: %s", exception.getExceptionType().toString(),
-              exception.getLineNumber(), exception.getColumnNumber(),
-              exception.getMessage()
+          String.format("%s:%d:%d: %s", problem.getProblem().getSeverity().toString(),
+              problem.getLineNumber(), problem.getColumnNumber(),
+              problem.getMessage()
           )
       );
 		}
@@ -59,7 +62,7 @@ public class LabelValidatorTest {
 	@Test(expected=SAXParseException.class)
 	public void testXMLError() throws IOException, MalformedURLException, SAXException, ParserConfigurationException, TransformerException, MissingLabelSchemaException {
 		LabelValidator validator = new LabelValidator();
-		ExceptionContainer container = new ExceptionContainer();
+		ProblemContainer container = new ProblemContainer();
 		validator.setSchema(Collections.singletonList(new File("src/test/resources/PDS4_PDS_1301.xsd").toURI().toURL()));
 		validator.setSchematrons(Collections.singletonList(pds4Schematron));
 		validator.validate(container, new File("src/test/resources/ProductWithXMLError.xml"));
@@ -68,7 +71,7 @@ public class LabelValidatorTest {
 	@Test
 	public void testSchematronError() throws IOException, MalformedURLException, SAXException, ParserConfigurationException, TransformerException, MissingLabelSchemaException {
 		LabelValidator validator = new LabelValidator();
-		ExceptionContainer container = new ExceptionContainer();
+		ProblemContainer container = new ProblemContainer();
 		validator.setSchema(Collections.singletonList(new File("src/test/resources/PDS4_PDS_1301.xsd").toURI().toURL()));
 		validator.setSchematrons(Collections.singletonList(pds4Schematron));
 		validator.validate(container, new File("src/test/resources/ProductWithSchematronError.xml"));
@@ -76,9 +79,9 @@ public class LabelValidatorTest {
 		assertThat(container.hasFatal(), is(false));
 		assertThat(container.hasError(), is(true));
 		// All errors should be on lines 3 or 4.
-		for (LabelException exception : container.getExceptions()) {
-		  if (exception.getExceptionType() == ExceptionType.ERROR) {
-		    assertThat(exception.getLineNumber(), anyOf(is(3), is(4)));
+		for (ValidationProblem problem : container.getProblems()) {
+		  if (problem.getProblem().getSeverity() == ExceptionType.ERROR) {
+		    assertThat(problem.getLineNumber(), anyOf(is(3), is(4)));
 		  }
 		}
 	}
@@ -87,7 +90,7 @@ public class LabelValidatorTest {
 	@Test
 	public void testXIncludeWithGoodLabel() throws IOException, MalformedURLException, SAXException, ParserConfigurationException, TransformerException, MissingLabelSchemaException {
 		LabelValidator validator = new LabelValidator();
-		ExceptionContainer container = new ExceptionContainer();
+		ProblemContainer container = new ProblemContainer();
 		validator.setSchema(Collections.singletonList(new File("src/test/resources/PDS4_PDS_1301.xsd").toURI().toURL()));
 		validator.setSchematrons(Collections.singletonList(pds4Schematron));
 		validator.validate(container, new File("src/test/resources/XIncludeParent.xml"));
@@ -101,7 +104,7 @@ public class LabelValidatorTest {
   @Test
   public void testCollectionDelimiter() throws IOException, MalformedURLException, SAXException, ParserConfigurationException, TransformerException, MissingLabelSchemaException {
     LabelValidator validator = new LabelValidator();
-    ExceptionContainer container = new ExceptionContainer();
+    ProblemContainer container = new ProblemContainer();
     validator.setSchema(Collections.singletonList(new File("src/test/resources/PDS4_PDS_1301.xsd").toURI().toURL()));
     validator.setSchematrons(Collections.singletonList(pds4Schematron));
     validator.validate(container, new File("src/test/resources/Collection_data.xml"));
@@ -110,9 +113,9 @@ public class LabelValidatorTest {
     assertThat(container.hasError(), is(false));
     assertThat(container.hasWarning(), is(true));
 
-    for (LabelException exception : container.getExceptions()) {
-      if (exception.getExceptionType() == ExceptionType.WARNING) {
-        assertThat(exception.getLineNumber(), is(126));
+    for (ValidationProblem problem : container.getProblems()) {
+      if (problem.getProblem().getSeverity() == ExceptionType.WARNING) {
+        assertThat(problem.getLineNumber(), is(126));
       }
     }
   }
@@ -121,7 +124,7 @@ public class LabelValidatorTest {
   @Test
   public void testXMLValidationHasLocation() throws IOException, MalformedURLException, SAXException, ParserConfigurationException, TransformerException, MissingLabelSchemaException {
     LabelValidator validator = new LabelValidator();
-    ExceptionContainer container = new ExceptionContainer();
+    ProblemContainer container = new ProblemContainer();
     validator.setSchema(Collections.singletonList(new File("src/test/resources/PDS4_PDS_1301.xsd").toURI().toURL()));
     validator.setSchematrons(Collections.singletonList(pds4Schematron));
     validator.validate(container, new File("src/test/resources/ele_mom_tblChar.xml"));
@@ -130,9 +133,9 @@ public class LabelValidatorTest {
     assertThat(container.hasError(), is(true));
     assertThat(container.hasWarning(), is(false));
 
-    for (LabelException exception : container.getExceptions()) {
-      if (exception.getExceptionType()==ExceptionType.ERROR && exception.getMessage().contains("matching wildcard")) {
-        assertThat(exception.getLineNumber(), not(is(-1)));
+    for (ValidationProblem problem : container.getProblems()) {
+      if (problem.getProblem().getSeverity()==ExceptionType.ERROR && problem.getMessage().contains("matching wildcard")) {
+        assertThat(problem.getLineNumber(), not(is(-1)));
       }
     }
   }
@@ -142,7 +145,7 @@ public class LabelValidatorTest {
   @Test
   public void testXMLSpecialConstructs() throws IOException, MalformedURLException, SAXException, ParserConfigurationException, TransformerException, MissingLabelSchemaException {
     LabelValidator validator = new LabelValidator();
-    ExceptionContainer container = new ExceptionContainer();
+    ProblemContainer container = new ProblemContainer();
     validator.setSchema(Collections.singletonList(new File("src/test/resources/PDS4_PDS_1301.xsd").toURI().toURL()));
     validator.setSchematrons(Collections.singletonList(pds4Schematron));
     validator.validate(container, new File("src/test/resources/ProductWithSpecialXML.xml"));
@@ -151,9 +154,9 @@ public class LabelValidatorTest {
     assertThat(container.hasError(), is(true));
     assertThat(container.hasWarning(), is(true));
 
-    for (LabelException exception : container.getExceptions()) {
-      if (exception.getExceptionType()==ExceptionType.ERROR) {
-        assertThat(exception.getLineNumber(), not(is(-1)));
+    for (ValidationProblem problem : container.getProblems()) {
+      if (problem.getProblem().getSeverity()==ExceptionType.ERROR) {
+        assertThat(problem.getLineNumber(), not(is(-1)));
       }
     }
   }

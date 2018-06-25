@@ -46,11 +46,11 @@ import gov.nasa.pds.objectAccess.ObjectProvider;
 import gov.nasa.pds.objectAccess.ParseException;
 import gov.nasa.pds.objectAccess.DataType.NumericDataType;
 import gov.nasa.pds.tools.label.ExceptionType;
-import gov.nasa.pds.tools.label.LabelException;
 import gov.nasa.pds.tools.label.SourceLocation;
 import gov.nasa.pds.tools.util.Utility;
+import gov.nasa.pds.tools.validate.ProblemType;
 import gov.nasa.pds.tools.validate.XPaths;
-import gov.nasa.pds.tools.validate.content.array.ArrayContentException;
+import gov.nasa.pds.tools.validate.content.array.ArrayContentProblem;
 import gov.nasa.pds.tools.validate.content.array.ArrayContentValidator;
 import gov.nasa.pds.tools.validate.rule.AbstractValidationRule;
 import gov.nasa.pds.tools.validate.rule.ValidationTest;
@@ -144,8 +144,11 @@ public class ArrayContentValidationRule extends AbstractValidationRule {
             //               * number of bands * element size)
             ArrayObject ao = null;
             try {
-              ao = new ArrayObject(Utility.getParent(getTarget()), 
-                  getFileObject(fileArea), array, array.getOffset().getValue());
+              ao = new ArrayObject(
+                  Utility.getParent(getTarget()), 
+                  getFileObject(fileArea), 
+                  array, 
+                  array.getOffset().getValue());
               
               //Array elements have values which conform to their data type
               
@@ -156,8 +159,10 @@ public class ArrayContentValidationRule extends AbstractValidationRule {
                   getListener(), getTarget(), dataFile, arrayIndex);
                 validator.validate(array, ao);
               } else {
-                addArrayException(ExceptionType.FATAL, 
-                    "Missing Axis_Array area.", dataFile.toString(), 
+                addArrayProblem(ExceptionType.FATAL,
+                    ProblemType.INVALID_LABEL,
+                    "Missing Axis_Array area.", 
+                    dataFile, 
                     arrayIndex);
               }
             } finally {
@@ -166,21 +171,31 @@ public class ArrayContentValidationRule extends AbstractValidationRule {
               }
             }
           } catch (IllegalArgumentException ae) {
-            addArrayException(ExceptionType.FATAL, "Error while reading array: "
-                + ae.getMessage(), dataFile.toString(), arrayIndex);
+            addArrayProblem(ExceptionType.FATAL,
+                ProblemType.ARRAY_DATA_FILE_READ_ERROR,
+                "Error while reading array: " + ae.getMessage(), 
+                dataFile, 
+                arrayIndex);
           } catch (UnsupportedOperationException ue) {
-            addArrayException(ExceptionType.WARNING, ue.getMessage(), 
-                dataFile.toString(), arrayIndex);
+            addArrayProblem(ExceptionType.WARNING, 
+                ProblemType.ARRAY_INTERNAL_WARNING, 
+                ue.getMessage(), 
+                dataFile, 
+                arrayIndex);
           } catch (OutOfMemoryError me) {
-            addArrayException(ExceptionType.FATAL, 
+            addArrayProblem(ExceptionType.FATAL,
+                ProblemType.OUT_OF_MEMORY,
                 "Out of memory error occurred while processing array. "
                     + "Please adjust the JVM Heap "
-                    + "Space settings and try again.", dataFile.toString(), 
+                    + "Space settings and try again.", dataFile, 
                     arrayIndex);
           }
         } catch (IOException io) {
-          addArrayException(ExceptionType.FATAL, io.getMessage(), 
-              dataFile.toString(), arrayIndex);
+          addArrayProblem(ExceptionType.FATAL, 
+              ProblemType.ARRAY_DATA_FILE_READ_ERROR, 
+              io.getMessage(), 
+              dataFile, 
+              arrayIndex);
         }
         arrayIndex++;
       }
@@ -188,18 +203,21 @@ public class ArrayContentValidationRule extends AbstractValidationRule {
     }
   }
   
-  private void addArrayException(ExceptionType exceptionType, String message, 
-      String dataFile, int array) {
-    addArrayException(exceptionType, message, dataFile, array, null);
+  private void addArrayProblem(ExceptionType exceptionType, 
+      ProblemType problemType, String message, URL dataFile, int array) {
+    addArrayProblem(exceptionType, problemType, message, dataFile, array, 
+        null);
   }
   
-  private void addArrayException(ExceptionType exceptionType, String message,
-      String dataFile, int array, int[] location) {
+  private void addArrayProblem(ExceptionType exceptionType, 
+      ProblemType problemType, String message,
+      URL dataFile, int array, int[] location) {
         getListener().addProblem(
-        new ArrayContentException(exceptionType, 
+        new ArrayContentProblem(exceptionType,
+            problemType,
             message, 
             dataFile, 
-            getTarget().toString(),
+            getTarget(),
             array,
             location));
   }
@@ -277,11 +295,12 @@ public class ArrayContentValidationRule extends AbstractValidationRule {
       lineNumber = nodeLocation.getLineNumber();
     }
     getListener().addProblem(
-        new LabelException(ExceptionType.FATAL, 
+        new ArrayContentProblem(ExceptionType.FATAL,
+            ProblemType.ARRAY_INTERNAL_ERROR,
             "Error evaluating XPath expression '" + xpath + "': " + message,
-            getTarget().toString(),
-            getTarget().toString(),
+            getTarget(),
+            getTarget(),
             lineNumber,
-            -1));
+            null));
   }
 }

@@ -351,7 +351,7 @@ public class FileReferenceValidationRule extends AbstractValidationRule {
               + "' in the manifest for '" + urlRef
               + "'";
           severity = ExceptionType.INFO;
-          type = ProblemType.GENERAL_INFO;
+          type = ProblemType.CHECKSUM_MATCHES;
         }
         if (!message.isEmpty()) {
           ProblemDefinition def = new ProblemDefinition(severity, type, 
@@ -383,7 +383,7 @@ public class FileReferenceValidationRule extends AbstractValidationRule {
               + "' matches the supplied checksum '" + checksumInLabel
               + "' in the product label for '"
               + urlRef + "'";
-          type = ProblemType.GENERAL_INFO;
+          type = ProblemType.CHECKSUM_MATCHES;
           severity = ExceptionType.INFO;
         }
         if (!message.isEmpty()) {

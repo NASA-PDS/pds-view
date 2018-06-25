@@ -1,4 +1,4 @@
-// Copyright 2006-2017, by the California Institute of Technology.
+// Copyright 2006-2018, by the California Institute of Technology.
 // ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
 // Any commercial use must be negotiated with the Office of Technology Transfer
 // at the California Institute of Technology.
@@ -57,10 +57,13 @@ import gov.nasa.pds.tools.label.ExceptionType;
 import gov.nasa.pds.tools.label.LabelException;
 import gov.nasa.pds.tools.label.SourceLocation;
 import gov.nasa.pds.tools.util.Utility;
+import gov.nasa.pds.tools.validate.ProblemDefinition;
+import gov.nasa.pds.tools.validate.ProblemType;
+import gov.nasa.pds.tools.validate.ValidationProblem;
 import gov.nasa.pds.tools.validate.XPaths;
 import gov.nasa.pds.tools.validate.content.table.FieldValueValidator;
 import gov.nasa.pds.tools.validate.content.table.RawTableReader;
-import gov.nasa.pds.tools.validate.content.table.TableContentException;
+import gov.nasa.pds.tools.validate.content.table.TableContentProblem;
 import gov.nasa.pds.tools.validate.rule.AbstractValidationRule;
 import gov.nasa.pds.tools.validate.rule.ValidationTest;
 
@@ -75,11 +78,15 @@ public class TableDataContentValidationRule extends AbstractValidationRule {
   /** Used in evaluating xpath expressions. */
   private XPathFactory xPathFactory;
   
-  /** XPath to find descendant Packed_Data_Fields elements from a given node. */
-  private static final String PACKED_DATA_FIELD_XPATH = "descendant::*[name()='Packed_Data_Fields']";
+  /** XPath to find descendant Packed_Data_Fields elements 
+   *  from a given node. 
+   */
+  private static final String PACKED_DATA_FIELD_XPATH = 
+      "descendant::*[name()='Packed_Data_Fields']";
   
   /** XPath to find child Table_Binary elements from a given node. */
-  private static final String CHILD_TABLE_BINARY_XPATH = "child::*[name()='Table_Binary']";
+  private static final String CHILD_TABLE_BINARY_XPATH = 
+      "child::*[name()='Table_Binary']";
   
   /**
    * Creates a new instance.
@@ -94,7 +101,8 @@ public class TableDataContentValidationRule extends AbstractValidationRule {
       return false;
     }
     boolean isApplicable = false;
-    // The rule is applicable if a label has been parsed and tables exist in the label.
+    // The rule is applicable if a label has been parsed and tables exist
+    // in the label.
     if (getContext().containsKey(PDS4Context.LABEL_DOCUMENT)) {
       Document label = getContext().getContextValue(PDS4Context.LABEL_DOCUMENT,
           Document.class);
@@ -122,8 +130,15 @@ public class TableDataContentValidationRule extends AbstractValidationRule {
     List<FileArea> tableFileAreas = new ArrayList<FileArea>();
     try {
       tableFileAreas = getTableFileAreas(objectAccess);
-    } catch (ParseException e) {
-      //Ignore. Shouldn't happen
+    } catch (ParseException pe) {
+      getListener().addProblem(
+          new ValidationProblem(new ProblemDefinition(
+              ExceptionType.ERROR,
+              ProblemType.INVALID_LABEL,
+              "Error occurred while trying to get the table file areas: "
+                  + pe.getCause().getMessage()),
+          getTarget()));
+      return;
     }
     NodeList fileAreaNodes = null;
     XPath xpath = xPathFactory.newXPath();
@@ -159,7 +174,8 @@ public class TableDataContentValidationRule extends AbstractValidationRule {
             CHILD_TABLE_BINARY_XPATH, xe.getMessage());
       }
       List<Object> tableObjects = objectAccess.getTableObjects(fileArea);
-      FieldValueValidator fieldValueValidator = new FieldValueValidator(getListener());
+      FieldValueValidator fieldValueValidator = new FieldValueValidator(
+          getListener());
       for (Object table : tableObjects) {
         RawTableReader reader = null;
         try {
@@ -170,11 +186,12 @@ public class TableDataContentValidationRule extends AbstractValidationRule {
           reader = new RawTableReader(table, dataFile, getTarget(), 
               tableIndex, readEntireFile);
         } catch (Exception ex) {
-          addTableException(ExceptionType.ERROR,
-          "Error occurred while trying to read table: " + ex.getMessage(),
-          dataFile.toString(),
-          tableIndex,
-          -1);
+          addTableProblem(ExceptionType.ERROR, 
+              ProblemType.TABLE_FILE_READ_ERROR,
+              "Error occurred while trying to read table: " + ex.getMessage(),
+              dataFile,
+              tableIndex,
+              -1);
           tableIndex++;
           continue;
         }
@@ -187,7 +204,8 @@ public class TableDataContentValidationRule extends AbstractValidationRule {
           TableDelimited td = (TableDelimited) table;
           if (td.getRecordDelimited() != null &&
               td.getRecordDelimited().getMaximumRecordLength() != null) {
-            recordMaxLength = td.getRecordDelimited().getMaximumRecordLength().getValue();
+            recordMaxLength = td.getRecordDelimited()
+                .getMaximumRecordLength().getValue();
           }
           definedNumRecords = td.getRecords();
         } else if (table instanceof TableBinary) {
@@ -219,59 +237,70 @@ public class TableDataContentValidationRule extends AbstractValidationRule {
             } catch (BufferUnderflowException be) {
               throw new IOException(
                   "Unexpected end-of-file reached while reading table '"
-                      + tableIndex + "', record '" + reader.getCurrentRow() + "'");
+                      + tableIndex
+                      + "', record '" + reader.getCurrentRow() + "'");
             }
           } else {
             String line = null;       
             boolean manuallyParseRecord = false;
-            while ( (line = reader.readNextLine()) != null) {            
+            while ( (line = reader.readNextLine()) != null) {
               if (!line.endsWith("\r\n")) {
-                addTableException(ExceptionType.ERROR, 
+                addTableProblem(ExceptionType.ERROR,
+                    ProblemType.MISSING_CRLF,
                     "Record does not end in carriage-return line feed.", 
-                    dataFile.toString(), tableIndex, reader.getCurrentRow());
+                    dataFile, tableIndex, reader.getCurrentRow());
                 manuallyParseRecord = true;
               } else {
-                addTableException(ExceptionType.DEBUG, 
-                        "Record ends in carriage-return line feed.",
-                        dataFile.toString(),
-                        tableIndex,
-                        reader.getCurrentRow());              
+                addTableProblem(ExceptionType.DEBUG,
+                    ProblemType.CRLF_DETECTED,
+                    "Record ends in carriage-return line feed.",
+                    dataFile,
+                    tableIndex,
+                    reader.getCurrentRow());              
               }
               if (recordLength != -1) {
                 if (line.length() != recordLength) {
-                  addTableException(ExceptionType.ERROR, 
-                          "Record does not equal the defined record length "
-                          + "(expected " + recordLength + ", got " + line.length() + ").",
-                          dataFile.toString(),
-                          tableIndex,
-                          reader.getCurrentRow()); 
+                  addTableProblem(ExceptionType.ERROR,
+                      ProblemType.RECORD_LENGTH_MISMATCH,
+                      "Record does not equal the defined record length "
+                          + "(expected " + recordLength
+                          + ", got " + line.length() + ").",
+                      dataFile,
+                      tableIndex,
+                      reader.getCurrentRow()); 
                   manuallyParseRecord = true;
                 } else {
-                  addTableException(ExceptionType.DEBUG, 
-                          "Record equals the defined record length "
-                          + "(expected " + recordLength + ", got " + line.length() + ").",
-                          dataFile.toString(),
-                          tableIndex,
-                          reader.getCurrentRow());              
+                  addTableProblem(ExceptionType.DEBUG,
+                      ProblemType.RECORD_MATCH,
+                      "Record equals the defined record length "
+                          + "(expected " + recordLength
+                          + ", got " + line.length() + ").",
+                      dataFile,
+                      tableIndex,
+                      reader.getCurrentRow());              
                 }
               }
               if (recordMaxLength != -1) {
                 if (line.length() > recordMaxLength) {
-                  addTableException(ExceptionType.ERROR, 
-                          "Record length exceeds the max defined record length "
-                          + "(expected " + recordMaxLength + ", got " + line.length() + ").",
-                          dataFile.toString(),
-                          tableIndex,
-                          reader.getCurrentRow());
+                  addTableProblem(ExceptionType.ERROR,
+                      ProblemType.RECORD_LENGTH_MISMATCH,
+                      "Record length exceeds the max defined record length "
+                          + "(expected " + recordMaxLength
+                          + ", got " + line.length() + ").",
+                      dataFile,
+                      tableIndex,
+                      reader.getCurrentRow());
                   manuallyParseRecord = true;
                 } else {
-                  addTableException(ExceptionType.DEBUG, 
-                          "Record length is less than or equal to the max "
+                  addTableProblem(ExceptionType.DEBUG,
+                      ProblemType.GOOD_RECORD_LENGTH,
+                      "Record length is less than or equal to the max "
                           + "defined record length "
-                          + "(max " + recordMaxLength + ", got " + line.length() + ").",
-                          dataFile.toString(),
-                          tableIndex,
-                          reader.getCurrentRow());
+                          + "(max " + recordMaxLength
+                          + ", got " + line.length() + ").",
+                      dataFile,
+                      tableIndex,
+                      reader.getCurrentRow());
                 }
               }
               // Need to manually parse the line if we're past the defined
@@ -291,35 +320,39 @@ public class TableDataContentValidationRule extends AbstractValidationRule {
               } catch (IOException io) {
                 //An exception here means that the number of fields read in
                 //did not equal the number of fields exepected
-                addTableException(ExceptionType.ERROR, 
-                        io.getMessage(),
-                        dataFile.toString(),
-                        tableIndex,
-                        reader.getCurrentRow());                
+                addTableProblem(ExceptionType.ERROR,
+                    ProblemType.FIELDS_MISMATCH,
+                    io.getMessage(),
+                    dataFile,
+                    tableIndex,
+                    reader.getCurrentRow());                
               }
               if (table instanceof TableDelimited && 
                   definedNumRecords == reader.getCurrentRow()) {
                 break;
               }
             }
-            if (definedNumRecords != -1 && definedNumRecords != reader.getCurrentRow()) {
-              String message = "Number of records read is not equal to the defined "
-                  + "number of records in the label (expected "
-                  + definedNumRecords + ", got " + reader.getCurrentRow() + ").";
-              addTableException(ExceptionType.ERROR, 
-                      message,
-                      dataFile.toString(),
-                      tableIndex,
-                      -1); 
+            if (definedNumRecords != -1 && 
+                definedNumRecords != reader.getCurrentRow()) {
+              String message = "Number of records read is not equal "
+                + "to the defined number of records in the label (expected "
+                + definedNumRecords + ", got " + reader.getCurrentRow() + ").";
+              addTableProblem(ExceptionType.ERROR,
+                  ProblemType.RECORDS_MISMATCH,
+                  message,
+                  dataFile,
+                  tableIndex,
+                  -1); 
             }
           }
         } catch (IOException io) {
           // Error occurred while reading the data file
-          addTableException(ExceptionType.FATAL, 
-                  "Error occurred while reading the data file: " + io.getMessage(),
-                  dataFile.toString(),
-                  -1,
-                  -1);
+          addTableProblem(ExceptionType.FATAL,
+              ProblemType.TABLE_FILE_READ_ERROR,
+              "Error occurred while reading the data file: " + io.getMessage(),
+              dataFile,
+              -1,
+              -1);
         }
         tableIndex++; 
       }
@@ -363,20 +396,25 @@ public class TableDataContentValidationRule extends AbstractValidationRule {
    * 
    * @throws ParseException If an error occured while getting the Product.
    */
-  private List<FileArea> getTableFileAreas(ObjectProvider objectAccess) throws ParseException {
+  private List<FileArea> getTableFileAreas(ObjectProvider objectAccess) 
+      throws ParseException {
     List<FileArea> results = new ArrayList<FileArea>();
     Product product = objectAccess.getProduct(getTarget(), Product.class);
     if (product instanceof ProductObservational) {
-      results.addAll(((ProductObservational) product).getFileAreaObservationals());
+      results.addAll(((ProductObservational) product)
+          .getFileAreaObservationals());
     } else if (product instanceof ProductSIPDeepArchive) {
       ProductSIPDeepArchive psda = (ProductSIPDeepArchive) product;
       if (psda.getInformationPackageComponentDeepArchive() != null && 
-          psda.getInformationPackageComponentDeepArchive().getFileAreaSIPDeepArchive() != null) {
-        results.add(psda.getInformationPackageComponentDeepArchive().getFileAreaSIPDeepArchive());
+          psda.getInformationPackageComponentDeepArchive()
+          .getFileAreaSIPDeepArchive() != null) {
+        results.add(psda.getInformationPackageComponentDeepArchive()
+            .getFileAreaSIPDeepArchive());
       }
     } else if (product instanceof ProductAIP) {
       ProductAIP pa = (ProductAIP) product;
-      for ( InformationPackageComponent ipc : pa.getInformationPackageComponents()) {
+      for ( InformationPackageComponent ipc : 
+        pa.getInformationPackageComponents()) {
         if (ipc.getFileAreaTransferManifest() != null) {
           results.add(ipc.getFileAreaTransferManifest());
         }
@@ -437,30 +475,34 @@ public class TableDataContentValidationRule extends AbstractValidationRule {
               SourceLocation.class.getName());
       try {
         NodeList fieldBits = (NodeList) xPathFactory.newXPath()
-            .evaluate("child::*[name()='Field_Bit']", packedDataField, XPathConstants.NODESET);
+            .evaluate("child::*[name()='Field_Bit']", packedDataField, 
+                XPathConstants.NODESET);
         try {
           Number definedBitFields = (Number) xPathFactory.newXPath()
-              .evaluate("child::*[name()='bit_fields']/text()", packedDataField, XPathConstants.NUMBER);
+              .evaluate("child::*[name()='bit_fields']/text()", 
+                  packedDataField, XPathConstants.NUMBER);
           if ( definedBitFields.intValue() != fieldBits.getLength()) {
             getListener().addProblem(
-                new LabelException(ExceptionType.ERROR, 
-                    "Number of 'Field_Bit' elements does not equal the 'bit_fields' value "
-                        + "in the label (expected "
+                new ValidationProblem(new ProblemDefinition(
+                    ExceptionType.ERROR,
+                    ProblemType.BIT_FIELD_MISMATCH,
+                    "Number of 'Field_Bit' elements does not equal the "
+                        + "'bit_fields' value in the label (expected "
                         + definedBitFields.intValue()
-                        + ", got " + fieldBits.getLength() + ").",
-                    getTarget().toString(),
-                    getTarget().toString(),
+                        + ", got " + fieldBits.getLength() + ")."),
+                    getTarget(),
                     nodeLocation.getLineNumber(),
                     -1));
           } else {
             getListener().addProblem(
-                new LabelException(ExceptionType.DEBUG, 
-                    "Number of 'Field_Bit' elements equals the 'bit_fields' value "
-                        + "in the label (expected "
+                new ValidationProblem(new ProblemDefinition(
+                    ExceptionType.DEBUG,
+                    ProblemType.BIT_FIELD_MATCH,
+                    "Number of 'Field_Bit' elements equals the "
+                        + "'bit_fields' value in the label (expected "
                         + definedBitFields.intValue()
-                        + ", got " + fieldBits.getLength() + ").",
-                    getTarget().toString(),
-                    getTarget().toString(),
+                        + ", got " + fieldBits.getLength() + ")."),
+                    getTarget(),
                     nodeLocation.getLineNumber(),
                     -1));            
           }
@@ -484,9 +526,11 @@ public class TableDataContentValidationRule extends AbstractValidationRule {
    * @param table The index of the table associated with the exception.
    * @param record The index of the record associated with the exception.
    */
-  private void addTableException(ExceptionType exceptionType, String message, 
-      String dataFile, int table, int record) {
-    addTableException(exceptionType, message, dataFile, table, record, -1);
+  private void addTableProblem(ExceptionType exceptionType, 
+      ProblemType problemType, String message, URL dataFile, int table, 
+      int record) {
+    addTableProblem(exceptionType, problemType, message, dataFile, table,
+        record, -1);
   }
   
   /**
@@ -499,13 +543,15 @@ public class TableDataContentValidationRule extends AbstractValidationRule {
    * @param record The index of the record associated with the exception.
    * @param field The index of the field associated with the exception.
    */
-  private void addTableException(ExceptionType exceptionType, String message, 
-      String dataFile, int table, int record, int field) {
+  private void addTableProblem(ExceptionType exceptionType, 
+      ProblemType problemType, String message, 
+      URL dataFile, int table, int record, int field) {
     getListener().addProblem(
-        new TableContentException(exceptionType, 
+        new TableContentProblem(exceptionType,
+            problemType,
             message,
             dataFile,
-            getTarget().toString(),
+            getTarget(),
             table,
             record,
             field));
@@ -527,10 +573,12 @@ public class TableDataContentValidationRule extends AbstractValidationRule {
       lineNumber = nodeLocation.getLineNumber();
     }
     getListener().addProblem(
-        new LabelException(ExceptionType.FATAL, 
-            "Error evaluating XPath expression '" + xpath + "': " + message,
-            getTarget().toString(),
-            getTarget().toString(),
+        new ValidationProblem(new ProblemDefinition(
+            ExceptionType.FATAL,
+            ProblemType.TABLE_INTERNAL_ERROR,
+            "Error evaluating XPath expression '" + xpath + "': "
+                + message),
+            getTarget(),
             lineNumber,
             -1));
   }

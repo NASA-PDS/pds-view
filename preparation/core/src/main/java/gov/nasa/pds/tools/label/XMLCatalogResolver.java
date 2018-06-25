@@ -1,4 +1,4 @@
-//	Copyright 2009-2017, by the California Institute of Technology.
+//	Copyright 2009-2018, by the California Institute of Technology.
 //	ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
 //	Any commercial use must be negotiated with the Office of Technology 
 //	Transfer at the California Institute of Technology.
@@ -38,6 +38,9 @@ import org.xml.sax.SAXException;
 import org.xml.sax.ext.EntityResolver2;
 
 import gov.nasa.pds.tools.util.Utility;
+import gov.nasa.pds.tools.validate.ProblemDefinition;
+import gov.nasa.pds.tools.validate.ProblemType;
+import gov.nasa.pds.tools.validate.ValidationProblem;
 
 
 
@@ -63,7 +66,8 @@ import gov.nasa.pds.tools.util.Utility;
  * between several parsers and the application.</p>
  *
  */
-public class XMLCatalogResolver extends CachedLSResourceResolver implements XMLEntityResolver, EntityResolver2 {
+public class XMLCatalogResolver extends CachedLSResourceResolver
+implements XMLEntityResolver, EntityResolver2 {
   
   /** Internal catalog manager for Apache catalogs. **/
   private CatalogManager fResolverCatalogManager = null;
@@ -226,10 +230,12 @@ public class XMLCatalogResolver extends CachedLSResourceResolver implements XMLE
    * catalog for the given external identifier. It should be
    * overridden if other behaviour is required.</p>
    * 
-   * @param publicId the public identifier, or <code>null</code> if none was supplied
+   * @param publicId the public identifier, or <code>null</code> 
+   * if none was supplied
    * @param systemId the system identifier
    * 
-   * @throws SAXException any SAX exception, possibly wrapping another exception
+   * @throws SAXException any SAX exception, possibly wrapping another 
+   * exception
    * @throws IOException thrown if some i/o error occurs
    */
   public InputSource resolveEntity(String publicId, String systemId)
@@ -259,11 +265,14 @@ public class XMLCatalogResolver extends CachedLSResourceResolver implements XMLE
     * overridden if other behaviour is required.</p>
     * 
     * @param name the identifier of the external entity 
-    * @param publicId the public identifier, or <code>null</code> if none was supplied
-    * @param baseURI the URI with respect to which relative systemIDs are interpreted.
+    * @param publicId the public identifier, or <code>null</code> if none 
+    * was supplied
+    * @param baseURI the URI with respect to which relative systemIDs are 
+    * interpreted.
     * @param systemId the system identifier
     * 
-    * @throws SAXException any SAX exception, possibly wrapping another exception
+    * @throws SAXException any SAX exception, possibly wrapping another
+    *  exception
     * @throws IOException thrown if some i/o error occurs
     */
    public InputSource resolveEntity(String name, String publicId, 
@@ -304,7 +313,8 @@ public class XMLCatalogResolver extends CachedLSResourceResolver implements XMLE
     * @param name the identifier of the document root element 
     * @param baseURI the document's base URI
     * 
-    * @throws SAXException any SAX exception, possibly wrapping another exception
+    * @throws SAXException any SAX exception, possibly wrapping another
+    *  exception
     * @throws IOException thrown if some i/o error occurs
     */
    public InputSource getExternalSubset(String name, String baseURI)
@@ -332,29 +342,46 @@ public class XMLCatalogResolver extends CachedLSResourceResolver implements XMLE
       String publicId, String systemId, String baseURI) {
 
       String resolvedId = null;
+      URL baseUrl = null;
+      try {
+        baseUrl = new URL(baseURI);
+      } catch (MalformedURLException e) {
+        // Ignore. Should not happen!!!!
+      }
       
       try {
-        resolvedId = resolveResource(namespaceURI, publicId, systemId, baseURI);
+        resolvedId = resolveResource(namespaceURI, publicId, systemId, 
+            baseURI);
       }
+      
       // Ignore IOException. It cannot be thrown from this method.
       catch (IOException io) {
-        if (getExceptionHandler() != null) {
-          getExceptionHandler().addException(
-              new LabelException(ExceptionType.ERROR, 
-                  io.getMessage(), baseURI));
+        if (getProblemHandler() != null) {
+          getProblemHandler().addProblem(
+              new ValidationProblem(
+                  new ProblemDefinition(
+                      ExceptionType.ERROR,
+                      ProblemType.CATALOG_UNRESOLVABLE_RESOURCE,
+                      io.getMessage()), 
+                  baseUrl));
         }
       }
       
       if (resolvedId != null) {
 //        System.out.println("Result: " + resolvedId);
-        return super.resolveResource(type, namespaceURI, publicId, resolvedId, baseURI);
+        return super.resolveResource(type, namespaceURI, publicId, 
+            resolvedId, baseURI);
       }
 
-      if (getExceptionHandler() != null) {
+      if (getProblemHandler() != null) {
         if (systemId != null && namespaceURI != null) {
-          getExceptionHandler().addException(
-            new LabelException(ExceptionType.ERROR, 
-                "Could not resolve uri '" + systemId + "' or namespace '" + namespaceURI + "' with the given catalog file.", baseURI));
+          getProblemHandler().addProblem(
+            new ValidationProblem(
+                new ProblemDefinition(ExceptionType.ERROR,
+                    ProblemType.CATALOG_UNRESOLVABLE_RESOURCE,
+                "Could not resolve uri '" + systemId + "' or namespace '"
+                    + namespaceURI + "' with the given catalog file."), 
+                baseUrl));
         }
       }
       return null;
@@ -410,8 +437,8 @@ public class XMLCatalogResolver extends CachedLSResourceResolver implements XMLE
   }
   
   
-  public String resolveSchema(String namespaceURI, String systemId, String baseURI)
-      throws IOException {
+  public String resolveSchema(String namespaceURI, String systemId,
+      String baseURI) throws IOException {
     return resolveResource(namespaceURI, null, systemId, baseURI);
   }
    
@@ -503,8 +530,8 @@ public class XMLCatalogResolver extends CachedLSResourceResolver implements XMLE
    * @throws IOException if an i/o error occurred while reading
    * the catalog
    */
-  public final synchronized String resolvePublic (String publicId, String systemId) 
-      throws IOException {
+  public final synchronized String resolvePublic (String publicId, 
+      String systemId) throws IOException {
 
       if (fCatalogsChanged) {
           parseCatalogs();
@@ -555,7 +582,8 @@ public class XMLCatalogResolver extends CachedLSResourceResolver implements XMLE
       fResolverCatalogManager = new CatalogManager();
       fResolverCatalogManager.setBootstrapResolver(new BootstrapResolver());
       fResolverCatalogManager.setAllowOasisXMLCatalogPI(false);
-      fResolverCatalogManager.setCatalogClassName("gov.nasa.pds.tools.label.XMLCatalog");
+      fResolverCatalogManager.setCatalogClassName(
+          "gov.nasa.pds.tools.label.XMLCatalog");
       fResolverCatalogManager.setCatalogFiles("");
       fResolverCatalogManager.setIgnoreMissingProperties(true);
       fResolverCatalogManager.setPreferPublic(fPreferPublic);
@@ -597,7 +625,8 @@ public class XMLCatalogResolver extends CachedLSResourceResolver implements XMLE
 
       SAXCatalogReader saxReader = new SAXCatalogReader(spf);
       
-      saxReader.setCatalogParser(OASISXMLCatalogReader.namespaceName, "catalog", 
+      saxReader.setCatalogParser(OASISXMLCatalogReader.namespaceName,
+          "catalog", 
           "org.apache.xml.resolver.readers.OASISXMLCatalogReader");
       catalog.addReader("application/xml", saxReader);
   }

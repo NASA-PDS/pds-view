@@ -1,4 +1,4 @@
-//  Copyright 2009-2014, by the California Institute of Technology.
+//  Copyright 2009-2018, by the California Institute of Technology.
 //  ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
 //  Any commercial use must be negotiated with the Office of Technology
 //  Transfer at the California Institute of Technology.
@@ -21,11 +21,14 @@ import java.io.StringWriter;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import gov.nasa.pds.tools.util.Utility;
 import gov.nasa.pds.tools.util.XslURIResolver;
+import gov.nasa.pds.tools.validate.ProblemDefinition;
+import gov.nasa.pds.tools.validate.ProblemHandler;
+import gov.nasa.pds.tools.validate.ProblemType;
+import gov.nasa.pds.tools.validate.ValidationProblem;
 
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
@@ -90,7 +93,7 @@ public class SchematronTransformer {
    * Transform the given schematron source.
    *
    * @param source The schematron source.
-   * @param container Container to hold problems that occurred during the
+   * @param handler Container to hold problems that occurred during the
    * transform process.
    *
    * @return A transformed schematron.
@@ -98,15 +101,15 @@ public class SchematronTransformer {
    * @throws TransformerException If an error occurred during the transform
    * process.
    */
-  public Transformer transform(Source source, ExceptionHandler container)
+  public Transformer transform(Source source, ProblemHandler handler)
       throws TransformerException {
     Transformer transformer = null;
     if (cachedTransformers.containsKey(source.getSystemId())) {
       transformer = cachedTransformers.get(source.getSystemId());
     } else {
-      if (container != null) {
+      if (handler != null) {
         isoTransformer.setErrorListener(
-            new TransformerErrorListener(container));
+            new TransformerErrorListener(handler));
       }
       StringWriter schematronStyleSheet = new StringWriter();
       isoTransformer.transform(source, new StreamResult(
@@ -135,23 +138,23 @@ public class SchematronTransformer {
    * Transform the given schematron.
    *
    * @param schematron the URL to the schematron.
-   * @param container an exception handler to capture problems.
+   * @param handler an problem handler to capture problems.
    *
    * @return a transformed schematron.
    *
    * @throws TransformerException if an error occurred during the transform
    * process.
    */
-  public Transformer transform(URL schematron, ExceptionHandler container)
+  public Transformer transform(URL schematron, ProblemHandler handler)
       throws TransformerException {
     Transformer transformer = null;
 
     if (cachedTransformers.containsKey(schematron.toString())) {
       transformer = cachedTransformers.get(schematron.toString());
     } else {
-      if (container != null) {
+      if (handler != null) {
         isoTransformer.setErrorListener(
-            new TransformerErrorListener(container));
+            new TransformerErrorListener(handler));
       }
       StringWriter schematronStyleSheet = new StringWriter();
       InputStream in = null;
@@ -165,10 +168,11 @@ public class SchematronTransformer {
         isoTransformer.transform(source, new StreamResult(
           schematronStyleSheet));
         transformer = transformerFactory.newTransformer(
-            new StreamSource(new StringReader(schematronStyleSheet.toString())));
+            new StreamSource(new StringReader(
+                schematronStyleSheet.toString())));
       } catch (TransformerException te) {
-        // Only throw exception if a container was not set.
-        if (container == null) {
+        // Only throw problem if a handler was not set.
+        if (handler == null) {
           throw te;
         }
       } catch (IOException io) {
@@ -179,9 +183,11 @@ public class SchematronTransformer {
         } else {
           message = io.getMessage();
         }
-        if (container != null) {
-          container.addException(new LabelException(ExceptionType.FATAL,
-            message, schematron.toString()));
+        if (handler != null) {
+          handler.addProblem(new ValidationProblem(
+              new ProblemDefinition(ExceptionType.FATAL,
+                  ProblemType.SCHEMATRON_ERROR, message), 
+              schematron));
         } else {
           throw new TransformerException(message);
         }

@@ -1,4 +1,4 @@
-// Copyright 2006-2017, by the California Institute of Technology.
+// Copyright 2006-2018, by the California Institute of Technology.
 // ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
 // Any commercial use must be negotiated with the Office of Technology Transfer
 // at the California Institute of Technology.
@@ -13,32 +13,46 @@
 // $Id$
 package gov.nasa.pds.tools.validate.rule.pds4;
 
-import gov.nasa.pds.tools.validate.ProblemListener;
-import gov.nasa.pds.tools.label.ExceptionHandler;
-import gov.nasa.pds.tools.label.LabelException;
-
 import java.net.URL;
 
+import gov.nasa.pds.tools.validate.ProblemHandler;
+import gov.nasa.pds.tools.validate.ProblemListener;
+import gov.nasa.pds.tools.validate.ValidationProblem;
+
 /**
- * Implements an exception handler for XML parsing and Schematron
+ * Implements a ProblemHandler for XML parsing and Schematron
  * errors.
  */
-public class ExceptionProcessor implements ExceptionHandler {
-
+public class ProblemProcessor implements ProblemHandler {
   private ProblemListener listener;
   private URL target;
 
-  public ExceptionProcessor(ProblemListener listener, URL target) {
+  /**
+   * Constructor.
+   * 
+   * @param listener problem listener.
+   * @param target The URL of the target label.
+   */
+  public ProblemProcessor(ProblemListener listener, URL target) {
     this.listener = listener;
     this.target = target;
   }
   
+  /**
+   * 
+   * @return The target label.
+   */
   public URL getTarget() {
     return this.target;
   }
   
-  public void addException(LabelException exception) {
-    exception.setSource(target.toString());
-  //  listener.addProblem(exception);
+  /**
+   * Add a problem.
+   * 
+   * @param problem The validation problem to add.
+   */
+  public void addProblem(ValidationProblem problem) {
+    problem.setSource(target.toString());
+    listener.addProblem(problem);
   }
 }

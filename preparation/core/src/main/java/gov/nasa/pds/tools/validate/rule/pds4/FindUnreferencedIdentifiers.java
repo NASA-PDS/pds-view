@@ -13,15 +13,19 @@
 // $Id$
 package gov.nasa.pds.tools.validate.rule.pds4;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.io.FilenameUtils;
 
 import gov.nasa.pds.tools.label.ExceptionType;
-import gov.nasa.pds.tools.label.LabelException;
 import gov.nasa.pds.tools.validate.Identifier;
 import gov.nasa.pds.tools.validate.ListenerExceptionPropagator;
+import gov.nasa.pds.tools.validate.ProblemDefinition;
+import gov.nasa.pds.tools.validate.ProblemType;
+import gov.nasa.pds.tools.validate.ValidationProblem;
 import gov.nasa.pds.tools.validate.rule.AbstractValidationRule;
 import gov.nasa.pds.tools.validate.rule.ValidationTest;
 
@@ -30,7 +34,8 @@ import gov.nasa.pds.tools.validate.rule.ValidationTest;
  * referenced by some label.
  */
 public class FindUnreferencedIdentifiers extends AbstractValidationRule {
-  private static final Pattern COLLECTION_LABEL_PATTERN = Pattern.compile("collection(_.*)*\\.xml", Pattern.CASE_INSENSITIVE);
+  private static final Pattern COLLECTION_LABEL_PATTERN = 
+      Pattern.compile("collection(_.*)*\\.xml", Pattern.CASE_INSENSITIVE);
   
   @Override
   public boolean isApplicable(String location) {
@@ -47,19 +52,24 @@ public class FindUnreferencedIdentifiers extends AbstractValidationRule {
     if (getContext().isRootTarget()) {
       for (Identifier id : getRegistrar().getIdentifierDefinitions().keySet()) {  
         String location = getRegistrar().getTargetForIdentifier(id);
+        URL locationUrl = null;
+        try {
+          locationUrl = new URL(location);
+        } catch (MalformedURLException mu) {
+          //Ignore. Should not happen!!!
+        }
         getListener().addLocation(location);
         boolean found = false;
         for (Identifier ri : getRegistrar().getReferencedIdentifiers()) {
           if (ri.equals(id)) {
             found = true;
-            getListener().addProblem(new LabelException(ExceptionType.INFO,
+            getListener().addProblem(new ValidationProblem(
+                new ProblemDefinition(ExceptionType.INFO,
+                    ProblemType.REFERENCED_MEMBER,
                 "Identifier '" + id.toString()
                 + "' is a member of '"
-                + getRegistrar().getIdentifierReferenceLocation(id) + "'",
-                location,
-                location,
-                null,
-                null));
+                + getRegistrar().getIdentifierReferenceLocation(id) + "'"),
+                locationUrl));
             break;
           }
         }
@@ -70,17 +80,17 @@ public class FindUnreferencedIdentifiers extends AbstractValidationRule {
           if (matcher.matches()) {
             memberType = "bundle";
           }
-          // Don't print out messages if were validating using collection rules and 
-          // the identifier in question is a collection
+          // Don't print out messages if were validating using collection rules
+          // and the identifier in question is a collection
           if ( !("bundle".equals(memberType) && 
-              getContext().getRule().getCaption().equals("PDS4 Collection")) ) {
-            getListener().addProblem(new LabelException(ExceptionType.WARNING,
-                "Identifier '" + id.toString() + "' is not a member of any "
-                    + memberType + " within the given target", 
-                location,
-                location,
-                null,
-                null));
+              getContext().getRule().getCaption()
+              .equals("PDS4 Collection")) ) {
+            getListener().addProblem(new ValidationProblem(
+                new ProblemDefinition(ExceptionType.WARNING,
+                    ProblemType.UNREFERENCED_MEMBER,
+                    "Identifier '" + id.toString() + "' is not a member "
+                    +"of any " + memberType + " within the given target"), 
+                locationUrl));
           }     
         }
         if (getListener() instanceof ListenerExceptionPropagator) {

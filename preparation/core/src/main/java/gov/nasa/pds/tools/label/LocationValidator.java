@@ -1,4 +1,4 @@
-//  Copyright 2009-2017, by the California Institute of Technology.
+//  Copyright 2009-2018, by the California Institute of Technology.
 //  ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
 //  Any commercial use must be negotiated with the Office of Technology
 //  Transfer at the California Institute of Technology.
@@ -18,6 +18,7 @@ import gov.nasa.pds.tools.util.SettingsManager;
 import gov.nasa.pds.tools.validate.ListenerExceptionPropagator;
 import gov.nasa.pds.tools.validate.ProblemListener;
 import gov.nasa.pds.tools.validate.TargetRegistrar;
+import gov.nasa.pds.tools.validate.ValidateProblemHandler;
 import gov.nasa.pds.tools.validate.ValidationProblem;
 import gov.nasa.pds.tools.validate.ValidationResourceManager;
 import gov.nasa.pds.tools.validate.crawler.Crawler;
@@ -34,7 +35,6 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -55,7 +55,8 @@ import org.slf4j.LoggerFactory;
  */
 public class LocationValidator {
 	
-	private static final Logger LOG = LoggerFactory.getLogger(LocationValidator.class);
+	private static final Logger LOG = LoggerFactory.getLogger(
+	    LocationValidator.class);
 	
 	private TargetRegistrar targetRegistrar;
 	private SettingsManager settingsManager;
@@ -67,13 +68,17 @@ public class LocationValidator {
 	
 	/**
 	 * Creates a new instance.
-	 * @throws ParserConfigurationException if a label validator cannot configure its parser
-	 * @throws TransformerConfigurationException if a label validator cannot configure its transformer
+	 * @throws ParserConfigurationException if a label validator cannot 
+	 * configure its parser
+	 * @throws TransformerConfigurationException if a label validator cannot 
+	 * configure its transformer
 	 */
-	public LocationValidator() throws TransformerConfigurationException, ParserConfigurationException {
+	public LocationValidator() throws TransformerConfigurationException, 
+	ParserConfigurationException {
 		settingsManager = SettingsManager.INSTANCE;
 		taskManager = new BlockingTaskManager();
-		labelValidator = ValidationResourceManager.INSTANCE.getResource(LabelValidator.class);
+		labelValidator = ValidationResourceManager.INSTANCE.getResource(
+		    LabelValidator.class);
 		ruleContext = new RuleContext();
 		
 		ConfigParser parser = new ConfigParser();
@@ -81,7 +86,8 @@ public class LocationValidator {
 		try {
 			parser.parse(commandsURL);
 		} catch (Exception e) {
-			System.err.println("Could not parse validation configuration from " + commandsURL + ": " + e);
+			System.err.println("Could not parse validation configuration from "
+			    + commandsURL + ": " + e);
 		}
 		Catalog catalog = CatalogFactory.getInstance().getCatalog();
 		
@@ -104,20 +110,21 @@ public class LocationValidator {
 	}
 	
 	public void validate(URL target) {
-		validate(new SimpleExceptionHandler(), target);
+		validate(new SimpleProblemHandler(), target);
 	}
 
 	/**
-	 * Validates a URL location with a given exception handler. This must be
+	 * Validates a URL location with a given problem handler. This must be
 	 * a URL that can be resolved to a file location.
 	 * 
-	 * @param exceptionHandler the exception handler
+	 * @param problemHandler the problem handler
 	 * @param url the URL to validate
 	 * @throws URISyntaxException 
 	 */
-	public void validate(ValidateExceptionHandler exceptionHandler, URL url) {
+	public void validate(ValidateProblemHandler problemHandler, URL url) {
 		if (targetRegistrar == null) {
-			System.err.println("Configuration error - targetRegistrar not specified in LocationValidator.validate()");
+			System.err.println("Configuration error - targetRegistrar not specified"
+			    + " in LocationValidator.validate()");
 			return;
 		}
 
@@ -126,13 +133,17 @@ public class LocationValidator {
 		if (rule == null) {
 			LOG.error("No matching validation rule found for location {}", location);
 		} else {
-			LOG.info("Using validation style '{}' for location {}", rule.getCaption(), location);
+			LOG.info("Using validation style '{}' for location {}", 
+			    rule.getCaption(), location);
 			if (!rule.isApplicable(location)) {
-			  LOG.error("'{}' validation style is not applicable for location {}", rule.getCaption(), location);
+			  LOG.error("'{}' validation style is not applicable for location {}", 
+			      rule.getCaption(), location);
 			  return;
 			}
-			ProblemListener listener = new ListenerExceptionPropagator(exceptionHandler);
-			ValidationTask task = new ValidationTask(listener, ruleContext, targetRegistrar);
+			ProblemListener listener = new ListenerExceptionPropagator(
+			    problemHandler);
+			ValidationTask task = new ValidationTask(listener, ruleContext,
+			    targetRegistrar);
 			task.setLocation(location);
 			task.setRule(rule);
 			task.setRuleManager(ruleManager);
@@ -162,7 +173,8 @@ public class LocationValidator {
 	}
 	
 	private ValidationRule getRule(URL location) {
-		String validationType = settingsManager.getString(ValidationSettings.VALIDATION_RULE, null);
+		String validationType = settingsManager.getString(
+		    ValidationSettings.VALIDATION_RULE, null);
 		if (validationRule != null) {
 			validationType = validationRule;
 		}
@@ -177,12 +189,14 @@ public class LocationValidator {
 		  }
 			rule = ruleManager.findApplicableRule(uri.normalize().toString());
 			if (rule == null) {
-				System.err.println("No validation type specified and no applicable default rules.");
+				System.err.println("No validation type specified and no applicable"
+				    + " default rules.");
 			}
 		} else {
 			rule = ruleManager.findRuleByName(validationType);
 			if (rule == null) {
-				System.err.println("Specified validation type is invalid: " + validationType);
+				System.err.println("Specified validation type is invalid: "
+				    + validationType);
 			}
 		}
 		
@@ -210,7 +224,8 @@ public class LocationValidator {
 	}
 
 	public void setCatalogs(List<String> catalogFiles) {
-		labelValidator.setCatalogs(catalogFiles.toArray(new String[catalogFiles.size()]));
+		labelValidator.setCatalogs(catalogFiles.toArray(
+		    new String[catalogFiles.size()]));
 		ruleContext.setCatalogs(catalogFiles);
 		ruleContext.setCatalogResolver(labelValidator.getCatalogResolver());
 	}
@@ -272,31 +287,28 @@ public class LocationValidator {
 	}
 	
 	/**
-	 * Implements a simple exception handler that prints exceptions to the standout error output.
-	 * @author merose
+	 * Implements a simple problem handler that prints problems to the 
+	 * standout error output.
+	 * @author merose, mcayanan
 	 *
 	 */
-	private class SimpleExceptionHandler implements ValidateExceptionHandler {
+	private class SimpleProblemHandler implements ValidateProblemHandler {
 
 		@Override
-		public void addException(LabelException exception) {
+		public void addProblem(ValidationProblem problem) {
 			StringBuilder buf = new StringBuilder();
-			buf.append(exception.getMessage());
-			if (exception.getPublicId()!=null && !exception.getPublicId().isEmpty()) {
+			buf.append(problem.getMessage());
+			if (problem.getTarget()!=null) {
 				buf.append(": ");
-				buf.append(exception.getPublicId());
+				buf.append(problem.getTarget().getLocation());
 			}
-			if (exception.getSystemId()!=null && !exception.getSystemId().isEmpty()) {
-				buf.append(": ");
-				buf.append(exception.getSystemId());
-			}
-			if (exception.getLineNumber() > 0) {
+			if (problem.getLineNumber() > 0) {
 				buf.append(", line ");
-				buf.append(Integer.toString(exception.getLineNumber()));
+				buf.append(Integer.toString(problem.getLineNumber()));
 			}
-			if (exception.getColumnNumber() > 0) {
+			if (problem.getColumnNumber() > 0) {
 				buf.append(", column ");
-				buf.append(Integer.toString(exception.getColumnNumber()));
+				buf.append(Integer.toString(problem.getColumnNumber()));
 			}
 			System.err.println(buf.toString());
 		}
@@ -312,9 +324,11 @@ public class LocationValidator {
       // TODO Auto-generated method stub
       
     }
-    
+
+    @Override
     public void record(String location) {
       // TODO Auto-generated method stub
+      
     }
 	}
 

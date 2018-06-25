@@ -1,4 +1,4 @@
-//  Copyright 2009-2014, by the California Institute of Technology.
+//  Copyright 2009-2018, by the California Institute of Technology.
 //  ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
 //  Any commercial use must be negotiated with the Office of Technology
 //  Transfer at the California Institute of Technology.
@@ -14,16 +14,20 @@
 //
 package gov.nasa.pds.tools.label.validate;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import gov.nasa.pds.tools.label.ExceptionHandler;
 import gov.nasa.pds.tools.label.ExceptionType;
-import gov.nasa.pds.tools.label.LabelException;
 import gov.nasa.pds.tools.util.VersionInfo;
 import gov.nasa.pds.tools.util.XMLExtractor;
+import gov.nasa.pds.tools.validate.ProblemDefinition;
+import gov.nasa.pds.tools.validate.ProblemHandler;
+import gov.nasa.pds.tools.validate.ProblemType;
+import gov.nasa.pds.tools.validate.ValidationProblem;
 import net.sf.saxon.om.DocumentInfo;
 import net.sf.saxon.tinytree.TinyNodeImpl;
 
@@ -36,10 +40,11 @@ import net.sf.saxon.tinytree.TinyNodeImpl;
  */
 public class DefaultDocumentValidator implements DocumentValidator {
 
-  private final String XML_MODEL_XPATH = "/processing-instruction('xml-model')";
+  private final String XML_MODEL_XPATH = 
+      "/processing-instruction('xml-model')";
 
   @Override
-  public boolean validate(ExceptionHandler container, DocumentInfo xml) {
+  public boolean validate(ProblemHandler handler, DocumentInfo xml) {
     boolean passFlag = true;
     // Check the xml-model processing instructions specification
     List<TinyNodeImpl> xmlModels = new ArrayList<TinyNodeImpl>();
@@ -49,37 +54,54 @@ public class DefaultDocumentValidator implements DocumentValidator {
     } catch (Exception e) {
       //Ignore
     }
+    URL systemIdUrl = null;
+    try {
+      systemIdUrl = new URL(xml.getSystemId());
+    } catch (MalformedURLException mu) {
+      //Ignore. Should not happen!!!
+    }
     if (xmlModels.isEmpty()) {
-      container.addException(new LabelException(ExceptionType.WARNING,
-          "No schematron specification found in the label.", xml.getSystemId()));
+      handler.addProblem(new ValidationProblem(
+          new ProblemDefinition(ExceptionType.WARNING,
+              ProblemType.MISSING_SCHEMATRON_SPEC,
+              "No schematron specification found in the label."), 
+          systemIdUrl));
     } else {
-      Pattern pattern = Pattern.compile("href=\\\"([^=]*)\\\"( schematypens=\\\"([^=]*)\\\")?");
+      Pattern pattern = Pattern.compile(
+          "href=\\\"([^=]*)\\\"( schematypens=\\\"([^=]*)\\\")?");
       for (TinyNodeImpl xmlModel : xmlModels) {
-        String filteredValue = xmlModel.getStringValue().replaceAll("\\s+", " ");
+        String filteredValue = 
+            xmlModel.getStringValue().replaceAll("\\s+", " ");
         filteredValue = filteredValue.trim();
         Matcher matcher = pattern.matcher(filteredValue);
         if (matcher.matches()) {
           if (matcher.group(3) != null) {
             if (!VersionInfo.getSchematronNamespace().equals(
                 matcher.group(3).trim())) {
-              container.addException(
-                  new LabelException(ExceptionType.WARNING,
-                    "Value of the 'schematypens' attribute, '"
-                      + matcher.group(3).trim()
-                      + "', in the schematron specification is not equal to the recommended value of '"
-                      + VersionInfo.getSchematronNamespace() + "'.",
-                    xml.getSystemId(),
-                    xml.getSystemId(),
-                    new Integer(xmlModel.getLineNumber()),
-                    null));
+              handler.addProblem(
+                  new ValidationProblem(
+                      new ProblemDefinition(
+                          ExceptionType.WARNING,
+                          ProblemType.BAD_SCHEMATYPENS,
+                          "Value of the 'schematypens' attribute, '"
+                              + matcher.group(3).trim() + "', "
+                              + "in the schematron specification is not "
+                              + "equal to the recommended value of '"
+                              + VersionInfo.getSchematronNamespace() + "'."),
+                    systemIdUrl,
+                    xmlModel.getLineNumber(),
+                    -1));
               }
           } else {
-            container.addException(new LabelException(ExceptionType.WARNING,
-                "Missing 'schematypens' attribute from the schematron specification.",
-                xml.getSystemId(),
-                xml.getSystemId(),
-                new Integer(xmlModel.getLineNumber()),
-                null));
+            handler.addProblem(new ValidationProblem(
+                new ProblemDefinition(
+                    ExceptionType.WARNING,
+                    ProblemType.MISSING_SCHEMATYPENS,
+                    "Missing 'schematypens' attribute from the "
+                    + "schematron specification."),
+                systemIdUrl,
+                xmlModel.getLineNumber(),
+                -1));
           }
         }
       }

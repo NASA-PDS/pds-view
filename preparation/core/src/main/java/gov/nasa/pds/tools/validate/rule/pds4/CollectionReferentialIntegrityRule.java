@@ -1,4 +1,4 @@
-// Copyright 2006-2017, by the California Institute of Technology.
+// Copyright 2006-2018, by the California Institute of Technology.
 // ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
 // Any commercial use must be negotiated with the Office of Technology Transfer
 // at the California Institute of Technology.
@@ -28,11 +28,13 @@ import gov.nasa.pds.tools.inventory.reader.InventoryEntry;
 import gov.nasa.pds.tools.inventory.reader.InventoryReaderException;
 import gov.nasa.pds.tools.inventory.reader.InventoryTableReader;
 import gov.nasa.pds.tools.label.ExceptionType;
-import gov.nasa.pds.tools.label.LabelException;
 import gov.nasa.pds.tools.util.Utility;
 import gov.nasa.pds.tools.util.XMLExtractor;
 import gov.nasa.pds.tools.validate.Identifier;
+import gov.nasa.pds.tools.validate.ProblemDefinition;
+import gov.nasa.pds.tools.validate.ProblemType;
 import gov.nasa.pds.tools.validate.Target;
+import gov.nasa.pds.tools.validate.ValidationProblem;
 import gov.nasa.pds.tools.validate.rule.AbstractValidationRule;
 import gov.nasa.pds.tools.validate.rule.GenericProblems;
 import gov.nasa.pds.tools.validate.rule.ValidationTest;
@@ -45,7 +47,8 @@ import gov.nasa.pds.tools.validate.rule.ValidationTest;
  *
  */
 public class CollectionReferentialIntegrityRule extends AbstractValidationRule {
-  private static final Pattern COLLECTION_LABEL_PATTERN = Pattern.compile("(.*_)*collection(_.*)*\\.xml", Pattern.CASE_INSENSITIVE);
+  private static final Pattern COLLECTION_LABEL_PATTERN = 
+      Pattern.compile("(.*_)*collection(_.*)*\\.xml", Pattern.CASE_INSENSITIVE);
   
   private static final String PRODUCT_CLASS =
       "//*[starts-with(name(),'Identification_Area')]/product_class";
@@ -65,11 +68,13 @@ public class CollectionReferentialIntegrityRule extends AbstractValidationRule {
       List<Target> children = getContext().getCrawler().crawl(getTarget());
       // Check for collection(_.*)?\.xml file.
       for (Target child : children) {
-        Matcher matcher = COLLECTION_LABEL_PATTERN.matcher(FilenameUtils.getName(child.toString()));
+        Matcher matcher = COLLECTION_LABEL_PATTERN.matcher(
+            FilenameUtils.getName(child.toString()));
         if (matcher.matches()) {
           try {
             XMLExtractor extractor = new XMLExtractor(child.getUrl());
-            if("Product_Collection".equals(extractor.getValueFromDoc(PRODUCT_CLASS))) {
+            if("Product_Collection".equals(
+                extractor.getValueFromDoc(PRODUCT_CLASS))) {
               getListener().addLocation(child.getUrl().toString());
               getCollectionMembers(child.getUrl());
               break;
@@ -80,7 +85,8 @@ public class CollectionReferentialIntegrityRule extends AbstractValidationRule {
         }
       }
     } catch (IOException io) {
-      reportError(GenericProblems.UNCAUGHT_EXCEPTION, getTarget(), -1, -1, io.getMessage());
+      reportError(GenericProblems.UNCAUGHT_EXCEPTION, getTarget(), -1, -1, 
+          io.getMessage());
     }
   }
   
@@ -103,21 +109,20 @@ public class CollectionReferentialIntegrityRule extends AbstractValidationRule {
             }
             if (matchingMembers.isEmpty() && 
                 "P".equalsIgnoreCase(entry.getMemberStatus())) {
-              getListener().addProblem(new LabelException(ExceptionType.WARNING,
-                  "The member '" + id + "' could not be found in "
-                      + "any product within the given target.", 
-                      collection.toString(), 
-                      collection.toString(),
-                      null, 
-                      null));
+              getListener().addProblem(new ValidationProblem(
+                  new ProblemDefinition(ExceptionType.WARNING,
+                      ProblemType.MEMBER_NOT_FOUND,
+                      "The member '" + id + "' could not be found in "
+                          + "any product within the given target."), 
+                      collection));
             } else if (matchingMembers.size() == 1) {
-              getListener().addProblem(new LabelException(ExceptionType.INFO,
-                  "The member '" + id + "' is identified in "
-                      + "the following product: " + matchingMembers.get(0).getValue(), 
-                      collection.toString(), 
-                      collection.toString(),
-                      null, 
-                      null));
+              getListener().addProblem(new ValidationProblem(
+                  new ProblemDefinition(ExceptionType.INFO,
+                      ProblemType.MEMBER_FOUND,
+                      "The member '" + id + "' is identified in "
+                          + "the following product: "
+                          + matchingMembers.get(0).getValue()), 
+                      collection));
             } else if (matchingMembers.size() > 1) {
               ExceptionType exceptionType = ExceptionType.ERROR;
               if (!id.hasVersion()) {
@@ -126,12 +131,15 @@ public class CollectionReferentialIntegrityRule extends AbstractValidationRule {
                 boolean foundDuplicates = false;
                 for (String matchingId : matchingIds.keySet()) {
                   if (matchingIds.get(matchingId).size() > 1) {
-                    getListener().addProblem(new LabelException(exceptionType,
-                       "The member '" + id + "' is identified "
-                       + "in multiple products, but with the same version id '"
-                       + matchingId.split("::")[1] + "': "
-                       + matchingIds.get(matchingId).toString(),
-                       collection.toString(), collection.toString(), null, null));
+                    getListener().addProblem(new ValidationProblem(
+                        new ProblemDefinition(exceptionType,
+                            ProblemType.DUPLICATE_VERSIONS,
+                            "The member '" + id + "' is identified "
+                                + "in multiple products, but with the same "
+                                + "version id '" + matchingId.split("::")[1]
+                                + "': "
+                                + matchingIds.get(matchingId).toString()),
+                       collection));
                     foundDuplicates = true;
                   }
                 }
@@ -140,26 +148,24 @@ public class CollectionReferentialIntegrityRule extends AbstractValidationRule {
                   for (Map.Entry<Identifier, String> m : matchingMembers) {
                     targets.add(m.getValue());
                   }
-                  getListener().addProblem(new LabelException(ExceptionType.INFO,
-                      "The member '" + id + "' is identified "
-                      + "in multiple proudcts: " + targets.toString(),
-                      collection.toString(),
-                      collection.toString(),
-                      null,
-                      null));
+                  getListener().addProblem(new ValidationProblem(
+                      new ProblemDefinition(ExceptionType.INFO,
+                          ProblemType.DUPLICATE_MEMBERS_INFO,
+                          "The member '" + id + "' is identified "
+                              + "in multiple proudcts: " + targets.toString()),
+                      collection));
                 }
               } else {
                 List<String> targets = new ArrayList<String>();
                 for (Map.Entry<Identifier, String> m : matchingMembers) {
                   targets.add(m.getValue());
                 }
-                getListener().addProblem(new LabelException(exceptionType,
-                    "The member '" + id + "' is identified "
-                    + "in multiple proudcts: " + targets.toString(),
-                    collection.toString(),
-                    collection.toString(),
-                    null,
-                    null));                
+                getListener().addProblem(new ValidationProblem(
+                    new ProblemDefinition(exceptionType,
+                        ProblemType.DUPLICATE_MEMBERS,
+                        "The member '" + id + "' is identified "
+                            + "in multiple proudcts: " + targets.toString()),
+                    collection));
               }
             }
             getRegistrar().addIdentifierReference(collection.toString(), id);
@@ -168,7 +174,8 @@ public class CollectionReferentialIntegrityRule extends AbstractValidationRule {
         entry = reader.getNext();
       }
     } catch (InventoryReaderException e) {
-      reportError(GenericProblems.UNCAUGHT_EXCEPTION, collection, -1, -1, e.getMessage());
+      reportError(GenericProblems.UNCAUGHT_EXCEPTION, collection, -1, -1,
+          e.getMessage());
     }
   }
   
@@ -181,7 +188,8 @@ public class CollectionReferentialIntegrityRule extends AbstractValidationRule {
     }
   }
   
-  private Map<String, List<String>> findMatchingIds(List<Map.Entry<Identifier, String>> products) {
+  private Map<String, List<String>> findMatchingIds(
+      List<Map.Entry<Identifier, String>> products) {
     Map<String, List<String>> results = new HashMap<String, List<String>>();
     for (Map.Entry<Identifier, String> product : products) {
       if (results.get(product.getKey().toString()) != null) {

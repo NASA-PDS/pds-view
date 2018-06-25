@@ -1,4 +1,4 @@
-//	Copyright 2009-2010, by the California Institute of Technology.
+//	Copyright 2009-2018, by the California Institute of Technology.
 //	ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
 //	Any commercial use must be negotiated with the Office of Technology 
 //	Transfer at the California Institute of Technology.
@@ -15,19 +15,27 @@
 
 package gov.nasa.pds.tools.label;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
+import gov.nasa.pds.tools.validate.ProblemDefinition;
+import gov.nasa.pds.tools.validate.ProblemHandler;
+import gov.nasa.pds.tools.validate.ProblemType;
+import gov.nasa.pds.tools.validate.ValidationProblem;
+
 /**
- * @author pramirez
+ * @author pramirez, mcayanan
  * 
  */
 public class LabelErrorHandler implements ErrorHandler {
-  private ExceptionHandler exceptions;
+  private ProblemHandler handler;
 
-  public LabelErrorHandler(ExceptionHandler exceptions) {
-    this.exceptions = exceptions;
+  public LabelErrorHandler(ProblemHandler handler) {
+    this.handler = handler;
   }
 
   /*
@@ -37,9 +45,10 @@ public class LabelErrorHandler implements ErrorHandler {
    */
   @Override
   public void error(SAXParseException exception) throws SAXException {
-    exceptions.addException(new LabelException(ExceptionType.ERROR, exception
-        .getMessage(), exception.getPublicId(), exception.getSystemId(),
-        exception.getLineNumber(), exception.getColumnNumber()));
+    addProblem(ExceptionType.ERROR, ProblemType.SCHEMA_ERROR, 
+        exception.getMessage(), exception.getSystemId(), 
+        exception.getLineNumber(), 
+        exception.getColumnNumber());
   }
 
   /*
@@ -49,9 +58,10 @@ public class LabelErrorHandler implements ErrorHandler {
    */
   @Override
   public void fatalError(SAXParseException exception) throws SAXException {
-    exceptions.addException(new LabelException(ExceptionType.FATAL, exception
-        .getMessage(), exception.getPublicId(), exception.getSystemId(),
-        exception.getLineNumber(), exception.getColumnNumber()));
+    addProblem(ExceptionType.ERROR, ProblemType.SCHEMA_ERROR, 
+        exception.getMessage(), exception.getSystemId(), 
+        exception.getLineNumber(), 
+        exception.getColumnNumber());
   }
 
   /*
@@ -61,9 +71,24 @@ public class LabelErrorHandler implements ErrorHandler {
    */
   @Override
   public void warning(SAXParseException exception) throws SAXException {
-    exceptions.addException(new LabelException(ExceptionType.WARNING, exception
-        .getMessage(), exception.getPublicId(), exception.getSystemId(),
-        exception.getLineNumber(), exception.getColumnNumber()));
+    addProblem(ExceptionType.WARNING, ProblemType.SCHEMA_WARNING, 
+        exception.getMessage(), exception.getSystemId(), 
+        exception.getLineNumber(), 
+        exception.getColumnNumber());
   }
 
+  private void addProblem(ExceptionType severity, ProblemType type, 
+      String message, String systemId, int lineNumber, int columnNumber) {
+    URL url = null;
+    try {
+      url = new URL(systemId);
+    } catch (MalformedURLException mu) {
+      //Ignore. Should not happen!!!
+    }
+    handler.addProblem(new ValidationProblem(
+        new ProblemDefinition(severity, type, message), 
+        url, 
+        lineNumber, 
+        columnNumber));
+  }
 }

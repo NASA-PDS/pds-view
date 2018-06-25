@@ -1,4 +1,4 @@
-// Copyright 2006-2017, by the California Institute of Technology.
+// Copyright 2006-2018, by the California Institute of Technology.
 // ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
 // Any commercial use must be negotiated with the Office of Technology Transfer
 // at the California Institute of Technology.
@@ -16,20 +16,33 @@ package gov.nasa.pds.tools.validate;
 import gov.nasa.pds.tools.validate.ProblemDefinition;
 import gov.nasa.pds.tools.validate.rule.GenericProblems;
 
+import java.net.URL;
 import java.util.Collection;
 
 public class ValidationProblem {
 
 	private int problemDefinitionId;
 	private ValidationTarget target;
+	private String source;
 	private int lineNumber;
 	private int columnNumber;
 	private Collection<ValidationTarget> ancestorTargets;
 	private String message;
 
-	public ValidationProblem(ProblemDefinition defn, ValidationTarget target, int lineNumber, int columnNumber, String message) {
+	public ValidationProblem(ProblemDefinition defn, URL target, 
+	    int lineNumber, int columnNumber, String message) {
+	  this(defn, 
+	      new ValidationTarget(target), 
+	      lineNumber, 
+	      columnNumber, 
+	      message);
+	}
+	
+	public ValidationProblem(ProblemDefinition defn, ValidationTarget target,
+	    int lineNumber, int columnNumber, String message) {
 		problemDefinitionId = defn.getID();
 		this.target = target;
+    this.source = target.getLocation();
 		this.lineNumber = lineNumber;
 		this.columnNumber = columnNumber;
 		if (GenericProblems.UNCAUGHT_EXCEPTION.equals(defn)) {
@@ -40,14 +53,30 @@ public class ValidationProblem {
 		}
 	}
 
-  public ValidationProblem(ProblemDefinition defn, ValidationTarget target, int lineNumber, int columnNumber) {
+  public ValidationProblem(ProblemDefinition defn, URL target, int lineNumber,
+      int columnNumber) {
+    this(defn, new ValidationTarget(target), lineNumber, columnNumber);
+  }
+	
+  public ValidationProblem(ProblemDefinition defn, ValidationTarget target, 
+      int lineNumber, int columnNumber) {
     this(defn, target, lineNumber, columnNumber, null);
   }	
-	
-  public ValidationProblem(ProblemDefinition defn, ValidationTarget target, String message) {
+	  
+  public ValidationProblem(ProblemDefinition defn, URL target,
+      String message) {
+    this(defn, new ValidationTarget(target), message);
+  }
+  
+  public ValidationProblem(ProblemDefinition defn, ValidationTarget target,
+      String message) {
     this(defn, target, -1, -1, message);
   }
 	
+  public ValidationProblem(ProblemDefinition defn, URL target) {
+    this(defn, new ValidationTarget(target));
+  }
+  
 	public ValidationProblem(ProblemDefinition defn, ValidationTarget target) {
 	  this(defn, target, -1, -1, null);
 	}
@@ -100,8 +129,16 @@ public class ValidationProblem {
 		return ancestorTargets;
 	}
 
-	public void setAncestorTargets(Collection<ValidationTarget> ancestorTargets) {
+	public void setAncestorTargets(
+	    Collection<ValidationTarget> ancestorTargets) {
 		this.ancestorTargets = ancestorTargets;
 	}
 
+	public String getSource() {
+	  return this.source;
+	}
+	
+	public void setSource(String source) {
+	  this.source = source;
+	}
 }

@@ -14,16 +14,18 @@
 package gov.nasa.pds.tools.label;
 
 import gov.nasa.pds.tools.util.Utility;
+import gov.nasa.pds.tools.validate.ProblemDefinition;
+import gov.nasa.pds.tools.validate.ProblemHandler;
+import gov.nasa.pds.tools.validate.ProblemType;
+import gov.nasa.pds.tools.validate.ValidationProblem;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.net.URI;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -138,7 +140,7 @@ import org.w3c.dom.ls.LSResourceResolver;
     /** Hashmap to hold the entities. */
     private Map<String, byte[]> cachedEntities = new HashMap<String, byte[]>();
 
-    private ExceptionHandler container;
+    private ProblemHandler handler;
 
     /**
      * Constructor.
@@ -152,9 +154,9 @@ import org.w3c.dom.ls.LSResourceResolver;
      *
      * @param container A container to hold messages.
      */
-    public CachedLSResourceResolver(ExceptionHandler container) {
+    public CachedLSResourceResolver(ProblemHandler handler) {
       cachedEntities = new HashMap<String, byte[]>();
-      this.container = container;
+      this.handler = handler;
     }
 
     @Override
@@ -198,9 +200,18 @@ import org.w3c.dom.ls.LSResourceResolver;
           entity = IOUtils.toByteArray(in);
           cachedEntities.put(systemId, entity);
         } catch (Exception e) {
-          if (container != null) {
-            container.addException(new LabelException(ExceptionType.FATAL,
-              e.getMessage(), systemId, systemId, null, null));
+          if (handler != null) {
+            URL url = null;
+            try {
+              url = new URL(systemId);
+            } catch (MalformedURLException u) {
+              //Ignore. Shouldn't happen!!
+            }
+            handler.addProblem(new ValidationProblem(
+                new ProblemDefinition(
+                    ExceptionType.FATAL,
+                    ProblemType.LABEL_UNRESOLVABLE_RESOURCE,
+                    e.getMessage()), url));
           } else {
             e.printStackTrace();
           }
@@ -230,11 +241,11 @@ import org.w3c.dom.ls.LSResourceResolver;
       this.cachedEntities.putAll(entities);
     }
 
-    public void setExceptionHandler(ExceptionHandler container) {
-      this.container = container;
+    public void setProblemHandler(ProblemHandler handler) {
+      this.handler = handler;
     }
     
-    public ExceptionHandler getExceptionHandler() {
-      return this.container;
+    public ProblemHandler getProblemHandler() {
+      return this.handler;
     }
   }

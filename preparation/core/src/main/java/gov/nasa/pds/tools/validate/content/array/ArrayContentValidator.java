@@ -19,12 +19,10 @@ import java.math.RoundingMode;
 import java.net.URL;
 import java.util.Arrays;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.Range;
 
 import com.google.common.primitives.UnsignedInteger;
 import com.google.common.primitives.UnsignedLong;
-import com.sun.media.jai.codec.SeekableStream;
 
 import gov.nasa.arc.pds.xml.generated.Array;
 import gov.nasa.arc.pds.xml.generated.ElementArray;
@@ -33,7 +31,9 @@ import gov.nasa.arc.pds.xml.generated.SpecialConstants;
 import gov.nasa.pds.label.object.ArrayObject;
 import gov.nasa.pds.objectAccess.DataType.NumericDataType;
 import gov.nasa.pds.tools.label.ExceptionType;
+import gov.nasa.pds.tools.validate.ProblemDefinition;
 import gov.nasa.pds.tools.validate.ProblemListener;
+import gov.nasa.pds.tools.validate.ProblemType;
 
 /**
  * Class that performs content validation on Array objects.
@@ -87,17 +87,23 @@ public class ArrayContentValidator {
       process(array, arrayObject, dimensions, new int[dimensions.length], 0, 
           dimensions.length - 1); 
     } catch (IOException io) {
-      listener.addProblem(new ArrayContentException(ExceptionType.FATAL, 
-          "Error occurred while reading data file: " + io.getMessage(),
-          dataFile.toString(),
-          label.toString(),
+      listener.addProblem(new ArrayContentProblem(
+          new ProblemDefinition(
+              ExceptionType.FATAL,
+              ProblemType.ARRAY_DATA_FILE_READ_ERROR,
+              "Error occurred while reading data file: " + io.getMessage()),
+          dataFile,
+          label,
           arrayIndex,
           null));
     } catch (Exception e) {
-      listener.addProblem(new ArrayContentException(ExceptionType.FATAL, 
-          "Error occurred while reading data file: " + e.getMessage(),
-          dataFile.toString(),
-          label.toString(),
+      listener.addProblem(new ArrayContentProblem(
+          new ProblemDefinition(
+              ExceptionType.FATAL,
+              ProblemType.ARRAY_DATA_FILE_READ_ERROR,
+              "Error occurred while reading data file: " + e.getMessage()),
+          dataFile,
+          label,
           arrayIndex,
           null));
     } finally {
@@ -119,9 +125,8 @@ public class ArrayContentValidator {
         for (int j = 0; j < position.length; j++) {
           position_1based[j] = position[j] + 1;
         }
-        ArrayLocation location = new ArrayLocation(label.toString(), 
-            dataFile.toString(), arrayIndex, 
-            position_1based);
+        ArrayLocation location = new ArrayLocation(label, dataFile, 
+            arrayIndex, position_1based);
         Number value = null;
         Range rangeChecker = null;
         try {
@@ -223,9 +228,10 @@ public class ArrayContentValidator {
         }
         if (!isSpecialConstant) {
           if (!rangeChecker.contains(value)) {
-              addArrayException(ExceptionType.ERROR,
-                "Value is not within the valid range of the data type '"
-                  + dataType.name() + "': " + value.toString(),
+              addArrayProblem(ExceptionType.ERROR,
+                  ProblemType.ARRAY_VALUE_OUT_OF_DATA_TYPE_RANGE,
+                  "Value is not within the valid range of the data type '"
+                      + dataType.name() + "': " + value.toString(),
                 location
                  );
           }
@@ -236,7 +242,8 @@ public class ArrayContentValidator {
                 array.getObjectStatistics(), location);
           }
         } else {
-          addArrayException(ExceptionType.INFO,
+          addArrayProblem(ExceptionType.INFO,
+              ProblemType.ARRAY_VALUE_IS_SPECIAL_CONSTANT,
               "Value is a special constant defined in the label: "
                   + value.toString(),
               location
@@ -332,7 +339,8 @@ public class ArrayContentValidator {
       ObjectStatistics objectStats, ArrayLocation location) {
     if (objectStats.getMinimum() != null) {
       if (value.doubleValue() < objectStats.getMinimum()) {
-        addArrayException(ExceptionType.ERROR, 
+        addArrayProblem(ExceptionType.ERROR,
+            ProblemType.ARRAY_VALUE_OUT_OF_MIN_MAX_RANGE,
             "Value is less than the minimum value in the label (min="
             + objectStats.getMinimum().toString()
             + ", got=" + value.toString() + ").", location);
@@ -340,7 +348,8 @@ public class ArrayContentValidator {
     }
     if (objectStats.getMaximum() != null) {
       if (value.doubleValue() > objectStats.getMaximum()) {
-        addArrayException(ExceptionType.ERROR, 
+        addArrayProblem(ExceptionType.ERROR, 
+            ProblemType.ARRAY_VALUE_OUT_OF_MIN_MAX_RANGE,
             "Value is greater than the maximum value in the label (max="
             + objectStats.getMaximum().toString()
             + ", got=" + value.toString() + ").", location);        
@@ -361,17 +370,19 @@ public class ArrayContentValidator {
       double scaledValue = (value.doubleValue() * scalingFactor) + valueOffset;
       if (objectStats.getMinimumScaledValue() != null) {
         if (compare(scaledValue, objectStats.getMinimumScaledValue()) == -1) {
-          addArrayException(ExceptionType.ERROR, 
-              "Scaled value is less than the scaled minimum value in the label (min="
-              + objectStats.getMinimumScaledValue().toString()
+          addArrayProblem(ExceptionType.ERROR,
+              ProblemType.ARRAY_VALUE_OUT_OF_SCALED_MIN_MAX_RANGE,
+              "Scaled value is less than the scaled minimum value in the "
+              + "label (min=" + objectStats.getMinimumScaledValue().toString()
               + ", got=" + value.toString() + ").", location);          
         }
       }
       if (objectStats.getMaximumScaledValue() != null) {
         if (compare(scaledValue, objectStats.getMaximumScaledValue()) == 1) {
-          addArrayException(ExceptionType.ERROR, 
-              "Scaled value is greater than the scaled maximum value in the label (max="
-              + objectStats.getMaximumScaledValue().toString()
+          addArrayProblem(ExceptionType.ERROR,
+              ProblemType.ARRAY_VALUE_OUT_OF_SCALED_MIN_MAX_RANGE,
+              "Scaled value is greater than the scaled maximum value in the "
+              + "label (max=" + objectStats.getMaximumScaledValue().toString()
               + ", got=" + value.toString() + ").", location);             
         }
       }
@@ -395,10 +406,12 @@ public class ArrayContentValidator {
     if (bdValue.precision() == bdMinMax.precision()) {
       return bdValue.compareTo(bdMinMax);
     } else if (bdValue.precision() > bdMinMax.precision()) {
-      BigDecimal scaledValue = bdValue.setScale(bdMinMax.precision(), RoundingMode.HALF_UP);
+      BigDecimal scaledValue = bdValue.setScale(bdMinMax.precision(), 
+          RoundingMode.HALF_UP);
       return scaledValue.compareTo(bdMinMax);
     } else {
-      BigDecimal scaledMinMax = bdMinMax.setScale(bdValue.precision(), RoundingMode.HALF_UP);
+      BigDecimal scaledMinMax = bdMinMax.setScale(bdValue.precision(), 
+          RoundingMode.HALF_UP);
       return bdValue.compareTo(scaledMinMax);
     }
   }
@@ -410,10 +423,11 @@ public class ArrayContentValidator {
    * @param message The message to record.
    * @param location The array location associated with the message.
    */
-  private void addArrayException(ExceptionType exceptionType, String message, 
-      ArrayLocation location) {
+  private void addArrayProblem(ExceptionType exceptionType, 
+      ProblemType problemType, String message, ArrayLocation location) {
     listener.addProblem(
-        new ArrayContentException(exceptionType, 
+        new ArrayContentProblem(exceptionType,
+            problemType,
             message,
             location.getDataFile(),
             location.getLabel(),

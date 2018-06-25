@@ -1,4 +1,4 @@
-//  Copyright 2009-2013, by the California Institute of Technology.
+//  Copyright 2009-2018, by the California Institute of Technology.
 //  ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
 //  Any commercial use must be negotiated with the Office of Technology
 //  Transfer at the California Institute of Technology.
@@ -17,26 +17,26 @@ package gov.nasa.pds.tools.label.validate;
 import java.io.File;
 import java.net.URL;
 
-import gov.nasa.pds.tools.label.ExceptionHandler;
+import gov.nasa.pds.tools.validate.ProblemHandler;
 
 public interface ExternalValidator {
   /**
    * Method signature for checking to see if a label is valid.
    *
-   * @param container An exception container.
+   * @param handler A problem handler.
    * @param labelFile PDS4 label file.
    *
    * @return flag indicating whether or not the step in validation was passed.
    */
-  public boolean validate(ExceptionHandler container, File labelFile);
+  public boolean validate(ProblemHandler handler, File labelFile);
 
   /**
    * Method signature for checking to see if a label is valid.
    *
-   * @param container An exception container.
+   * @param handler A problem handler.
    * @param url URL of the PDS4 label.
    *
    * @return flag indicating whether or not the step in validation was passed.
    */
-  public boolean validate(ExceptionHandler container, URL url);
+  public boolean validate(ProblemHandler handler, URL url);
 }
