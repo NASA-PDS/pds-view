@@ -179,12 +179,8 @@ public class TableDataContentValidationRule extends AbstractValidationRule {
       for (Object table : tableObjects) {
         RawTableReader reader = null;
         try {
-          boolean readEntireFile = false;
-          if (numTables.get(fileName).intValue() == 1) {
-            readEntireFile = true;
-          }
           reader = new RawTableReader(table, dataFile, getTarget(), 
-              tableIndex, readEntireFile);
+              tableIndex, false);
         } catch (Exception ex) {
           addTableProblem(ExceptionType.ERROR, 
               ProblemType.TABLE_FILE_READ_ERROR,
