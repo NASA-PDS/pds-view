@@ -395,7 +395,7 @@ public class FileReferenceValidationRule extends AbstractValidationRule {
         String message = "No checksum to compare against in the product label "
             + "for '" + urlRef + "'";
         ProblemDefinition def = new ProblemDefinition(
-            ExceptionType.INFO, ProblemType.GENERAL_INFO, message);
+            ExceptionType.INFO, ProblemType.MISSING_CHECKSUM_INFO, message);
         messages.add(new ValidationProblem(def, target, lineNumber, -1));
       }
     }
