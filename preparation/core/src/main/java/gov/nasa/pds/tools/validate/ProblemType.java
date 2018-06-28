@@ -18,7 +18,7 @@ package gov.nasa.pds.tools.validate;
  */
 public enum ProblemType {
 
-	MISSING_REQUIRED_RESOURCE("validation.error.missingRequiredFile"),
+	MISSING_REQUIRED_RESOURCE("validation.error.missing_required_file"),
 
 	FILE_NAMING_PROBLEM("validation.error.file_naming_problem"),
 
