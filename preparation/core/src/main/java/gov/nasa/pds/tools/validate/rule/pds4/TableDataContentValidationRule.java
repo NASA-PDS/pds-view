@@ -54,7 +54,6 @@ import gov.nasa.pds.objectAccess.ObjectAccess;
 import gov.nasa.pds.objectAccess.ObjectProvider;
 import gov.nasa.pds.objectAccess.ParseException;
 import gov.nasa.pds.tools.label.ExceptionType;
-import gov.nasa.pds.tools.label.LabelException;
 import gov.nasa.pds.tools.label.SourceLocation;
 import gov.nasa.pds.tools.util.Utility;
 import gov.nasa.pds.tools.validate.ProblemDefinition;
@@ -201,16 +200,16 @@ public class TableDataContentValidationRule extends AbstractValidationRule {
           if (td.getRecordDelimited() != null &&
               td.getRecordDelimited().getMaximumRecordLength() != null) {
             recordMaxLength = td.getRecordDelimited()
-                .getMaximumRecordLength().getValue();
+                .getMaximumRecordLength().getValue().intValueExact();
           }
-          definedNumRecords = td.getRecords();
+          definedNumRecords = td.getRecords().intValueExact();
         } else if (table instanceof TableBinary) {
           TableBinary tb = (TableBinary) table;
           if (tb.getRecordBinary() != null &&
               tb.getRecordBinary().getRecordLength() != null) {
-            recordLength = tb.getRecordBinary().getRecordLength().getValue();
+            recordLength = tb.getRecordBinary().getRecordLength().getValue().intValueExact();
           }
-          definedNumRecords = tb.getRecords();
+          definedNumRecords = tb.getRecords().intValueExact();
           if (binaryTableNodes != null) {
             validatePackedFields(binaryTableNodes.item(tableIndex-1));
           }
@@ -218,9 +217,9 @@ public class TableDataContentValidationRule extends AbstractValidationRule {
           TableCharacter tc = (TableCharacter) table;
           if (tc.getRecordCharacter() != null && 
               tc.getRecordCharacter().getRecordLength() != null) {
-            recordLength = tc.getRecordCharacter().getRecordLength().getValue();
+            recordLength = tc.getRecordCharacter().getRecordLength().getValue().intValueExact();
           }
-          definedNumRecords = tc.getRecords();
+          definedNumRecords = tc.getRecords().intValueExact();
         }
         TableRecord record = null;
         // We have either a character or delimited table

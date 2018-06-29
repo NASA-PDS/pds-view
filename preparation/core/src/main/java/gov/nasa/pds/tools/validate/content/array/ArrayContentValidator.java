@@ -80,7 +80,7 @@ public class ArrayContentValidator {
   public void validate(Array array, ArrayObject arrayObject) {
     int[] dimensions = new int[array.getAxisArraies().size()];
     for (int i = 0; i < dimensions.length; i++) {
-      dimensions[i] = array.getAxisArraies().get(i).getElements();
+      dimensions[i] = array.getAxisArraies().get(i).getElements().intValueExact();
     }
     
     try {

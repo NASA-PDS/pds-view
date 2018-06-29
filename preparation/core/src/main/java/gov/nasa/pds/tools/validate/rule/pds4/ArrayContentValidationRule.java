@@ -148,7 +148,7 @@ public class ArrayContentValidationRule extends AbstractValidationRule {
                   Utility.getParent(getTarget()), 
                   getFileObject(fileArea), 
                   array, 
-                  array.getOffset().getValue());
+                  array.getOffset().getValue().longValueExact());
               
               //Array elements have values which conform to their data type
               
