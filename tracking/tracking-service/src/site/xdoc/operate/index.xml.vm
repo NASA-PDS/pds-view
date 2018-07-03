@@ -131,9 +131,9 @@ https://&lt;base_url&gt;/&lt;return_type&gt;products/[value of instrument_refere
       <p>This interface retrieves a list of instrument references for a product.
 	      </p>
 	      <source>
-https://&lt;base_url&gt;/&lt;return_type&gt;/references/[logical_identifier/instrument_reference]
+https://&lt;base_url&gt;/&lt;return_type&gt;/references/[logical_identifier/reference_type]
           </source>
-        <p>When the optional parameters, <i>logical_identifier</i> and <i>instrument_reference</i>, are not specified, the query returns the list of all types of references (instrument, investigation and node) for all products. When both parameters are specified, the query returns a list of instrument references for the specified product.
+        <p>When the optional parameters, <i>logical_identifier</i> and <i>reference_type</i>, are not specified, the query returns the list of all types of references (instrument, investigation and node) for all products. When both parameters are specified and reference_type is instrument_reference, the query returns a list of instrument references for the specified product.
         </p>
       </subsection>
       
@@ -141,9 +141,9 @@ https://&lt;base_url&gt;/&lt;return_type&gt;/references/[logical_identifier/inst
       <p>This interface retrieves a list of investigation references for a product.
 	      </p>
 	      <source>
-https://&lt;base_url&gt;/&lt;return_type&gt;/references/[logical_identifier/investigation_reference]
+https://&lt;base_url&gt;/&lt;return_type&gt;/references/[logical_identifier/reference_type]
           </source>
-        <p>When the optional parameters, <i>logical_identifier</i> and <i>investigationt_reference</i>, are not specified, the query returns the list of all types of references (instrument, investigation and node) for all products. When both parameters are specified, the query returns a list of investigation references for the specified product.
+        <p>When the optional parameters, <i>logical_identifier</i> and <i>reference_type</i>, are not specified, the query returns the list of all types of references (instrument, investigation and node) for all products. When both parameters are specified and reference_type is investigationt_reference, the query returns a list of investigation references for the specified product.
         </p>
       </subsection>
       
@@ -151,9 +151,9 @@ https://&lt;base_url&gt;/&lt;return_type&gt;/references/[logical_identifier/inve
       <p>This interface retrieves a list of node references for a product.
 	      </p>
 	      <source>
-https://&lt;base_url&gt;/&lt;return_type&gt;/references/[logical_identifier/instrument_reference]
+https://&lt;base_url&gt;/&lt;return_type&gt;/references/[logical_identifier/reference_type]
           </source>
-        <p>When the optional parameters, <i>logical_identifier</i> and <i>instrument_reference</i>, are not specified, the query returns the list of all types of references (instrument, investigation and node) for all products. When both parameters are specified, the query returns a list of node references for the specified product.
+        <p>When the optional parameters, <i>logical_identifier</i> and <i>reference_type</i>, are not specified, the query returns the list of all types of references (instrument, investigation and node) for all products. When both parameters are specified and reference_type is node_reference, the query returns a list of node references for the specified product.
         </p>
       </subsection>
       
@@ -161,9 +161,9 @@ https://&lt;base_url&gt;/&lt;return_type&gt;/references/[logical_identifier/inst
       <p>This interface retrieves a list of users with the instrument role for a product.
 	      </p>
 	      <source>
-https://&lt;base_url&gt;/&lt;return_type&gt;/users/[logical_identifier/instrument_reference]
+https://&lt;base_url&gt;/&lt;return_type&gt;/users/[logical_identifier/reference_type]
           </source>
-        <p>When the optional parameters, <i>logical_identifier</i> and <i>instrumente_reference</i>, are not specified, the query returns the list of all users. When both parameters are specified, the query returns a list of users with the instrument role for the specified product.
+        <p>When the optional parameters, <i>logical_identifier</i> and <i>reference_type</i>, are not specified, the query returns the list of all users. When both parameters are specified and reference_type is instrumente_reference, the query returns a list of users with the instrument role for the specified product.
         </p>
       </subsection>
       
@@ -171,9 +171,9 @@ https://&lt;base_url&gt;/&lt;return_type&gt;/users/[logical_identifier/instrumen
       <p>This interface retrieves a list of users with the investigation role for a product.
 	      </p>
 	      <source>
-https://&lt;base_url&gt;/&lt;return_type&gt;/users/[logical_identifier/investigation_reference]
+https://&lt;base_url&gt;/&lt;return_type&gt;/users/[logical_identifier/reference_type]
           </source>
-        <p>When the optional parameters, <i>logical_identifier</i> and <i>investigation_reference</i>, are not specified, the query returns the list of all users. When both parameters are specified, the query returns a list of users with the investigation role for the specified product.
+        <p>When the optional parameters, <i>logical_identifier</i> and <i>reference_type</i>, are not specified, the query returns the list of all users. When both parameters are specified and reference_type is investigation_reference, the query returns a list of users with the investigation role for the specified product.
         </p>
       </subsection>
       
@@ -181,9 +181,9 @@ https://&lt;base_url&gt;/&lt;return_type&gt;/users/[logical_identifier/investiga
       <p>This interface retrieves a list of users with the node role for a product.
 	      </p>
 	      <source>
-https://&lt;base_url&gt;/&lt;return_type&gt;/users/[logical_identifier/node_reference]
+https://&lt;base_url&gt;/&lt;return_type&gt;/users/[logical_identifier/reference_type]
           </source>
-        <p>When the optional parameters, <i>logical_identifier</i> and <i>node_reference</i>, are not specified, the query returns the list of all users. When both parameters are specified, the query returns a list of users with the node role for the specified product.
+        <p>When the optional parameters, <i>logical_identifier</i> and <i>reference_type</i>, are not specified, the query returns the list of all users. When both parameters are specified and reference_type is node_reference, the query returns a list of users with the node role for the specified product.
         </p>
       </subsection>
       
@@ -216,9 +216,9 @@ https://&lt;base_url&gt;/&lt;return_type&gt;/users/[electronic_mail_address]
         <p>This interface retrieves the latest archive status of a given product.
         </p>
 		<source>
-https://&lt;base_url&gt;/&lt;return_type&gt;/archivestatus/[logical_identifier/version_id/true]
+https://&lt;base_url&gt;/&lt;return_type&gt;/archivestatus/[logical_identifier/version_id/flag]
           </source>
-        <p>When the optional parameters, <i>logical_identifier</i>, <i>version_id</i> and <i>true</i>, are not specified, the query returns the list of archive status of all products. When all three parameters are specified, the query returns the <b>latest</b> archive status of the specified product.
+        <p>When the optional parameters, <i>logical_identifier</i>, <i>version_id</i> and <i>flag</i>, are not specified, the query returns the list of archive status of all products. When all three parameters are specified and flag is true, the query returns the <b>latest</b> archive status of the specified product.
         </p>
       </subsection>
       
@@ -226,9 +226,9 @@ https://&lt;base_url&gt;/&lt;return_type&gt;/archivestatus/[logical_identifier/v
         <p>This interface retrieves the archive status progression of a given product.
         </p>
 		<source>
-https://&lt;base_url&gt;/&lt;return_type&gt;/archivestatus/[logical_identifier/version_id/false]
+https://&lt;base_url&gt;/&lt;return_type&gt;/archivestatus/[logical_identifier/version_id/flag]
           </source>
-        <p>When the optional parameters, <i>logical_identifier</i>, <i>version_id</i> and <i>false</i>, are not specified, the query returns the list of archive status of all products. When all three parameters are specified, the query returns the archive status progression of the specified product.
+        <p>When the optional parameters, <i>logical_identifier</i>, <i>version_id</i> and <i>flag</i>, are not specified, the query returns the list of archive status of all products. When all three parameters are specified and flag is false, the query returns the archive status progression of the specified product.
         </p>
       </subsection>
       
@@ -236,9 +236,9 @@ https://&lt;base_url&gt;/&lt;return_type&gt;/archivestatus/[logical_identifier/v
         <p>This interface retrieves the latest certification status of a given product.
         </p>
 		<source>
-https://&lt;base_url&gt;/&lt;return_type&gt;/certificationstatus/[logical_identifier/version_id/true]
+https://&lt;base_url&gt;/&lt;return_type&gt;/certificationstatus/[logical_identifier/version_id/flag]
           </source>
-        <p>When the optional parameters, <i>logical_identifier</i>, <i>version_id</i> and <i>true</i>, are not specified, the query returns the list of certification status of all products. When all three parameters are specified, the query returns the <b>latest</b> certificationstatus status of the specified product.
+        <p>When the optional parameters, <i>logical_identifier</i>, <i>version_id</i> and <i>flag</i>, are not specified, the query returns the list of certification status of all products. When all three parameters are specified and flag is true, the query returns the <b>latest</b> certificationstatus status of the specified product.
         </p>
       </subsection>
       
@@ -246,9 +246,9 @@ https://&lt;base_url&gt;/&lt;return_type&gt;/certificationstatus/[logical_identi
         <p>This interface retrieves the certification status progression of a given product.
         </p>
 		<source>
-https://&lt;base_url&gt;/&lt;return_type&gt;/certificationstatus/[logical_identifier/version_id/false]
+https://&lt;base_url&gt;/&lt;return_type&gt;/certificationstatus/[logical_identifier/version_id/flag]
           </source>
-        <p>When the optional parameters, <i>logical_identifier</i>, <i>version_id</i> and <i>false</i>, are not specified, the query returns the list of certification status of all products. When all three parameters are specified, the query returns the certification status progression of the specified product.
+        <p>When the optional parameters, <i>logical_identifier</i>, <i>version_id</i> and <i>flag</i>, are not specified, the query returns the list of certification status of all products. When all three parameters are specified and flag is false, the query returns the certification status progression of the specified product.
         </p>
       </subsection>
       
@@ -276,9 +276,9 @@ https://&lt;base_url&gt;/&lt;return_type&gt;/nssdcastatus/[logical_identifier/ve
         <p>This interface retrieves the the latest release of a given product.
         </p>
 		<source>
-https://&lt;base_url&gt;/&lt;return_type&gt;/releases/[logical_identifier/version_id/true]
+https://&lt;base_url&gt;/&lt;return_type&gt;/releases/[logical_identifier/version_id/flag]
           </source>
-        <p>When the optional parameters, <i>logical_identifier</i>, <i>version_id</i> and <i>true</i>, are not specified, the query returns the list of releases of all products. When all three parameters are specified, the query returns the <b>latest</b> releases of the specified product.
+        <p>When the optional parameters, <i>logical_identifier</i>, <i>version_id</i> and <i>flag</i>, are not specified, the query returns the list of releases of all products. When all three parameters are specified and flag is true, the query returns the <b>latest</b> releases of the specified product.
         </p>
       </subsection>
       
@@ -286,9 +286,9 @@ https://&lt;base_url&gt;/&lt;return_type&gt;/releases/[logical_identifier/versio
         <p>This interface retrieves the release progression of a given product.
         </p>
 		<source>
-https://&lt;base_url&gt;/&lt;return_type&gt;/releases/[logical_identifier/version_id/false]
+https://&lt;base_url&gt;/&lt;return_type&gt;/releases/[logical_identifier/version_id/flag]
           </source>
-        <p>When the optional parameters, <i>logical_identifier</i>, <i>version_id</i> and <i>false</i>, are not specified, the query returns the list of releases of all products. When all three parameters are specified, the query returns the releases progression of the specified product.
+        <p>When the optional parameters, <i>logical_identifier</i>, <i>version_id</i> and <i>flag</i>, are not specified, the query returns the list of releases of all products. When all three parameters are specified and flag is false, the query returns the releases progression of the specified product.
         </p>
       </subsection>
       
