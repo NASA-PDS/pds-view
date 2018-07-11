@@ -34,7 +34,7 @@
         Updated to read in only the portion of the data file corresponding with the object description.
       </action>
       <action dev="mcayanan" type="fix" issue="PDS-563">
-        Fixed issue where it incorrectly flags errors for negative float values during table content validation.
+        Fixed issue where it incorrectly flags errors for negative float values during array and table content validation.
       </action>
       <action dev="mcayanan" type="fix" issue="PDS-564">
         Handle gap datetimes during data content validation.
