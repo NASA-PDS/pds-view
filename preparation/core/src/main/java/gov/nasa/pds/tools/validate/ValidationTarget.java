@@ -42,16 +42,22 @@ public class ValidationTarget implements Comparable<ValidationTarget> {
    * @param target the target file or directory
    */
   public ValidationTarget(URL target) {
-    type = Utility.isDir(target) ? TargetType.FOLDER : TargetType.FILE;
-
-    location = target.toString();
-  	//In case we have a directory, we need to remove the backslash at the end
-  	//to properly get the name
-  	if (type.equals(TargetType.FOLDER)) {
-  	  name = FilenameUtils.getName(Utility.removeLastSlash(target.toString()));
-  	} else {
-  	  name = FilenameUtils.getName(target.toString());
-  	}
+    if (target != null) {
+      type = Utility.isDir(target) ? TargetType.FOLDER : TargetType.FILE;
+  
+      location = target.toString();
+    	//In case we have a directory, we need to remove the backslash at the end
+    	//to properly get the name
+    	if (type.equals(TargetType.FOLDER)) {
+    	  name = FilenameUtils.getName(Utility.removeLastSlash(target.toString()));
+    	} else {
+    	  name = FilenameUtils.getName(target.toString());
+    	}
+    } else {
+      type = TargetType.FILE;
+      location = null;
+      name = null;
+    }
   }
 
   /**

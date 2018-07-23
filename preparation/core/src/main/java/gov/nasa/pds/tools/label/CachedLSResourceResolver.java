@@ -170,8 +170,8 @@ import org.w3c.dom.ls.LSResourceResolver;
       if (entity == null) {
         InputStream in = null;
         URLConnection conn = null;
+        URL url = null;
         try {
-          URL url = null;
           URL base = new URL(baseURI);
           //If we have a jar URL, we need to resolve this differently
           if ("jar".equals(base.getProtocol())) {
@@ -201,17 +201,17 @@ import org.w3c.dom.ls.LSResourceResolver;
           cachedEntities.put(systemId, entity);
         } catch (Exception e) {
           if (handler != null) {
-            URL url = null;
+            URL u = null;
             try {
-              url = new URL(systemId);
-            } catch (MalformedURLException u) {
-              //Ignore. Shouldn't happen!!
+              u = new URL(systemId);
+            } catch (MalformedURLException mu) {
+              u = url;
             }
             handler.addProblem(new ValidationProblem(
                 new ProblemDefinition(
                     ExceptionType.FATAL,
                     ProblemType.LABEL_UNRESOLVABLE_RESOURCE,
-                    e.getMessage()), url));
+                    e.getMessage()), u));
           } else {
             e.printStackTrace();
           }
