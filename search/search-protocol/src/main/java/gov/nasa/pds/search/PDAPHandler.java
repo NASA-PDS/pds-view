@@ -1,4 +1,4 @@
-//	Copyright 2012-2014, by the California Institute of Technology.
+//	Copyright 2012-2018, by the California Institute of Technology.
 //	ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
 //	Any commercial use must be negotiated with the Office of Technology 
 //	Transfer at the California Institute of Technology.
@@ -15,6 +15,8 @@
 
 package gov.nasa.pds.search;
 
+import java.lang.IllegalArgumentException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -22,6 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 
 import org.apache.solr.common.params.ModifiableSolrParams;
 import org.apache.solr.handler.StandardRequestHandler;
@@ -95,6 +98,30 @@ public class PDAPHandler extends StandardRequestHandler {
     resourceParams.put(RESOURCE_CLASS.METADATA, metadataParams);
   }
 
+  // Patterns for Cross-Site Scripting filter.
+  private static Pattern[] patterns = new Pattern[]{
+    // script fragments
+    Pattern.compile("<script>(.*?)</script>", Pattern.CASE_INSENSITIVE),
+    // src='...'
+    Pattern.compile("src[\r\n]*=[\r\n]*\\\'(.*?)\\\'", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.DOTALL),
+    Pattern.compile("src[\r\n]*=[\r\n]*\\\"(.*?)\\\"", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.DOTALL),
+    // lonely script tags
+    Pattern.compile("</script>", Pattern.CASE_INSENSITIVE),
+    Pattern.compile("<script(.*?)>", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.DOTALL),
+    // eval(...)
+    Pattern.compile("eval\\((.*?)\\)", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.DOTALL),
+    // expression(...)
+    Pattern.compile("expression\\((.*?)\\)", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.DOTALL),
+    // javascript:...
+    Pattern.compile("javascript:", Pattern.CASE_INSENSITIVE),
+    // vbscript:...
+    Pattern.compile("vbscript:", Pattern.CASE_INSENSITIVE),
+    // onload(...)=...
+    Pattern.compile("onload(.*?)=", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.DOTALL),
+    // alert(...)
+    Pattern.compile("alert\\((.*?)\\)", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.DOTALL)
+  };
+
   private static void appendRanged(StringBuilder query, String parameter, String value) {
     String[] ranges = value.split(",");
     for (String range : ranges) {
@@ -141,11 +168,11 @@ public class PDAPHandler extends StandardRequestHandler {
         for (String value : request.getOriginalParams().getParams(parameter)) {
           if (!value.trim().isEmpty()) {
             if (rangedParams.contains(parameter)) {
-              appendRanged(queryString, generalParams.get(parameter), value);
+              appendRanged(queryString, generalParams.get(parameter), clean(value));
             } else {
               queryString.append(generalParams.get(parameter));
               queryString.append(":");
-              queryString.append(value);
+              queryString.append(clean(value));
             }
             queryString.append(" OR ");
           }
@@ -166,7 +193,7 @@ public class PDAPHandler extends StandardRequestHandler {
     String resourceClass = null;
     RESOURCE_CLASS resource = null;
     if (request.getOriginalParams().getParams(RESOURCE) != null) {
-      resourceClass = request.getOriginalParams().getParams(RESOURCE)[0];
+      resourceClass = clean(request.getOriginalParams().getParams(RESOURCE)[0]);
       try {
         resource = RESOURCE_CLASS.valueOf(resourceClass);
       } catch (Exception e) {
@@ -193,11 +220,11 @@ public class PDAPHandler extends StandardRequestHandler {
         for (String value : request.getOriginalParams().getParams(parameter)) {
           if (!value.trim().isEmpty()) {
             if (rangedParams.contains(parameter)) {
-              appendRanged(queryString, resourceParam.get(parameter), value);
+              appendRanged(queryString, resourceParam.get(parameter), clean(value));
             } else {
               queryString.append(resourceParam.get(parameter));
               queryString.append(":");
-              queryString.append(value);
+              queryString.append(clean(value));
             }
             queryString.append(" OR ");
           }
@@ -222,27 +249,27 @@ public class PDAPHandler extends StandardRequestHandler {
 
     // Handle return type maps to Solrs wt param
     if (request.getOriginalParams().getParams(RETURN_TYPE) != null) {
-      String returnType = request.getOriginalParams().getParams(RETURN_TYPE)[0];
+      String returnType = clean(request.getOriginalParams().getParams(RETURN_TYPE)[0]);
       if (!VOTABLE.equals(returnType)) {
         // Just use Solr's default response writers
         pdapParams.remove("wt");
-        pdapParams.add("wt", request.getOriginalParams().getParams(RETURN_TYPE)[0]);
+        pdapParams.add("wt", clean(request.getOriginalParams().getParams(RETURN_TYPE)[0]));
       }
     }
 
     // Handle the page size if specified. If not, get the default page size.
     int pageSize = 0;
     if (request.getOriginalParams().getParams(PAGE_SIZE) != null) {
-      pageSize = Integer.parseInt(request.getOriginalParams().getParams(PAGE_SIZE)[0]);
+      pageSize = Integer.parseInt(clean(request.getOriginalParams().getParams(PAGE_SIZE)[0]));
       pdapParams.remove("rows");
       pdapParams.add("rows","" + pageSize);
     } else {
-      pageSize = Integer.parseInt(request.getParams().getParams("rows")[0]);
+      pageSize = Integer.parseInt(clean(request.getParams().getParams("rows")[0]));
     }
     
     // Handle the page number and convert it for Solr's start parameter.
     if (request.getOriginalParams().getParams(PAGE_NUMBER) != null) {
-      int pageNum = Integer.parseInt(request.getOriginalParams().getParams(PAGE_NUMBER)[0]);
+      int pageNum = Integer.parseInt(clean(request.getOriginalParams().getParams(PAGE_NUMBER)[0]));
       if (pageNum > 1) {
         pdapParams.remove("start");
         pdapParams.add("start","" + (pageNum*pageSize-pageSize));
@@ -253,4 +280,36 @@ public class PDAPHandler extends StandardRequestHandler {
     super.handleRequestBody(request, response);
   }
   
+  // This method makes up a simple anti cross-site scripting (XSS) filter
+  // written for Java web applications. What it basically does is remove 
+  // all suspicious strings from request parameters before returning them 
+  // to the application.
+  public String clean(String value) {
+    if (value != null) {
+      // Avoid null characters
+      value = value.replaceAll("\0", "");
+
+      // Remove all sections that match a pattern
+      for (Pattern scriptPattern : patterns){
+        value = scriptPattern.matcher(value).replaceAll("");
+      }
+
+      // After all of the above has been removed just blank out the value 
+      // if any of the offending characters are present that facilitate 
+      // Cross-Site Scripting and Blind SQL Injection.
+      // We normally exclude () but they often show up in queries.
+      char badChars [] = {'|', ';', '$', '@', '\'', '"', '<', '>', ',', '\\', /* CR */ '\r' , /* LF */ '\n' , /* Backspace */ '\b'};
+      try {
+        String decodedStr = URLDecoder.decode(value);
+        for(int i = 0; i < badChars.length; i++) {
+          if (decodedStr.indexOf(badChars[i]) >= 0) {
+            value = "";
+          }
+        }
+      } catch (IllegalArgumentException e) {
+        value = "";
+      }
+    }
+    return value;
+  }
 }
