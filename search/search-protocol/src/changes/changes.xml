@@ -23,6 +23,9 @@
   </properties>
 
   <body>
+    <release version="1.13.0" date="TBD" description="TBD">
+    </release>
+
     <release version="1.12.2" date="2018-07-25" description="This release of Search Protocol is a component of an interim point build for the Search components. This is an operational release of the components to date.">
       <action dev="shardman" type="update">
         Added a method to both the PDS and PDAP protocol handlers to strip offending content from parameter values that may facilitate Cross-Site Scripting (XSS).
