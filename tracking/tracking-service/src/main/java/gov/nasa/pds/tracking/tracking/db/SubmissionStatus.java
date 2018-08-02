@@ -280,7 +280,7 @@ public class SubmissionStatus extends DBConnector {
 	            }
 	        }
 	    } finally {
-	        close(prepareStm);
+    		close(prepareStm);
 	    }
 	}
 

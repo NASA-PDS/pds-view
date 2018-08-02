@@ -23,7 +23,7 @@ import gov.nasa.pds.tracking.tracking.db.SubmissionStatus;
  * @author danyu dan.yu@jpl.nasa.gov
  *
  */
-@Path("json/submissionstatus")
+@Path("json/submissionstatusold")
 public class JSONBasedSubmissionStatus {
 
 	public static Logger logger = Logger.getLogger(JSONBasedSubmissionStatus.class);

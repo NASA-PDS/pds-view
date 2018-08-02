@@ -86,7 +86,7 @@ public class ServicesHomePage {
 	              "</div>" +*/
 	              "<p></p><div>" + 
 	              "<li><a href=\"xml/users/sean.hardman@jpl.nasa.gov\">User Role for sean.hardman@jpl.nasa.gov</a><br/></li>" +
-	              "</div>"	              +
+	              "</div>"+
 	              "<p></p><div>" +
 	              "<li><a href=\"xml/users/urn:nasa:pds:context_pds3:data_set:data_set.jno-e-j-ss-wav-2-edr-v1.0/" + Reference.INST_TABLENAME + "\">" +
 	              	"Product (urn:nasa:pds:context_pds3:data_set:data_set.jno-e-j-ss-wav-2-edr-v1.0) Instrument Role Query </a><br/></li>" +
@@ -97,6 +97,40 @@ public class ServicesHomePage {
 	              "</div>"
               + HtmlConstants.PAGE_END;
     }
-
+    
+    @GET
+    @Path("/submissionstatusadd")
+    @Produces("text/html")
+    public String submissionStatusForm() {
+    	return HtmlConstants.PAGE_BEGIN +
+		          "<h1>Submission Status</h1>" +
+		          "<h2>Add</h2>" +
+		          "<div>" +
+		          "<form action=\"json/submissionstatus/add\" method=\"POST\">" +
+		          "<table>" +
+		          "<tr><td>Delivery ID: </td><td><input id=\"id\" name=\"Delivery_ID\" /></td></tr>" +
+		          "<tr><td>Status: </td><td><input id=\"status\" name=\"Status\" /></td></tr>" +
+		          "<tr><td>Email: </td><td><input id=\"email\" name=\"Email\" /></td></tr>" +
+		          "<tr><td>Comment: </td><td><input id=\"comment\" name=\"Comment\" /></td></tr>" +
+		          "<tr><td></td><td><input type=\"submit\" value=\"Add\" /></td>" +
+		          "</table>" +    
+		          "</form>" +
+		          "</div>" +
+		          "<p></p>" +
+		          "<h2>Update</h2>" +
+		          "<div>" +
+		          "<form action=\"json/submissionstatus/update\" method=\"POST\">" +
+		          "<table>" +
+		          "<tr><td>Delivery ID: </td><td><input id=\"id\" name=\"Delivery_ID\" /></td></tr>" +
+		          "<tr><td>Submission Time: </td><td><input id=\"submissionDate\" name=\"SubmissionDate\" /> (yyyy-MM-ddTHH:mm:ss)</td></tr>" +
+		          "<tr><td>Status: </td><td><input id=\"status\" name=\"Status\" /></td></tr>" +
+		          "<tr><td>Email: </td><td><input id=\"email\" name=\"Email\" /></td></tr>" +
+		          "<tr><td>Comment: </td><td><input id=\"comment\" name=\"Comment\" /></td></tr>" +
+		          "<tr><td></td><td><input type=\"submit\" value=\"Update\" /></td></tr>" +
+		          "</table>" +
+		          "</form>" +
+		          "</div>"		          
+            + HtmlConstants.PAGE_END;
+    }
 }
 

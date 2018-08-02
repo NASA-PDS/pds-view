@@ -626,11 +626,11 @@ public class Mytest {
 	}
 
 	@SuppressWarnings("unused")
-	private void insertSubmission(int deliveryIdentifier, String subDateTime) {
+	private void insertSubmission(int deliveryIdentifier, String status, String email, String comment) {
 		Submission subm;
 		try {
 			subm = new Submission();
-			subm.insertSubmission(deliveryIdentifier, subDateTime);
+			subm.insertSubmission(deliveryIdentifier, status, email, comment);
 		} catch (ClassNotFoundException | SQLException e) {
 			
 			e.printStackTrace();

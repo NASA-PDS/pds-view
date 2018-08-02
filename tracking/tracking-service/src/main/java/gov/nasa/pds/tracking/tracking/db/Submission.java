@@ -8,6 +8,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Date;
+
 import org.apache.log4j.Logger;
 
 /**
@@ -19,6 +21,7 @@ public class Submission extends DBConnector {
 	public static Logger logger = Logger.getLogger(Submission.class);
 
 	private static String TABLENAME  = "submission";
+	//private static String STATUSTABLENAME  = "submission_status";
 	
 	private static String DEL_IDENTIFIERCOLUME = "delivery_identifier";
 	private static String SUBMISSIONDATECOLUME = "submission_date_time";
@@ -71,7 +74,7 @@ public class Submission extends DBConnector {
 	 * @param deliveryIdentifier
 	 * @param subDateTime
 	 */
-	public void insertSubmission(int deliveryIdentifier, String subDateTime) {
+	public void insertSubmission(int deliveryIdentifier, String status, String email, String comment) {
 	
 	try {
 		// Setup the connection with the DB
@@ -80,12 +83,16 @@ public class Submission extends DBConnector {
 		
 		prepareStm = connect.prepareStatement("INSERT INTO " + TABLENAME + " (" + DEL_IDENTIFIERCOLUME + ", " + SUBMISSIONDATECOLUME + ") VALUES (?, ?)");
 		prepareStm.setInt(1, deliveryIdentifier);
-		prepareStm.setString(2, subDateTime);
+		String currentTime = ISO_BASIC.format(new Date());
+		prepareStm.setString(2, currentTime);
 		
 		prepareStm.executeUpdate();
 		
+		SubmissionStatus subStatus = new SubmissionStatus();
+		subStatus.insertSubmissionStatus(deliveryIdentifier, currentTime, currentTime, status, email, comment);
+		
 		connect.commit();
-		logger.info("Submission for " + deliveryIdentifier + " has been added.");
+		logger.info("Submission and Submissin status for " + deliveryIdentifier + " has been added.");
 		
 	} catch (Exception e) {
 		logger.error(e);
