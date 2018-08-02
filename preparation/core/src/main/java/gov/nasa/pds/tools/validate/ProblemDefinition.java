@@ -30,7 +30,6 @@ import javax.print.attribute.standard.Severity;
 public class ProblemDefinition {
 
   private static final AtomicInteger keyGenerator = new AtomicInteger();
-  private static final Map<Integer, ProblemDefinition> PROBLEMS = new ConcurrentHashMap<Integer, ProblemDefinition>();
 
 	private final int id;
 	private final ExceptionType severity;
@@ -54,7 +53,6 @@ public class ProblemDefinition {
 		this.standardsDocument = standardsDocument;
 		this.standardsSection = standardsSection;
 
-		PROBLEMS.put(this.id, this);
 	}
 	
   public ProblemDefinition(
@@ -112,9 +110,5 @@ public class ProblemDefinition {
     }
     
     return knownHashCode;
-  }
-
-  public static ProblemDefinition findByID(int id) {
-    return PROBLEMS.get(id);
   }
 }

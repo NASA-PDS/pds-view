@@ -21,7 +21,7 @@ import java.util.Collection;
 
 public class ValidationProblem {
 
-	private int problemDefinitionId;
+  private ProblemDefinition problemDefinition;
 	private ValidationTarget target;
 	private String source;
 	private int lineNumber;
@@ -40,7 +40,7 @@ public class ValidationProblem {
 	
 	public ValidationProblem(ProblemDefinition defn, ValidationTarget target,
 	    int lineNumber, int columnNumber, String message) {
-		problemDefinitionId = defn.getID();
+		problemDefinition = defn;
 		this.target = target;
     this.source = target.getLocation();
 		this.lineNumber = lineNumber;
@@ -82,15 +82,11 @@ public class ValidationProblem {
 	}
 	
 	public ProblemDefinition getProblem() {
-		return ProblemDefinition.findByID(problemDefinitionId);
+		return problemDefinition;
 	}
 
 	public int getProblemDefinitionId() {
-		return problemDefinitionId;
-	}
-
-	public void setProblemDefinitionId(int defnId) {
-		this.problemDefinitionId = defnId;
+		return problemDefinition.getID();
 	}
 
 	public ValidationTarget getTarget() {
