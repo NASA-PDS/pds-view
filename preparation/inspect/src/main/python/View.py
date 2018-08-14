@@ -21,7 +21,7 @@ import matplotlib.pyplot as plt
 from matplotlib.widgets import RectangleSelector
 from matplotlib.backends.backend_qt4agg import (
     FigureCanvasQTAgg as FigureCanvas,
-    NavigationToolbar2QT as NavigationToolbar)
+    NavigationToolbar2QT)
 
 # Safe import of PowerNorm (available in MPL v1.4+)
 try:
@@ -29,10 +29,14 @@ try:
 except ImportError:
     PowerNorm = None
 
+import seaborn as sns
+
 import Model
 
 #import Styles
 import icons
+import searchTableDialog
+import searchLabelDialog
 
 MAC = "qt_mac_set_native_menubar" in dir()
 __version__ = "1.0.1"
@@ -54,7 +58,8 @@ class MainWindow(QMainWindow):
         super(MainWindow, self).__init__(parent)
 
         self.filename = None
-        self.title = ''
+        self.title\
+            = ''
         self.index = None
         self.model = None
         self.image = None
@@ -62,18 +67,23 @@ class MainWindow(QMainWindow):
         self.cubeData = False
         self.x_tick_visible = True
         self.y_tick_visible = True
+        self.current_ticks_state = 'Show'
+        self.ticks_last_state = 'Show'
         self.color_bar_orientation = 'horizontal'
+        self.color_bar_last_state = 'horizontal'
+
         self._norm = mpl.colors.Normalize(clip=False)   # Linear normalization
         self._interpolation = 'none'                    # default to no interpolation on images
         self.current_view = -1       # determines the tab display config on first click and thereafter
-        self.label_index = 0;
-        self.table_index = 1;
-        self.three_d_table_index = 2;
-        self.image_index = 2;
+        self.label_index = 0
+        self.table_index = 1
+        self.three_d_table_index = 2
+        self.image_index = 2
+        self.three_d = False
         self.last_lab = ''
-        self.group_bg_dict_default = {0: (229, 231, 233), 1: (202, 207, 210), 2: (215, 219, 221),  # 4 shades of gray
+        # alternating 4 shades of gray are used to distinguish multiple groups in the table
+        self.group_bg_dict_default = {0: (229, 231, 233), 1: (202, 207, 210), 2: (215, 219, 221),
                                  3: (189, 195, 199)}
-
         self.group_bg_dict_dark = {0: (150, 150, 150), 1: (175, 175, 175), 2: (162, 162, 162),
                           3: (187, 187, 187)}
         self.group_color_dict = self.group_bg_dict_default
@@ -90,10 +100,14 @@ class MainWindow(QMainWindow):
         self.threeDTabInPlace = False
         self.table_num = 0    # This is used for table arrays and image arrays (e.g 3D Spectral Data)
 
+        # variables used for bounding box selection in the table.
         self.start_x = 0
         self.start_y = 0
         self.width = 0
         self.height = 0
+
+        self.tableWidget = None
+        self.labelWidget = None
 
         self.clear_bounding_box = False
         self.indices = None  # selected indices from the table
@@ -135,9 +149,6 @@ class MainWindow(QMainWindow):
         # connect to Summary table to recieve a View button clicked signal
         self.connect(self, SIGNAL("SummaryTableTriggered"), self.handle_view_clicked)
 
-        # connect to Table widget to recieve row and column information
-        self.connect(self, SIGNAL("GetPositionTriggered"), self.handle_get_position)
-
         self.tabFrame = Tab()
 
         self.tabFrame.setEnabled(True)
@@ -162,8 +173,19 @@ class MainWindow(QMainWindow):
         self.threeDTableLayout = QGridLayout()
         # self.threeDTableInfoLayout = QHBoxLayout()
 
+        # image options used for display and saving images
+        self.image_width = 0
+        self.image_height = 0
+        self.dpi = 80.0
+
         self.imageLayout = QVBoxLayout()
-        self.imageInfoLayout = QHBoxLayout()
+
+        self._settings = {'dpi': self.dpi, 'axes': Model._AxesProperties(), 'selected_axis': 0,
+                          'is_rgb': False, 'rgb_bands': (None, None, None)}
+        self.figure = Figure((10.0, 8.0), dpi=self._settings['dpi'])
+        self.imageWidget = FigureCanvas(self.figure)
+
+        self.axes = None
 
         self.tabFrame.setTabOrder(self.labelTab.focusProxy(), self.tableTab.focusProxy())
         self.tabFrame.setMovable(False)
@@ -178,6 +200,7 @@ class MainWindow(QMainWindow):
         self.summaryDockWidget = QDockWidget(self.title, self)
         self.summaryDockWidget.setObjectName("summaryDockWidget")
         self.summaryDockWidget.setAllowedAreas(Qt.RightDockWidgetArea)
+
         self.summaryDockWidget.setFloating(False)
 
         # Add a placeholder for the summary and hide it
@@ -195,44 +218,63 @@ class MainWindow(QMainWindow):
         status.showMessage("Ready", 5000)
 
         self.fileOpenAction = self.create_action("&Open...", self.file_open,
-                                                 QKeySequence.Open, icon="fileopen", tip="Open a PDS .xml file")
-        self.fileSaveTableAsAction = self.create_action("Save Table &As...", self.file_save_table_as,
-                                                        icon="filesaveas", tip="Save the table as a csv file")
+                                                # QKeySequence.Open, icon="fileopen", tip="Open a PDS product.")
+                                                 QKeySequence.Open, icon="folderopen.svg", tip="Open")
+        self.fileSaveTableAsAction = self.create_action("Save Table &As...",self.file_save_table_as,
+                                                        icon="save1.svg", tip="Save Table as csv file.")
 
-        self.fileSaveTableAsAction.setDisabled(True)   # Disable until the 'VIEW' button on the summary is clicked
+        self.fileSaveImageAsAction = self.create_action("Save Image As...", self.save_image_as,
+                                                        icon="imagesaveas", tip="Save the image to a file")
+
+        # Disable until a file with an image is picked, and the 'View' button is clicked
+        self.fileSaveImageAsAction.setDisabled(True)
 
         self.fileQuitAction = self.create_action("&Quit..", self.close,
-                                                 "Ctrl+Q", icon="filequit", tip="Close the application")
+                                                 "Ctrl+Q", icon="close.svg", tip="Close the application")
 
         self.fileMenu = self.menuBar().addMenu("&File")
 
         self.add_actions(self.fileMenu, (self.fileOpenAction, None, self.fileSaveTableAsAction,
-                                    None, self.fileQuitAction))
+                                         self.fileSaveImageAsAction, None, self.fileQuitAction))
 
         # Add the 'Label Options' menu bar items
         self.labelMenu = self.menuBar().addMenu("Label Options")
-        labelOptionsGroup = QActionGroup(self, exclusive=True)
-        self.label_options = ('Object Label', 'Full Label', 'separator', 'Identification Area', 'Observation Area',
-                              'Discipline Area','Mission Area','separator','Display Settings',
-                              'Spectral Characteristics','separator','File info','separator', 'Statistics')
+        label_options_group = QActionGroup(self, exclusive=True)
+
+        # label_options is a ('Label Type', icon) tuple
+        self.label_options = (('Object Label', 'objectLabel.svg'), ('Full Label', 'fullLabel.svg'), ('separator', ''),
+                              ('Identification Area',''), ('Observation Area', ''), ('Discipline Area', ''),
+                              ('Mission Area', ''), ('separator', ''), ('Display Settings', ''),
+                              ('Spectral Characteristics', ''), ('separator', ''), ('File info', ''),
+                              ('File Area Observational', ''),('separator', ''),
+                              ('Statistics', ''), ('Reference List', ''), ('separator', ''))
         self.labelActionList = {}
         for label in self.label_options:
-            if label == 'separator':
+            if label[0] == 'separator':
                 self.labelMenu.addSeparator()
             else:
-                self.labelActionList[label] = self.create_action(label, self.select_label,
-                                                                 icon='Display ' + label, tip='Display ' + label,
-                                                                 checkable=True, group_action=True)
-                labelGroupAction = labelOptionsGroup.addAction(self.labelActionList[label])
-                self.labelMenu.addAction(labelGroupAction)
+                self.labelActionList[label[0]] = self.create_action(label[0], self.select_label,
+                                                                    icon=label[1], tip=label[0],
+                                                                    checkable=True, group_action=True)
+                label_group_action = label_options_group.addAction(self.labelActionList[label[0]])
+                self.labelMenu.addAction(label_group_action)
+
+        # add Search Label, which has it's own callback
+        self.searchLabelAction = self.create_action("&Search Label...", self.search_highlight_label,
+                                                    "Ctrl+L", icon="searchLabel.svg",
+                                                    tip="Search Label.")
+
+        self.labelMenu.addAction(self.searchLabelAction)
 
         self.labelActionList['Object Label'].setChecked(True)
 
-
-
-        self.tableOptionsMenu = self.menuBar().addMenu("Table Options")
+        self.tableMenu = self.menuBar().addMenu("Table Options")
+        # Search Table
+        self.searchHighlightTableAction = self.create_action("&Search Table...", self.search_highlight_table,
+                                                             "Ctrl+T", icon="searchTable.svg",
+                                                             tip="Search Table.")
         # Show selection bounding box
-        self.showBoundingBoxAction = self.create_action("Draw bounding box on image of table selection", self.get_selection,
+        self.showBoundingBoxAction = self.create_action("Show rectangular table selection on image", self.get_selection,
                                                         icon="ShowSelection",
                                                         tip="Draw bounding box on image of selected table data")
 
@@ -240,11 +282,46 @@ class MainWindow(QMainWindow):
                                                         icon="HideSelection",
                                                         tip="Hide bounding box on image of selected table data")
 
-        self.tableOptionsMenu.addAction(self.showBoundingBoxAction)
-        self.tableOptionsMenu.addAction(self.hideBoundingBoxAction)
+        self.nextCubeDataFileAction = self.create_action("Select next band", self.get_next_file,
+                                                         icon="nextCubeLayer.svg",
+                                                         tip="Next band and image.")
+        self.lastCubeDataFileAction = self.create_action("Select previous band", self.get_last_file,
+                                                         icon="lastCubeLayer.svg",
+                                                         tip="Previous band and image.")
+        # Render Histogram of table data
+        self.histogramAction = self.create_action('Histogram', self.render_histogram,
+                                                  icon="histogram.svg",
+                                                  tip='Histogram of table.')
+
+        self.kdeHistogramAction = self.create_action('KDE Histogram', self.render_kde_histogram,
+                                                     icon="kdeHistogram.svg",
+                                                     tip="'Kernel Density Estimation' histogram of table.")
+
+        self.colorbarAction = self.create_action('Toggle Colorbar', self.toggle_colorbar,
+                                                     icon="colorbar.svg",
+                                                     tip="Toggle Colorbar")
+
+        self.tickAction = self.create_action('Toggle Ticks', self.toggle_ticks,
+                                                 icon="ticks.svg",
+                                                 tip="Toggle Ticks")
+
+        self.tableMenu.addAction(self.searchHighlightTableAction)
+        self.tableMenu.addSeparator()
+        self.tableMenu.addAction(self.lastCubeDataFileAction)
+        self.tableMenu.addAction(self.nextCubeDataFileAction)
+        self.tableMenu.addSeparator()
+        self.tableMenu.addAction(self.showBoundingBoxAction)
+        self.tableMenu.addAction(self.hideBoundingBoxAction)
+        self.tableMenu.addSeparator()
+        self.tableMenu.addAction(self.histogramAction)
+        self.tableMenu.addAction(self.kdeHistogramAction)
         self.hideBoundingBoxAction.setDisabled(True)
-
-
+        self.nextCubeDataFileAction.setDisabled(True)
+        self.lastCubeDataFileAction.setDisabled(True)
+        self.histogramAction.setDisabled(True)
+        self.kdeHistogramAction.setDisabled(True)
+        self.colorbarAction.setDisabled(True)
+        self.tickAction.setDisabled(True)
 
         # 'Image Options' menu item
         self.colorbarActionDict = {}
@@ -275,14 +352,14 @@ class MainWindow(QMainWindow):
         colorbar_sub_menu = self.imageOptionsMenu.addMenu("Colorbar")
         self.cb_removed = False
         colorbar_group = QActionGroup(self, exclusive=True)
-        colorbar_options = ('Horizontal', 'Vertical', 'Hide')
+        colorbar_options = ('horizontal', 'vertical', 'hide')
         for cb in colorbar_options:
-            self.colorbarActionDict[cb] = self.create_action(cb, self.set_colorbar, icon="colorbarOrientation",
+            self.colorbarActionDict[cb] = self.create_action(cb, self.set_colorbar, icon="colorbar.svg",
                                                              tip="Toggle Colorbar Orientataion", checkable=True, group_action=True)
             cb_actions = colorbar_group.addAction(self.colorbarActionDict[cb])
             colorbar_sub_menu.addAction(cb_actions)
 
-        self.colorbarActionDict['Horizontal'].setChecked(True)
+        self.colorbarActionDict['horizontal'].setChecked(True)
 
         self.imageOptionsMenu.addSeparator()
 
@@ -290,8 +367,9 @@ class MainWindow(QMainWindow):
 
         tick_group = QActionGroup(self, exclusive=True)
         tick_options = ('Show', 'Hide','Show X-Tick', 'Show Y-Tick')
+        self.ticks_removed = False
         for tick in tick_options:
-            self.tickActionDict[tick] = self.create_action(tick, self.set_ticks, icon="hideShowTicks",
+            self.tickActionDict[tick] = self.create_action(tick, self.set_ticks, icon="ticks.svg",
                                                            tip="Toggle Ticks Visibility", checkable=True,
                                                            group_action=True)
             tick_actions = tick_group.addAction(self.tickActionDict[tick])
@@ -323,26 +401,18 @@ class MainWindow(QMainWindow):
 
         self.imageOptionsMenu.addSeparator()
 
-
-
         # Show mouse selected bounding box and make selection in the table
         self.showMouseSelectionAction = self.create_action("Highlight mouse selection in table", self.get_mouse_selection,
-                                                        icon="ShowMouseSelection",
-                                                        tip="Draw bounding box and clear corresponding table selection")
+                                                           icon="ShowMouseSelection",
+                                                           tip="Draw bounding box and clear corresponding table selection")
 
-        self.hideMouseSelectionAction = self.create_action("Hide bounding box and clear table selection", self.clear_mouse_selection,
-                                                        icon="HideMouseSelection",
-                                                        tip="Clear bounding box and clear corresponding table selection")
+        self.hideMouseSelectionAction = self.create_action("Clear bounding box and table selection", self.clear_mouse_selection,
+                                                           icon="HideMouseSelection",
+                                                           tip="Clear bounding box and corresponding table selection")
 
         self.imageOptionsMenu.addAction(self.showMouseSelectionAction)
         self.imageOptionsMenu.addAction(self.hideMouseSelectionAction)
         self.hideMouseSelectionAction.setDisabled(True)
-
-
-
-
-
-
 
         # Add the 'Color Maps' menu bar items
         self.invert_colormap = False
@@ -446,7 +516,7 @@ class MainWindow(QMainWindow):
         # ToolBar options (submenu)
         tool_bar_sub_menu = self.viewMenu.addMenu("Tool Bar")
         tool_bar_group = QActionGroup(self, exclusive=True)
-        toolbar_options = ('Hide Toolbar','Show Toolbar')
+        toolbar_options = ('Hide Toolbar', 'Show Toolbar')
         for option in toolbar_options:
             if option == 'separator':
                 self.viewMenu.addSeparator()
@@ -480,18 +550,83 @@ class MainWindow(QMainWindow):
         self.viewMenu.addSeparator()
 
         # Disable until the 'View' button is pushed
+        self.tableMenu.setDisabled(True)
         self.labelMenu.setDisabled(True)
-        self.imageMenu.setDisabled(True)  # Disable image functionality until an image is rendered
-        self.viewMenu.setDisabled(False)
+        self.imageMenu.setDisabled(True)
+
+        # Disable image functionality until an image is rendered
+        self.viewMenu.setDisabled(True)
         self.imageOptionsMenu.setDisabled(True)
         self.displayStylesMenu.setDisabled(True)
 
-        # Tool Bar
-        self.fileToolBar = self.addToolBar('Hide Toolbar')
-        self.fileToolBar.setObjectName('FileToolBar')
-        self.add_actions(self.fileToolBar, (self.fileOpenAction, self.fileSaveTableAsAction,
-                                            self.fileQuitAction, None))
+        # Tool Bar definitions
+        self.mainToolBar = self.addToolBar('Hide Toolbar')
+        self.mainToolBar.setObjectName('MainToolBar')
 
+        #  File actions,search actions, and label actions
+        #  Note use of labelActionList for the two label selection options in the toolbar
+        self.add_actions(self.mainToolBar, (self.fileOpenAction, self.fileSaveTableAsAction,
+                                            self.fileQuitAction, None, self.searchHighlightTableAction,
+                                            self.searchLabelAction, None, self.labelActionList['Object Label'],
+                                            self.labelActionList['Full Label'], None))
+
+        self.fileSaveTableAsAction.setDisabled(True)
+        self.searchLabelAction.setDisabled(True)
+        self.searchHighlightTableAction.setDisabled(True)
+        self.labelActionList['Object Label'].setDisabled(True)
+        self.labelActionList['Full Label'].setDisabled(True)
+
+
+        self.checkBox = QCheckBox('Hold Slider Positions')
+        self.mainToolBar.addWidget(self.checkBox)
+
+        self.add_actions(self.mainToolBar, (self.lastCubeDataFileAction,
+                                            self.nextCubeDataFileAction))
+
+        self.tableLabel = QLabel('Table ')
+        self.tableLabel.setDisabled(True)
+        self.tableLabel.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        self.tableNumDisplay = QLineEdit()
+        self.tableNumDisplay.setMaxLength(7)
+        self.tableNumDisplay.setAlignment(Qt.AlignLeft)
+        self.tableNumDisplay.setDisabled(True)
+        self.tableNumDisplay.setFixedWidth(50)
+        self.tableNumDisplay.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        self.tableNumDisplay.returnPressed.connect(self.table_num_line_edit_entry)
+        self.tableNumDisplay.clear()
+
+        self.mainToolBar.addWidget(self.tableLabel)
+        self.mainToolBar.addWidget(self.tableNumDisplay)
+
+        self.dpiLabel = QLabel('dpi ')
+        self.dpiLabel.setDisabled(True)
+        self.dpiLabel.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        self.dpiDisplay = QLineEdit()
+        self.dpiDisplay.setMaxLength(7)
+        self.dpiDisplay.setAlignment(Qt.AlignLeft)
+        self.dpiDisplay.setDisabled(True)
+        self.dpiDisplay.setFixedWidth(50)
+        self.dpiDisplay.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        self.dpiDisplay.returnPressed.connect(self.dpi_line_edit_entry)
+        self.tableNumDisplay.clear()
+
+
+
+        self.checkBox.stateChanged.connect(self.hold_slider_positions)
+        self.checkBox.setChecked(MainWindow.hold_position_checked)
+        self.checkBox.sizeHint()
+        self.checkBox.setDisabled(True)
+        self.checkBox.setChecked(False)
+
+        # add the histograms to the main tool bar
+        self.add_actions(self.mainToolBar, (None, self.histogramAction, self.kdeHistogramAction, None,
+                                            self.colorbarAction, self.tickAction))
+
+        self.mainToolBar.addWidget(self.dpiLabel)
+        self.mainToolBar.addWidget(self.dpiDisplay)
+
+        # Hide main toolbar until a file is loaded.
+        self.mainToolBar.hide()
         self.initial_gray_scale_setting()
         self.setWindowTitle("PDS Inspect Tool")
         self.setWindowIcon(QIcon("./Icons/MagGlass.png"))
@@ -508,9 +643,9 @@ class MainWindow(QMainWindow):
 
     def set_tool_bar_options(self, option):
         if option == 'Hide Toolbar':
-            self.fileToolBar.hide()
+            self.mainToolBar.hide()
         else:
-            self.fileToolBar.show()
+            self.mainToolBar.show()
 
     def set_theme(self, style):
         ret = QApp.app.setStyle(style)
@@ -535,26 +670,50 @@ class MainWindow(QMainWindow):
             print('Option out of range')
         self.draw_2d_image(None, redraw=True)
 
-    def set_colorbar(self, option):
-        # print("IN SET COLOR BAR")
 
-        if not self.cb_removed:
-            # self.cbar.remove()
+    def toggle_colorbar(self):
+        current = self.color_bar_orientation
+        display_states = ('horizontal', 'vertical')
+        if current in display_states:
+            self.set_colorbar('hide')
+        else:
+            #print(self.color_bar_last_state)
+            self.set_colorbar(self.color_bar_last_state)
+        self.color_bar_last_state = current
+
+    def set_colorbar(self, option):
+        if not self.cb_removed:           # This prevents multiple color bars from being rendered
             self.imageWidget.cbar.remove()
-            print("Tried To Remove the color bar")
-        if option == 'Horizontal':
+            # print("Removed the color bar")
+        if option == 'horizontal':
             self.color_bar_orientation = 'horizontal'
             self.cb_removed = False
-        elif option == 'Vertical':
+        elif option == 'vertical':
             self.color_bar_orientation = 'vertical'
             self.cb_removed = False
-        elif option == 'Hide':
+        elif option == 'hide':
             self.color_bar_orientation = 'hide'
             self.cb_removed = True
         # self.renderImage(peripheral='ColorBar')
-        self.draw_2d_image(None, redraw=False)
+        # The different calls are need for the methods draw_2d_image() to properly read dimension of the array
+        if self.three_d:
+            self.draw_2d_image(None, redraw=True)
+        else:
+            self.draw_2d_image(None, redraw=False)
+
+    def toggle_ticks(self):
+        # print("CURRENT TICK STATE: {}".format(self.current_ticks_state))
+        current = self.current_ticks_state
+        visible_states= ('Show', 'Show X-Tick', 'Show Y-Tick')
+        if current in visible_states:
+            self.set_ticks('Hide')
+        else:
+            self.set_ticks(self.ticks_last_state)
+        self.ticks_last_state = current
+
 
     def set_ticks(self, selection):
+        # Had a case where grid lines were drawn for no apparent reason
         if selection == 'Show':
             self.x_tick_visible = True
             self.y_tick_visible = True
@@ -568,8 +727,13 @@ class MainWindow(QMainWindow):
         elif selection == 'Show Y-Tick':
             self.x_tick_visible = False
             self.y_tick_visible = True
-        self.draw_2d_image(None, redraw=False)
+        if self.three_d:
+            self.draw_2d_image(None, redraw=True)
+        else:
+            self.draw_2d_image(None, redraw=False)
         self.render_image(peripheral='Ticks')
+        print('From set_ticks: {}'.format(selection))
+        self.current_ticks_state = selection
 
     def setStyle(self, style):
         # print('SET STYLE')
@@ -598,7 +762,7 @@ class MainWindow(QMainWindow):
             self.group_color_dict = self.group_bg_dict_dark
             self.group_text_color = self.group_bg_dict_neon
         else:
-            print('Should not be here.')
+            print('Should not be here.n (set_style())')
         self.setStyleSheet(style_sheet)
         self.set_model_style()
 
@@ -624,7 +788,6 @@ class MainWindow(QMainWindow):
         else:
             self.colorActionList["current selection in 'All'"].setDisabled(True)
         self.clear_layout(self.imageLayout)
-        self.clear_layout(self.imageInfoLayout)
         self.draw_2d_image(None, redraw=True)
 
     def invert_color_map(self):
@@ -644,7 +807,7 @@ class MainWindow(QMainWindow):
                       checkable=False, group_action=False, signal="triggered()"):
         action = QAction(text, self)
         if icon is not None:
-            action.setIcon(QIcon("./Icons/{}.png".format(icon)))
+            action.setIcon(QIcon("./Icons/{}".format(icon)))
         if shortcut is not None:
             action.setShortcut(shortcut)
         if tip is not None:
@@ -653,7 +816,7 @@ class MainWindow(QMainWindow):
         if slot is not None:
             # Need to pass a parameter to the callback for a group action as in (View options)
             if group_action:
-                self.connect(action, SIGNAL(signal), lambda:slot(text))
+                self.connect(action, SIGNAL(signal), lambda: slot(text))
             else:
                 self.connect(action, SIGNAL(signal), slot)
         if checkable:
@@ -675,7 +838,6 @@ class MainWindow(QMainWindow):
         self.clear_layout(self.tableInfoLayout)
         self.clear_layout(self.threeDTableLayout)
         self.clear_layout(self.imageLayout)
-        self.clear_layout(self.imageInfoLayout)
         self.initial_gray_scale_setting()
         self._norm = mpl.colors.Normalize(clip=False)  # Linear normalization
         self._interpolation = 'none'
@@ -684,7 +846,7 @@ class MainWindow(QMainWindow):
         self.actionListAll['gray'].setChecked(True)
         self.normalizationActionDict['Linear'].setChecked(True)
         self.tickActionDict['Show'].setChecked(True)
-        self.colorbarActionDict['Horizontal'].setChecked(True)
+        self.colorbarActionDict['horizontal'].setChecked(True)
         self.interpolationActionDict['none'].setChecked(True)
 
     # This method call the QFileDialog to get allow selection of a file to open
@@ -697,34 +859,36 @@ class MainWindow(QMainWindow):
 
         if filename:
             fname = map(str, filename)
+            self.mainToolBar.show()
             self.open_summary_gui(fname[0])
-            self.imageMenu.setDisabled(True)  # Disable image functionality until an image is rendered
+            self.imageMenu.setDisabled(True
+                                       )  # Disable image functionality until an image is rendered
             self.viewMenu.setDisabled(False)
             self.imageOptionsMenu.setDisabled(True)   # Disable image functionality until an image is rendered
-            self.labelMenu.setDisabled(True)  # Disable until the 'View' button is pushed
+            self.tableMenu.setDisabled(True)
+            self.labelMenu.setDisabled(True)  # Disable until the 'Label' tab is selected
             self.displayStylesMenu.setDisabled(False)
+            self.searchLabelAction.setDisabled(True)
+            self.searchHighlightTableAction.setDisabled(True)
+            self.labelActionList['Object Label'].setDisabled(True)
+            self.labelActionList['Full Label'].setDisabled(True)
             self.fileSaveTableAsAction.setDisabled(True)  # disable table saving until 'View' is pressed.
+            self.checkBox.setChecked(False)
+            self.checkBox.setDisabled(True)
+            self.nextCubeDataFileAction.setDisabled(True)
+            self.lastCubeDataFileAction.setDisabled(True)
+            self.tableLabel.setDisabled(True)
+            self.tableNumDisplay.setDisabled(True)
+
             self.current_view = -1
 
-    def file_save(self):
-        '''
-        Save an image file as a .png, .jpg, .tga
-        Same a table as CSV file
-        :return:
-        '''
-        print('Not finished yet')
-
-    #    if self.image == None:
-    #        return True
-    #    if self.filename is None:
-    #        return self.fileSaveAs()
-    #    else:
-    #        fname, ext = self.filename.split('.')
 
     def file_save_table_as(self):
+        '''
+        Save the table as a csv file.
+        :return:
+        '''
         fname = self.filename if self.filename is not None else "."
-        formats = (["*.{}".format(format.data().decode("ascii").lower())
-                    for format in QImageWriter.supportedImageFormats()])
         fname = QFileDialog.getSaveFileName(self,
                                             "Save Table as CVS file", fname,
                                             'CSV(*.csv"=)')
@@ -737,36 +901,49 @@ class MainWindow(QMainWindow):
         return False
 
 
+    def search_highlight_table(self):
+        # Start the dialog and return the indices to select
+        # ('FROM CALL: self.table shape is : {}'.format(self.table.shape))
+        # print('type of table: {}'.format(type(self.table)))
+        search_table_gui = searchTableDialog.SearchTableDialog(self.table, self.tableWidget)
+        search_table_gui.exec_()
+
+    def search_highlight_label(self):
+        # Start the dialog and return the indices to select
+        search_label_gui = searchLabelDialog.SearchLabelDialog(LabelFrame.parent_child_dict, self.labelWidget)
+        search_label_gui.exec_()
 
 
-    def save_view(self):
-        outputimg = QPixmap(self.view.width(), self.view.height())
-        painter = QPainter(outputimg)
-        targetrect = QRectF(0, 0, self.view.width(), self.view.height())
-        sourcerect = QRect(0, 0, self.view.width(), self.view.height())
-        self.view.render(painter, targetrect, sourcerect)
-        fname = 'worldwindow_view.png'
-        fname = QFileDialog.getSaveFileName(self, 'Save image file',
-                                            fname, 'Image Files (*.png *.jpg *.bmp)')
-        if fname != '':
-            fname = str(fname)
-            i = fname.rfind('.')
-            if i < 0:
-                fname = fname + '.png'
-                i = fname.rfind('.')
-            outputimg.save(fname, fname[i + 1:])
-            try:
-                comment = 'View saved to ' + fname[fname.rfind('/') + 1:]
-            except:
-                comment = 'View saved to ' + fname
-            self.view.emit(SIGNAL('statusmsg'), comment)
-        painter.end()
+    def _fspath(self, path):
+        """Return the path representation of a path-like object.
 
+        If str or bytes is passed in, it is returned unchanged. Otherwise the
+        os.PathLike interface is used to get the path representation. If the
+        path representation is not str or bytes, TypeError is raised. If the
+        provided path is not str, bytes, or os.PathLike, TypeError is raised.
+        """
+        if isinstance(path, (str, bytes)):
+            return path
 
+        # Work from the object's type to match method resolution of other magic
+        # methods.
+        path_type = type(path)
+        try:
+            path_repr = path_type.__fspath__(path)
+        except AttributeError:
+            if hasattr(path_type, '__fspath__'):
+                raise
+            else:
+                raise TypeError("expected str, bytes or os.PathLike object, "
+                                "not " + path_type.__name__)
+        if isinstance(path_repr, (str, bytes)):
+            return path_repr
+        else:
+            raise TypeError("expected {}.__fspath__() to return str or bytes, "
+                            "not {}".format(path_type.__name__,
+                                            type(path_repr).__name__))
 
-
-
-    def file_save_as(self):
+    def save_image_as(self):
         # print('Not finished yet')
         # return
 
@@ -774,17 +951,25 @@ class MainWindow(QMainWindow):
         #     return True
 
         fname = self.filename if self.filename is not None else "."
-        formats = (["*.{}".format(format.data().decode("ascii").lower())
+        extensions = (["*.{}".format(format.data().decode("ascii").lower())
                     for format in QImageWriter.supportedImageFormats()])
+        # print("Image files ({})".format(" ".join(extensions)))
+
+
         fname = QFileDialog.getSaveFileName(self,
                                             "Save Image as:", fname,
-                                            "Image files ({})".format(" ".join(formats)))
+                                            selectedFilter="Image files ({})".format(" ".join(extensions)))
+
+        fname = self._fspath(str(fname))
+
         if fname:
             if "." not in fname:
                 fname += ".png"
             self.filename = fname
             # print('FILENAME: {}'.format(self.filename))
-            return self.file_save()
+            self.figure.savefig(fname=self.filename, dpi=self._settings['dpi'], format='png', bbox_inches='tight',
+                                pad_inches=0)
+           # return self.file_save()
         return False
 
     def addRecentFile(self, fname):
@@ -799,8 +984,8 @@ class MainWindow(QMainWindow):
     def update_file_menu(self):
         self.fileMenu.addSeparator()
         self.fileMenu.addSeparator()
-        print('recent files')
-        print self.recentFiles
+        # print('recent files')
+        # print self.recentFiles
         self.fileMenu.clear()
         self.addActions(self.fileMenu, self.fileMenuActions[:-1])
         current = self.filename
@@ -831,7 +1016,7 @@ class MainWindow(QMainWindow):
         if fname:
             self.filename = None
             self.addRecentFile(fname)
-            print("Got into load_file()")
+            # print("Got into load_file()")
 
     def closeEvent(self, event):
         print'Close Event.'
@@ -863,13 +1048,25 @@ class MainWindow(QMainWindow):
             path = url.toLocalFile().toLocal8Bit().data()
             if os.path.isfile(path):
                 self.set_defaults()
+                self.mainToolBar.show()
                 self.open_summary_gui(path)
                 self.imageMenu.setDisabled(True)  # Disable image functionality until an image is rendered
                 self.viewMenu.setDisabled(False)
                 self.imageOptionsMenu.setDisabled(True)
+                self.tableMenu.setDisabled(True)
                 self.labelMenu.setDisabled(True)  # Disable until the 'View' button is pushed
                 self.displayStylesMenu.setDisabled(False)
+                self.searchLabelAction.setDisabled(True)
+                self.searchHighlightTableAction.setDisabled(True)
+                self.labelActionList['Object Label'].setDisabled(True)
+                self.labelActionList['Full Label'].setDisabled(True)
                 self.fileSaveTableAsAction.setDisabled(True)  # disable table saving until 'View' is pressed.
+                self.checkBox.setChecked(False)
+                self.checkBox.setDisabled(True)
+                self.nextCubeDataFileAction.setDisabled(True)
+                self.lastCubeDataFileAction.setDisabled(True)
+                self.tableLabel.setDisabled(True)
+                self.tableNumDisplay.setDisabled(True)
                 self.current_view = -1
                 self.addRecentFile(self.filename)
             else:
@@ -890,7 +1087,7 @@ class MainWindow(QMainWindow):
         '''
         rows = set()
         columns = set()
-        self.indices = self.tableWidget.selectionModel.selectedIndexes()
+        self.indices = self.tableWidget.tableSelectionModel.selectedIndexes()
 
         if self.indices:
             for index in self.indices:
@@ -898,11 +1095,12 @@ class MainWindow(QMainWindow):
                 columns.add(index.column())
             self.start_x = min(columns) + 1
             self.start_y = max(rows) + 1
-            print("BB startx, starty: {} {}".format(self.start_x, self.start_y))
+            # print("BB startx, starty: {} {}".format(self.start_x, self.start_y))
             self.width = max(columns) - self.start_x
             self.height = (self.start_y - min(rows)) * -1
             # print('({},{}), width = {}, height = {}'.format(self.start_x, self.start_y, self.width, -self.height))
             self.clear_bounding_box = False
+            # print("draw_2d_image called from get_selection (table)")
             self.draw_2d_image(self, redraw=True, drawBoundingBox=True)
             # change view to 'image'
             self.tabFrame.setCurrentIndex(self.image_index)
@@ -910,16 +1108,22 @@ class MainWindow(QMainWindow):
             self.showBoundingBoxAction.setDisabled(True)
             self.showMouseSelectionAction.setDisabled(True)
         else:
-            print('Add a message box:  No table fields selected in table.')
+            results = 'Nothing selected in table.'
+            QMessageBox.information(self, 'Selection Highlight', results)
+
 
     def hide_selection(self):
         if self.indices:
             self.clear_bounding_box = True
+            # print("draw_2d_image called from hide_selection (table)")
             self.draw_2d_image(self, redraw=True, drawBoundingBox=False)
             self.hideBoundingBoxAction.setDisabled(True)
             self.showBoundingBoxAction.setDisabled(False)
             self.showMouseSelectionAction.setDisabled(False)
-        self.tableWidget.clearSelection()
+            self.tableWidget.clearSelection()
+        else:
+            results = 'Nothing selected in table.'
+            QMessageBox.information(self, 'Selection Highlight', results)
 
     def check_for_selection(self):
         '''
@@ -929,28 +1133,33 @@ class MainWindow(QMainWindow):
         # print('ok checking')
         # print('bounding_box_rectange is : {}'.format(self.bounding_box_rectangle))
         if self.bounding_box_rectangle is not None:
-         #   self.bounding_box_rectangle.remove()
+            # self.bounding_box_rectangle.remove()
             self.allow_rect = True  # allow rectangle drawing over the 2d image
-            self.draw_2d_image(None, redraw=False)
+            #self.draw_2d_image(None, redraw=False)
             self.bounding_box_rectangle = None
 
     def make_selection(self, x1, y1, x2, y2):
+        # print('Using make_selection from MainWindow class.')
+        # clear current selections
+        self.tableWidget.clearSelection()
+
         parent = QModelIndex()
         # I don't understand why I have to swap x,y pairs to get the correct topLeft and bottomRight
         # But it works - perhaps because of the origin coordinates
         x1, y1 = y1, x1
         x2, y2 = y2, x2
-        print("(%3.2f, %3.2f) ---> (%3.2f, %3.2f)" % (x1, y1, x2, y2))
+        # print("(%3.2f, %3.2f) ---> (%3.2f, %3.2f)" % (x1, y1, x2, y2))
         topLeft = self.tableWidget.tableModel.index(x1, y1, parent)
         bottomRight = self.tableWidget.tableModel.index(x2, y2, parent)
         selection = QItemSelection(topLeft, bottomRight)
-        self.tableWidget.selectionModel.select(selection, QItemSelectionModel.SelectCurrent)
+        self.tableWidget.tableSelectionModel.select(selection, QItemSelectionModel.SelectCurrent)
         # Move view in the table to the top left corner of the selection
         self.tableWidget.verticalSliderBar.setSliderPosition(x1-2)
         self.tableWidget.horizontalSliderBar.setSliderPosition(y1-2)
 
-
     def line_select_callback(self, eclick, erelease):
+        # Used to make a selection based on a bounding box dragged on the image
+        # print('Calling make_selection from line_select_callback in  MainWindowclass.')
         # print('ok, select callback hit')
         # print('x: .{}'.format(eclick.xdata))
         # print('y: .{}'.format(erelease.ydata))
@@ -971,44 +1180,53 @@ class MainWindow(QMainWindow):
         self.tableWidget.clearSelection()
 
     def get_mouse_selection(self):
-        if self.indices:
-            self.hide_selection()   # remove an selection from 'Table Options'
+#        if self.indices:
+#            self.hide_selection()   # remove any selection from 'Table Options'
         self.check_for_selection()         # check for and clear any current mouse selection
         self.allow_rect = True             # allow rectangle drawing over the 2d image
+        # print("draw_2d_image called from get_mouse_selection")
         self.draw_2d_image(None, redraw=False)
         self.hideMouseSelectionAction.setDisabled(False)
         self.showMouseSelectionAction.setDisabled(True)
         self.showBoundingBoxAction.setDisabled(True)
 
     def clear_mouse_selection(self):
-        self.clear_table_selection()
-        self.bounding_box_rectangle.remove()
-        self.allow_rect = False
-        self.draw_2d_image(None, redraw=False)
-        self.hideMouseSelectionAction.setDisabled(True)
-        self.showMouseSelectionAction.setDisabled(False)
-        self.showBoundingBoxAction.setDisabled(False)
+        if self.bounding_box_rectangle is not None:
+            self.clear_table_selection()
+            self.bounding_box_rectangle.remove()
+            self.allow_rect = False
+            # print("draw_2d_image called from clear_mouse_selection")
+            self.draw_2d_image(None, redraw=False)
+            self.hideMouseSelectionAction.setDisabled(True)
+            self.showMouseSelectionAction.setDisabled(False)
+            self.showBoundingBoxAction.setDisabled(False)
 
     def handle_view_clicked(self, index):
         '''
         This is the call back for the "View" button  being selected in the Summary area
-        It will draw the label and the associated talbe for the selection
-        :param index: a QModelIndex used internally by the model use .row() to get which button is pushed
+        It will draw the label and the associated table for the selection
+        :param index: a QModelIndex used internally by the model uses .row() to get which button is pushed
         :return:
         '''
         self.clear_layout(self.imageLayout)
         # self.summary[1] is a list of all the 'Name' fiels in the Summary
         viewType = self.get_type(index, self.summary[1])
+        # print('ViewType: {}'.format(viewType))
 
+        self.tableMenu.setDisabled(False)
         self.labelMenu.setDisabled(False)
+        self.searchLabelAction.setDisabled(False)
+        self.searchHighlightTableAction.setDisabled(False)
+        self.labelActionList['Object Label'].setDisabled(False)
+        self.labelActionList['Object Label'].setDisabled(False)
         self.fileSaveTableAsAction.setDisabled(False)  # enable table to be saved.
         self.draw_label(index, viewType)
         self.current_index = index  # These are used when label options change within the same file
         self.view_type = viewType
-        self.test_for_label()
 
-        # print('%%%%%%%%%%%%%%%')
-        # print(viewType)
+        self.test_for_label()
+        # self.adjust_availability()
+
 
         if viewType == 'Header':
             self.configure_tabs(False, False, False, self.label_index)
@@ -1018,6 +1236,8 @@ class MainWindow(QMainWindow):
             self.imageMenu.setDisabled(True)
             self.viewMenu.setDisabled(False)
             self.imageOptionsMenu.setDisabled(True)
+            self.tableMenu.setDisabled(True)
+            self.labelMenu.setDisabled(True)
             self.tabFrame.setCurrentIndex(self.label_index)    # open up in the label tab
         elif viewType == 'Array_2D_Image':
             if self.cubeData:
@@ -1029,20 +1249,36 @@ class MainWindow(QMainWindow):
             self.configure_tabs(True, True, True, self.current_view)
             self.draw_table(index)
             self.clear_layout(self.imageLayout)
-            self.clear_layout(self.imageInfoLayout)
             self.draw_2d_image(None, redraw=False)
 
         elif viewType == 'Array_3D_Spectrum':
             self.draw_table(index)
             self.configure_tabs(True, True, True, self.table_index)
+            # print('TABLE ++++++ INDEX: {}'.format(self.table_index))
             self.tabFrame.setCurrentIndex(self.table_index)  # open up in the table tab
             self.cubeData = True
+
+        elif viewType == 'Array_3D_Image':
+            self.draw_table(index)
+            self.configure_tabs(True, True, True, self.table_index)
+            # print('TABLE ++++++ INDEX: {}'.format(self.table_index))
+            self.tabFrame.setCurrentIndex(self.table_index)  # open up in the table tab
+            self.cubeData = True
+
         else:  # Table Data with no images
             self.imageMenu.setDisabled(True)
             self.viewMenu.setDisabled(False)
             self.imageOptionsMenu.setDisabled(True)
+            self.showBoundingBoxAction.setDisabled(True)
+            self.hideBoundingBoxAction.setDisabled(True)
+            self.tickAction.setDisabled(True)
+            self.colorbarAction.setDisabled(True)
             self.configure_tabs(True, False, False, self.table_index)
             self.draw_table(index)
+
+            # print("INDEX: {}".format(index))
+            # print("SHAPE: {}".format(self.table.shape))
+
             self.tabFrame.setCurrentIndex(self.table_index)  # open up in the table tab
 
     def configure_tabs(self, stateOne, stateTwo, stateThree, view):
@@ -1051,17 +1287,48 @@ class MainWindow(QMainWindow):
         self.tabFrame.setTabEnabled(3, stateThree)
         self.current_view = view
 
-    def test_for_label(self):
-        # This is called everytime a view is changed from the Summary GUI area
+
+
+    def test_for_label(self, none_returned = []):
+        # This is called when a view is changed from the Summary GUI area
         # It enables the label areas that are present for that view, and disables those that are not.
+
         for label in self.label_options:
-            if label == 'separator':
+            if label[0] == 'separator':
                 continue
-            ret = self.model.get_label(self.current_index.row(), label)
+            ret = self.model.get_label(self.current_index.row(), label[0])
+
+            # print("LABELS RETURNED:  {}".format(ret))
+
             if ret is None:
-                self.labelActionList[label].setDisabled(True)
+                self.labelActionList[label[0]].setDisabled(True)
             else:
-                self.labelActionList[label].setDisabled(False)
+                self.labelActionList[label[0]].setDisabled(False)
+
+        if not self.labelWidget.get_empty_label_list():
+            return
+        else:
+            self.select_label('Full Label')  # Decide what we have based on the full lable
+            self.adjust_availability()
+
+
+    def adjust_availability(self):
+        '''
+        This disables categories in the Label pulldown with a value of 'none'
+        :return:
+        '''
+        # These are the categories to disable
+        disable_categories = self.labelWidget.get_empty_label_list()
+        if not disable_categories:
+            print('list not made yet')
+        for cat in disable_categories:
+            cat = str(cat.replace('_', ' '))
+            # print('***********************')
+            # print(cat)
+            self.labelActionList[cat].setDisabled(True)
+        # Restore default label
+        self.select_label('Object Label')
+
 
     def draw_label(self, index, viewType, labelType ='Object Label'):
         '''
@@ -1073,17 +1340,21 @@ class MainWindow(QMainWindow):
         :param labelType: the part of the label to display
         :return:
         '''
-        if labelType == None:
-            self.labelActionList[labelType].setDisabled(True)
+
         label = self.model.get_label(index.row(), labelType)
+
         label_dict = label.to_dict()
-        # print('************ LABEL DICT ****************')
-        # print(label_dict)
-        # print(labelType)
-        labelWidget = LabelFrame(label_dict, self.dimension, index, viewType, labelType)
+      #  print('************ LABEL DICT ****************')
+      #  print(label_dict)
+      #  print('Label type: {}'.format(labelType))
+        self.labelWidget = LabelFrame(label_dict, self.dimension, index, viewType, labelType)
         self.clear_layout(self.labelLayout)
-        self.labelLayout.addWidget(labelWidget)
+        self.labelLayout.addWidget(self.labelWidget)
         self.labelTab.setLayout(self.labelLayout)
+
+      #  print('************ LABEL parent child DICT ****************')
+      #  temp = self.labelWidget.get_parent_child_dict()
+      # print(temp)
 
         self.labelDockWidget = QDockWidget(self.title, self)
         self.labelDockWidget.setObjectName("labelDockWidget")
@@ -1093,30 +1364,16 @@ class MainWindow(QMainWindow):
         self.labelDockWidget.setAllowedAreas(Qt.RightDockWidgetArea | Qt.LeftDockWidgetArea)
         self.labelDockWidget.setFloating(False)
 
-        self.labelDockWidget.setWidget(labelWidget)
+        self.labelDockWidget.setWidget(self.labelWidget)
         self.addDockWidget(Qt.RightDockWidgetArea, self.labelDockWidget)
         self.labelLayout.addWidget(self.labelDockWidget)
 
-    def handle_get_position(self, position):
-        '''
-        :param position: position of the cursor in the table
-        :return:
-        '''
-        self.rowDisplay.setEnabled(True)
-        self.columnDisplay.setEnabled(True)
-        # refresh the widgets
-        self.rowDisplay.clear()
-        self.columnDisplay.clear()
-        # Write the coordinates
-        self.rowDisplay.insert(str(position[0]))
-        self.columnDisplay.insert(str(position[1]))
-        # Disable the widgets so they can not be editted
-        self.rowDisplay.setEnabled(False)
-        self.columnDisplay.setEnabled(False)
+
+
 
     def draw_table_array(self, dimension, table):
         '''
-        This method sets up the buttons for is for the '3D Table' tab.  The buttons are to select individual bands
+        This method sets up the buttons for the '3D Table' tab.  The buttons are to select individual bands
         in a Spectral_Cube_Object.  Clicking a button will update the 'Table' and 'Image' tabs.
         :param dimension: the number of file to make buttons for
         :param table:
@@ -1135,6 +1392,8 @@ class MainWindow(QMainWindow):
         self.threeDTabInPlace = True
         self.clear_layout(self.threeDTableLayout)
         buttons = {}
+
+        self.num_of_bands = dimension
 
         len_last_row = dimension % 10
         rows = dimension/10
@@ -1164,6 +1423,7 @@ class MainWindow(QMainWindow):
         self.threeDTableTab.setLayout(self.threeDTableLayout)
 
     def handle_3d_table_button_clicked(self, data):
+        table_index_for_cube_data = self.table_index + 1   # This reflects the current table index
         self.full_table = data  # This is used in a callback for next and previous tables
         # try:
         self.tabFrame.setTabEnabled(2, True)
@@ -1173,13 +1433,14 @@ class MainWindow(QMainWindow):
         # print('Button number: {}'.format(button_number))
         # set up the table for rendering
         self.draw_indexed_table(data, button_number - 1)
+        self.tabFrame.setCurrentIndex(table_index_for_cube_data)  # open up in the table tab
         # except:
         #     print("3D table array button click did not work")
 
     def draw_indexed_table(self, table, index):
-        # print('INDEXED')
+        # print('INDEXED (draw_indexed_table)')
         # TODO This is assuming that all the tables are the same size and the same type
-        # Pretty lame assumption, have to figure out how to get to each one
+        self.three_d = True
         row_col = self.dimension[1].split('X')
         num_rows = int(row_col[0])
         num_columns = int(row_col[1])
@@ -1192,6 +1453,12 @@ class MainWindow(QMainWindow):
         # print(table_type)
 
         self.tableWidget = ItemTable(self, table[index], title, num_rows, num_columns, self.table_type)
+
+        self.tableWidget.verticalSliderBar.valueChanged.connect(self.slider_moved)
+        self.tableWidget.horizontalSliderBar.valueChanged.connect(self.slider_moved)
+
+        self.enable_disable_image_options()
+
         self.set_model_style()
 
         # If this is not cleared another table will be added
@@ -1200,14 +1467,27 @@ class MainWindow(QMainWindow):
 
         self.render_table(title, self.table_num)
         self.draw_indexed_image(table, index)
+        # print('return from draw_indexed_image')
         self.current_view = self.three_d_table_index
 
+    def slider_moved(self):
+        '''
+        Clear the 'Hold Slider Positions' checkbox if slider is manually moved
+        :return:
+        '''
+        self.checkBox.setChecked(False)
+
     def draw_indexed_image(self, table, index):
-        #  print('INDEXED Image')
+        print('INDEXED Image')
         table_type = self.summary[1][1]  # this is the type of each array
-        if table_type == 'Array_2D_Image':
+        print('table_type: {}'.format(table_type))
+        # TODO move this to _init_ after you're sure you've got them all
+        image_types = ('Array_2D_Image', 'Array_3D_Image', 'Array_3D_Spectrum')
+        if table_type in image_types:
             self.clear_layout(self.imageLayout)
-            self.clear_layout(self.imageInfoLayout)
+            # print("In Draw Indexed Image")
+            # print(self.full_table.shape)
+            # print('Call Draw 2d Image.')
             self.draw_2d_image(self.full_table, index, redraw=False)
             self.current_view = self.image_index + 1
 
@@ -1220,16 +1500,27 @@ class MainWindow(QMainWindow):
         :return:
         '''
         self.table, self.title, dimension, self.table_type, self.table_name = self.model.get_table(index)
-        if dimension == (0,0):
+
+       # print('DEBUG')
+       #print('table: {}'.format(self.table))
+       # print('title: {}'.format(self.title))
+       # print('dimension: {}'.format(self.dimension))
+
+       # print('TEST dimension: {}'.format(self.tableWidget.mixed_table_shape))
+       # print('table_type: {}'.format(self.table_type))
+       # print('table_name: {}'.format(self.table_name))
+
+        if dimension == (0, 0):
             self.tableTab.setDisabled(True)
         else:
             self.tableTab.setDisabled(False)
             # If we have an 'Array_3D_Specturm" we have to make a new tab with a button for each element
-            if self.table_type == 'Array_3D_Spectrum':
+            if self.table_type == 'Array_3D_Spectrum' or self.table_type == 'Array_3D_Image':
                 self.draw_table_array(dimension[0], self.table)
                 # self.current_view = self.three_d_table_index
                 return
-            elif self.table_type == 'Table_Binary' or self.table_type == 'Table Delimited':
+            else:
+            # elif self.table_type == 'Table_Binary' or self.table_type == 'Table Delimited':
                 if self.threeDTabInPlace:
                     self.tabFrame.removeTab(1)
                     self.threeDTabInPlace = False
@@ -1237,6 +1528,9 @@ class MainWindow(QMainWindow):
             num_rows    = dimension[0]
             num_columns = dimension[1]
             self.tableWidget = ItemTable(self, self.table, self.title, num_rows, num_columns, self.table_type)
+
+            self.enable_disable_image_options()
+
             self.set_model_style()
 
             #   print('TITLE : {}'.format(self.title))
@@ -1245,6 +1539,71 @@ class MainWindow(QMainWindow):
             self.clear_layout(self.tableLayout)
             self.render_table(self.table_name)
 
+    def enable_disable_image_options(self):
+        '''
+        Enable or Disabled certain menu/toolbar options for image functionality
+        :return:
+        '''
+        if str(self.tableWidget.table_type) in self.tableWidget.homogeneous_type_files:
+            self.histogramAction.setDisabled(False)
+            self.kdeHistogramAction.setDisabled(False)
+            self.colorbarAction.setDisabled(False)
+            self.tickAction.setDisabled(False)
+            self.dpiLabel.setDisabled(False)
+            self.dpiDisplay.setDisabled(False)
+            # print('DPI: {}'.format(self.dpi))
+            self.dpiDisplay.insert(str(self.dpi))
+        else:
+            self.histogramAction.setDisabled(True)
+            self.kdeHistogramAction.setDisabled(True)
+            self.colorbarAction.setDisabled(True)
+            self.tickAction.setDisabled(True)
+            self.dpiLabel.setDisabled(True)
+            self.dpiDisplay.setDisabled(True)
+
+    def handle_search_button(self):
+        # print(self.edit_box.text())
+        val = self.edit_box.text()
+        val = str(val)
+
+        a = self.table
+        # print('Val: {}'.format(val))
+        matches = zip(*np.where(a == int(val)))
+        # Swap each tuple pair using a generator to memory is conserved in huge arrays
+        # This is so the (x,y) values match what the user sees in the table
+        display_matches = []
+        gen = ((item[1]+1, item[0]+1) for item in matches)
+        for j in range(len(matches)):
+            display_matches.append(gen.next())
+        # print(matches)
+        # print('')
+
+        # print(sorted(display_matches))
+
+        parent = QModelIndex()
+
+        if matches:
+            results = 'Found %d matches.' % len(matches)
+            # clear current selections
+            self.tableWidget.clearSelection()
+            QMessageBox.information(self, 'Search Results', results)
+            for i in matches:
+                x = i[1]
+                y = i[0]
+                # Note: (y,x) identification in the selection Model
+                top_left = self.tableWidget.tableModel.index(y, x, parent)
+                bottom_right = self.tableWidget.tableModel.index(y, x, parent)
+                selection = QItemSelection(top_left, bottom_right)
+                self.tableWidget.selectionModel.select(selection, QItemSelectionModel.Select)
+        else:
+            self.tableWidget.clearSelection()
+            results = 'No matches found.'
+            QMessageBox.information(self, 'Search Results', results)
+
+        return
+
+
+
     def render_table(self, title, table_num = -1):
         '''
         :param title: The name of title taken from the Label
@@ -1252,76 +1611,34 @@ class MainWindow(QMainWindow):
         :return:
         '''
         # Add row, column and Title information above the table
+        # SEARCH BUTTON REMOVED it is now in a dialog
+        #  self.search_button = QPushButton('Search', self)
+        #  self.edit_box = QLineEdit(self)
+
+        #  self.search_button.clicked.connect(self.handle_search_button)
 
         self.title = title
         self.table_num = table_num
-        rowLabel = QLabel('Row ')
-        rowLabel.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
-
-        self.rowDisplay = QLineEdit()
-        self.rowDisplay.setMaxLength(7)
-
-        self.rowDisplay.setAlignment(Qt.AlignRight)
-        self.rowDisplay.setEnabled(False)
-        self.rowDisplay.setFixedWidth(50)
-        self.rowDisplay.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
-
-        columnLabel = QLabel('Column ')
-        columnLabel.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
-
-        self.columnDisplay = QLineEdit()
-        self.columnDisplay.setMaxLength(7)
-
-        self.columnDisplay.setAlignment(Qt.AlignRight)
-        self.columnDisplay.setEnabled(False)
-        self.columnDisplay.setFixedWidth(50)
-        self.columnDisplay.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
 
         # If this is a member of a 3D array, display the table number
         # Account for indexing of arrays starting at 0, while the display starts at 1
         self.table_num += 1
 
-        self.checkBox = QCheckBox('Hold Slider Positions')
         if (self.table_num) > 0:
-            self.checkBox = QCheckBox('Hold Slider Positions')
-            tableLabel = QLabel('Table ')
-            tableLabel.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
-            self.tableDisplay = QLineEdit()
-            self.tableDisplay.setMaxLength(7)
-            self.tableDisplay.setAlignment(Qt.AlignLeft)
-            #self.tableDisplay.setEnabled(False)
-            self.tableDisplay.setFixedWidth(50)
-            self.tableDisplay.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
-
-
-            self.checkBox.stateChanged.connect(self.hold_slider_positions)
-            self.checkBox.setChecked(MainWindow.hold_position_checked)
-            self.checkBox.sizeHint()
-
-            self.previousTable = QPushButton('<')
-            self.previousTable.setFixedWidth(70)
-            self.previousTable.clicked.connect(lambda: self.change_table(self.table_num - 2))
-            self.nextTable = QPushButton('>')
-            self.nextTable.setFixedWidth(70)
-            self.nextTable.clicked.connect(lambda: self.change_table(self.table_num))
-
-            self.tableInfoLayout.addWidget(self.checkBox)
-
-            self.tableInfoLayout.addWidget(self.previousTable)
-            self.tableInfoLayout.addWidget(self.nextTable)
-            self.tableInfoLayout.addWidget(tableLabel)
-            self.tableInfoLayout.addWidget(self.tableDisplay)
-            self.tableDisplay.setText(str(self.table_num))
+            # Enable the Cube Data menu and tool bar options
+            self.checkBox.setDisabled(False)
+            self.nextCubeDataFileAction.setDisabled(False)
+            self.lastCubeDataFileAction.setDisabled(False)
+            self.tableLabel.setDisabled(False)
+            self.tableNumDisplay.setDisabled(False)
+            self.tableNumDisplay.setText(str(self.table_num))
         else:
-            # if self.tableWidget.table_type == 'Array_3D_Spectrum':
-            #    self.checkBox.setChecked(MainWindow.hold_position_checked)
+            if self.tableWidget.table_type == 'Array_3D_Spectrum':
+                self.checkBox.setChecked(MainWindow.hold_position_checked)
+            if self.tableWidget.table_type == 'Array_3D_Image':
+                self.checkBox.setChecked(MainWindow.hold_position_checked)
 
             self.tableInfoLayout.setAlignment(Qt.AlignCenter)
-
-        self.tableInfoLayout.addWidget(rowLabel)
-        self.tableInfoLayout.addWidget(self.rowDisplay)
-        self.tableInfoLayout.addWidget(columnLabel)
-        self.tableInfoLayout.addWidget(self.columnDisplay)
 
         self.tableInfoLayout.setSpacing(5)
         self.tableInfoLayout.stretch(0)
@@ -1340,10 +1657,8 @@ class MainWindow(QMainWindow):
         # self.tableDockWidget.setWindowIcon(QIcon("./Icons/MagGlass.png"))
         self.tableDockWidget.setWidget(self.tableWidget)
         self.addDockWidget(Qt.RightDockWidgetArea, self.tableDockWidget)
-
         self.tableLayout.addWidget(self.tableDockWidget)
 
-        # self.tableLayout.addWidget(self.tableWidget)
         self.tableTab.setLayout(self.tableLayout)
 
         # print('00000000')
@@ -1358,6 +1673,55 @@ class MainWindow(QMainWindow):
     def get_check_box_state(self):
         return MainWindow.hold_position_checked
 
+    def get_next_file(self):
+        if self.table_num >= self.num_tables:  # roll over
+            self.table_num = 0
+            self.change_table(self.table_num)
+        elif self.table_num > 0:
+            self.change_table(self.table_num)
+
+    def get_last_file(self):
+        # print('enter get_last_file(), self.table_num is {}'.format(self.table_num))
+        if self.table_num == 1:    # this is incremented in render_image()
+            self.table_num = self.num_tables
+            # print('rollover case in get_last_file(), self.table_num is {}'.format(self.table_num))
+            self.change_table(self.table_num - 1)    # roll over
+        elif self.table_num >= 0:
+            # print('regular case in get_last_file(), self.table_num is {}'.format(self.table_num))
+            self.change_table(self.table_num - 2)
+
+    def render_histogram(self):
+        hist = Histogram(self.table, self.title, False)
+        hist.show()
+
+    def render_kde_histogram(self):
+        hist = Histogram(self.table, self.title, True)
+        hist.show()
+
+    def table_num_line_edit_entry(self):
+        '''
+        This is the callback after entering data in the Table line edit box
+        :return:
+        '''
+        index = self.tableNumDisplay.text()
+        # ("index: {}".format(index))
+        table_index = int(index) - 1    # account for 0 indexing in the table
+
+        self.change_table(table_index)
+
+    def dpi_line_edit_entry(self):
+        '''
+        This is the callback after entering data in the 'dpi' edit box
+        :return:
+        '''
+        dpi = self.dpiDisplay.text()
+
+        #  TODO make the text_entry only accept numeric values
+        self.dpi = float(dpi)
+        self.draw_2d_image(None, redraw=True)
+
+
+
     def change_table(self, index):
         '''
         This is the callback for the arrow buttons on the table display for 3D images
@@ -1365,14 +1729,13 @@ class MainWindow(QMainWindow):
         :param index: Index into the structure of band data.
         :return:
         '''
-        if index == -1:
-            print("Already at the first table.")
-            return
-        elif index >= self.num_tables:
-            print("Already at the last table.")
-        else:
-            self.draw_indexed_table(self.full_table, index)
-            self.draw_2d_image(self.full_table, index, redraw=False)
+        # print("In change_table(), index: {} passed.".format(index))
+        # print("self.table is: {}".format(self.table_num))
+        # print("Num_tables is: {}".format(self.num_tables))
+
+        # print('Index passed: {}, should correlate with that table'.format(index))
+
+        self.draw_indexed_table(self.full_table, index)  # this call will render the proper image as well
 
     def hold_slider_positions(self, state):
         if state == Qt.Checked:
@@ -1386,40 +1749,44 @@ class MainWindow(QMainWindow):
         else:
             print('Trouble with holdSliderPosition method')
 
+
     # TODO figure out how to freeze/thaw the display for image updates
 
     # TODO break image stuff into it's own class or multiple methods for differnt types of images
     def draw_2d_image(self, image_array, index = -1, redraw=False, drawBoundingBox=False):
         if redraw == False:
             if image_array is None:   # called from single image data structure
+                # print("DRAW 2D CALLED!!!!!!!!!!!!!!!!!")
                 self.image_data = self.table
+                # print(self.image_data.shape)
             else:
                 # Render individual 'band' of 3d Spectrum data
                 self.image_data = image_array[index]
+                # print('ARRAY data')
+                # print(self.image_data.shape)
 
-        # print('HERE')
-        # print(self)
-
-        self._settings = {'dpi': 80., 'axes': Model._AxesProperties(), 'selected_axis': 0,
+        self._settings = {'dpi': self.dpi, 'axes': Model._AxesProperties(), 'selected_axis': 0,
                           'is_rgb': False, 'rgb_bands': (None, None, None)}
         self.clear_layout(self.imageLayout)
-        self.clear_layout(self.imageInfoLayout)
         self.figure = Figure((10.0, 8.0), dpi=self._settings['dpi'])
-
         self.imageWidget = FigureCanvas(self.figure)
 
         self.figure.clear()
 
         self.axes = self.figure.add_subplot(111)
+        # print("adding axes")
 
         self.axes.autoscale_view(True,True,True)
         self.axes.set_xlabel(self.title)
 
+        # Add Toolbar to widget
+        nav_toolbar = NavigationToolbar(self.imageWidget, self)
+        toolbar = nav_toolbar
+
+        self.imageLayout.addWidget(toolbar)
         #  print(type(image_data))
         #  print(image_data.shape)
 
-        # height, width = self.image_data.shape
-        # print('WIDTH: {}   HEIGHT: {}'.format(width,height))
         _norm = mpl.colors.Normalize(clip=False)
 
         _norm.vmin = np.ma.min(self.image_data)
@@ -1433,7 +1800,7 @@ class MainWindow(QMainWindow):
         self._origin = 'lower'
 
         self.image = self.axes.imshow(self.image_data, origin=self._origin, interpolation=self._interpolation,
-                                      norm=self._norm, aspect='equal', cmap = self.cmap)
+                                      norm=self._norm, aspect='equal', cmap=self.cmap)
 
         if drawBoundingBox or not self.clear_bounding_box:
             self.rect = patches.Rectangle((self.start_x, self.start_y), self.width, self.height,
@@ -1444,10 +1811,10 @@ class MainWindow(QMainWindow):
             self.rect.set_visible(False)
 
         if not self.cb_removed:
-            # self.cbar = self.figure.colorbar(self.image, orientation=self.color_bar_orientation)
             self.imageWidget.cbar = self.figure.colorbar(self.image, orientation=self.color_bar_orientation)
 
         self.current_view = self.image_index
+        # print('call render_image from draw_2d_image')
         self.render_image()
 
         # print("allow_rect: {}".format(self.allow_rect))
@@ -1457,6 +1824,7 @@ class MainWindow(QMainWindow):
                                         drawtype='box', useblit=False, button=[1],
                                         minspanx=2, minspany=2, spancoords='pixels',
                                         interactive=True)
+
 
     def is_floating(self):
         # print('got to top of isFloating')
@@ -1480,35 +1848,18 @@ class MainWindow(QMainWindow):
             self.imageMenu.setDisabled(False)
             self.viewMenu.setDisabled(False)
             self.imageOptionsMenu.setDisabled(False)
-            self.previousImage = QPushButton('<')
-            self.previousImage.setFixedWidth(70)
-            # self.previousImage.clicked.connect(lambda: self.changeTable(self.table_num - 2))
-            self.previousImage.clicked.connect(lambda: self.BooBoo())
-            self.nextImage = QPushButton('>')
-            self.nextImage.setFixedWidth(70)
-            # self.nextImage.clicked.connect(lambda: self.changeTable(self.table_num - 2))
-            self.nextImage.clicked.connect(lambda: self.Yogi())
-            #if (table_num) > 0:
-
-            self.imageInfoLayout.addWidget(self.previousImage)
-            self.imageInfoLayout.addWidget(self.nextImage)
-
-            self.imageInfoLayout.setSpacing(5)
-            self.imageInfoLayout.stretch(0)
-            self.imageInfoLayout.sizeHint()
-
-            self.imageLayout.addLayout(self.imageInfoLayout)
-
+            self.fileSaveImageAsAction.setDisabled(False)
 
             self.imageDockWidget = QDockWidget(self.title, self)
             self.imageDockWidget.setObjectName("imageDockWidget")
+            #print('DICK DOCK')
             # Make the dock widget floatable, but not closeable
             self.imageDockWidget.setFeatures(QDockWidget.DockWidgetFloatable | QDockWidget.DockWidgetMovable)
 
             self.imageDockWidget.setWidget(self.imageWidget)
             self.addDockWidget(Qt.RightDockWidgetArea, self.imageDockWidget)
             self.imageLayout.addWidget(self.imageDockWidget)
-            # print("IN RENDERIMAGE:peripheral==NONE")
+            #print("IN RENDERIMAGE:peripheral==NONE")
 
         elif peripheral == 'ColorBar':
             # print("GOT TO THE RIGHT PLACE")
@@ -1555,10 +1906,10 @@ class MainWindow(QMainWindow):
                 # or
                 # item.widget().setParent(None)
             elif isinstance(item, QSpacerItem):
-                print("Clear spacer: " + str(item))
+                 print("Clear spacer: " + str(item))
                 # no need to do extra stuff
             else:
-                # print("Clear layout: " + str(item))
+                print("Clear layout: " + str(item))
                 self.clear_layout(item.layout())
             # remove the item from layout
             layout.removeItem(item)
@@ -1599,12 +1950,19 @@ class MainWindow(QMainWindow):
         #TODO compute the width based on the number of characters in the titles
 
         self.summaryTable.set_summary_data(self.header, self.summary)
+        self.summaryTable.setTableWidth()
         self.summaryDockWidget.setWindowTitle(self.title)
         self.summaryDockWidget.setWidget(self.summaryTable)
         self.addDockWidget(Qt.RightDockWidgetArea, self.summaryDockWidget)
-        self.summaryTable.sizeHint()
+        #self.summaryDockWidget.sizeHint()
+        #self.summaryTable.sizeHint()
         self.summaryDockWidget.show()
 
+
+class NavigationToolbar(NavigationToolbar2QT):
+    # only display the buttons we need
+    toolitems = [t for t in NavigationToolbar2QT.toolitems if
+                 t[0] in ('Home', 'Pan', 'Zoom', 'Save')]
 
 class Tab(QTabWidget):
     def __init__(self, parent=None):
@@ -1629,6 +1987,37 @@ class DockContents(QWidget):
         if self._sizehint is not None:
             return self._sizehint
 
+
+class Histogram(QWidget):
+    def __init__(self, table, title, kernel_density_estimation=True):
+        self.data = table
+        self.data = self.data.flatten()
+
+        sns.set_style('darkgrid')
+        sns.distplot(self.data, kde=kernel_density_estimation)
+
+        plt.xlabel('Value')
+        if kernel_density_estimation:
+            plt.ylabel('Density')
+        else:
+            plt.ylabel('Frequency')
+        plt.title(title)
+
+
+     #   n, bins, patches = plt.hist(x=self.data, bins='auto', color='#0504aa',
+     #                               alpha=0.7, rwidth=0.85)
+     #   plt.grid(axis='y', alpha=0.75)
+     #   plt.xlabel('Value')
+     #   plt.ylabel('Frequency')
+     #   plt.title(title)
+     #   plt.text(23, 45, r'$\mu=15, b=3$')
+     #   print(type(n))
+     #   print(n.max())
+        # Set a clean upper y-axis limit.
+        #plt.ylim(ymax=np.ceil(maxfreq / 10) * 10 if maxfreq % 10 else maxfreq + 10)
+
+    def show(self):
+        plt.show(block=False)
 
 
 class LabelFrame(QWidget, QObject):
@@ -1657,7 +2046,10 @@ class LabelFrame(QWidget, QObject):
         self.dataType = []
         self.index = index
         self.viewType = viewType
-
+        self.label_categories = ('Object_Label', 'Full_Label', 'Identification_Area', 'Observation_Area',
+                                 'Discipline_Area', 'Mission_Area', 'Display Settings', 'Spectral_Characteristics',
+                                 'File', 'File_Area_Observational', 'Statistics', 'Reference_List')
+        self.empty_labels = []
         root_model = QStandardItemModel()
         self.tree.setModel(root_model)
 
@@ -1668,8 +2060,13 @@ class LabelFrame(QWidget, QObject):
         if displayType is not 'full_label':
             self.tree.expandAll()
 
-        # Make the tree selectable so when a table column is double clicked the label item will be selected
+        # set up a selection model
+        self.treeSelectionModel = self.tree.selectionModel()
+
+        # TODO Make the tree selectable so when a table column is double clicked the label item will be selected
         self.tree.setSelectionMode(QAbstractItemView.ExtendedSelection)
+
+
 
 
     def check_length(self, string):
@@ -1699,7 +2096,7 @@ class LabelFrame(QWidget, QObject):
 
     def populate_tree(self, dict, parent, name, dataType):
         '''
-        This recursive method obtains all the data is the nested OrderedDict's
+        This recursive method obtains all the data in the nested OrderedDict's
         contained in the Label Dictionary that is passed in.
         This is also used to get label data to be displayed in message boxes (self.parent_child_dict) when columns
         are double clicked.
@@ -1709,7 +2106,6 @@ class LabelFrame(QWidget, QObject):
         '''
         #TODO - iteritems() may not work in Python3 - they use iter()  use iterkey()
         new_value = ''  # used to hold modified descriptions data
-
         for key, value in dict.iteritems():
             # Test for descriptions without '/n'
             if key == 'description':
@@ -1744,9 +2140,29 @@ class LabelFrame(QWidget, QObject):
                     self.populate_tree(i, heading, self.name, self.dataType)
             else:
                 field = QString('{0}: {1}'.format(key, value))
-                # print parentName
+                # Test for a major category with a 'None' value (e.g. Mission_Area : None)
+                # Such categories must be grayed out on the Label pull down
+                if self.check_for_none(field):
+                    # print("222222222222222222222")
+                    # print(field)
+                    #for i in self.empty_labels:
+                    #    print(str(i))
+                    message_box = QMessageBox()
+
+                    #message_box.information(QMessageBox, "Blah BLah")
+                    message_box.setText( "Category '{}' has no data to display.".format(field))
+                    message_box.setWindowTitle("No Category Information")
+                    message_box.setStandardButtons(QMessageBox.Ok)
+                    message_box.setWindowModality(Qt.ApplicationModal)
+                    self.set_style_sheet(message_box)
+                    x, y = MyHeader.get_mouse_position(self)
+                    # print(x, y)
+                    message_box.move(x+300, y+300)
+                    retVal = message_box.exec_()
+
+
+                    return
                 # print(field)
-                # print(self.pc_dict_key)
                 # print LabelFrame.parent_child_dict
                 # append to the list of children under the heading/parent
                 LabelFrame.parent_child_dict[self.pc_dict_key].append(str(field))
@@ -1754,9 +2170,93 @@ class LabelFrame(QWidget, QObject):
                 child = QStandardItem(field)
                 parent.appendRow(child)
 
+    def check_for_none(self, field):
+        '''
+        In the label a category may simply be labeled as 'None'
+        In this case it has to be caught and acted upon as if it was not even in the label
+        Here it is caught and processing of populate_tree() continues, while a list of these catagories
+        is captured so they can be disabled in the Label pulldown when the options are rendered.
+        :param field:
+        :return:
+        '''
+
+        get_value = field.split(': ')
+        # print('1111111111111111')
+        # print(get_value)
+        if get_value[1] == 'None' and get_value[0] in self.label_categories:
+            self.empty_labels.append(get_value[0])
+            return True
+        else:
+            return False
+
+
+    # Use method to return the list of categories in the label that have a value of 'None'
+    def get_empty_label_list(self):
+
+       # print('222222222222222222222222222222222222')
+       # print(self.empty_labels)
+        return self.empty_labels
+
+    @staticmethod
+    def get_selection_model(self):
+        return LabelFrame.selectionModel
+
     @staticmethod
     def get_parent_child_dict():
+        # print(LabelFrame.parent_child_dict)
         return LabelFrame.parent_child_dict
+
+    def set_style_sheet(self, messageBox):
+        if MainWindow.style_group == 'Dark Orange':
+            messageBox.setStyleSheet("""
+                .QMessageBox{
+                    Background-color: QLinearGradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #727272, stop: 0.1 #7f7f7f, stop: 0.5 #8b8b8b, stop: 0.9 #989898, stop: 1 #a5a5a5);
+                    font: italic 14pt;
+                    border: 1px solid #ffaa00;
+                }
+                .QPushButton{
+                    color: #b1b1b1;
+                    background-color: QLinearGradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #565656, stop: 0.1 #525252, stop: 0.5 #4e4e4e, stop: 0.9 #4a4a4a, stop: 1 #464646);
+                    border-width: 1px;
+                    border-color: #1e1e1e;
+                    border-style: solid;
+                    border-radius: 6;
+                    padding: 3px;
+                    font-size: 12px;
+
+                    padding-left: 15px;
+                    padding-right: 15px;
+                }
+
+                .QPushButton:hover{
+                     border: 2px solid QLinearGradient( x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #ffa02f, stop: 1 #d7801a);
+                }
+            """)
+        elif MainWindow.style_group == 'Dark Blue':
+            messageBox.setStyleSheet("""
+                .QMessageBox{
+                    Background-color: QLinearGradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #727272, stop: 0.1 #7f7f7f, stop: 0.5 #8b8b8b, stop: 0.9 #989898, stop: 1 #a5a5a5);
+                    font: italic 14pt;
+                    border: 1px solid #31c6f7;
+                }
+                .QPushButton{
+                    color: #b1b1b1;
+                    background-color: QLinearGradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #565656, stop: 0.1 #525252, stop: 0.5 #4e4e4e, stop: 0.9 #4a4a4a, stop: 1 #464646);
+                    border-width: 1px;
+                    border-color: #1e1e1e;
+                    border-style: solid;
+                    border-radius: 6;
+                    padding: 3px;
+                    font-size: 12px;
+
+                    padding-left: 15px;
+                    padding-right: 15px;
+                }
+
+                .QPushButton:hover{
+                     border: 2px solid QLinearGradient( x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #31c6f7, stop: 1 #27a5cf);
+                }
+            """)
 
 
 
@@ -1776,16 +2276,16 @@ class SummaryTable(QTableWidget):
         self.setShowGrid(False)
         self.verticalHeader().setVisible(False)
         self.head = self.horizontalHeader()
-        self.head.setStretchLastSection(True)
-        self.resizeRowsToContents()
-        self.head.setResizeMode(0, QHeaderView.ResizeToContents)
-        self.head.setResizeMode(1,QHeaderView.ResizeToContents)
-        self.head.setResizeMode(2, QHeaderView.ResizeToContents)
-        self.head.setResizeMode(3, QHeaderView.ResizeToContents)
-        self.head.setResizeMode(4, QHeaderView.ResizeToContents)
-        self.resizeColumnsToContents()
-        # self.setTableWidth()
+      #  self.head.setStretchLastSection(True)
+      #  self.resizeRowsToContents()
+      #  self.head.setResizeMode(0, QHeaderView.ResizeToContents)
+      #  self.head.setResizeMode(1,QHeaderView.ResizeToContents)
+      #  self.head.setResizeMode(2, QHeaderView.ResizeToContents)
+      #  self.head.setResizeMode(3, QHeaderView.ResizeToContents)
+      #  self.head.setResizeMode(4, QHeaderView.ResizeToContents)
+      #  self.resizeColumnsToContents()
         self.sizeHint()
+
 
     def set_summary_data(self, header, data):
         for row in range(len(data[0])):
@@ -1810,13 +2310,14 @@ class SummaryTable(QTableWidget):
         for i in range(len(header)):
             self.horizontalHeaderItem(i).setFont(self.headerFont)
 
-#    def setTableWidth(self):
-#        width = self.verticalHeader().width()
-#        width += self.horizontalHeader().length()
-#        if self.verticalScrollBar().isVisible():
-#            width += self.verticalScrollBar().width()
-#        width += self.frameWidth() * 20
-#        self.setFixedWidth(width)
+    def setTableWidth(self):
+        width = self.verticalHeader().width()
+        width += self.horizontalHeader().length()
+        # print('Width: {}'.format(width))
+        if self.verticalScrollBar().isVisible():
+            width += self.verticalScrollBar().width()
+        width += self.frameWidth() * 20
+        self.resize(width, 50)
 
 
     @pyqtSlot()
@@ -1837,7 +2338,7 @@ class MyHeader(QHeaderView):
     '''
     xPos = 0
     yPos = 0
-    def __init__(self, orientation,  parent=None):
+    def __init__(self, orientation, parent=None):
         QHeaderView.__init__(self, orientation,  parent)
         self.cursor = None
 
@@ -1855,28 +2356,38 @@ class MyHeader(QHeaderView):
 class ItemTable(QTableView):
     sliderXVal = 0
     sliderYVal = 0
+
     def __init__(self, f_arg, *args ):
         self.object = f_arg  # Needed so it is possible to emit a signal to the main window
         self.table = args[0]
+        self.table_data_type = self.table.dtype
         title = args[1]
         self.rows = args[2]
         self.columns = args[3]
         self.table_type = args[4]
+        self.column_keys = self.table.dtype.names
         self.showHeaders = False
         self.newKey = ''
-        self.image_types = ['Array_2D_Image', 'Array_3D_Spectrum']
-        # print(self.table.shape)
-        # print(self.table)
-        QTableView.__init__(self, parent = None)
-        # print("Table type: {}".format(self.table_type))
+        self.image_types = ('Array_2D_Image', 'Array_3D_Spectrum', 'Array_3D_Image')
+        self.int_data_types = ('b1', 'i1', 'i2', 'i4', 'i8', 'u1', 'u2', 'u4', 'u8',
+                               'uint1', 'uint2', 'uint4', 'uint8',)
+        self.float_data_types = ('f2', 'f4', 'f8', 'float16', 'float32', 'float64')
+        self.homogeneous_type_files = ('Array_2D_Image', 'Array_3D_Spectrum', 'Array_3D_Image')
+        self.mixed_type_files = ('Table_Delimited', 'Table_Binary', 'Table_Character', 'Table_Delimited')
+        self.mixed_type_files = ()
+        self.mixed_table_shape = ()
+        self.image_file = False
+
+        QTableView.__init__(self, parent=None)
 
         self.tableModel = Model.assignTableModel(self.table, self.table_type)
 
         if self.table_type not in self.image_types:  # No image in this file
+            self.image_file = False
             # get the column header information
             # key = title : value = column number
             # print('From table model - the headerDictionary')
-           # print(self.tableModel.headerDict)
+            # print(self.tableModel.headerDict)
             # print("")
             self.header_title_map = self.tableModel.headerDict
             # Make a list to be used with the column title display option
@@ -1885,19 +2396,23 @@ class ItemTable(QTableView):
             # Use a custom horizontalHeader that give back cursor position when
             # the mouse button is released on the header.  It is used to place
             # the message box.
-            myHeader = MyHeader(Qt.Horizontal, self)
-            self.setHorizontalHeader(myHeader)
+            my_header = MyHeader(Qt.Horizontal, self)
+            self.setHorizontalHeader(my_header)
+        else:
+            self.image_file = True
 
         self.setModel(self.tableModel)
-        self.selectionModel = self.selectionModel()
+        self.tableSelectionModel = self.selectionModel()
         self.installEventFilter(self)
+        self.index = None
 
         self.sizeHint()
         self.setShowGrid(True)
 
         # This will be use to display the title of the data of the columnn number selected
         self.horizontalHeader().sectionDoubleClicked.connect(self.display_numeric_column_title)
-        self.horizontalHeader().setToolTip("1) Double-click to see label information.\n2) When resizing column: 'Right click' to lock size.")
+        self.horizontalHeader().setToolTip("1) Double-click to see label information.\n"
+                                           "2) When resizing column: 'Right click' to lock size.")
         self.verticalHeader().setVisible(True)
 
         self.verticalSliderBar = self.verticalScrollBar()
@@ -1909,9 +2424,7 @@ class ItemTable(QTableView):
         self.verticalSliderBar.setValue(ItemTable.sliderYVal)
         self.horizontalSliderBar.setValue(ItemTable.sliderXVal)
 
-        self.doubleClicked.connect(self.getIndex)
-
-
+        self.doubleClicked.connect(self.get_index)
 
     # Use this static method to update the slider position for all new instances
     # This allows the user to set the position if he uses the checkbox
@@ -1938,6 +2451,58 @@ class ItemTable(QTableView):
 
         return entry
 
+    def set_style_sheet(self, messageBox):
+        if MainWindow.style_group == 'Dark Orange':
+            messageBox.setStyleSheet("""
+                .QMessageBox{
+                    Background-color: QLinearGradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #727272, stop: 0.1 #7f7f7f, stop: 0.5 #8b8b8b, stop: 0.9 #989898, stop: 1 #a5a5a5);
+                    font: italic 14pt;
+                    border: 1px solid #ffaa00;
+                }
+                .QPushButton{
+                    color: #b1b1b1;
+                    background-color: QLinearGradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #565656, stop: 0.1 #525252, stop: 0.5 #4e4e4e, stop: 0.9 #4a4a4a, stop: 1 #464646);
+                    border-width: 1px;
+                    border-color: #1e1e1e;
+                    border-style: solid;
+                    border-radius: 6;
+                    padding: 3px;
+                    font-size: 12px;
+
+                    padding-left: 15px;
+                    padding-right: 15px;
+                }
+
+                .QPushButton:hover{
+                     border: 2px solid QLinearGradient( x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #ffa02f, stop: 1 #d7801a);
+                }
+            """)
+        elif MainWindow.style_group == 'Dark Blue':
+            messageBox.setStyleSheet("""
+                .QMessageBox{
+                    Background-color: QLinearGradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #727272, stop: 0.1 #7f7f7f, stop: 0.5 #8b8b8b, stop: 0.9 #989898, stop: 1 #a5a5a5);
+                    font: italic 14pt;
+                    border: 1px solid #31c6f7;
+                }
+                .QPushButton{
+                    color: #b1b1b1;
+                    background-color: QLinearGradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #565656, stop: 0.1 #525252, stop: 0.5 #4e4e4e, stop: 0.9 #4a4a4a, stop: 1 #464646);
+                    border-width: 1px;
+                    border-color: #1e1e1e;
+                    border-style: solid;
+                    border-radius: 6;
+                    padding: 3px;
+                    font-size: 12px;
+
+                    padding-left: 15px;
+                    padding-right: 15px;
+                }
+
+                .QPushButton:hover{
+                     border: 2px solid QLinearGradient( x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #31c6f7, stop: 1 #27a5cf);
+                }
+            """)
+
     def display_numeric_column_title(self, index):
         '''
         "displayNumericColumnTitle" is a callback method that is activated when the user
@@ -1958,8 +2523,8 @@ class ItemTable(QTableView):
                 if column in self.header_title_map[key]:
                     title = "'" + key + "'"  # add single quotes to the title
                     if len(self.header_title_map[key]) > 1:
-                        groupIndex = column - self.header_title_map[key][0]
-                        title = title + '\n(repitition ' + str(groupIndex + 1) + ')'
+                        group_index = column - self.header_title_map[key][0]
+                        title = title + '\n(repitition ' + str(group_index + 1) + ')'
                     # Check for the case where there is a longer comma separated group name
                     if ',' in str(key):
                         self.newKey = key.split(',')
@@ -1967,10 +2532,10 @@ class ItemTable(QTableView):
                     else:
                         self.newKey = key
 
-                    for key in LabelFrame.parent_child_dict:
-                        name = 'name: '+self.newKey
-                        if name in LabelFrame.parent_child_dict[key]:
-                            label_info = self.format_label_info(LabelFrame.parent_child_dict[key])
+                    for k in LabelFrame.parent_child_dict:
+                        name = 'name: ' + self.newKey
+                        if name in LabelFrame.parent_child_dict[k]:
+                            label_info = self.format_label_info(LabelFrame.parent_child_dict[k])
                     title = title + '\n' + label_info
 
             messageBox.setText("Column  {}:\n{}".format(column, title))
@@ -1978,56 +2543,7 @@ class ItemTable(QTableView):
             messageBox.setStandardButtons(QMessageBox.Ok)
             messageBox.setWindowModality(Qt.ApplicationModal)
             # TODO - put stylesheets in their own file and import them
-            if MainWindow.style_group == 'Dark Orange':
-                messageBox.setStyleSheet("""
-                    .QMessageBox{
-                        Background-color: QLinearGradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #727272, stop: 0.1 #7f7f7f, stop: 0.5 #8b8b8b, stop: 0.9 #989898, stop: 1 #a5a5a5);
-                        font: italic 14pt;
-                        border: 1px solid #ffaa00;
-                    }
-                    .QPushButton{
-                        color: #b1b1b1;
-                        background-color: QLinearGradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #565656, stop: 0.1 #525252, stop: 0.5 #4e4e4e, stop: 0.9 #4a4a4a, stop: 1 #464646);
-                        border-width: 1px;
-                        border-color: #1e1e1e;
-                        border-style: solid;
-                        border-radius: 6;
-                        padding: 3px;
-                        font-size: 12px;
-
-                        padding-left: 15px;
-                        padding-right: 15px;
-                    }
-
-                    .QPushButton:hover{
-                         border: 2px solid QLinearGradient( x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #ffa02f, stop: 1 #d7801a);
-                    }
-                """)
-            elif MainWindow.style_group == 'Dark Blue':
-                messageBox.setStyleSheet("""
-                    .QMessageBox{
-                        Background-color: QLinearGradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #727272, stop: 0.1 #7f7f7f, stop: 0.5 #8b8b8b, stop: 0.9 #989898, stop: 1 #a5a5a5);
-                        font: italic 14pt;
-                        border: 1px solid #31c6f7;
-                    }
-                    .QPushButton{
-                        color: #b1b1b1;
-                        background-color: QLinearGradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #565656, stop: 0.1 #525252, stop: 0.5 #4e4e4e, stop: 0.9 #4a4a4a, stop: 1 #464646);
-                        border-width: 1px;
-                        border-color: #1e1e1e;
-                        border-style: solid;
-                        border-radius: 6;
-                        padding: 3px;
-                        font-size: 12px;
-
-                        padding-left: 15px;
-                        padding-right: 15px;
-                    }
-
-                    .QPushButton:hover{
-                         border: 2px solid QLinearGradient( x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #31c6f7, stop: 1 #27a5cf);
-                    }
-                """)
+            self.set_style_sheet(messageBox)
 
             x, y = MyHeader.get_mouse_position(self)
             messageBox.move(x, y)
@@ -2042,7 +2558,7 @@ class ItemTable(QTableView):
 
     # Method to display cell coordinates on a double click above the cell
     @pyqtSlot()
-    def getIndex(self):
+    def get_index(self):
         try:
             widgetPosition = self.mapFromGlobal(QCursor.pos())
         except:
@@ -2053,7 +2569,6 @@ class ItemTable(QTableView):
             self.object.emit(SIGNAL("GetPositionTriggered"), position)
         else:
             print("not a valid cell")
-
 
     # This is used for copying and pasting elements in the table
     def eventFilter(self, source, event):
@@ -2080,18 +2595,12 @@ class ItemTable(QTableView):
             QApp.app.clipboard().setText(stream.getvalue())
 
     def make_selection(self, x1, y1, x2, y2):
+        # print('Using make_selection from ItemTable class.')
         parent = QModelIndex()
-        topLeft = self.model.index(x1, y1, parent)
-        bottomRight = self.model.index(x2, y2, parent)
-        selection = QItemSelection(topLeft, bottomRight)
+        top_left = self.model.index(x1, y1, parent)
+        bottom_right = self.model.index(x2, y2, parent)
+        selection = QItemSelection(top_left, bottom_right)
         self.selectModel(selection, QItemSelectionModel.Select)
-
-
-         # Make table selection based on rectangle pulled down on image.
-         #rect = QRect(x1, y1, x2, y2)
-         #rect = QRect(10, 10, 100,100)
-         #print(rect)
-         #self.setSelection(rect, QItemSelectionModel.Select)
 
 
 class TextWindow(QTextBrowser):
@@ -2102,6 +2611,7 @@ class TextWindow(QTextBrowser):
     def __init__(self, *args):
         QTextBrowser.__init__(self, *args)
         self.setText("Hi Boo Boo")
+
 
 class QApp(QApplication):
     app = None

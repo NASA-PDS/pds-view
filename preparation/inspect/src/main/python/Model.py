@@ -16,6 +16,7 @@ class SummaryItemsModel(QtCore.QAbstractItemModel):
         QtCore.QAbstractItemModel.__init__(self, parent=None)
         # print("fname: {}".format(fname))
         self.summaryItems = None
+        self.full_label = None
         if fname == None:
             print("No file to read.")
         else:
@@ -146,32 +147,38 @@ class SummaryItemsModel(QtCore.QAbstractItemModel):
         object_local_identifier = None
 
         structure_label = self.structure_list[index].label
-        full_label = self.structure_list[index].full_label
+        self.full_label = self.structure_list[index].full_label
 
         if structure_label is not None:
             object_local_identifier = structure_label.findtext('local_identifier')
 
         # Retrieve which label should be shown
         if display_type == 'Full Label':
-            label = full_label
+            label = self.full_label
 
         elif display_type == 'Identification Area':
-            label = full_label.find('.//Identification_Area')
+            label = self.full_label.find('.//Identification_Area')
 
         elif display_type == 'Observation Area':
-            label = full_label.find('.//Observation_Area')
+            label = self.full_label.find('.//Observation_Area')
 
         elif display_type == 'Discipline Area':
-            label = full_label.find('.//Discipline_Area')
+            label = self.full_label.find('.//Discipline_Area')
 
         elif display_type == 'Mission Area':
-            label = full_label.find('.//Mission_Area')
+            label = self.full_label.find('.//Mission_Area')
 
         elif display_type == 'File info':
-            label = full_label.find('.//File')
+            label = self.full_label.find('.//File')
+
+        elif display_type == 'File Area Observational':
+            label = self.full_label.find('.//File_Area_Observational')
 
         elif display_type == 'Statistics':
-            label = full_label.find('.//Object_Statistics')
+            label = self.full_label.find('.//Object_Statistics')
+
+        elif display_type == 'Reference List':
+            label = self.full_label.find('.//Reference_List')
 
         elif structure_label is not None:
 
@@ -179,35 +186,51 @@ class SummaryItemsModel(QtCore.QAbstractItemModel):
                 label = structure_label
 
             elif display_type == 'Display Settings':
-                label = self.get_display_settings_for_lid(object_local_identifier, full_label)
+                label = self.get_display_settings_for_lid(object_local_identifier, self.full_label)
 
             elif display_type == 'Spectral Characteristics':
-                label = self.get_spectral_characteristics_for_lid(object_local_identifier, full_label)
+                label = self.get_spectral_characteristics_for_lid(object_local_identifier, self.full_label)
 
-        # label_dict = label.to_dict()
-        # return label_dict
         return label
 
-    # noinspection PyCompatibility
+    # for searching full label
+    def get_full_label(self):
+        return self.full_label
+
     def get_table(self, index):
 
-        # TODO check this zero index, may not work for all the different cases
+        # TODO check zero index used here: it may not work in all the different cases
         table_name = str(self.summaryItems[0][index.row()])
+        # print('MODEL DEBUG:')
+        # print('length: {}'.format(len(table_name)))
+        # print('table name: {}'.format(table_name))
+        # print("DEBUG from MODEL.PY: table_name: {}".format(table_name))
+        # print("DEBUG: structures")
+        # print(self.structure_list.structures)
+        # print(self.structure_list.__len__())
+        # print(self.structure_list.type)
+        # print(self.structure_list.info)
 
+        # commented out for debug reasons
         table = self.structure_list[table_name]
-        table_type = self.structure_list[table_name].type
 
-        # print('tableName: {}'.format(tableName))
-        # print(type(table))
+        # DEBUG
+        # table = self.structure_list[0]
+
+        table_type = table.type
+        #print(table_type)
+
         title = table.id
 
-        # noinspection PyCompatibility,PyCompatibility,PyCompatibility,PyCompatibility,PyCompatibility,PyCompatibility
+
         try:
             dimension = table.meta_data.dimensions()
         except AttributeError as e:
             print "No dimenstion is this table."
             dimension = (0, 0)
 
+        # print('FROM MODEL: {}'.format(type(table)))
+        # print('FROM MODEL: {}'.format(table.data.shape))
         return table.data, title, dimension, table_type, table_name
 
 
@@ -286,7 +309,10 @@ class TableModel(QtCore.QAbstractTableModel):
 
     def __init__(self, data, type, parent=None):
         QtCore.QAbstractTableModel.__init__(self, parent)
+
         self._data = np.array(data)
+        # print("FROM TABLE MODEL, rows: {}".format(len(self._data[1])))
+        # print("FROM TABLE MODEL, columns: {}".format(len(self._data)))
         self.table_type = type
         self.groupFinder = []
         self.group_list = []  # the indexes that refer to groups, and a group id
@@ -301,13 +327,18 @@ class TableModel(QtCore.QAbstractTableModel):
 
         col_len, self.groupFinder, self.headerDict = self.findGroups()
 
+        # print(col_len)
+        # print("((((((())))))))))((((((((((()))))))")
+
         temp = np.shape(self._data)
+
         self.r = temp[0]
         self.c = int(col_len)
 
         # print("IN MODEL")
         # print('row count = {}'.format(self.r))
         # print('column count = {}'.format(self.c))
+
 
     def rowCount(self, parent=None):
         return self.r
@@ -336,13 +367,13 @@ class TableModel(QtCore.QAbstractTableModel):
                 # self.group_colors is a dictionary keyed from 0 to 3 with color tuples for group background colors
                 for i in range(len(self.group_list)):
                     if index.column() in self.group_list[i]:
-                        r,g,b = self.group_colors[i%4]
+                        r, g, b = self.group_colors[i%4]
                         return QtGui.QColor(r, g, b)
         if role == QtCore.Qt.TextColorRole:
             if self.possible_groups:
                 for i in range(len(self.group_list)):
                     if index.column() in self.group_list[i]:
-                        r,g,b = self.group_text_color
+                        r, g, b = self.group_text_color
                         return QtGui.QColor(r, g, b)
 
     def showHeaderTitles(self, title_list):
@@ -409,9 +440,9 @@ class TableModel(QtCore.QAbstractTableModel):
                       'GROUP_1, ION COUNTS': [15, 16, 17, 18, 19, 20, 21, 22, 23, 24]}
         :return: dictionary
         '''
-        print("In make title finder : passed was:")
-        a = list
-        print(a)
+        # print("In make title finder : passed was:")
+        # a = list
+        # print(a)
         dict = {}
         data = []
         start = 1
@@ -439,10 +470,12 @@ class TableModel(QtCore.QAbstractTableModel):
         index = 0
         group_num = 0
         self.keys = table.dtype.names
-        print("Keys")
-        print(self.keys)
-        print("total")
-        print(table.dtype)
+        # print("Keys")
+        # print(self.keys)
+        # print("total")
+        # print(table.dtype)
+        if self.keys is None:
+            return
         for key in self.keys:
             # print key
             # print(table[key].shape)
@@ -503,6 +536,9 @@ def assignTableModel(data, table_type):
     if table_type == 'Array_2D_Image':
         # print("Length of data: {}".format(len(data)))
         return TwoDImageModel(data)
+    elif table_type == 'Array_3D_Image':
+        # print("Length of data: {}".format(len(data)))
+        return TwoDImageModel(data)
     elif table_type == 'Array_3D_Spectrum':
         # print 'Array_3D_Spectrum'
         # print("Length of data: {}".format(len(data)))
@@ -513,7 +549,7 @@ def assignTableModel(data, table_type):
         return TableModel(data, table_type)
     else:
         # possible_groups = True
-        print("In else: table type is, {}".format(table_type))
+        # print("In else: table type is, {}".format(table_type))
         return TableModel(data, table_type)
 
 
@@ -526,13 +562,13 @@ class _AxesProperties(object):
     def __getitem__(self, index):
 
         items = self.axes_properties[index]
-        print('items')
-        print(items)
+        # print('items')
+        # print(items)
 
         return items
 
     def __len__(self):
-        print('axes length: {}'.format(len(self.axes_properties)))
+        # print('axes length: {}'.format(len(self.axes_properties)))
         return len(self.axes_properties)
 
     def add_axis(self, name, type, sequence_number, slice, length):
@@ -552,8 +588,8 @@ class _AxesProperties(object):
 
         if match is not None:
             match = match.copy()
-        print('match is: {}'.format(match))
-        print(self.axes_properties)
+        # print('match is: {}'.format(match))
+        # print(self.axes_properties)
         return match
 
     # Finds the index of an axis by property key and value
