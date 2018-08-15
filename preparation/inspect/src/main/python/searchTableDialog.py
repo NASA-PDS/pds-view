@@ -73,12 +73,12 @@ class SearchTableDialog(QDialog, searchTableDialog_ui.Ui_SearchTableDialog):
         :return:
         '''
         self.combo_box_selection = self.comboBox.currentIndex()
-        print(self.combo_box_selection)
+        # print(self.combo_box_selection)
         if self.combo_box_selection == self.cb_index['string']:
             # self.value_line_edit.setText('""')
             # self.value_line_edit.setCursorPosition(1)
             self.value_line_edit.setFocus()
-            print('set validator.')
+            # print('set validator.')
             v = QRegExp('[ -~]+')
             validator = QRegExpValidator(v, self.value_line_edit)
             self.value_line_edit.setValidator(validator)
@@ -100,7 +100,7 @@ class SearchTableDialog(QDialog, searchTableDialog_ui.Ui_SearchTableDialog):
                 self.comboBox.setDisabled(self.cb_index['float'])
                 self.comboBox.setDisabled(self.cb_index['string'])
                 # set validator to integer
-                print('Using Integer validator')
+                # print('Using Integer validator')
                 self.value_line_edit.setValidator(QIntValidator())
                 self.value_line_edit.setMaxLength(20)
 
@@ -110,16 +110,16 @@ class SearchTableDialog(QDialog, searchTableDialog_ui.Ui_SearchTableDialog):
                 self.comboBox.setDisabled(self.cb_index['integer'])
                 self.comboBox.setDisabled(self.cb_index['string'])
                 # set validator to double/float
-                print('Using Double validator')
+                # print('Using Double validator')
                 self.value_line_edit.setValidator(QDoubleValidator())
 
             elif self.combo_box_data_type[0] is 'S':
                 self.state = 'string'
-                print("Validator should work for any entry.")
+                # print("Validator should work for any entry.")
                 self.comboBox.setCurrentIndex(self.cb_index['string'])
                 self.comboBox.setDisabled(self.cb_index['integer'])
                 self.comboBox.setDisabled(self.cb_index['float'])
-                print('Using String Validator')
+                # print('Using String Validator')
                 self.value_line_edit.setValidator(0)
             elif self.combo_box_data_type is 'mixed':
                 self.comboBox.setCurrentIndex(self.cb_index['integer'])
@@ -184,14 +184,14 @@ class SearchTableDialog(QDialog, searchTableDialog_ui.Ui_SearchTableDialog):
         # If it is not a cube slice, return
         if len(self.matches) == 2:
             return self.matches
-        print('before: {}'.format(self.matches))
-        print(type(self.matches))
+        # print('before: {}'.format(self.matches))
+        # print(type(self.matches))
         temp = []
         # generator to grab the last two elements of the tuple
         gen = (item[-2:] for item in self.matches)
         for i in range(len(self.matches)):
             temp.append(gen.next())
-        print("TEMP matches: {}".format(temp))
+        # print("TEMP matches: {}".format(temp))
         return temp
 
     def check_for_numpy_tags(self, type_id):
@@ -203,9 +203,9 @@ class SearchTableDialog(QDialog, searchTableDialog_ui.Ui_SearchTableDialog):
             return type_id
 
     def get_table_type(self):
-        print(self.tw.column_keys)
-        print('table type in dialog: {}'.format(self.tw.table_type))
-        print('data type in numpy: {}'.format(self.tw.table_data_type))
+        # print(self.tw.column_keys)
+        # print('table type in dialog: {}'.format(self.tw.table_type))
+        # print('data type in numpy: {}'.format(self.tw.table_data_type))
         # num_py_tags = ('>', '<')
         self.data_type = str(self.tw.table_data_type)
         if str(self.tw.table_type) in self.tw.homogeneous_type_files:
@@ -243,9 +243,9 @@ class SearchTableDialog(QDialog, searchTableDialog_ui.Ui_SearchTableDialog):
                 floats.append(i)
             else:
                 strings.append(i)
-        print('ints: {}'.format(integers))
-        print('floats: {}'.format(floats))
-        print('strings: {}'.format(strings))
+        # print('ints: {}'.format(integers))
+        # print('floats: {}'.format(floats))
+        # print('strings: {}'.format(strings))
 
 
         coordinates = self.find(strings)
@@ -253,7 +253,7 @@ class SearchTableDialog(QDialog, searchTableDialog_ui.Ui_SearchTableDialog):
         # print(self.table[0])
         # print(self.table[0][0])
         # print(type(self.table[1][0]))
-        print('Combo_box_selection: {}'.format(self.combo_box_selection))
+        # print('Combo_box_selection: {}'.format(self.combo_box_selection))
 
         for i in range(len(self.table)):
             if self.combo_box_selection is self.cb_index['integer']:
@@ -282,7 +282,7 @@ class SearchTableDialog(QDialog, searchTableDialog_ui.Ui_SearchTableDialog):
                     if self.value in repr(self.table[i][j]):
                         self.matches.append((i, j))
 
-                print(self.value)
+                # print(self.value)
 
         #for i in range(len(self.table)):
         #    print(self.table[i])
@@ -292,7 +292,7 @@ class SearchTableDialog(QDialog, searchTableDialog_ui.Ui_SearchTableDialog):
        # print("String?", string_table)
         #print(self.table[:, 0])
 
-        print(self.matches)
+        # print(self.matches)
 
 
 
@@ -307,16 +307,16 @@ class SearchTableDialog(QDialog, searchTableDialog_ui.Ui_SearchTableDialog):
         elif t_type in self.tw.float_data_types:
             val = str(self.value)  # QStings do not have find() cast to string
             val = val[:-1]
-            print('Val: {}'.format(val))
+            # print('Val: {}'.format(val))
 
             precision = len(val[val.find('.'):])
-            print('precision is: {}'.format(precision))
+            # print('precision is: {}'.format(precision))
             val = float(self.value)
             # print('looking to match: {}'.format(value))
             # print("TO")
             self.matches = zip(*np.where(np.around(tbl, decimals=precision) == val))
-            print("Matches")
-            print(self.matches)
+            # print("Matches")
+            # print(self.matches)
             self.matches = self.test_for_cube
         else:     #string
             self.matches = zip(*np.where(tbl == self.value))
@@ -326,17 +326,17 @@ class SearchTableDialog(QDialog, searchTableDialog_ui.Ui_SearchTableDialog):
     def handle_single_search(self):
         self.search_range = False
         self.value = str(self.value_line_edit.text())
-        print('SEARCH')
-        print(type(self.value_line_edit))
+        # print('SEARCH')
+        # print(type(self.value_line_edit))
         self.value = self.value.strip()  # get rid of '\n'
         t_type = self.get_table_type()
-        print('TABLE TYPE: {}'.format(t_type))
-        print('FROM CALL: {}'.format(self.table.shape))
+        # print('TABLE TYPE: {}'.format(t_type))
+        # print('FROM CALL: {}'.format(self.table.shape))
         if t_type is not None:
             if t_type is not 'mixed':
                self.find_in_homogeneous_file(t_type)
             else:
-                print('MIXED')
+                # print('MIXED TABLE')
                 self.find_in_mixed_file(t_type)
             self.display_search_results()
             self.clear_selection_state()
@@ -368,13 +368,13 @@ class SearchTableDialog(QDialog, searchTableDialog_ui.Ui_SearchTableDialog):
     def display_search_results(self):
         display_matches = []
         # Swap each tuple pair using a generator so memory is conserved in large arrays
-        print('type: {}'.format(type(self.matches)))
+        # print('type: {}'.format(type(self.matches)))
         gen = ((item[0] + 1, item[1] + 1) for item in self.matches)
         for j in range(len(self.matches)):
             display_matches.append(gen.next())
         display_matches = sorted(display_matches)
-        print('matches: {}'.format(self.matches))
-        print('display: {}'.format(display_matches))
+        # print('matches: {}'.format(self.matches))
+        # print('display: {}'.format(display_matches))
         if self.matches:
             # enable buttons since there are results
             self.locations_button.setDisabled(False)
