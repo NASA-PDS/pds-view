@@ -113,7 +113,7 @@ public class ServicesHomePage {
 		          "<tr><td>Status: </td><td><input id=\"status\" name=\"Status\" /></td></tr>" +
 		          "<tr><td>Email: </td><td><input id=\"email\" name=\"Email\" /></td></tr>" +
 		          "<tr><td>Comment: </td><td><input id=\"comment\" name=\"Comment\" /></td></tr>" +
-		          "<tr><td></td><td><input type=\"submit\" value=\"Add\" /></td>" +
+		          "<tr><td></td><td><input type=\"submit\" value=\"Add\" /></td></tr>" +
 		          "</table>" +    
 		          "</form>" +
 		          "</div>" +
@@ -149,7 +149,7 @@ public class ServicesHomePage {
 		          "<tr><td>URL: </td><td><input id=\"url\" name=\"URL\" /></td></tr>" +
 		          "<tr><td>Email: </td><td><input id=\"email\" name=\"Email\" /></td></tr>" +
 		          "<tr><td>Comment: </td><td><input id=\"comment\" name=\"Comment\" /></td></tr>" +
-		          "<tr><td></td><td><input type=\"submit\" value=\"Add\" /></td>" +
+		          "<tr><td></td><td><input type=\"submit\" value=\"Add\" /></td></tr>" +
 		          "</table>" +    
 		          "</form>" +
 		          "</div>" +
