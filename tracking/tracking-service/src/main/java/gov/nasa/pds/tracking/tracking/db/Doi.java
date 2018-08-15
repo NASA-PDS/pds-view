@@ -3,13 +3,10 @@
  */
 package gov.nasa.pds.tracking.tracking.db;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.Serializable;
+
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import org.apache.log4j.Logger;
 
@@ -17,11 +14,13 @@ import org.apache.log4j.Logger;
  * @author danyu dan.yu@jpl.nasa.gov
  *
  */
-public class Doi extends DBConnector {
+@XmlRootElement(name = "submission_status")
 
+public class Doi  implements Serializable  {
+
+	private static final long serialVersionUID = 1L;
+	
 	public static Logger logger = Logger.getLogger(Doi.class);
-
-	private final static String TABLENAME = "doi";
 	
 	public final static String LOG_IDENTIFIERCOLUME = "logical_identifier";
 	public final static String VERSIONCOLUME  = "version_id";
@@ -31,18 +30,13 @@ public class Doi extends DBConnector {
 	public final static String EMAILCOLUME  = "electronic_mail_address";
 	public final static String COMMENTCOLUME = "comment";
 	
-	private Connection connect = null;
-	private Statement statement = null;
-	private PreparedStatement prepareStm = null;
-	private ResultSet resultSet = null;
-	
-	private String log_identifier = null;
-	private String version = null;
-	private String doi = null;
-	private String url = null;
-	private String date = null;
-	private String email = null;
-	private String comment = null;
+	private String log_identifier;
+	private String version;
+	private String doi;
+	private String url;
+	private String date;
+	private String email;
+	private String comment;
 
 	
 	/**
@@ -56,6 +50,7 @@ public class Doi extends DBConnector {
 	/**
 	 * @param log_identifier, the log_identifier to set
 	 */
+	@XmlElement
 	public void setLog_identifier(String log_identifier) {
 		this.log_identifier = log_identifier;
 	}
@@ -72,6 +67,7 @@ public class Doi extends DBConnector {
 	/**
 	 * @param version, the version to set
 	 */
+	@XmlElement
 	public void setVersion(String version) {
 		this.version = version;
 	}
@@ -88,6 +84,7 @@ public class Doi extends DBConnector {
 	/**
 	 * @param doi, the doi to set
 	 */
+	@XmlElement
 	public void setDoi(String doi) {
 		this.doi = doi;
 	}
@@ -104,6 +101,7 @@ public class Doi extends DBConnector {
 	/**
 	 * @param url, the url to set
 	 */
+	@XmlElement
 	public void setUrl(String url) {
 		this.url = url;
 	}
@@ -120,6 +118,7 @@ public class Doi extends DBConnector {
 	/**
 	 * @param date, the date to set
 	 */
+	@XmlElement
 	public void setDate(String date) {
 		this.date = date;
 	}
@@ -136,6 +135,7 @@ public class Doi extends DBConnector {
 	/**
 	 * @param email, the email to set
 	 */
+	@XmlElement
 	public void setEmail(String email) {
 		this.email = email;
 	}
@@ -152,6 +152,7 @@ public class Doi extends DBConnector {
 	/**
 	 * @param comment, the comment to set
 	 */
+	@XmlElement
 	public void setComment(String comment) {
 		this.comment = comment;
 	}
@@ -161,203 +162,19 @@ public class Doi extends DBConnector {
 	 * @throws ClassNotFoundException
 	 * @throws SQLException
 	 */
-	public Doi() throws ClassNotFoundException, SQLException {
+	public Doi(String logical_id, String ver, String doi, String date, String url, String email, String comment) {
+		this.log_identifier = logical_id;
+		this.version = ver;
+		this.doi = doi;
+		this.date = date;
+		this.url = url;
+		this.email = email;
+		this.comment = comment;
+	}
+
+
+	public Doi() {
 		// TODO Auto-generated constructor stub
 	}
-	
-	/**
-	 * @param logical_identifier
-	 * @param ver
-	 * @param doi
-	 * @param date
-	 * @param url
-	 * @param email
-	 * @param comment
-	 */
-	public void insertDOI(String logical_identifier, String ver, String doi, String date, String url, String email, String comment) {
-		try {
-			// Setup the connection with the DB
-			connect = getConnection();
-			connect.setAutoCommit(false);
-			
-			prepareStm = connect.prepareStatement("INSERT INTO " + TABLENAME + " (" 
-													+ LOG_IDENTIFIERCOLUME + ", " 
-													+ VERSIONCOLUME + ", "
-													+ DOICOLUME + ", "
-													+ DATECOLUME + ", "
-													+ URLCOLUME + ", "
-													+ EMAILCOLUME + ", "
-													+ COMMENTCOLUME + ") VALUES (?, ?, ?, ?, ?, ?, ?)");
-			prepareStm.setString(1, logical_identifier);
-			prepareStm.setString(2, ver);
-			prepareStm.setString(3, doi);
-			prepareStm.setString(4, date);
-			prepareStm.setString(5, url);
-			prepareStm.setString(6, email);
-			prepareStm.setString(7, comment);
-			
-			prepareStm.executeUpdate();
-			
-			connect.commit();
-			logger.info("The DOI " + doi + " for the product: " + logical_identifier + ", has been added.");
-			
-		} catch (Exception e) {
-			logger.error(e);
-			if (connect != null) {
-	            try {
-	            	logger.error("Transaction is being rolled back");
-	                connect.rollback();
-	            } catch(SQLException excep) {
-	            	logger.error(excep);
-	            }
-	        }
-	    } finally {
-	        close(prepareStm);
-	    }
-	}
-	
-	/**
-	 * @param logical_identifier
-	 * @param ver
-	 * @param url
-	 */
-	public void update(String logical_identifier, String ver, String url, String email, String comment) {
-		try {
-			// Setup the connection with the DB
-			connect = getConnection();
-			connect.setAutoCommit(false);
-			
-			prepareStm = connect.prepareStatement("UPDATE " + TABLENAME + " SET " + URLCOLUME + " = ?, " 
-																				  + EMAILCOLUME + " = ?, " 
-																				  + COMMENTCOLUME + " = ? WHERE " 
-																				  + LOG_IDENTIFIERCOLUME + " = ? AND " + VERSIONCOLUME + " = ?");
-			prepareStm.setString(1, url);
-			prepareStm.setString(2, email);
-			prepareStm.setString(3, comment);
-			prepareStm.setString(4, logical_identifier);
-			prepareStm.setString(5, ver);
-
-			
-			prepareStm.executeUpdate();
-			
-			connect.commit();
-			logger.info("The site url for product: " + logical_identifier + ", has been updated to " + url + ".");
-			
-		} catch (Exception e) {
-			logger.error(e);
-			if (connect != null) {
-	            try {
-	            	logger.error("Transaction is being rolled back");
-	                connect.rollback();
-	            } catch(SQLException excep) {
-	            	logger.error(excep);
-	            }
-	        }
-	    } finally {
-	        close(prepareStm);
-	    }
 		
-	}
-	
-	@SuppressWarnings("finally")
-	public List<Doi> getDOIList() {
-		
-		List<Doi> DOIList = new ArrayList<Doi>();
-		Doi doi = null;
-		try {
-			// Setup the connection with the DB
-			connect = getConnection();
-
-			statement = connect.createStatement();
-			
-			resultSet = statement.executeQuery("select * from " + TABLENAME);
-
-			while (resultSet.next()){
-				doi = new Doi();
-				doi.setLog_identifier(resultSet.getString(LOG_IDENTIFIERCOLUME));
-				doi.setVersion(resultSet.getString(VERSIONCOLUME));
-				doi.setDoi(resultSet.getString(DOICOLUME));
-				doi.setDate(resultSet.getString(DATECOLUME));
-				doi.setUrl(resultSet.getString(URLCOLUME));
-				doi.setEmail(resultSet.getString(EMAILCOLUME));
-				doi.setComment(resultSet.getString(COMMENTCOLUME));
-				
-				
-				DOIList.add(doi);
-			}	
-
-		} catch (Exception e) {
-			logger.error(e);
-		} finally {
-			close(statement);
-			return DOIList;
-		}
-	}
-	/**
-	 * DOI Query - Query the doi table for the DOI and associated information of a given product.
-	 * @param logical_identifier
-	 * @param ver
-	 * @return
-	 */
-	@SuppressWarnings("finally")
-	public List<Doi> getDOIList(String logical_identifier, String ver) {
-		
-		List<Doi> DOIList = new ArrayList<Doi>();
-		Doi doi = null;
-		try {
-			// Setup the connection with the DB
-			connect = getConnection();
-
-			statement = connect.createStatement();
-			
-			resultSet = statement.executeQuery("select * from " + TABLENAME 
-					+ " where " + LOG_IDENTIFIERCOLUME + " = '" + logical_identifier + "' and "
-					+ VERSIONCOLUME + " = '" + ver + "'");
-
-			while (resultSet.next()){
-				doi = new Doi();
-				doi.setLog_identifier(resultSet.getString(LOG_IDENTIFIERCOLUME));
-				doi.setVersion(resultSet.getString(VERSIONCOLUME));
-				doi.setDoi(resultSet.getString(DOICOLUME));
-				doi.setDate(resultSet.getString(DATECOLUME));
-				doi.setUrl(resultSet.getString(URLCOLUME));
-				doi.setEmail(resultSet.getString(EMAILCOLUME));
-				doi.setComment(resultSet.getString(COMMENTCOLUME));
-				
-				
-				DOIList.add(doi);
-			}	
-
-		} catch (Exception e) {
-			logger.error(e);
-		} finally {
-			close(statement);
-			return DOIList;
-		}
-	}
-	
-	/**
-	 * @param stm
-	 */
-	private void close(Statement stm) {
-		try {
-			if (resultSet != null) {
-				resultSet.close();
-			}
-
-			if (stm != null) {
-				stm.close();
-			}
-
-			if (connect != null) {
-				connect.setAutoCommit(true);
-				connect.close();				
-			}
-		} catch (Exception e) {
-			logger.error(e);
-		}
-	}
-
-
-	
 }

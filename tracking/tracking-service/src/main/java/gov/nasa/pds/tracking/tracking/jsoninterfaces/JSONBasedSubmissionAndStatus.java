@@ -42,7 +42,7 @@ public class JSONBasedSubmissionAndStatus {
 	
 	private static final String FAILURE_RESULT="Failure";
 
-	SubmissionAndStatusDao subMD;
+	private SubmissionAndStatusDao subMD;
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)

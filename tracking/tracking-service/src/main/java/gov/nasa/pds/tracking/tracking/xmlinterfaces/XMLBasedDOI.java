@@ -30,6 +30,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import gov.nasa.pds.tracking.tracking.db.Doi;
+import gov.nasa.pds.tracking.tracking.db.DoiDao;
 
 /**
  * @author danyu dan.yu@jpl.nasa.gov
@@ -49,10 +50,10 @@ public class XMLBasedDOI {
  
 		StringBuffer xmlOutput = new StringBuffer();
         
-        Doi doi;
+        DoiDao doi;
 		try {
 			
-			doi = new Doi();
+			doi = new DoiDao();
 			List<Doi> dois = doi.getDOIList();
 			logger.info("number of DOIs: "  + dois.size());
 			
@@ -150,12 +151,11 @@ public class XMLBasedDOI {
 		
 		StringBuffer xmlOutput = new StringBuffer();
         
-        Doi doi;
+        DoiDao dd;
 		try {
 			
-			doi = new Doi();
-			List<Doi> dois = doi.getDOIList(id, version);
-			logger.info("number of DOIs: "  + dois.size());
+			dd = new DoiDao();
+			Doi d = dd.getDOI(id, version);
 			
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder doiBuilder;
@@ -163,15 +163,7 @@ public class XMLBasedDOI {
 			doiBuilder = factory.newDocumentBuilder();
             Document doc = doiBuilder.newDocument();
             Element rootElement = doc.createElement("dois");
-            
-			if (dois.size() > 0){
-				Iterator<Doi> itr = dois.iterator();
-				int count = 1;
-				
-				while(itr.hasNext()) {
-			         Doi d = itr.next();
-			         logger.debug("DOIs " + count + ":\n " + d.getLog_identifier() + " : " + d.getDoi());
-			         
+			if (d != null){         
 			         Element subRootElement = doc.createElement("doi");
 	
 			        Element idElement = doc.createElement(Doi.LOG_IDENTIFIERCOLUME);
@@ -202,16 +194,10 @@ public class XMLBasedDOI {
 		            commentElement.appendChild(doc.createTextNode(d.getComment() != null ? d.getComment() : ""));
 		            subRootElement.appendChild(commentElement);
 		            
-		            rootElement.appendChild(subRootElement);
-	
-			        count++;
-			    }
-			
-			
-                    
+		            rootElement.appendChild(subRootElement);                    
 			}else{
 				Element messageElement = doc.createElement("Message");
-				messageElement.appendChild(doc.createTextNode("Can Not find any Doi!!"));
+				messageElement.appendChild(doc.createTextNode("Can Not find any Doi for " + id + ", " + version));
 				rootElement.appendChild(messageElement);
 			}
 			doc.appendChild(rootElement);

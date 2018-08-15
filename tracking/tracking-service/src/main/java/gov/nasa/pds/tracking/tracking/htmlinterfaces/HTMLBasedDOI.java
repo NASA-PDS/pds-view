@@ -13,6 +13,7 @@ import org.apache.log4j.Logger;
 
 import gov.nasa.pds.tracking.tracking.db.DBConnector;
 import gov.nasa.pds.tracking.tracking.db.Doi;
+import gov.nasa.pds.tracking.tracking.db.DoiDao;
 import gov.nasa.pds.tracking.tracking.utils.HtmlConstants;
 
 @Path("html/doi")
@@ -46,9 +47,9 @@ public class HTMLBasedDOI  extends DBConnector {
     			  "<table border=\"1\" style=\"width: 90%;border-spacing: 0; font:normal; font-size: 12\" >" +
     			  tableTiltes);
 
-    	Doi doi;
+    	DoiDao doi;
 		try {
-			doi = new Doi();
+			doi = new DoiDao();
 			
 			List<Doi> dois = doi.getDOIList();
 			
@@ -97,19 +98,13 @@ public class HTMLBasedDOI  extends DBConnector {
     			  "<table border=\"1\" style=\"width: 90%;border-spacing: 0; font:normal; font-size: 12\" >" +
     			  tableTiltes);
 
-    	Doi doi;
+    	DoiDao dd;
 		try {
-			doi = new Doi();
+			dd = new DoiDao();
 			
-			List<Doi> dois = doi.getDOIList(id, version);
-			
-			logger.info("number of DOIs: "  + dois.size());
-			
-			Iterator<Doi> itr = dois.iterator();
-
-			while(itr.hasNext()) {
-				Doi d = itr.next();
-		         
+			Doi d = dd.getDOI(id, version);
+			if (d != null){
+				
 		         sb.append("<tr>" +
 		    			  "<td>" + d.getDate() + "</td>"+
 			              "<td>" + d.getDoi() + "</td>" +

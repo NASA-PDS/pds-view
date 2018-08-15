@@ -1,5 +1,6 @@
 package gov.nasa.pds.tracking.tracking;
 
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -124,6 +125,42 @@ public class ServicesHomePage {
 		          "<tr><td>Delivery ID: </td><td><input id=\"id\" name=\"Delivery_ID\" /></td></tr>" +
 		          "<tr><td>Submission Time: </td><td><input id=\"submissionDate\" name=\"SubmissionDate\" /> (yyyy-MM-ddTHH:mm:ss)</td></tr>" +
 		          "<tr><td>Status: </td><td><input id=\"status\" name=\"Status\" /></td></tr>" +
+		          "<tr><td>Email: </td><td><input id=\"email\" name=\"Email\" /></td></tr>" +
+		          "<tr><td>Comment: </td><td><input id=\"comment\" name=\"Comment\" /></td></tr>" +
+		          "<tr><td></td><td><input type=\"submit\" value=\"Update\" /></td></tr>" +
+		          "</table>" +
+		          "</form>" +
+		          "</div>"		          
+            + HtmlConstants.PAGE_END;
+    }
+    @GET
+    @Path("/doiadd")
+    @Produces("text/html")
+    public String doiForm() {
+    	return HtmlConstants.PAGE_BEGIN +
+		          "<h1>DOI</h1>" +
+		          "<h2>Add</h2>" +
+		          "<div>" +
+		          "<form action=\"json/doi/add\" method=\"POST\">" +
+		          "<table>" +
+		          "<tr><td>Logical Identifier: </td><td><input id=\"id\" name=\"LOGICAL_ID\" /></td></tr>" +
+		          "<tr><td>Version: </td><td><input id=\"ver\" name=\"Version\" /></td></tr>" +
+		          "<tr><td>DOI: </td><td><input id=\"doi\" name=\"Doi\" /></td></tr>" +
+		          "<tr><td>URL: </td><td><input id=\"url\" name=\"URL\" /></td></tr>" +
+		          "<tr><td>Email: </td><td><input id=\"email\" name=\"Email\" /></td></tr>" +
+		          "<tr><td>Comment: </td><td><input id=\"comment\" name=\"Comment\" /></td></tr>" +
+		          "<tr><td></td><td><input type=\"submit\" value=\"Add\" /></td>" +
+		          "</table>" +    
+		          "</form>" +
+		          "</div>" +
+		          "<p></p>" +
+		          "<h2>Update</h2>" +
+		          "<div>" +
+		          "<form action=\"json/doi/update\" method=\"POST\">" +
+		          "<table>" +
+		          "<tr><td>Logical Identifier: </td><td><input id=\"id\" name=\"LOGICAL_ID\" /></td></tr>" +
+		          "<tr><td>Version: </td><td><input id=\"ver\" name=\"Version\" /></td></tr>" +
+		          "<tr><td>URL: </td><td><input id=\"url\" name=\"URL\" /></td></tr>" +
 		          "<tr><td>Email: </td><td><input id=\"email\" name=\"Email\" /></td></tr>" +
 		          "<tr><td>Comment: </td><td><input id=\"comment\" name=\"Comment\" /></td></tr>" +
 		          "<tr><td></td><td><input type=\"submit\" value=\"Update\" /></td></tr>" +
