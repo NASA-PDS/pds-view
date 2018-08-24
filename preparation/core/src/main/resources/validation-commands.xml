@@ -24,9 +24,7 @@
     <command caption="XML files are labels" className="gov.nasa.pds.tools.validate.rule.pds4.LabelInFolderRule" />
     <command caption="Directories validated as collections" className="gov.nasa.pds.tools.validate.rule.pds4.CollectionInBundleRule" />
     <command caption="Set report header" className="gov.nasa.pds.tools.validate.rule.SetReportHeader" />
-    <command caption="Bundle contents naming" className="gov.nasa.pds.tools.validate.rule.pds4.BundleContentsNamingRule" />
     <command caption="File and directory naming" className="gov.nasa.pds.tools.validate.rule.pds4.FileAndDirectoryNamingRule" />
-    <command caption="Find files not labeled" className="gov.nasa.pds.tools.validate.rule.pds4.FindUnreferencedFiles" />
     <command caption="Bundle Referential Integrity" className="gov.nasa.pds.tools.validate.rule.pds4.BundleReferentialIntegrityRule" />
     <command caption="Find identifiers not referenced" className="gov.nasa.pds.tools.validate.rule.pds4.FindUnreferencedIdentifiers" />
     <command caption="Record validation results" className="gov.nasa.pds.tools.validate.rule.RecordValidationResults" />  
@@ -40,7 +38,6 @@
     <command caption="Mark subdirectories referenced" className="gov.nasa.pds.tools.validate.rule.MarkSubdirectoriesReferenced" />
     <command caption="Subdirectory naming" className="gov.nasa.pds.tools.validate.rule.pds4.SubdirectoryNamingRule" />
     <command caption="File and directory naming" className="gov.nasa.pds.tools.validate.rule.pds4.FileAndDirectoryNamingRule" />
-    <command caption="Find files not labeled" className="gov.nasa.pds.tools.validate.rule.pds4.FindUnreferencedFiles" />
     <command caption="Collection Referential Integrity" className="gov.nasa.pds.tools.validate.rule.pds4.CollectionReferentialIntegrityRule" />
     <command caption="Find identifiers not referenced" className="gov.nasa.pds.tools.validate.rule.pds4.FindUnreferencedIdentifiers" />
     <command caption="Record validation results" className="gov.nasa.pds.tools.validate.rule.RecordValidationResults" />

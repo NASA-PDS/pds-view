@@ -19,10 +19,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.filefilter.IOFileFilter;
+import org.apache.commons.io.filefilter.RegexFileFilter;
 
 import gov.nasa.pds.tools.inventory.reader.InventoryEntry;
 import gov.nasa.pds.tools.inventory.reader.InventoryReaderException;
@@ -35,6 +35,7 @@ import gov.nasa.pds.tools.validate.ProblemDefinition;
 import gov.nasa.pds.tools.validate.ProblemType;
 import gov.nasa.pds.tools.validate.Target;
 import gov.nasa.pds.tools.validate.ValidationProblem;
+import gov.nasa.pds.tools.validate.crawler.Crawler;
 import gov.nasa.pds.tools.validate.rule.AbstractValidationRule;
 import gov.nasa.pds.tools.validate.rule.GenericProblems;
 import gov.nasa.pds.tools.validate.rule.ValidationTest;
@@ -64,24 +65,26 @@ public class CollectionReferentialIntegrityRule extends AbstractValidationRule {
 
   @ValidationTest
   public void collectionReferentialIntegrityRule() {
+    Crawler crawler = getContext().getCrawler();
     try {
-      List<Target> children = getContext().getCrawler().crawl(getTarget());
+      IOFileFilter regexFileFilter = new RegexFileFilter(COLLECTION_LABEL_PATTERN);
+      List<Target> children = crawler.crawl(getTarget(), regexFileFilter);
       // Check for collection(_.*)?\.xml file.
-      for (Target child : children) {
-        Matcher matcher = COLLECTION_LABEL_PATTERN.matcher(
-            FilenameUtils.getName(child.toString()));
-        if (matcher.matches()) {
+      for (int i = 0; i < children.size(); i++) {
+        Target child = children.get(i);
+        if (child.isDir()) {
+          children.addAll(crawler.crawl(child.getUrl(), regexFileFilter));
+        } else {
           try {
             XMLExtractor extractor = new XMLExtractor(child.getUrl());
             if("Product_Collection".equals(
                 extractor.getValueFromDoc(PRODUCT_CLASS))) {
               getListener().addLocation(child.getUrl().toString());
               getCollectionMembers(child.getUrl());
-              break;
             }
           } catch (Exception e) {
             //Ignore. This isn't a valid Collection label, so let's skip it.
-          }
+          } 
         }
       }
     } catch (IOException io) {

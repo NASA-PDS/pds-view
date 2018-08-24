@@ -1,4 +1,4 @@
-// Copyright 2006-2017, by the California Institute of Technology.
+// Copyright 2006-2018, by the California Institute of Technology.
 // ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
 // Any commercial use must be negotiated with the Office of Technology Transfer
 // at the California Institute of Technology.
@@ -14,27 +14,17 @@
 package gov.nasa.pds.tools.validate.rule.pds4;
 
 import gov.nasa.pds.tools.util.Utility;
-import gov.nasa.pds.tools.validate.Target;
-import gov.nasa.pds.tools.validate.crawler.Crawler;
-import gov.nasa.pds.tools.validate.crawler.CrawlerFactory;
 import gov.nasa.pds.tools.validate.rule.AbstractValidationChain;
 
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import org.apache.commons.io.FilenameUtils;
 
 /**
- * Implements a validation chain that validates PDS4 collections. It is applicable
- * if there is a collection label in the root directory.
+ * Implements a validation chain that validates PDS4 collections.
+ * 
  */
 public class CollectionValidationRule extends AbstractValidationChain {
-
-	private static final Pattern COLLECTION_LABEL_PATTERN = Pattern.compile("collection(_.*)?\\.xml", Pattern.CASE_INSENSITIVE);
 
 	@Override
 	public boolean isApplicable(String location) {
@@ -48,23 +38,7 @@ public class CollectionValidationRule extends AbstractValidationChain {
     if (!Utility.isDir(url)) {
       return false;
     }
-
-    Crawler crawler = CrawlerFactory.newInstance(url);
-    try {
-      List<Target> children = crawler.crawl(url);
-  		// Check for bundle(_.*)?\.xml file.
-  		for (Target child : children) {
-  			Matcher matcher = COLLECTION_LABEL_PATTERN.matcher(
-  			    FilenameUtils.getName(child.toString()));
-  			if (matcher.matches()) {
-  				return true;
-  			}
-  		}
-    } catch(IOException io) {
-      //Ignore. We'll return false anyways.
-    }
-
-		return false;
+		return true;
 	}
 
 }

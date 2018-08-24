@@ -1,4 +1,4 @@
-// Copyright 2006-2017, by the California Institute of Technology.
+// Copyright 2006-2018, by the California Institute of Technology.
 // ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
 // Any commercial use must be negotiated with the Office of Technology Transfer
 // at the California Institute of Technology.
@@ -16,12 +16,10 @@ package gov.nasa.pds.tools.validate.rule.pds4;
 import gov.nasa.pds.tools.util.Utility;
 import gov.nasa.pds.tools.validate.Target;
 import gov.nasa.pds.tools.validate.crawler.Crawler;
-import gov.nasa.pds.tools.validate.crawler.CrawlerFactory;
 import gov.nasa.pds.tools.validate.rule.AbstractValidationRule;
 import gov.nasa.pds.tools.validate.rule.GenericProblems;
 import gov.nasa.pds.tools.validate.rule.ValidationTest;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -38,8 +36,6 @@ import org.apache.commons.io.filefilter.FalseFileFilter;
  * occur in the root directory of a bundle.
  */
 public class SubdirectoryNamingRule extends AbstractValidationRule {
-
-  private static final Pattern COLLECTION_LABEL_PATTERN = Pattern.compile("collection(_.*)\\.xml", Pattern.CASE_INSENSITIVE);
 
   private static final String[] ILLEGAL_DIRECTORY_NAMES = {
     "browse",
@@ -81,20 +77,7 @@ public class SubdirectoryNamingRule extends AbstractValidationRule {
     if (!Utility.isDir(url)) {
       return false;
     }
-    Crawler crawler = getContext().getCrawler();
-    try {
-      List<Target> children = crawler.crawl(url);
-      // Check for collection(_.*)?\.xml file.
-      for (Target child : children) {
-        Matcher matcher = COLLECTION_LABEL_PATTERN.matcher(FilenameUtils.getName(child.toString()));
-        if (matcher.matches()) {
-          return true;
-        }
-      }
-    } catch(IOException io) {
-      //Ignore. We'll return false anyways.
-    }
-    return false;
+    return true;
   }
 
   /**
