@@ -490,11 +490,13 @@ insert into investigation_tools (investigation, title, description, url, rank) v
 
 /* Comets/Asteroids */
 
-insert into target_tools (target, title, description, url, rank) values ('Comets/Asteroids', 'Small Bodies Image Browser at the Small Bodies Node', 'Supports Dawn, NEAR Shoemaker product browse and download for Ceres, Vesta and Eros data.', 'https://sbib.psi.edu/', 1);
+insert into target_tools (target, title, description, url, rank) values ('Comets/Asteroids', 'Ferret at the Small Bodies Node', 'Search tool to find targets and their associated data products in the PDS Small Bodies Node (currently only for PDS3 data).', 'https://sbnapps.psi.edu/ferret/', 1);
 
-insert into target_tools (target, title, description, url, rank) values ('Comets/Asteroids', 'Planetary Image Locator Tool (PILOT) at the Cartography and Imaging Sciences Node', 'Supports Dawn map-based image product locator tool using uniform image geometry to search and download of Ceres and Vesta data.', 'https://pilot.wr.usgs.gov', 2);
+insert into target_tools (target, title, description, url, rank) values ('Comets/Asteroids', 'Small Bodies Image Browser at the Small Bodies Node', 'Supports Dawn, NEAR Shoemaker product browse and download for Ceres, Vesta and Eros data.', 'https://sbib.psi.edu/', 2);
 
-insert into target_tools (target, title, description, url, rank) values ('Comets/Asteroids', 'Map-A-Planet 2 (MAP2) at the Cartography and Imaging Sciences Node', 'Supports Dawn global image mosaic projection, clipping, processing and download of Ceres and Vesta data.', 'https://astrogeology.usgs.gov/tools/map-a-planet-2', 3);
+insert into target_tools (target, title, description, url, rank) values ('Comets/Asteroids', 'Planetary Image Locator Tool (PILOT) at the Cartography and Imaging Sciences Node', 'Supports Dawn map-based image product locator tool using uniform image geometry to search and download of Ceres and Vesta data.', 'https://pilot.wr.usgs.gov', 3);
+
+insert into target_tools (target, title, description, url, rank) values ('Comets/Asteroids', 'Map-A-Planet 2 (MAP2) at the Cartography and Imaging Sciences Node', 'Supports Dawn global image mosaic projection, clipping, processing and download of Ceres and Vesta data.', 'https://astrogeology.usgs.gov/tools/map-a-planet-2', 4);
 
 
 insert into target_tools (target, title, description, url, rank) values ('Comets/Asteroids', 'Comet Data at the Small Bodies Node', 'Supports multiple investigations for product browse and download of comet data.', 'https://pdssbn.astro.umd.edu/data_sb/target_comets.shtml', 101);
@@ -663,6 +665,8 @@ insert into target_tools (target, title, description, url, rank) values ('Pluto 
 
 insert into target_tools (target, title, description, url, rank) values ('Pluto System', 'Map-A-Planet 2 (MAP2) at the Cartography and Imaging Sciences Node', 'Supports New Horizons global image mosaic projection, clipping, processing and download.', 'https://astrogeology.usgs.gov/tools/map-a-planet-2', 3);
 
+insert into target_tools (target, title, description, url, rank) values ('Pluto System', 'Ferret at the Small Bodies Node', 'Search tool to find targets and their associated data products in the PDS Small Bodies Node (currently only for PDS3 data).', 'https://sbnapps.psi.edu/ferret/', 4);
+
 
 insert into target_tools (target, title, description, url, rank) values ('Pluto System', 'New Horizons data at the Small Bodies Node', 'Provides access to data from the entire mission (Post-launch checkout, Jupiter flyby, Pluto cruise, & Pluto encounter).', 'https://pds-smallbodies.astro.umd.edu/data_sb/missions/newhorizons/index.shtml', 101);
 
@@ -671,6 +675,8 @@ insert into target_tools (target, title, description, url, rank) values ('Pluto 
 insert into target_tools (target, title, description, url, rank) values ('Pluto System', 'SPICE Data Holdings at the Navigation and Ancillary Information Facility Node', 'Supports Cassini, Galileo, Juno, New Horizons, Pioneer 10/11 and Voyager 1/2 SPICE product browse and download, and subsequent science data analysis.', 'https://naif.jpl.nasa.gov/naif/data_archived.html', 103);
 
 /* KBOs */
+
+insert into target_tools (target, title, description, url, rank) values ('KBOs', 'Ferret at the Small Bodies Node', 'Search tool to find targets and their associated data products in the PDS Small Bodies Node (currently only for PDS3 data).', 'https://sbnapps.psi.edu/ferret/', 1);
 
 insert into target_tools (target, title, description, url, rank) values ('KBOs', 'Transneptunian, Centaur, and Pluto Data Sets at the Small Bodies Node', 'Supports multiple investigations for data browse and download.', 'https://sbn.psi.edu/pds/archive/tnos.html', 101);
 
