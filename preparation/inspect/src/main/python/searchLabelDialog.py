@@ -23,7 +23,7 @@ class SearchLabelDialog(QDialog, searchLabelDialog_ui.Ui_SearchLabelDialog):
         self.lw = label_widget
 
         dict = self.lw.get_parent_child_dict
-        print(dict)
+        # print(dict)
 
         self.matches = []
         self.value = ''
@@ -83,7 +83,7 @@ class SearchLabelDialog(QDialog, searchLabelDialog_ui.Ui_SearchLabelDialog):
         for i in found:
             if i[0] == i[1]:
                 i.pop(0)
-        print(found)
+        # print(found)
 
         self.display_search_results(num_found, found)
         self.value_line_edit.clear()

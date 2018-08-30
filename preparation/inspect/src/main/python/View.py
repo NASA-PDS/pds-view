@@ -176,7 +176,7 @@ class MainWindow(QMainWindow):
         # image options used for display and saving images
         self.image_width = 0
         self.image_height = 0
-        self.dpi = 80.0
+        self.dpi = 72.0
 
         self.imageLayout = QVBoxLayout()
 
@@ -220,11 +220,11 @@ class MainWindow(QMainWindow):
         self.fileOpenAction = self.create_action("&Open...", self.file_open,
                                                 # QKeySequence.Open, icon="fileopen", tip="Open a PDS product.")
                                                  QKeySequence.Open, icon="folderopen.svg", tip="Open")
-        self.fileSaveTableAsAction = self.create_action("Save Table &As...",self.file_save_table_as,
-                                                        icon="save1.svg", tip="Save Table as csv file.")
+        self.fileSaveTableAsAction = self.create_action("Save Table As csv",self.file_save_table_as,
+                                                        icon="saveCsv.svg", tip="Save Table as csv file.")
 
         self.fileSaveImageAsAction = self.create_action("Save Image As...", self.save_image_as,
-                                                        icon="imagesaveas", tip="Save the image to a file")
+                                                        icon="saveImage.svg", tip="Save image to file")
 
         # Disable until a file with an image is picked, and the 'View' button is clicked
         self.fileSaveImageAsAction.setDisabled(True)
@@ -565,12 +565,13 @@ class MainWindow(QMainWindow):
 
         #  File actions,search actions, and label actions
         #  Note use of labelActionList for the two label selection options in the toolbar
-        self.add_actions(self.mainToolBar, (self.fileOpenAction, self.fileSaveTableAsAction,
+        self.add_actions(self.mainToolBar, (self.fileOpenAction, self.fileSaveTableAsAction, self.fileSaveImageAsAction,
                                             self.fileQuitAction, None, self.searchHighlightTableAction,
                                             self.searchLabelAction, None, self.labelActionList['Object Label'],
                                             self.labelActionList['Full Label'], None))
 
         self.fileSaveTableAsAction.setDisabled(True)
+        self.fileSaveImageAsAction.setDisabled(True)
         self.searchLabelAction.setDisabled(True)
         self.searchHighlightTableAction.setDisabled(True)
         self.labelActionList['Object Label'].setDisabled(True)
@@ -578,12 +579,14 @@ class MainWindow(QMainWindow):
 
 
         self.checkBox = QCheckBox('Hold Slider Positions')
+        #self.checkBox.setToolTip('')
         self.mainToolBar.addWidget(self.checkBox)
 
         self.add_actions(self.mainToolBar, (self.lastCubeDataFileAction,
                                             self.nextCubeDataFileAction))
 
-        self.tableLabel = QLabel('Table ')
+        self.tableLabel = QLabel('Band ')
+        self.tableLabel.setToolTip('Current Band Selected')
         self.tableLabel.setDisabled(True)
         self.tableLabel.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         self.tableNumDisplay = QLineEdit()
@@ -599,6 +602,7 @@ class MainWindow(QMainWindow):
         self.mainToolBar.addWidget(self.tableNumDisplay)
 
         self.dpiLabel = QLabel('dpi ')
+        self.dpiLabel.setToolTip('Dots per inch.')
         self.dpiLabel.setDisabled(True)
         self.dpiLabel.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         self.dpiDisplay = QLineEdit()
@@ -732,7 +736,7 @@ class MainWindow(QMainWindow):
         else:
             self.draw_2d_image(None, redraw=False)
         self.render_image(peripheral='Ticks')
-        print('From set_ticks: {}'.format(selection))
+        # print('From set_ticks: {}'.format(selection))
         self.current_ticks_state = selection
 
     def setStyle(self, style):
@@ -873,6 +877,7 @@ class MainWindow(QMainWindow):
             self.labelActionList['Object Label'].setDisabled(True)
             self.labelActionList['Full Label'].setDisabled(True)
             self.fileSaveTableAsAction.setDisabled(True)  # disable table saving until 'View' is pressed.
+            self.fileSaveImageAsAction.setDisabled(True)  # disable image saving until 'View' is pressed.
             self.checkBox.setChecked(False)
             self.checkBox.setDisabled(True)
             self.nextCubeDataFileAction.setDisabled(True)
@@ -896,7 +901,7 @@ class MainWindow(QMainWindow):
             if "." not in fname:
                 fname += ".csv"
             self.filename = fname
-            print('FILENAME: {}'.format(self.filename))
+            # print('FILENAME: {}'.format(self.filename))
             self.tableWidget.tableModel.write_table_to_csv(fname)
         return False
 
@@ -978,8 +983,8 @@ class MainWindow(QMainWindow):
             return
         if fname not in self.recentFiles:
             self.recentFiles = [fname] + self.recentFiles[:8]
-        for i in self.recentFiles:
-            print i
+        # for i in self.recentFiles:
+        #    print i
 
     def update_file_menu(self):
         self.fileMenu.addSeparator()
@@ -1019,7 +1024,7 @@ class MainWindow(QMainWindow):
             # print("Got into load_file()")
 
     def closeEvent(self, event):
-        print'Close Event.'
+        # print'Close Event.'
         settings = QSettings()
         # settings.setValue("LastFile", self.filename)
         settings.setValue("RecentFiles", self.recentFiles or [])
@@ -1061,6 +1066,7 @@ class MainWindow(QMainWindow):
                 self.labelActionList['Object Label'].setDisabled(True)
                 self.labelActionList['Full Label'].setDisabled(True)
                 self.fileSaveTableAsAction.setDisabled(True)  # disable table saving until 'View' is pressed.
+                self.fileSaveImageAsAction.setDisabled(True)  # disable image saving until 'View' is pressed.
                 self.checkBox.setChecked(False)
                 self.checkBox.setDisabled(True)
                 self.nextCubeDataFileAction.setDisabled(True)
@@ -1220,6 +1226,7 @@ class MainWindow(QMainWindow):
         self.labelActionList['Object Label'].setDisabled(False)
         self.labelActionList['Object Label'].setDisabled(False)
         self.fileSaveTableAsAction.setDisabled(False)  # enable table to be saved.
+        self.fileSaveImageAsAction.setDisabled(False)  # enable image saving until turned off my 'non' image file
         self.draw_label(index, viewType)
         self.current_index = index  # These are used when label options change within the same file
         self.view_type = viewType
@@ -1273,6 +1280,7 @@ class MainWindow(QMainWindow):
             self.hideBoundingBoxAction.setDisabled(True)
             self.tickAction.setDisabled(True)
             self.colorbarAction.setDisabled(True)
+            self.fileSaveImageAsAction.setDisabled(True)
             self.configure_tabs(True, False, False, self.table_index)
             self.draw_table(index)
 
@@ -1478,9 +1486,9 @@ class MainWindow(QMainWindow):
         self.checkBox.setChecked(False)
 
     def draw_indexed_image(self, table, index):
-        print('INDEXED Image')
+        # print('INDEXED Image')
         table_type = self.summary[1][1]  # this is the type of each array
-        print('table_type: {}'.format(table_type))
+        # print('table_type: {}'.format(table_type))
         # TODO move this to _init_ after you're sure you've got them all
         image_types = ('Array_2D_Image', 'Array_3D_Image', 'Array_3D_Spectrum')
         if table_type in image_types:
@@ -1852,7 +1860,6 @@ class MainWindow(QMainWindow):
 
             self.imageDockWidget = QDockWidget(self.title, self)
             self.imageDockWidget.setObjectName("imageDockWidget")
-            #print('DICK DOCK')
             # Make the dock widget floatable, but not closeable
             self.imageDockWidget.setFeatures(QDockWidget.DockWidgetFloatable | QDockWidget.DockWidgetMovable)
 
@@ -1909,7 +1916,7 @@ class MainWindow(QMainWindow):
                  print("Clear spacer: " + str(item))
                 # no need to do extra stuff
             else:
-                print("Clear layout: " + str(item))
+                # print("Clear layout: " + str(item))
                 self.clear_layout(item.layout())
             # remove the item from layout
             layout.removeItem(item)

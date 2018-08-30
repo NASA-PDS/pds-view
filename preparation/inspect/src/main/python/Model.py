@@ -390,7 +390,7 @@ class TableModel(QtCore.QAbstractTableModel):
         :return: a new 'flattened' row that includes groups
         This method takes a row of data and checks if there is a nested nparray in the line representing a group
         If a group exists it is mapped sequentially to the next set of columns, thus 'flattening' the row.
-        In View.py these groups are given another color so they are very apparent
+        In View.py these groups are given another color so they are apparent
         '''
         newRow = []
 
