@@ -509,6 +509,8 @@ insert into target_tools (target, title, description, url, rank) values ('Comets
 
 insert into target_tools (target, title, description, url, rank) values ('Comets/Asteroids', 'SPICE Data Holdings at the Navigation and Ancillary Information Facility Node', 'Supports Dawn, Deep Impact, Deep Space 1, Giotto, Hayabusa, NEAR, OSIRIS-REx, Rosetta, Stardust and Vega 1/2 SPICE product browse and download, and subsequent science data analysis.', 'https://naif.jpl.nasa.gov/naif/data_archived.html', 105);
 
+insert into target_tools (target, title, description, url, rank) values ('Earth System', 'NEAR Mission Data Holdings at the Geosciences Node', 'Supports multiple investigations for product browse and download.', 'http://pds-geosciences.wustl.edu/missions/near/index.htm', 106);
+
 /* Mercury */
 
 insert into target_tools (target, title, description, url, rank) values ('Mercury', 'Mercury Orbital Data Explorer (ODE) at the Geosciences Node', 'Supports search, browse, and download of select PDS data products from the MESSENGER mission, including GRS, NS, XRS, MASCS, MDIS, MLA, and radio science data.', 'http://ode.rsl.wustl.edu/mercury/', 1);
@@ -522,7 +524,9 @@ insert into target_tools (target, title, description, url, rank) values ('Mercur
 
 insert into target_tools (target, title, description, url, rank) values ('Mercury', 'Mercury Data Holdings at the Planetary Plasma Interactions Node', 'Supports Mariner 10 and MESSENGER product browse and download.', 'https://pds-ppi.igpp.ucla.edu/search/?t=Mercury&facet=TARGET_NAME', 101);
 
-insert into target_tools (target, title, description, url, rank) values ('Mercury', 'SPICE Data Holdings at the Navigation and Ancillary Information Facility Node', 'Supports Mariner 10 and MESSENGER SPICE product browse and download, and subsequent science data analysis.', 'https://naif.jpl.nasa.gov/naif/data_archived.html', 102);
+insert into target_tools (target, title, description, url, rank) values ('Mercury', 'MESSENGER Mission Data Holdings at the Geosciences Node', 'Supports multiple investigations for product browse and download.', 'http://pds-geosciences.wustl.edu/missions/messenger/index.htm', 102);
+
+insert into target_tools (target, title, description, url, rank) values ('Mercury', 'SPICE Data Holdings at the Navigation and Ancillary Information Facility Node', 'Supports Mariner 10 and MESSENGER SPICE product browse and download, and subsequent science data analysis.', 'https://naif.jpl.nasa.gov/naif/data_archived.html', 103);
 
 /* Venus */
 
@@ -539,7 +543,9 @@ insert into target_tools (target, title, description, url, rank) values ('Venus'
 
 insert into target_tools (target, title, description, url, rank) values ('Venus', 'Venus Data Holdings at the Planetary Plasma Interactions Node', 'Supports Cassini, Galileo, MESSENGER, Pioneer Venus Orbiter (PVO) and Venera 15/16 product browse and download.', 'https://pds-ppi.igpp.ucla.edu/search/?t=Venus&facet=TARGET_NAME', 101);
 
-insert into target_tools (target, title, description, url, rank) values ('Venus', 'SPICE Data Holdings at the Navigation and Ancillary Information Facility Node', 'Supports Magellan, Mariner 2, Pioneer Venus Orbiter and Venus Express SPICE product browse and download, and subsequent science data analysis.', 'https://naif.jpl.nasa.gov/naif/data_archived.html', 102);
+insert into target_tools (target, title, description, url, rank) values ('Venus', 'Magellan Mission Data Holdings at the Geosciences Node.', 'Supports multiple investigations for product browse and download.', 'http://pds-geosciences.wustl.edu/missions/magellan/index.htm', 102);
+
+insert into target_tools (target, title, description, url, rank) values ('Venus', 'SPICE Data Holdings at the Navigation and Ancillary Information Facility Node', 'Supports Magellan, Mariner 2, Pioneer Venus Orbiter and Venus Express SPICE product browse and download, and subsequent science data analysis.', 'https://naif.jpl.nasa.gov/naif/data_archived.html', 103);
 
 /* Earth System */
 
@@ -558,9 +564,13 @@ insert into target_tools (target, title, description, url, rank) values ('Earth 
 insert into target_tools (target, title, description, url, rank) values ('Earth System', 'OPUS at the Ring-Moon Systems Node', 'Supports a small number of Cassini ISS and HST WFPC2 observations.  Browse and download including calibrated Cassini ISS. Browse with links to STScI for HST downloads.', 'https://tools.pds-rings.seti.org/opus#/planet=Earth', 7);
 
 
-insert into target_tools (target, title, description, url, rank) values ('Earth System', 'Earth (Moon) Data Holdings at the Planetary Plasma Interactions Node', 'Supports Cassini, Galileo, Juno, Lunar Prospector, Lunar Reconnaissance Orbiter (LRO), MESSENGER and NEAR product browse and download.', 'https://pds-ppi.igpp.ucla.edu/search/?t=Earth(Moon)&facet=TARGET_NAME', 101);
+insert into target_tools (target, title, description, url, rank) values ('Earth System', 'Lunar Data Holdings at the Geosciences Node', 'Supports multiple investigations for product browse and download.', 'http://pds-geosciences.wustl.edu/dataserv/moon.html', 101);
 
-insert into target_tools (target, title, description, url, rank) values ('Earth System', 'SPICE Data Holdings at the Navigation and Ancillary Information Facility Node', 'Supports Apollo, Clementine, GRAIL, LADEE, LRO, Lunar Prospector, Lunur Orbiters, Kaguya and SMART-1 SPICE product browse and download, and subsequent science data analysis.', 'https://naif.jpl.nasa.gov/naif/data_archived.html', 102);
+insert into target_tools (target, title, description, url, rank) values ('Earth System', 'Earth Data Holdings at the Geosciences Node', 'Supports multiple investigations for product browse and download.', 'http://pds-geosciences.wustl.edu/dataserv/earth.html', 102);
+
+insert into target_tools (target, title, description, url, rank) values ('Earth System', 'Earth (Moon) Data Holdings at the Planetary Plasma Interactions Node', 'Supports Cassini, Galileo, Juno, Lunar Prospector, Lunar Reconnaissance Orbiter (LRO), MESSENGER and NEAR product browse and download.', 'https://pds-ppi.igpp.ucla.edu/search/?t=Earth(Moon)&facet=TARGET_NAME', 103);
+
+insert into target_tools (target, title, description, url, rank) values ('Earth System', 'SPICE Data Holdings at the Navigation and Ancillary Information Facility Node', 'Supports Apollo, Clementine, GRAIL, LADEE, LRO, Lunar Prospector, Lunur Orbiters, Kaguya and SMART-1 SPICE product browse and download, and subsequent science data analysis.', 'https://naif.jpl.nasa.gov/naif/data_archived.html', 104);
 
 /* Mars System */
 
@@ -581,13 +591,15 @@ insert into target_tools (target, title, description, url, rank) values ('Mars S
 insert into target_tools (target, title, description, url, rank) values ('Mars System', 'OPUS at the Ring-Moon Systems Node', 'Supports HST (ACS, WFC3, WFPC2). Browse results and links to STScI for HST downloads.', 'https://tools.pds-rings.seti.org/opus#/planet=Mars', 8);
 
 
-insert into target_tools (target, title, description, url, rank) values ('Mars System', 'Mars Data Holdings at the Planetary Plasma Interactions Node', 'Supports MAVEN, Mariner 9, Mars Express (MEX), Mars Global Surveyor (MGS), Mars Odyssey, Mars Science Laboratory (MSL) and Ulysses product browse and download.', 'https://pds-ppi.igpp.ucla.edu/search/?t=Mars&facet=TARGET_NAME', 101);
+insert into target_tools (target, title, description, url, rank) values ('Mars System', 'Mars Data Holdings at the Geosciences Node', 'Supports multiple investigations for product browse and download.', 'http://pds-geosciences.wustl.edu/missions/mep/index.htm', 101);
 
-insert into target_tools (target, title, description, url, rank) values ('Mars System', 'Mars Atmospheric Data Archive at the Atmospheres Node', 'Supports browse and download of Mars atmospheric data based on missions, individual instruments or on physical parameters.', 'http://pds-atmospheres.nmsu.edu/data_and_services/atmospheres_data/MARS/data_archive.html', 102);
+insert into target_tools (target, title, description, url, rank) values ('Mars System', 'Mars Data Holdings at the Planetary Plasma Interactions Node', 'Supports MAVEN, Mariner 9, Mars Express (MEX), Mars Global Surveyor (MGS), Mars Odyssey, Mars Science Laboratory (MSL) and Ulysses product browse and download.', 'https://pds-ppi.igpp.ucla.edu/search/?t=Mars&facet=TARGET_NAME', 102);
 
-insert into target_tools (target, title, description, url, rank) values ('Mars System', 'Planetary Satellite Data at the Small Bodies Node', 'Supports data sets containing planetary satellite data for browse and download.', 'https://sbn.psi.edu/pds/archive/sat.html', 103);
+insert into target_tools (target, title, description, url, rank) values ('Mars System', 'Mars Atmospheric Data Archive at the Atmospheres Node', 'Supports browse and download of Mars atmospheric data based on missions, individual instruments or on physical parameters.', 'http://pds-atmospheres.nmsu.edu/data_and_services/atmospheres_data/MARS/data_archive.html', 103);
 
-insert into target_tools (target, title, description, url, rank) values ('Mars System', 'SPICE Data Holdings at the Navigation and Ancillary Information Facility Node', 'Supports ExoMars, InSight, Mariner 9, Mars Climate Orbiter, Mars Exploration Rovers, Mars Express, Mars Global Surveyor, Mars Odyssey, Mars Pathfinder, Mars Polar Lander, Mars Reconnaissance Orbiter, Mars Science Laboratory, MAVEN, Nozomi, Phobos-88, Phoenix, Phobos Sample Return and Viking 1/2 SPICE product browse and download, and subsequent science data analysis.', 'https://naif.jpl.nasa.gov/naif/data_archived.html', 104);
+insert into target_tools (target, title, description, url, rank) values ('Mars System', 'Planetary Satellite Data at the Small Bodies Node', 'Supports data sets containing planetary satellite data for browse and download.', 'https://sbn.psi.edu/pds/archive/sat.html', 104);
+
+insert into target_tools (target, title, description, url, rank) values ('Mars System', 'SPICE Data Holdings at the Navigation and Ancillary Information Facility Node', 'Supports ExoMars, InSight, Mariner 9, Mars Climate Orbiter, Mars Exploration Rovers, Mars Express, Mars Global Surveyor, Mars Odyssey, Mars Pathfinder, Mars Polar Lander, Mars Reconnaissance Orbiter, Mars Science Laboratory, MAVEN, Nozomi, Phobos-88, Phoenix, Phobos Sample Return and Viking 1/2 SPICE product browse and download, and subsequent science data analysis.', 'https://naif.jpl.nasa.gov/naif/data_archived.html', 105);
 
 /* Jupiter System */
 
