@@ -509,7 +509,7 @@ insert into target_tools (target, title, description, url, rank) values ('Comets
 
 insert into target_tools (target, title, description, url, rank) values ('Comets/Asteroids', 'SPICE Data Holdings at the Navigation and Ancillary Information Facility Node', 'Supports Dawn, Deep Impact, Deep Space 1, Giotto, Hayabusa, NEAR, OSIRIS-REx, Rosetta, Stardust and Vega 1/2 SPICE product browse and download, and subsequent science data analysis.', 'https://naif.jpl.nasa.gov/naif/data_archived.html', 105);
 
-insert into target_tools (target, title, description, url, rank) values ('Earth System', 'NEAR Mission Data Holdings at the Geosciences Node', 'Supports multiple investigations for product browse and download.', 'http://pds-geosciences.wustl.edu/missions/near/index.htm', 106);
+insert into target_tools (target, title, description, url, rank) values ('Comets/Asteroids', 'NEAR Mission Data Holdings at the Geosciences Node', 'Supports multiple investigations for product browse and download.', 'http://pds-geosciences.wustl.edu/missions/near/index.htm', 106);
 
 /* Mercury */
 
@@ -543,7 +543,7 @@ insert into target_tools (target, title, description, url, rank) values ('Venus'
 
 insert into target_tools (target, title, description, url, rank) values ('Venus', 'Venus Data Holdings at the Planetary Plasma Interactions Node', 'Supports Cassini, Galileo, MESSENGER, Pioneer Venus Orbiter (PVO) and Venera 15/16 product browse and download.', 'https://pds-ppi.igpp.ucla.edu/search/?t=Venus&facet=TARGET_NAME', 101);
 
-insert into target_tools (target, title, description, url, rank) values ('Venus', 'Magellan Mission Data Holdings at the Geosciences Node.', 'Supports multiple investigations for product browse and download.', 'http://pds-geosciences.wustl.edu/missions/magellan/index.htm', 102);
+insert into target_tools (target, title, description, url, rank) values ('Venus', 'Magellan Mission Data Holdings at the Geosciences Node', 'Supports multiple investigations for product browse and download.', 'http://pds-geosciences.wustl.edu/missions/magellan/index.htm', 102);
 
 insert into target_tools (target, title, description, url, rank) values ('Venus', 'SPICE Data Holdings at the Navigation and Ancillary Information Facility Node', 'Supports Magellan, Mariner 2, Pioneer Venus Orbiter and Venus Express SPICE product browse and download, and subsequent science data analysis.', 'https://naif.jpl.nasa.gov/naif/data_archived.html', 103);
 
