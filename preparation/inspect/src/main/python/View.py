@@ -159,16 +159,19 @@ class MainWindow(QMainWindow):
         self.tableTab = QWidget()
         self.threeDTableTab = QWidget()
         self.imageTab = QWidget()
+        # self.summaryTab = QWidget()
 
         self.tabFrame.addTab(self.labelTab, "Label  ")
         self.tabFrame.addTab(self.tableTab, "Table  ")
         self.tabFrame.addTab(self.imageTab, "Image  ")
+        # self.tabFrame.addTab(self.summaryTab, "Summary")
 
         self.labelLayout = QHBoxLayout()
         # self.tableLayout = QFormLayout()
 
         self.tableLayout = QVBoxLayout()
         self.tableInfoLayout = QHBoxLayout()
+        # self.summaryLayout = QHBoxLayout
 
         self.threeDTableLayout = QGridLayout()
         # self.threeDTableInfoLayout = QHBoxLayout()
@@ -1698,13 +1701,31 @@ class MainWindow(QMainWindow):
             # print('regular case in get_last_file(), self.table_num is {}'.format(self.table_num))
             self.change_table(self.table_num - 2)
 
+    def windows_message_box(self, message):
+        message_box = QMessageBox()
+        message_box.setText("{} not yet implemented for Windows Operating system.".format(message))
+        message_box.setWindowTitle("Not Yet Implemented")
+        message_box.setStandardButtons(QMessageBox.Ok)
+        message_box.setWindowModality(Qt.ApplicationModal)
+        self.set_style_sheet(message_box)
+        # x, y = MyHeader.get_mouse_position(self)
+        # message_box.move(x + 300, y + 300)
+        retVal = message_box.exec_()
+
+
     def render_histogram(self):
-        hist = Histogram(self.table, self.title, False)
-        hist.show()
+        if self.platform == 'Windows':
+            self.windows_message_box('Histogram')
+        else:
+            hist = Histogram(self.table, self.title, False)
+            hist.show()
 
     def render_kde_histogram(self):
-        hist = Histogram(self.table, self.title, True)
-        hist.show()
+        if self.platform == 'Windows':
+            self.windows_message_box('KDE Histogram')
+        else:
+            hist = Histogram(self.table, self.title, True)
+            hist.show()
 
     def table_num_line_edit_entry(self):
         '''
@@ -1966,6 +1987,59 @@ class MainWindow(QMainWindow):
         self.summaryDockWidget.show()
 
 
+    def set_style_sheet(self, messageBox):
+        if MainWindow.style_group == 'Dark Orange':
+            messageBox.setStyleSheet("""
+                .QMessageBox{
+                    Background-color: QLinearGradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #727272, stop: 0.1 #7f7f7f, stop: 0.5 #8b8b8b, stop: 0.9 #989898, stop: 1 #a5a5a5);
+                    font: italic 14pt;
+                    border: 1px solid #ffaa00;
+                }
+                .QPushButton{
+                    color: #b1b1b1;
+                    background-color: QLinearGradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #565656, stop: 0.1 #525252, stop: 0.5 #4e4e4e, stop: 0.9 #4a4a4a, stop: 1 #464646);
+                    border-width: 1px;
+                    border-color: #1e1e1e;
+                    border-style: solid;
+                    border-radius: 6;
+                    padding: 3px;
+                    font-size: 12px;
+
+                    padding-left: 15px;
+                    padding-right: 15px;
+                }
+
+                .QPushButton:hover{
+                     border: 2px solid QLinearGradient( x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #ffa02f, stop: 1 #d7801a);
+                }
+            """)
+        elif MainWindow.style_group == 'Dark Blue':
+            messageBox.setStyleSheet("""
+                .QMessageBox{
+                    Background-color: QLinearGradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #727272, stop: 0.1 #7f7f7f, stop: 0.5 #8b8b8b, stop: 0.9 #989898, stop: 1 #a5a5a5);
+                    font: italic 14pt;
+                    border: 1px solid #31c6f7;
+                }
+                .QPushButton{
+                    color: #b1b1b1;
+                    background-color: QLinearGradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #565656, stop: 0.1 #525252, stop: 0.5 #4e4e4e, stop: 0.9 #4a4a4a, stop: 1 #464646);
+                    border-width: 1px;
+                    border-color: #1e1e1e;
+                    border-style: solid;
+                    border-radius: 6;
+                    padding: 3px;
+                    font-size: 12px;
+
+                    padding-left: 15px;
+                    padding-right: 15px;
+                }
+
+                .QPushButton:hover{
+                     border: 2px solid QLinearGradient( x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #31c6f7, stop: 1 #27a5cf);
+                }
+            """)
+
+
 class NavigationToolbar(NavigationToolbar2QT):
     # only display the buttons we need
     toolitems = [t for t in NavigationToolbar2QT.toolitems if
@@ -2010,21 +2084,11 @@ class Histogram(QWidget):
             plt.ylabel('Frequency')
         plt.title(title)
 
-
-     #   n, bins, patches = plt.hist(x=self.data, bins='auto', color='#0504aa',
-     #                               alpha=0.7, rwidth=0.85)
-     #   plt.grid(axis='y', alpha=0.75)
-     #   plt.xlabel('Value')
-     #   plt.ylabel('Frequency')
-     #   plt.title(title)
-     #   plt.text(23, 45, r'$\mu=15, b=3$')
-     #   print(type(n))
-     #   print(n.max())
-        # Set a clean upper y-axis limit.
-        #plt.ylim(ymax=np.ceil(maxfreq / 10) * 10 if maxfreq % 10 else maxfreq + 10)
-
     def show(self):
         plt.show(block=False)
+
+    def close(self):
+        plt.close()
 
 
 class LabelFrame(QWidget, QObject):
