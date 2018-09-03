@@ -114,6 +114,7 @@ class MainWindow(QMainWindow):
 
         self.bounding_box_rectangle = None   # This is used to match an image selection to the table
         self.allow_rect = False
+        self.active_histogram = False
 
         self.logo = QLabel()
         try:
@@ -1712,20 +1713,32 @@ class MainWindow(QMainWindow):
         # message_box.move(x + 300, y + 300)
         retVal = message_box.exec_()
 
+    def check_for_active_histogram(self):
+        '''
+        Allow toggling between kde and regular histograms
+        :return:
+        '''
+        if self.active_histogram:
+            self.hist.close()
+            self.active_histogram = False
 
     def render_histogram(self):
         if self.platform == 'Windows':
             self.windows_message_box('Histogram')
         else:
-            hist = Histogram(self.table, self.title, False)
-            hist.show()
+            self.check_for_active_histogram()
+            self.hist = Histogram(self.table, self.title, kernel_density_estimation=False)
+            self.hist.show()
+            self.active_histogram = True
 
     def render_kde_histogram(self):
         if self.platform == 'Windows':
             self.windows_message_box('KDE Histogram')
         else:
-            hist = Histogram(self.table, self.title, True)
-            hist.show()
+            self.check_for_active_histogram()
+            self.hist = Histogram(self.table, self.title, kernel_density_estimation=True)
+            self.hist.show()
+            self.active_histogram = True
 
     def table_num_line_edit_entry(self):
         '''
