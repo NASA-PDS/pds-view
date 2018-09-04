@@ -57,19 +57,19 @@
 
   <properties>
     <!-- Internal Dependency Version -->
-    <pds4-tools-version>0.10.1</pds4-tools-version>
-    <core-version>1.13.1</core-version>
+    <pds4-tools-version>0.11.0-dev</pds4-tools-version>
+    <core-version>1.14.0-dev</core-version>
     <email-version>0.1.0</email-version>
-    <generate-version>0.14.0</generate-version>
+    <generate-version>0.15.0-dev</generate-version>
     <registry-version>1.14.0</registry-version>
     <search-version>1.13.0</search-version>
     <storage-version>1.2.0</storage-version>
-    <transform-version>1.7.0</transform-version>
+    <transform-version>1.8.0-dev</transform-version>
     <!-- External Dependency Versions -->
     <oodt-version>0.12</oodt-version>
     <product-tools-version>3.6.0</product-tools-version>
-    <vicario-version>4.1</vicario-version>
-    <model-version>1A00</model-version>
+    <vicario-version>4.2</vicario-version>
+    <model-version>1B00</model-version>
   </properties>
 
   <developers>
