@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2017 by the California Institute of Technology.
+  Copyright 2017-2018 by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -19,8 +19,8 @@
 <document>
   <properties>
     <title>Installation</title>
-    <author email="Sean.Hardman@jpl.nasa.gov">Sean Hardman</author>
     <author email="James.E.Hofman@jpl.nasa.gov">Jim Hofman</author>
+    <author email="Sean.Hardman@jpl.nasa.gov">Sean Hardman</author>
   </properties>
 
   <body>
@@ -40,7 +40,7 @@
       </p>
 
       <subsection name="Python">
-        <p>The Inspect Tool software was developed using Python and will run on any platform with a supported Python environment. It is compatible with Python 2.6 or 2.7 (Python above 2.7.8 is recommended).  It is not compatible with Python 2.5 or earlier versions; or currently with Python 3.  The following commands test the local Python installation in a UNIX-based environment:
+        <p>The Inspect Tool software was developed using Python and will run on any platform with a supported Python environment. It is compatible with Python 2.6 or 2.7 (Python above 2.7.8 is recommended). It is not compatible with Python 2.5 or earlier versions; or currently with Python 3. The following commands test the local Python installation in a UNIX-based environment:
         </p>
 
         <source>
@@ -56,72 +56,16 @@ Python 2.7.12
       </subsection>
 
       <subsection name="Python Dependencies">
-        <p>The Inspect Tool software has dependencies on a number of Python libraries.  In the future the code will be make into a standalone executable.  However for now, the following modules must be installed in order to run the Inspect Tool:
+        <p>The Inspect Tool software has dependencies on a number of Python libraries. In the future the code will be packaged as a standalone executable. However for now, utilize one of the following procedures for installing these dependencies on your target platform:
         </p>
 
         <ul>
-          <li>pds4_tools</li>
-             <p>Module and installation instruction found at <a href="http://sbndev.astro.umd.edu/wiki/Python_PDS4_Tools">Python PDS4 Tools</a></p> 
-          <li>Qt (if not already installed on your machine)</li>    
-              <p>Mac : <i>% brew install qt</i> or equivalent</p> 
-              <p>Windows : <a href="https://www.wikihow.com/Install-Qt-SDK-on-Microsoft-Windows">Installing Qt on a Windows machine.</a></p>
-              <p>Linux : <a href="https://www.codeproject.com/Tips/758893/Installing-Qt-on-Linux">Installing Qt on a Linux machine.</a>  </p>
-              <p>Qt download documentation : <a href="https://www.qt.io/download">Download Qt.</a> </p>
-          <li>PyQt4 and SIP (C++ to Python wrapper code (i.e. Qt to PyQt))</li>
-             <p>This is the most difficult installation; installation information is found at: <a href="http://pyqt.sourceforge.net/Docs/PyQt4/installation.html">PyQt4 and SIP instructions.</a> There are possible errors and workarounds listed below.  If you get stuck feel free to send an email to <a href="mailto:james.e.hofman@jpl.nasa.gov">Installation Help</a>.</p>
-          <li>Matplotlib</li>
-             <p> Required by Matplotlib and should be install along with Matplotlib: <a href="https://matplotlib.org/users/installing.html">Installing Matplotlib</a></p>
-          <li>Numpy - required by Matplotlib</li>
-          <li>python-dateutil - required by Matplotlib</li>
-          <li>pytz - required by Matplotlib</li>
-          <li>cycler - required by Matplotlib</li>
-          <li>pyparsing - required by Matplotlib </li>   
-                           
+          <li><a href="index-py-mac.html">Mac OS X</a></li>
+          <li><a href="index-py-win.html">Windows</a></li>
+          <li><a href="index-py-gen.html">General (Linux)</a></li>
         </ul>
-        <p><i>pip</i> is a package management system used to install and manage python software packages.  It is included in python versions 2.7.9 onward.  It is very easy to use: <a href="http://www.pythonforbeginners.com/pip/">How to use <i>pip</i></a>.  It can be used install all of the packages listed above with the exception of PyQt4 and SIP.  If you are not sure if you have <i>pip</i> installed on your machine do the following:        
-        </p>
-        <source>
-% which pip  (from Mac or linux)  
-% where pip  (Windows in a command prompt window)
-or
-% python
->>> import pip  (Note: The import command can be used to test for installation of the other packages listed above.) 
-        </source>
-        <p>Example of using <i>pip</i> and checking for a successful installation.</p>
-        <source>                
-% pip install matplotlib
-% python
->>> import matplotlib 
->>>
-
-        </source>
       </subsection>
-      
-      <subsection name="Possible Problems with PyQt4 Installation">
-        <p>Listed below are workarounds for error messages that may pop up</p>
-          <li>When running : <i>% python configure-ng.py</i> </li>
-             <p><i>Querying qmake about your Qt installation...
-Determining the details of your Qt installation...
-This is the GPL version of PyQt 4.12.1 (licensed under the GNU General Public
-License) for Python 2.7.14 on darwin.
-<b>Error</b>: This version of PyQt4 and the commercial version of Qt have incompatible licenses.</i>"</p> 
- 
-          <li>Workaround</li>
-             <p>Make the following changes to the <i>configure-ng.py</i> script</p>
-             <p>comment out the following lines:</p>
-             <p><i># if introspecting and target_config.qt_licensee not in OPEN_SOURCE_LICENSEES and ltype == 'GPL':</i></p>
-             <p><i>    # error(</i>=</p>
-             <p><i>          # "This version of PyQt4 and the commercial version of Qt have "</i></p>
-             <p><i>          # "incompatible licenses.”)</i></p>
-          <li>Try running the Inspect Tool again:</li>
-             <p> You may get the following error:</p>
-             <p> <i>RuntimeError: Python is not installed as a framework. The Mac OS X backend will not be able to function correctly if Python is not installed as a framework. See the Python documentation for more information on installing Python as a framework on Mac OS X. Please either reinstall Python as a framework, or try one of the other backends. If you are using (Ana)Conda please install python.app and replace the use of 'python' with 'pythonw'. See 'Working with Matplotlib on OSX' in the Matplotlib FAQ for more information.</i></p>
-             <p> If so try the following steps: </p>
-                 <li> Add the <i>CXXFLAGS=-std=c++</i> environment variable before running <i>configure-ng.py again.</i></li>
-                 <li> Make sure the <i>backend</i> setting is set for PyQt4 in matplotlib:</li>
-                 <li> <i>backend:qt4agg</i> in <i>~/.matplotlib/matplotlibrc</i></li>
-      </subsection>      
-   </section>
+    </section>
    
     <section name="Unpacking the Package">
       <p>Download the <i>${project.artifactId}</i> package from the PDS <a href="ftp://pds.nasa.gov/pub/toplevel/2010/preparation/" target="_blank">FTP</a> site. The distribution is available in identical zip or tar/gzip packages. The installation directory may vary from environment to environment but in UNIX-based environments it is typical to install software packages in the <i>/usr/local</i> directory and in Windows-based environments it is typical to install software packages in the <i>C:\Program Files</i> directory. Unpack the selected binary distribution file in the installation directory for the local environment with one of the following commands:
@@ -160,7 +104,7 @@ or
     </section>
 
     <section name="Configuring the Environment">
-      <p>In order to manage and interact with the program-name, the local environment must first be configured appropriately. This section describes how to setup the user environment on UNIX-based and Windows machines.
+      <p>In order to manage and interact with the Inspect Tool, the local environment must first be configured appropriately. This section describes how to setup the user environment on UNIX-based and Windows machines.
       </p>
 
       <subsection name="UNIX-Based Environment">

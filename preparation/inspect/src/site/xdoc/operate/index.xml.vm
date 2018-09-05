@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2017, by the California Institute of Technology.
+  Copyright 2017-2018, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -19,8 +19,6 @@
 <document>
   <properties>
     <title>Operation</title>
-        <author email="Paul.Ramirez@jpl.nasa.gov">Paul Ramirez</author>
-        <author email="Sean.Hardman@jpl.nasa.gov">Sean Hardman</author>
         <author email="James.E.Hofman@jpl.nasa.gov">Jim Hofman</author>
   </properties>
 
@@ -31,8 +29,6 @@
 
       <ul>
         <li><a href="#Quick_Start">Quick Start</a></li>
-      </ul>
-       <ul>
         <li><a href="#Feedback">Feedback</a></li>
       </ul>
     </section>
@@ -45,26 +41,22 @@
 % python View.py
       </source>
     </section>
+
     <section name="Feedback">
-      <p>The Inspect Tool is under development. Future releases will:      
+      <p>The Inspect Tool is under development. Future releases will:
+      </p>    
+
       <ul>
         <li>Improve the user interface</li>
-      </ul>
-      <ul>
         <li>Add Features</li>
+        <ul>
+          <li>Allow inspection of PDS 3 files</li>
+          <li>Be compatible with Python 3</li>
+          <li>Be released as an executable</li>
+        </ul> 
       </ul>
-       <ul>
-        <li>Allow inspection of PDS 3 files</li>
-      </ul>
-      <ul>
-        <li>Be compatible with Python 3</li>
-      </ul>
-      <ul>
-        <li>Be released as an executable</li>
-      </ul> 
-      </p>   
-      <p>  
-      Please send any feedback (likes/dislikes, bugs, suggested features) to <a href="mailto:james.e.hofman@jpl.nasa.gov">Inspect Tool Feedback</a>
+
+      <p>Please send any feedback (likes/dislikes, bugs, suggested features) to <a href="mailto:james.e.hofman@jpl.nasa.gov">Inspect Tool Feedback</a>
       </p>
     </section>
   </body>
