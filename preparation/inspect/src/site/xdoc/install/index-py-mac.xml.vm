@@ -71,7 +71,7 @@ OpenSSL 1.0.2o  27 Mar 2018
       </subsection>
 
       <subsection name="Dependencies">
-        <p>Once Mac Ports has been installed and the Python package updated, install <i>pip</i>, <i>PyQt</i> and <i>matplotlib</i> and their dependencies with the following commands:
+        <p>Once Mac Ports has been installed and the Python package updated, install <i>pip</i>, <i>PyQt</i>, <i>matplotlib</i> and <i>seaborn</i> and their dependencies with the following commands:
         </p>
 
         <source>
@@ -81,6 +81,7 @@ OpenSSL 1.0.2o  27 Mar 2018
 % sudo port install py-pyqt4
 % sudo port install py-tkinter
 % sudo pip install matplotlib
+% sudo pip install seaborn
         </source>
 
         <p>With the above dependencies installed, install the PDS4 Tools package. The package is available from the <a href="http://sbndev.astro.umd.edu/wiki/Python_PDS4_Tools">Python PDS4 Tools</a> page. Once the package is downloaded, install it with the following command (replacing <i>X.X</i> with the appropriate version):
