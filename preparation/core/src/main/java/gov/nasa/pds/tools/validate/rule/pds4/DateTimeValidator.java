@@ -13,12 +13,15 @@
 // $Id$
 package gov.nasa.pds.tools.validate.rule.pds4;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.format.DateTimeParseException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 
 import gov.nasa.pds.label.object.FieldType;
 
@@ -35,10 +38,10 @@ public class DateTimeValidator {
    * 
    */
   private static List<String> DOY_FORMATS = Arrays.asList(
-    "YYYY", 
-    "YYYY'Z'", 
-    "YYYY-DDD", 
-    "YYYY-DDD'Z'"
+    "yyyy", 
+    "yyyy'Z'", 
+    "yyyy-DDD", 
+    "yyyy-DDD'Z'"
   );
   
   /**
@@ -46,16 +49,26 @@ public class DateTimeValidator {
    * 
    */
   private static List<String> DATE_TIME_DOY_FORMATS = Arrays.asList(
-    "YYYY", 
-    "YYYY'Z'", 
-    "YYYY-DDD'T'HH", 
-    "YYYY-DDD'T'HH'Z'", 
-    "YYYY-DDD'T'HH:mm",
-    "YYYY-DDD'T'HH:mm'Z'", 
-    "YYYY-DDD'T'HH:mm:ss", 
-    "YYYY-DDD'T'HH:mm:ss'Z'",
-    "YYYY-DDD'T'HH:mm:ss.SSS", 
-    "YYYY-DDD'T'HH:mm:ss.SSS'Z'"
+    "yyyy", 
+    "yyyy'Z'", 
+    "yyyy-DDD'T'HH", 
+    "yyyy-DDD'T'HH'Z'", 
+    "yyyy-DDD'T'HH:mm",
+    "yyyy-DDD'T'HH:mm'Z'", 
+    "yyyy-DDD'T'HH:mm:ss", 
+    "yyyy-DDD'T'HH:mm:ss'Z'",
+    "yyyy-DDD'T'HH:mm:ss.S", 
+    "yyyy-DDD'T'HH:mm:ss.S'Z'",
+    "yyyy-DDD'T'HH:mm:ss.SS", 
+    "yyyy-DDD'T'HH:mm:ss.SS'Z'",
+    "yyyy-DDD'T'HH:mm:ss.SSS", 
+    "yyyy-DDD'T'HH:mm:ss.SSS'Z'",
+    "yyyy-DDD'T'HH:mm:ss.SSSS", 
+    "yyyy-DDD'T'HH:mm:ss.SSSS'Z'",
+    "yyyy-DDD'T'HH:mm:ss.SSSSS", 
+    "yyyy-DDD'T'HH:mm:ss.SSSSS'Z'",    
+    "yyyy-DDD'T'HH:mm:ss.SSSSSS", 
+    "yyyy-DDD'T'HH:mm:ss.SSSSSS'Z'"
   );
       
   /**
@@ -63,11 +76,16 @@ public class DateTimeValidator {
    * 
    */
   private static List<String> DATE_TIME_DOY_UTC_FORMATS = Arrays.asList(
-    "YYYY'Z'", 
-    "YYYY-DDD'T'HH'Z'", 
-    "YYYY-DDD'T'HH:mm'Z'", 
-    "YYYY-DDD'T'HH:mm:ss'Z'",
-    "YYYY-DDD'T'HH:mm:ss.SSS'Z'"
+    "yyyy'Z'", 
+    "yyyy-DDD'T'HH'Z'", 
+    "yyyy-DDD'T'HH:mm'Z'", 
+    "yyyy-DDD'T'HH:mm:ss'Z'",
+    "yyyy-DDD'T'HH:mm:ss.S'Z'",
+    "yyyy-DDD'T'HH:mm:ss.SS'Z'",
+    "yyyy-DDD'T'HH:mm:ss.SSS'Z'",
+    "yyyy-DDD'T'HH:mm:ss.SSSS'Z'",
+    "yyyy-DDD'T'HH:mm:ss.SSSSS'Z'",
+    "yyyy-DDD'T'HH:mm:ss.SSSSSS'Z'"
   );
   
   /**
@@ -75,16 +93,26 @@ public class DateTimeValidator {
    * 
    */
   private static List<String> DATE_TIME_YMD_FORMATS = Arrays.asList(
-    "YYYY", 
-    "YYYY'Z'", 
-    "YYYY-MM-dd'T'HH", 
-    "YYYY-MM-dd'T'HH'Z'", 
-    "YYYY-MM-dd'T'HH:mm",
-    "YYYY-MM-dd'T'HH:mm'Z'", 
-    "YYYY-MM-dd'T'HH:mm:ss", 
-    "YYYY-MM-dd'T'HH:mm:ss'Z'",
-    "YYYY-MM-dd'T'HH:mm:ss.SSS", 
-    "YYYY-MM-dd'T'HH:mm:ss.SSS'Z'"    
+    "yyyy", 
+    "yyyy'Z'", 
+    "yyyy-MM-dd'T'HH", 
+    "yyyy-MM-dd'T'HH'Z'", 
+    "yyyy-MM-dd'T'HH:mm",
+    "yyyy-MM-dd'T'HH:mm'Z'", 
+    "yyyy-MM-dd'T'HH:mm:ss", 
+    "yyyy-MM-dd'T'HH:mm:ss'Z'",
+    "yyyy-MM-dd'T'HH:mm:ss.S", 
+    "yyyy-MM-dd'T'HH:mm:ss.S'Z'",
+    "yyyy-MM-dd'T'HH:mm:ss.SS", 
+    "yyyy-MM-dd'T'HH:mm:ss.SS'Z'",    
+    "yyyy-MM-dd'T'HH:mm:ss.SSS", 
+    "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
+    "yyyy-MM-dd'T'HH:mm:ss.SSSS", 
+    "yyyy-MM-dd'T'HH:mm:ss.SSSS'Z'",
+    "yyyy-MM-dd'T'HH:mm:ss.SSSSS", 
+    "yyyy-MM-dd'T'HH:mm:ss.SSSSS'Z'",
+    "yyyy-MM-dd'T'HH:mm:ss.SSSSSS", 
+    "yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'"
   );
   
   /**
@@ -92,11 +120,16 @@ public class DateTimeValidator {
    * 
    */
   private static List<String> DATE_TIME_YMD_UTC_FORMATS = Arrays.asList(
-    "YYYY'Z'", 
-    "YYYY-MM-dd'T'HH'Z'", 
-    "YYYY-MM-dd'T'HH:mm'Z'",
-    "YYYY-MM-dd'T'HH:mm:ss'Z'", 
-    "YYYY-MM-dd'T'HH:mm:ss.SSS'Z'"    
+    "yyyy'Z'", 
+    "yyyy-MM-dd'T'HH'Z'", 
+    "yyyy-MM-dd'T'HH:mm'Z'",
+    "yyyy-MM-dd'T'HH:mm:ss'Z'",
+    "yyyy-MM-dd'T'HH:mm:ss.S'Z'",
+    "yyyy-MM-dd'T'HH:mm:ss.SS'Z'",
+    "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
+    "yyyy-MM-dd'T'HH:mm:ss.SSSS'Z'",
+    "yyyy-MM-dd'T'HH:mm:ss.SSSSS'Z'",
+    "yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'"
   );
   
   /**
@@ -104,19 +137,19 @@ public class DateTimeValidator {
    * 
    */
   private static List<String> DATE_YMD_FORMATS = Arrays.asList(
-    "YYYY", 
-    "YYYY'Z'", 
-    "YYYY-MM", 
-    "YYYY-MM'Z'",
-    "YYYY-MM-dd",
-    "YYYY-MM-dd'Z'"
+    "yyyy", 
+    "yyyy'Z'", 
+    "yyyy-MM", 
+    "yyyy-MM'Z'",
+    "yyyy-MM-dd",
+    "yyyy-MM-dd'Z'"
   );
   
   /**
    * Mapping of field datetime types to its list of valid datetime formats.
    * 
    */
-  private static final HashMap<String, List<String>> DATE_TIME_FORMATS = new HashMap<String, List<String>>();
+  public static final HashMap<String, List<String>> DATE_TIME_FORMATS = new HashMap<String, List<String>>();
   static {
     DATE_TIME_FORMATS.put(FieldType.ASCII_DATE_DOY.getXMLType(), DOY_FORMATS);
     DATE_TIME_FORMATS.put(FieldType.ASCII_DATE_TIME_DOY.getXMLType(), DATE_TIME_DOY_FORMATS);
@@ -140,12 +173,14 @@ public class DateTimeValidator {
     boolean success = false;
     if (DATE_TIME_FORMATS.containsKey(type.getXMLType())) {
       for (String format : DATE_TIME_FORMATS.get(type.getXMLType())) {
-        DateTimeFormatter dtFormatter = DateTimeFormat.forPattern(format).withZoneUTC();
+        DateTimeFormatter dtformatter = DateTimeFormatter.ofPattern(format);
         try {
-          dtFormatter.parseDateTime(value.trim());
+          LocalDateTime date = LocalDateTime.parse(value.trim(), dtformatter);
           success = true;
           break;
         } catch (IllegalArgumentException e) {
+          //Ignore
+        } catch (DateTimeParseException de) {
           //Ignore
         }
       }

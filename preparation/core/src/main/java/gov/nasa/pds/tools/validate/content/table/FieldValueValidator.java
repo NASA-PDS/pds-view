@@ -58,16 +58,16 @@ public class FieldValueValidator {
     DATE_TIME_VALID_FORMATS.put(
         FieldType.ASCII_DATE_TIME_DOY.getXMLType(), 
         "YYYY[Z], YYYY-DOYThh[Z], YYYY-DOYThh:mm[Z], "
-        + "YYYY-DOYThh:mm:ss[.fff][Z]");
+        + "YYYY-DOYThh:mm:ss[.ffffff][Z]");
     DATE_TIME_VALID_FORMATS.put(
         FieldType.ASCII_DATE_TIME_DOY_UTC.getXMLType(), 
-        "YYYYZ, YYYY-DOYThhZ, YYYY-DOYThh:mmZ, YYYY-DOYThh:mm:ss[.fff]Z");
+        "YYYYZ, YYYY-DOYThhZ, YYYY-DOYThh:mmZ, YYYY-DOYThh:mm:ss[.ffffff]Z");
     DATE_TIME_VALID_FORMATS.put(FieldType.ASCII_DATE_TIME_YMD.getXMLType(), 
         "YYYY[Z], YYYY-MM-DDThh[Z], YYYY-MM-DDThh:mm[Z], "
-        + "YYYY-MM-DDThh:mm:ss[.fff][Z]");
+        + "YYYY-MM-DDThh:mm:ss[.ffffff][Z]");
     DATE_TIME_VALID_FORMATS.put(FieldType.ASCII_DATE_TIME_YMD_UTC.getXMLType(), 
         "YYYYZ, YYYY-MM-DDThhZ, YYYY-MM-DDThh:mmZ, "
-        + "YYYY-MM-DDThh:mm:ss[.fff]Z");
+        + "YYYY-MM-DDThh:mm:ss[.ffffff]Z");
     DATE_TIME_VALID_FORMATS.put(FieldType.ASCII_DATE_YMD.getXMLType(), 
         "YYYY[Z], YYYY-MM[Z], YYYY-MM-DD[Z]");
   }
@@ -86,7 +86,7 @@ public class FieldValueValidator {
   private static final Pattern asciiNonNegativeIntPattern = Pattern.compile(
       "[+]?\\d+");
   private static final Pattern asciiReal = Pattern.compile(
-      "[-+]?[0-9]+(\\.?[0-9]+)?([eE][-+]?[0-9]+)?");
+      "(\\+|-)?([0-9]+(\\.[0-9]*)?|\\.[0-9]+)([Ee](\\+|-)?[0-9]+)?");
   private static final Pattern asciiNumericBase2Pattern = Pattern.compile(
       "[0-1]{1,255}");
   private static final Pattern asciiNumericBase8Pattern = Pattern.compile(
@@ -540,14 +540,14 @@ public class FieldValueValidator {
       }
       try {
         if (specifier.matches("[eE]")) {
-          String p = "[-+]?[0-9]+(\\.?[0-9]+)([eE][-+]?[0-9]+)";
+          String p = "(\\+|-)?([0-9]+(\\.[0-9]*)?|\\.[0-9]+)([Ee](\\+|-)?[0-9]+)";
           if (value.trim().matches(p)) {
             Double.parseDouble(value.trim());
           } else {
             throw new NumberFormatException("Value does not match pattern.");
           }
         } else if (specifier.equals("f")) {
-          String p = "[-+]?[0-9]+(\\.[0-9]+)";
+          String p = "(\\+|-)?([0-9]+(\\.[0-9]*)?|\\.[0-9]+)";
           if (value.trim().matches(p)) {
             Double.parseDouble(value.trim());
           } else {
