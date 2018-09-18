@@ -62,7 +62,7 @@
       <registryPath>alternate_title</registryPath>
     </field>
     <field name="citation_doi" type="string">
-      <registryPath>citation_keyword</registryPath>
+      <registryPath>citation_doi</registryPath>
     </field>
     <field name="citation_keyword" type="string">
       <registryPath>citation_keyword</registryPath>
