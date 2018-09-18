@@ -65,6 +65,9 @@
     <field name="citation_publication_year" type="string">
       <registryPath>citation_publication_year</registryPath>
     </field>
+    <field name="citation_doi" type="string">
+      <registryPath>citation_keyword</registryPath>
+    </field>
     <field name="citation_keyword" type="string">
       <registryPath>citation_keyword</registryPath>
     </field>

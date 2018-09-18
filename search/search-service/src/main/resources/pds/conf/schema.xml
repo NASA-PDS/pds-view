@@ -565,6 +565,7 @@
    <field name="citation_author_list" type="text_general" indexed="false" stored="true" multiValued="true" />
    <field name="citation_description" type="text_general" indexed="false" stored="true" multiValued="true" />
    <field name="citation_editor_list" type="text_general" indexed="false" stored="true" multiValued="true" />
+   <field name="citation_doi" type="text_general" indexed="true" stored="true" multiValued="true" />
    <field name="citation_keyword" type="text_en_splitting" indexed="true" stored="true" multiValued="true" />
    <field name="citation_publication_year" type="string" indexed="false" stored="true" multiValued="true" />
   
@@ -833,6 +834,8 @@
   <copyField source="alternate_title" dest="text" />
   <copyField source="citation_author_list" dest="text" />
   <copyField source="citation_editor_list" dest="text" />
+  <copyField source="citation_doi" dest="text" />
+  <copyField source="citation_keyword" dest="text" />
   <copyField source="description" dest="text" />
   <copyField source="data_set_id" dest="text" />
   <copyField source="data_set_description" dest="text" />
@@ -846,7 +849,6 @@
   <copyField source="investigation_name" dest="text" />
   <copyField source="investigation_start_date" dest="text" />
   <copyField source="investigation_stop_date" dest="text" />
-  <copyField source="citation_keyword" dest="text" />
   <copyField source="observing_system_name" dest="text" />
   <copyField source="person_name" dest="text" />
   <copyField source="target_name" dest="text" />
