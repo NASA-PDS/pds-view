@@ -33,7 +33,7 @@ import gov.nasa.pds.tracking.tracking.db.SubmissionStatus;;
  * @author danyu dan.yu@jpl.nasa.gov
  *
  */
-@Path("xml/submissionstatus")
+@Path("xml/submissionstatusold")
 public class XMLBasedSubmissionStatus {
 	
 	public static Logger logger = Logger.getLogger(XMLBasedSubmissionStatus.class);

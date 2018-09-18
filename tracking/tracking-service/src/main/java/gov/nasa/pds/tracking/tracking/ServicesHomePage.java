@@ -1,6 +1,5 @@
 package gov.nasa.pds.tracking.tracking;
 
-import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -106,6 +105,7 @@ public class ServicesHomePage {
     	return HtmlConstants.PAGE_BEGIN +
 		          "<h1>Submission Status</h1>" +
 		          "<h2>Add</h2>" +
+		          "<h3>JSON</h3>" +
 		          "<div>" +
 		          "<form action=\"json/submissionstatus/add\" method=\"POST\">" +
 		          "<table>" +
@@ -117,8 +117,21 @@ public class ServicesHomePage {
 		          "</table>" +    
 		          "</form>" +
 		          "</div>" +
+		          "<h3>XML</h3>" +
+		          "<div>" +
+		          "<form action=\"xml/submissionstatus/add\" method=\"POST\">" +
+		          "<table>" +
+		          "<tr><td>Delivery ID: </td><td><input id=\"id\" name=\"Delivery_ID\" /></td></tr>" +
+		          "<tr><td>Status: </td><td><input id=\"status\" name=\"Status\" /></td></tr>" +
+		          "<tr><td>Email: </td><td><input id=\"email\" name=\"Email\" /></td></tr>" +
+		          "<tr><td>Comment: </td><td><input id=\"comment\" name=\"Comment\" /></td></tr>" +
+		          "<tr><td></td><td><input type=\"submit\" value=\"Add\" /></td></tr>" +
+		          "</table>" +    
+		          "</form>" +
+		          "</div>" +
 		          "<p></p>" +
 		          "<h2>Update</h2>" +
+		          "<h3>JSON</h3>" +
 		          "<div>" +
 		          "<form action=\"json/submissionstatus/update\" method=\"POST\">" +
 		          "<table>" +
@@ -130,7 +143,20 @@ public class ServicesHomePage {
 		          "<tr><td></td><td><input type=\"submit\" value=\"Update\" /></td></tr>" +
 		          "</table>" +
 		          "</form>" +
-		          "</div>"		          
+		          "</div>" +
+		          "<h3>XML</h3>" +
+		          "<div>" +
+		          "<form action=\"xml/submissionstatus/update\" method=\"POST\">" +
+		          "<table>" +
+		          "<tr><td>Delivery ID: </td><td><input id=\"id\" name=\"Delivery_ID\" /></td></tr>" +
+		          "<tr><td>Submission Time: </td><td><input id=\"submissionDate\" name=\"SubmissionDate\" /> (yyyy-MM-ddTHH:mm:ss)</td></tr>" +
+		          "<tr><td>Status: </td><td><input id=\"status\" name=\"Status\" /></td></tr>" +
+		          "<tr><td>Email: </td><td><input id=\"email\" name=\"Email\" /></td></tr>" +
+		          "<tr><td>Comment: </td><td><input id=\"comment\" name=\"Comment\" /></td></tr>" +
+		          "<tr><td></td><td><input type=\"submit\" value=\"Update\" /></td></tr>" +
+		          "</table>" +
+		          "</form>" +
+		          "</div>"
             + HtmlConstants.PAGE_END;
     }
     @GET
@@ -140,6 +166,7 @@ public class ServicesHomePage {
     	return HtmlConstants.PAGE_BEGIN +
 		          "<h1>DOI</h1>" +
 		          "<h2>Add</h2>" +
+		          "<h3>JSON</h3>" +
 		          "<div>" +
 		          "<form action=\"json/doi/add\" method=\"POST\">" +
 		          "<table>" +
@@ -153,8 +180,23 @@ public class ServicesHomePage {
 		          "</table>" +    
 		          "</form>" +
 		          "</div>" +
+		          "<h3>XML</h3>" +
+		          "<div>" +
+		          "<form action=\"xml/doi/add\" method=\"POST\">" +
+		          "<table>" +
+		          "<tr><td>Logical Identifier: </td><td><input id=\"id\" name=\"LOGICAL_ID\" /></td></tr>" +
+		          "<tr><td>Version: </td><td><input id=\"ver\" name=\"Version\" /></td></tr>" +
+		          "<tr><td>DOI: </td><td><input id=\"doi\" name=\"Doi\" /></td></tr>" +
+		          "<tr><td>URL: </td><td><input id=\"url\" name=\"URL\" /></td></tr>" +
+		          "<tr><td>Email: </td><td><input id=\"email\" name=\"Email\" /></td></tr>" +
+		          "<tr><td>Comment: </td><td><input id=\"comment\" name=\"Comment\" /></td></tr>" +
+		          "<tr><td></td><td><input type=\"submit\" value=\"Add\" /></td></tr>" +
+		          "</table>" +    
+		          "</form>" +
+		          "</div>" +
 		          "<p></p>" +
 		          "<h2>Update</h2>" +
+		          "<h3>JSON</h3>" +
 		          "<div>" +
 		          "<form action=\"json/doi/update\" method=\"POST\">" +
 		          "<table>" +
@@ -166,7 +208,20 @@ public class ServicesHomePage {
 		          "<tr><td></td><td><input type=\"submit\" value=\"Update\" /></td></tr>" +
 		          "</table>" +
 		          "</form>" +
-		          "</div>"		          
+		          "</div>" +
+		          "<h3>XML</h3>" +
+		          "<div>" +
+		          "<form action=\"xml/doi/update\" method=\"POST\">" +
+		          "<table>" +
+		          "<tr><td>Logical Identifier: </td><td><input id=\"id\" name=\"LOGICAL_ID\" /></td></tr>" +
+		          "<tr><td>Version: </td><td><input id=\"ver\" name=\"Version\" /></td></tr>" +
+		          "<tr><td>URL: </td><td><input id=\"url\" name=\"URL\" /></td></tr>" +
+		          "<tr><td>Email: </td><td><input id=\"email\" name=\"Email\" /></td></tr>" +
+		          "<tr><td>Comment: </td><td><input id=\"comment\" name=\"Comment\" /></td></tr>" +
+		          "<tr><td></td><td><input type=\"submit\" value=\"Update\" /></td></tr>" +
+		          "</table>" +
+		          "</form>" +
+		          "</div>"
             + HtmlConstants.PAGE_END;
     }
 }
