@@ -148,8 +148,8 @@ public class Constants {
         + PRODUCT_CLASS);
     coreXpathsMap.put(TITLE, IDENTIFICATION_AREA_XPATH + "/" + TITLE);
     coreXpathsMap.put(REFERENCES,
-          "//*[ends-with(name(),'Member_Entry')]"
-        + " | //Internal_Reference");
+        "//*[ends-with(name(),'Member_Entry')]"
+        + " | //Internal_Reference | //Source_Product_Internal");
     coreXpathsMap.put(FILE_OBJECTS, "//*[starts-with(name(), 'File_Area')]/"
         + "File | //Document_File");
     coreXpathsMap.put(DATA_CLASS, DATA_CLASS_XPATH);
