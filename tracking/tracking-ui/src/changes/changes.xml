@@ -24,6 +24,9 @@
 
   <body>
     <release version="0.3.0" date="TBD" description="TBD">
+      <action dev="earevalo" type="add">
+        Initial release of the Tracking User Interface that supports entry and search of status and other aspects pertaining to PDS products that are not captured in the Registry Service.
+      </action>      
     </release>
   </body>
 </document>
