@@ -13,15 +13,10 @@
 // $Id$
 package gov.nasa.pds.tools.validate.rule.pds4;
 
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
-import java.time.format.DateTimeParseException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import gov.nasa.pds.label.object.FieldType;
 
@@ -38,10 +33,8 @@ public class DateTimeValidator {
    * 
    */
   private static List<String> DOY_FORMATS = Arrays.asList(
-    "yyyy", 
-    "yyyy'Z'", 
-    "yyyy-DDD", 
-    "yyyy-DDD'Z'"
+   "(-)?[0-9]{4}(Z?)",
+   "(-)?[0-9]{4}-((00[1-9])|(0[1-9][0-9])|([1-2][0-9][0-9])|(3(([0-5][0-9])|(6[0-6]))))(Z?)"
   );
   
   /**
@@ -49,26 +42,13 @@ public class DateTimeValidator {
    * 
    */
   private static List<String> DATE_TIME_DOY_FORMATS = Arrays.asList(
-    "yyyy", 
-    "yyyy'Z'", 
-    "yyyy-DDD'T'HH", 
-    "yyyy-DDD'T'HH'Z'", 
-    "yyyy-DDD'T'HH:mm",
-    "yyyy-DDD'T'HH:mm'Z'", 
-    "yyyy-DDD'T'HH:mm:ss", 
-    "yyyy-DDD'T'HH:mm:ss'Z'",
-    "yyyy-DDD'T'HH:mm:ss.S", 
-    "yyyy-DDD'T'HH:mm:ss.S'Z'",
-    "yyyy-DDD'T'HH:mm:ss.SS", 
-    "yyyy-DDD'T'HH:mm:ss.SS'Z'",
-    "yyyy-DDD'T'HH:mm:ss.SSS", 
-    "yyyy-DDD'T'HH:mm:ss.SSS'Z'",
-    "yyyy-DDD'T'HH:mm:ss.SSSS", 
-    "yyyy-DDD'T'HH:mm:ss.SSSS'Z'",
-    "yyyy-DDD'T'HH:mm:ss.SSSSS", 
-    "yyyy-DDD'T'HH:mm:ss.SSSSS'Z'",    
-    "yyyy-DDD'T'HH:mm:ss.SSSSSS", 
-    "yyyy-DDD'T'HH:mm:ss.SSSSSS'Z'"
+      "(-)?[0-9]{4}(Z?)",
+      "(-)?[0-9]{4}-((00[1-9])|(0[1-9][0-9])|([1-2][0-9][0-9])|(3(([0-5][0-9])|(6[0-6]))))(T)(([0-1][0-9])|(2[0-3])):[0-5][0-9](Z?)",
+      "(-)?[0-9]{4}-((00[1-9])|(0[1-9][0-9])|([1-2][0-9][0-9])|(3(([0-5][0-9])|(6[0-6]))))(T)(([0-1][0-9])|(2[0-3])):[0-5][0-9]:(([0-5][0-9])|60)(\\.([0-9]{1,6}))?(Z?)",
+      "(-)?[0-9]{4}-((00[1-9])|(0[1-9][0-9])|([1-2][0-9][0-9])|(3(([0-5][0-9])|(6[0-6]))))(T)(([0-1][0-9])|(2[0-4]))(Z?)",
+      "(-)?[0-9]{4}-((00[1-9])|(0[1-9][0-9])|([1-2][0-9][0-9])|(3(([0-5][0-9])|(6[0-6]))))(T)24((:00)|(:00:00))?(Z?)",
+      "(-)?[0-9]{4}-((00[1-9])|(0[1-9][0-9])|([1-2][0-9][0-9])|(3(([0-5][0-9])|(6[0-6]))))(T)24:00:00(\\.([0]{1,6}))(Z?)",
+      "(-)?[0-9]{4}-((00[1-9])|(0[1-9][0-9])|([1-2][0-9][0-9])|(3(([0-5][0-9])|(6[0-6]))))(Z?)"
   );
       
   /**
@@ -76,16 +56,13 @@ public class DateTimeValidator {
    * 
    */
   private static List<String> DATE_TIME_DOY_UTC_FORMATS = Arrays.asList(
-    "yyyy'Z'", 
-    "yyyy-DDD'T'HH'Z'", 
-    "yyyy-DDD'T'HH:mm'Z'", 
-    "yyyy-DDD'T'HH:mm:ss'Z'",
-    "yyyy-DDD'T'HH:mm:ss.S'Z'",
-    "yyyy-DDD'T'HH:mm:ss.SS'Z'",
-    "yyyy-DDD'T'HH:mm:ss.SSS'Z'",
-    "yyyy-DDD'T'HH:mm:ss.SSSS'Z'",
-    "yyyy-DDD'T'HH:mm:ss.SSSSS'Z'",
-    "yyyy-DDD'T'HH:mm:ss.SSSSSS'Z'"
+      "(-)?[0-9]{4}(Z)",
+      "(-)?[0-9]{4}-((00[1-9])|(0[1-9][0-9])|([1-2][0-9][0-9])|(3(([0-5][0-9])|(6[0-6]))))(T)(([0-1][0-9])|(2[0-3])):[0-5][0-9](Z)",
+      "(-)?[0-9]{4}-((00[1-9])|(0[1-9][0-9])|([1-2][0-9][0-9])|(3(([0-5][0-9])|(6[0-6]))))(T)(([0-1][0-9])|(2[0-3])):[0-5][0-9]:(([0-5][0-9])|60)(\\.([0-9]{1,6}))?(Z)",
+      "(-)?[0-9]{4}-((00[1-9])|(0[1-9][0-9])|([1-2][0-9][0-9])|(3(([0-5][0-9])|(6[0-6]))))(T)(([0-1][0-9])|(2[0-4]))(Z)",
+      "(-)?[0-9]{4}-((00[1-9])|(0[1-9][0-9])|([1-2][0-9][0-9])|(3(([0-5][0-9])|(6[0-6]))))(T)24((:00)|(:00:00))?(Z)",
+      "(-)?[0-9]{4}-((00[1-9])|(0[1-9][0-9])|([1-2][0-9][0-9])|(3(([0-5][0-9])|(6[0-6]))))(T)24:00:00(\\.([0]{1,6}))(Z)",
+      "(-)?[0-9]{4}-((00[1-9])|(0[1-9][0-9])|([1-2][0-9][0-9])|(3(([0-5][0-9])|(6[0-6]))))(Z)"
   );
   
   /**
@@ -93,26 +70,14 @@ public class DateTimeValidator {
    * 
    */
   private static List<String> DATE_TIME_YMD_FORMATS = Arrays.asList(
-    "yyyy", 
-    "yyyy'Z'", 
-    "yyyy-MM-dd'T'HH", 
-    "yyyy-MM-dd'T'HH'Z'", 
-    "yyyy-MM-dd'T'HH:mm",
-    "yyyy-MM-dd'T'HH:mm'Z'", 
-    "yyyy-MM-dd'T'HH:mm:ss", 
-    "yyyy-MM-dd'T'HH:mm:ss'Z'",
-    "yyyy-MM-dd'T'HH:mm:ss.S", 
-    "yyyy-MM-dd'T'HH:mm:ss.S'Z'",
-    "yyyy-MM-dd'T'HH:mm:ss.SS", 
-    "yyyy-MM-dd'T'HH:mm:ss.SS'Z'",    
-    "yyyy-MM-dd'T'HH:mm:ss.SSS", 
-    "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
-    "yyyy-MM-dd'T'HH:mm:ss.SSSS", 
-    "yyyy-MM-dd'T'HH:mm:ss.SSSS'Z'",
-    "yyyy-MM-dd'T'HH:mm:ss.SSSSS", 
-    "yyyy-MM-dd'T'HH:mm:ss.SSSSS'Z'",
-    "yyyy-MM-dd'T'HH:mm:ss.SSSSSS", 
-    "yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'"
+    "(-)?[0-9]{4}(Z?)",
+    "(-)?[0-9]{4}-((0[1-9])|(1[0-2]))(Z?)",
+    "(-)?[0-9]{4}-((0[1-9])|(1[0-2]))-((0[1-9])|([1-2][0-9])|(3[0-1]))(T)(([0-1][0-9])|(2[0-3]))(Z?)",
+    "(-)?[0-9]{4}-((0[1-9])|(1[0-2]))-((0[1-9])|([1-2][0-9])|(3[0-1]))(T)(([0-1][0-9])|(2[0-3])):[0-5][0-9](Z?)",
+    "(-)?[0-9]{4}-((0[1-9])|(1[0-2]))-((0[1-9])|([1-2][0-9])|(3[0-1]))(T)(([0-1][0-9])|(2[0-3])):[0-5][0-9]:(([0-5][0-9])|60)(\\.([0-9]{1,6}))?(Z?)",
+    "(-)?[0-9]{4}-((0[1-9])|(1[0-2]))-((0[1-9])|([1-2][0-9])|(3[0-1]))(T)24((:00)|(:00:00))?(Z?)",
+    "(-)?[0-9]{4}-((0[1-9])|(1[0-2]))-((0[1-9])|([1-2][0-9])|(3[0-1]))(T)24:00:00(\\.([0]{1,6}))(Z?)",
+    "(-)?[0-9]{4}-((0[1-9])|(1[0-2]))-((0[1-9])|([1-2][0-9])|(3[0-1]))(Z?)"
   );
   
   /**
@@ -120,16 +85,14 @@ public class DateTimeValidator {
    * 
    */
   private static List<String> DATE_TIME_YMD_UTC_FORMATS = Arrays.asList(
-    "yyyy'Z'", 
-    "yyyy-MM-dd'T'HH'Z'", 
-    "yyyy-MM-dd'T'HH:mm'Z'",
-    "yyyy-MM-dd'T'HH:mm:ss'Z'",
-    "yyyy-MM-dd'T'HH:mm:ss.S'Z'",
-    "yyyy-MM-dd'T'HH:mm:ss.SS'Z'",
-    "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
-    "yyyy-MM-dd'T'HH:mm:ss.SSSS'Z'",
-    "yyyy-MM-dd'T'HH:mm:ss.SSSSS'Z'",
-    "yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'"
+    "(-)?[0-9]{4}(Z)",
+    "(-)?[0-9]{4}-((0[1-9])|(1[0-2]))(Z)",
+    "(-)?[0-9]{4}-((0[1-9])|(1[0-2]))-((0[1-9])|([1-2][0-9])|(3[0-1]))(T)(([0-1][0-9])|(2[0-3]))(Z)",
+    "(-)?[0-9]{4}-((0[1-9])|(1[0-2]))-((0[1-9])|([1-2][0-9])|(3[0-1]))(T)(([0-1][0-9])|(2[0-3])):[0-5][0-9](Z)",
+    "(-)?[0-9]{4}-((0[1-9])|(1[0-2]))-((0[1-9])|([1-2][0-9])|(3[0-1]))(T)(([0-1][0-9])|(2[0-3])):[0-5][0-9]:(([0-5][0-9])|60)(\\.([0-9]{1,6}))?(Z)",
+    "(-)?[0-9]{4}-((0[1-9])|(1[0-2]))-((0[1-9])|([1-2][0-9])|(3[0-1]))(T)24((:00)|(:00:00))?(Z)",
+    "(-)?[0-9]{4}-((0[1-9])|(1[0-2]))-((0[1-9])|([1-2][0-9])|(3[0-1]))(T)24:00:00(\\.([0]{1,6}))(Z)",
+    "(-)?[0-9]{4}-((0[1-9])|(1[0-2]))-((0[1-9])|([1-2][0-9])|(3[0-1]))(Z)"
   );
   
   /**
@@ -137,12 +100,9 @@ public class DateTimeValidator {
    * 
    */
   private static List<String> DATE_YMD_FORMATS = Arrays.asList(
-    "yyyy", 
-    "yyyy'Z'", 
-    "yyyy-MM", 
-    "yyyy-MM'Z'",
-    "yyyy-MM-dd",
-    "yyyy-MM-dd'Z'"
+    "(-)?[0-9]{4}(Z?)",
+    "(-)?[0-9]{4}-((0[1-9])|(1[0-2]))(Z?)",
+    "(-)?[0-9]{4}-((0[1-9])|(1[0-2]))-((0[1-9])|([1-2][0-9])|(3[0-1]))(Z?)"
   );
   
   /**
@@ -173,15 +133,9 @@ public class DateTimeValidator {
     boolean success = false;
     if (DATE_TIME_FORMATS.containsKey(type.getXMLType())) {
       for (String format : DATE_TIME_FORMATS.get(type.getXMLType())) {
-        DateTimeFormatter dtformatter = DateTimeFormatter.ofPattern(format);
-        try {
-          LocalDateTime date = LocalDateTime.parse(value.trim(), dtformatter);
+        if (Pattern.matches(format, value.trim())) {
           success = true;
           break;
-        } catch (IllegalArgumentException e) {
-          //Ignore
-        } catch (DateTimeParseException de) {
-          //Ignore
         }
       }
     } else {
