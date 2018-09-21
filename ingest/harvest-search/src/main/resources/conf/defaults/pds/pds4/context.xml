@@ -58,6 +58,12 @@
     <field name="alternate_id" type="string">
       <registryPath>alternate_id</registryPath>
     </field>
+    <field name="alternate_title" type="string">
+      <registryPath>alternate_title</registryPath>
+    </field>
+    <field name="citation_doi" type="string">
+      <registryPath>citation_doi</registryPath>
+    </field>
     <field name="citation_keyword" type="string">
       <registryPath>citation_keyword</registryPath>
     </field>
@@ -98,6 +104,9 @@
       <registryPath>facility_description</registryPath>
     </field>
     <!-- Instrument Fields -->
+    <field name="instrument_ref" type="string">
+      <registryPath>instrument_ref</registryPath>
+    </field>
     <field name="instrument_name" type="string">
       <registryPath>instrument_name</registryPath>
       <registryPath>instrument_ref.instrument_name</registryPath>
@@ -160,9 +169,6 @@
     <field name="investigation_stop_date" type="date">
       <registryPath>investigation_stop_date</registryPath>
     </field>
-    <field name="target_ref" type="string">
-      <registryPath>target_ref</registryPath>
-    </field>
     <!-- PDS Affiliate Fields -->
     <field name="person_name" type="string">
       <registryPath>person_name</registryPath>
@@ -214,6 +220,9 @@
       <registryPath>resource_description</registryPath>
     </field>
     <!-- Target Fields -->
+    <field name="target_ref" type="string">
+      <registryPath>target_ref</registryPath>
+    </field>
     <field name="target_name" type="string">
       <registryPath>target_name</registryPath>
       <registryPath>target_ref.target_name</registryPath>
