@@ -106,6 +106,7 @@ https://&lt;base_url&gt;/&lt;return_type&gt;/submissionstatus/add
         <table>
           <tr><th>Parameter</th><th>Parameter Map</th></tr>
           <tr><td>id</td><td>delivery_identifier</td></tr>
+          <tr><td>status</td><td>status</td></tr>
           <tr><td>email</td><td>electronic_mail_address</td></tr>
           <tr><td>comment</td><td>comment</td></tr>
         </table>
