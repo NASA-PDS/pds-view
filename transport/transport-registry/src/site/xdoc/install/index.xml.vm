@@ -1,261 +1,261 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<!--
-  Copyright 2013-2016, by the California Institute of Technology.
-  ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
-  Any commercial use must be negotiated with the Office of Technology Transfer
-  at the California Institute of Technology.
-
-  This software is subject to U. S. export control laws and regulations
-  (22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software
-  is subject to U.S. export control laws and regulations, the recipient has
-  the responsibility to obtain export licenses or other export authority as
-  may be required before exporting such information to foreign countries or
-  providing access to foreign nationals.
-
-  $Id$
--->
-
-<document>
-
-  <properties>
-    <title>Installation</title>
-    <author email="Sean.Hardman@jpl.nasa.gov">Sean Hardman</author>
-    <author email="Luca.Cinquini@jpl.nasa.gov">Luca Cinquini</author>
-  </properties>
-
-  <body>
-    <section name="Installation">
-      <p>This document describes how to install the Transport Service software contained in the <i>${project.artifactId}</i> package. The following topics can be found in this section:
-      </p>
-
-      <ul>
-        <li><a href="#System_Requirements">System Requirements</a></li>
-        <li><a href="#Unpacking_the_Package">Unpacking the Package</a></li>
-        <li><a href="#Deploying_the_Application">Deploying the Application</a></li>
-        <li><a href="#Configuring_the_Application">Configuring the Application</a></li>
-      </ul>
-    </section>
-
-    <section name="System Requirements">
-      <p>This section details the system requirements for installing and operating the Transport Service.
-      </p>
-
-      <subsection name="Java Runtime Environment">
-        <p>The Transport Service was developed using Java and will run on any platform with a supported Java Runtime Environment (JRE). The software was specifically compiled for and tested under Java version 1.8. The following commands test the local Java installation in a UNIX-based environment:
-        </p>
-
-        <source>
-% which java
-/usr/bin/java
-
-% java -version
-java version "1.8.0_101"
-Java(TM) SE Runtime Environment (build 1.8.0_101-b13)
-Java HotSpot(TM) 64-Bit Server VM (build 24.72-b04, mixed mode)
-        </source>
-
-        <p>The first command above checks whether the <i>java</i> executable is in the environment's path and the second command reports the version. If Java is not installed or the version is not at least 1.7, Java will need to be downloaded and installed in the current environment. Consult the local system administrator for installation of this software. For the do-it-yourself crowd, the Java software can be downloaded from the <a href="http://www.oracle.com/technetwork/java/javase/downloads/" target="_blank">Oracle Java Download</a> page. The suggested software package is the Java Standard Edition (SE) 8, either the JDK or the JRE package. The JDK package is not necessary to run the software but could be useful if development and compilation of Java software will also occur in the current environment.
-        </p>
-      </subsection>
-
-      <subsection name="Java Application Server">
-        <p>The Transport Service requires a Java application server for hosting the web application. The suggested application server for this release is Apache Tomcat with a minimal version of 7.0.X. Consult the local system administrator for installation of this software. For the do-it-yourself crowd, see the <a href="../../../release/index-tomcat.html" target="_blank">Tomcat Deployment</a> document for installation and configuration details. If viewing this document from the ${project.artifactId} package, view the <a href="http://pds-engineering.jpl.nasa.gov/pds2010/development/current/release/index-tomcat.html" target="_blank">Tomcat Deployment</a> document from the Engineering Node site.
-        </p>
-
-        <p>The top-level directory where Apache Tomcat is installed (i.e. the directory containing the <i>webapps</i> and <i>conf</i> sub-directories) will be referenced in these instructions as $TOMCAT_HOME.
-        </p>
-      </subsection>
-    </section>
-    
-    <section name="Unpacking the Package">
-      <p>Download the <i>${project.artifactId}</i> package from the PDS <a href="ftp://pds.nasa.gov/pub/toplevel/2010/transport/" target="_blank">FTP</a> site. The binary distribution is available in identical zip or tar/gzip packages. The installation directory may vary from environment to environment but in UNIX-based environments it is typical to install software packages in the <i>/usr/local</i> directory and in Windows-based environments it is typical to install software packages in the <i>C:\Program Files</i> directory. Unpack the selected binary distribution file with one of the following commands:
-      </p>
-
-      <source>
-% unzip ${project.artifactId}-${project.version}-bin.zip
-or
-% tar -xzvf ${project.artifactId}-${project.version}-bin.tar.gz
-      </source>
-
-      <p>Note: Depending on the platform, the native version of <i>tar</i> may produce an error when attempting to unpack the distribution file because many of the file paths are greater than 100 characters. If available, the GNU version of tar will resolve this problem. If that is not available or cannot be installed, the zipped package will work just fine in a UNIX environment.
-      </p>
-
-      <p>The commands above will result in the creation of the <i>${project.artifactId}-${project.version}</i> directory with the following directory structure:
-      </p>
-
-      <ul>
-        <li><b>README.txt</b><br/>
-          <p>A README file directing the user to the available documentation for the project.
-          </p>
-        </li>
-        <li><b>LICENSE.txt</b><br/>
-          <p>The copyright notice from the <a href="http://www.caltech.edu/" target="_blank">California Institute of Technology</a> detailing the restrictions regarding the use and distribution of this software. Although the license is strictly worded, the software has been classified as Technology and Software Publicly Available (TSPA) and is available for <i>anyone</i> to download and use.
-          </p>
-        </li>
-        <li><b>transport-registry.war</b><br/>
-          <p>This is the Web ARchive (WAR) file containing the Transport Service software including all dependent JAR files.
-          </p>
-        </li>
-        <li><b>doc/</b><br/>
-          <p>This directory contains a local web site with the Transport Service documentation, javadoc, unit test results and other configuration management related information. Just point the desired web browser to the index.html file in this directory.
-          </p>
-        </li>
-      </ul>
-    </section>
-    
-    <section name="Deploying the Application">
-      <p>The Transport Service web application is packaged as a WAR file and is intended for installation under a standard Java Application Server. For a Tomcat server deployment, the WAR file is normally copied directly to the <i>webapps</i> directory within the Tomcat installation or installed via the Manager interface. Once this step is complete, the application is ready for configuration.
-      </p>
-    </section>
-
-    <section name="Configuring the Application">
-      <p>The preferred method for configuring the Transport Service is to use the web-based interface. There is also a method for file-based configuration, which is especially useful when performing an upgrade of the service. The service comes configured for accessing a local Registry Service and a local Search Service. It is suggested that the final configuration only access one type of service, either registry or search.
-      </p>
-
-      <subsection name="Web-Based Configuration">
-        <p>The Transport Service is a web application and can be accessed with any standard web browser (e.g., Firefox, Safari, Internet Explorer, etc.). Assuming the user is attempting access to the application from the local machine where the application server is running, the application is accessible from the following end point: <i>http://localhost:8080/transport-registry</i>. The following screen should appear in your web browser:
-        </p>
-
-        <center>
-          <a href="../images/main.jpg" target="_blank"><img alt="Transport Service Main Screen" src="../images/main-scale.jpg"/></a><br/>
-          Click on the image for a larger version.
-        </center>
-
-        <p>Select the <i>Configure the Service</i> link, which will display the following login screen:
-        </p>
-
-        <center>
-          <a href="../images/login.jpg" target="_blank"><img alt="Transport Service Login Screen" src="../images/login-scale.jpg"/></a><br/>
-          Click on the image for a larger version.
-        </center>
-
-        <p>Enter the default password of <i>hanalei</i> and select the <i>Log In</i> button to display the following configuration screen:
-        </p>
-
-        <center>
-          <a href="../images/password.jpg" target="_blank"><img alt="Transport Service Configuration Screen" src="../images/password-scale.jpg"/></a><br/>
-          Click on the image for a larger version.
-        </center>
-
-        <p>The top portion of the screen provides access to the following configuration settings:
-        </p>
-
-        <ul>
-          <li>Administrator Password<br/>
-            <p>Change the default administrator password. Enter a new password in the text box. This password will be required to reconfigure the Transport Service in the future.
-            </p>
-          </li>
-          <li>Local Host Access<br/>
-            <p>Select the <i>Yes</i> button if administrative access should be limited to web browsers running on the host machine where the application server is running. Selecting the <i>No</i> button, will allow access to all hosts.
-            </p>
-          </li>
-          <li>HTTPS Access<br/>
-            <p>Select the <i>Yes</i> button to require HTTPS for administrative access. The host application server must support HTTPS. Selecting the <i>No</i> button, will provide access over HTTP.
-            </p>
-          </li>
-        </ul>
-
-        <p>Scroll down the screen to the <i>System Properties</i> section as displayed below:
-        </p>
-
-        <center>
-          <a href="../images/properties.jpg" target="_blank"><img alt="Transport Service Configuration Screen" src="../images/properties-scale.jpg"/></a><br/>
-          Click on the image for a larger version.
-        </center>
-
-        <p>The <i>System Properties</i> section lists the properties for both the Registry and Search product handlers. Depending the desired handler, the properties for the other handler should be deleted. This can be accomplished by selecting the <i>Delete</i> check box next to the property to be deleted and then selecting the <i>Save Changes</i> button at the bottom of the page. If configuring the Registry product handler, the following two properties must be specified:
-        </p>
-
-        <ul>
-          <li>gov.nasa.pds.transport.RegistryProductHandler.registryUrl<br/>
-            <p>This property must contain the end point for the Registry Service to be queried by the Transport Service. The default value for this property is <i>http://localhost:8080/registry</i>. Optionally, the value can be set to a comma-separated list of Registry URLs, which will be queried in sequence by the Transport Service until a match is found, and the corresponding product is returned. For example:
-            <br/>
-            <i>http://localhost:8080/registry-pds3, http://localhost:8080/registry-pds4</i>.
-            </p>
-          </li>
-          <li>gov.nasa.pds.transport.RegistryProductHandler.tmpDir<br/>
-            <p>This property must contain the full path to a local directory that will be used as scratch space for the Transport Service. The default value for this property is <i>/tmp</i>.
-            </p>
-          </li>
-        </ul>
-
-        <p>If configuring the Search product handler, the following three properties must be specified:
-        </p>
-
-        <ul>
-          <li>gov.nasa.pds.transport.SearchProductHandler.searchUrl<br/>
-            <p>This property must contain the end point for the Registry Service to be queried by the Transport Service. The default value for this property is <i>http://localhost:8080/search-service</i>.
-            </p>
-          </li>
-          <li>gov.nasa.pds.transport.SearchProductHandler.useFileRefUrl<br/>
-            <p>This property must contain either <i>true</i> or <i>false</i> indicating whether the Transport Service uses the <i>file_ref_url</i> field or the <i>file_ref_path</i> and <i>file_ref_name</i> fields from the Search Service for accessing a target file. The default value for this property is <i>false</i>.
-            </p>
-          </li>
-          <li>gov.nasa.pds.transport.SearchProductHandler.tmpDir<br/>
-            <p>This property must contain the full path to a local directory that will be used as scratch space for the Transport Service. The default value for this property is <i>/tmp</i>.
-            </p>
-          </li>
-        </ul>
-
-        <p>The Transport Service does offer some more advanced configuration settings including adding code bases and additional product or profile query handlers. These advanced configuration settings will not be covered here. Scroll down to the bottom of the screen as displayed below:
-        </p>
-
-        <center>
-          <a href="../images/handlers.jpg" target="_blank"><img alt="Transport Service Configuration Screen" src="../images/handlers-scale.jpg"/></a><br/>
-          Click on the image for a larger version.
-        </center>
-
-        <p>In the <i>Product Query Handlers</i> section, delete the handler that is not being configured for this instance of the Transport Service. This can be accomplished by selecting the <i>Delete</i> check box next to the handler to be deleted and then selecting the <i>Save Changes</i> button at the bottom of the page. The Transport Service is now ready for operations.
-        </p>
-      </subsection>
-
-      <subsection name="File-Based Configuration">
-        <p>Although not the suggested method for configuring the Transport Service, this method can be useful if the desire is to transfer the configuration from one Transport Service to another (i.e., upgrading versions). The configuration file resides at <i>$TOMCAT_HOME/webapps/transport-registry/WEB-INF/config.xml</i> and should look something like the following for a Registry product handler configuration:
-        </p>
-
-        <source>
-&lt;configuration xmlns='http://oodt.jpl.nasa.gov/web-grid/ns/'
-  https='false' localhost='false' password='aGFuYWxlaQ=='&gt;
-  &lt;server className='gov.nasa.pds.transport.RegistryProductHandler' type='product'/&gt;
-  &lt;properties&gt;
-    &lt;property key='gov.nasa.pds.transport.RegistryProductHandler.registryUrl'&gt;
-      http://localhost:8080/registry
-    &lt;/property&gt;
-    &lt;property key='gov.nasa.pds.transport.RegistryProductHandler.tmpDir'&gt;
-      /tmp
-    &lt;/property&gt;
-  &lt;/properties&gt;
-&lt;/configuration&gt;
-        </source>
-
-        <p>It should look something like the following for a Search product handler configuration:
-        </p>
-
-        <source>
-&lt;configuration xmlns="http://oodt.jpl.nasa.gov/web-grid/ns/"
-  https="false" localhost="false" password="aGFuYWxlaQ=="&gt;
-  &lt;server className="gov.nasa.pds.transport.SearchProductHandler" type="product"/&gt;
-  &lt;properties&gt;
-    &lt;property key="gov.nasa.pds.transport.SearchProductHandler.searchUrl"&gt;
-      http://localhost:8080/search-service
-    &lt;/property&gt;
-    &lt;property key="gov.nasa.pds.transport.SearchProductHandler.useFileRefUrl"&gt;
-      false
-    &lt;/property&gt;
-    &lt;property key="gov.nasa.pds.transport.SearchProductHandler.tmpDir"&gt;
-      /tmp
-    &lt;/property&gt;
-  &lt;/properties&gt;
-&lt;/configuration&gt;
-        </source>
-
-        <p>Note: For readability purposes, the &lt;property&gt; elements in the example above have been broken up into multiple lines. Each of these lines should be represented as a single line (with no line breaks) in the actual configuration file.
-        </p>
-
-        <p>Before upgrading the Transport Service, make a copy of the above configuration file. Install the new Transport Service as specified above. Shutdown the host application server, copy the saved configuration file over the one that came in the new installation and they restart the application server. The Transport Service is now ready for operations.
-        </p>
-      </subsection>
-    </section>
-  </body>
-</document>
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  Copyright 2013-2016, by the California Institute of Technology.
+  ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
+  Any commercial use must be negotiated with the Office of Technology Transfer
+  at the California Institute of Technology.
+
+  This software is subject to U. S. export control laws and regulations
+  (22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software
+  is subject to U.S. export control laws and regulations, the recipient has
+  the responsibility to obtain export licenses or other export authority as
+  may be required before exporting such information to foreign countries or
+  providing access to foreign nationals.
+
+  $Id$
+-->
+
+<document>
+
+  <properties>
+    <title>Installation</title>
+    <author email="Sean.Hardman@jpl.nasa.gov">Sean Hardman</author>
+    <author email="Luca.Cinquini@jpl.nasa.gov">Luca Cinquini</author>
+  </properties>
+
+  <body>
+    <section name="Installation">
+      <p>This document describes how to install the Transport Service software contained in the <i>${project.artifactId}</i> package. The following topics can be found in this section:
+      </p>
+
+      <ul>
+        <li><a href="#System_Requirements">System Requirements</a></li>
+        <li><a href="#Unpacking_the_Package">Unpacking the Package</a></li>
+        <li><a href="#Deploying_the_Application">Deploying the Application</a></li>
+        <li><a href="#Configuring_the_Application">Configuring the Application</a></li>
+      </ul>
+    </section>
+
+    <section name="System Requirements">
+      <p>This section details the system requirements for installing and operating the Transport Service.
+      </p>
+
+      <subsection name="Java Runtime Environment">
+        <p>The Transport Service was developed using Java and will run on any platform with a supported Java Runtime Environment (JRE). The software was specifically compiled for and tested under Java version 1.8. The following commands test the local Java installation in a UNIX-based environment:
+        </p>
+
+        <source>
+% which java
+/usr/bin/java
+
+% java -version
+java version "1.8.0_101"
+Java(TM) SE Runtime Environment (build 1.8.0_101-b13)
+Java HotSpot(TM) 64-Bit Server VM (build 25.101-b13, mixed mode)
+        </source>
+
+        <p>The first command above checks whether the <i>java</i> executable is in the environment's path and the second command reports the version. If Java is not installed or the version is not at least 1.7, Java will need to be downloaded and installed in the current environment. Consult the local system administrator for installation of this software. For the do-it-yourself crowd, the Java software can be downloaded from the <a href="http://www.oracle.com/technetwork/java/javase/downloads/" target="_blank">Oracle Java Download</a> page. The suggested software package is the Java Standard Edition (SE) 8, either the JDK or the JRE package. The JDK package is not necessary to run the software but could be useful if development and compilation of Java software will also occur in the current environment.
+        </p>
+      </subsection>
+
+      <subsection name="Java Application Server">
+        <p>The Transport Service requires a Java application server for hosting the web application. The suggested application server for this release is Apache Tomcat with a minimal version of 7.0.X. Consult the local system administrator for installation of this software. For the do-it-yourself crowd, see the <a href="../../../release/index-tomcat.html" target="_blank">Tomcat Deployment</a> document for installation and configuration details. If viewing this document from the ${project.artifactId} package, view the <a href="http://pds-engineering.jpl.nasa.gov/pds2010/development/current/release/index-tomcat.html" target="_blank">Tomcat Deployment</a> document from the Engineering Node site.
+        </p>
+
+        <p>The top-level directory where Apache Tomcat is installed (i.e. the directory containing the <i>webapps</i> and <i>conf</i> sub-directories) will be referenced in these instructions as $TOMCAT_HOME.
+        </p>
+      </subsection>
+    </section>
+    
+    <section name="Unpacking the Package">
+      <p>Download the <i>${project.artifactId}</i> package from the PDS <a href="ftp://pds.nasa.gov/pub/toplevel/2010/transport/" target="_blank">FTP</a> site. The binary distribution is available in identical zip or tar/gzip packages. The installation directory may vary from environment to environment but in UNIX-based environments it is typical to install software packages in the <i>/usr/local</i> directory and in Windows-based environments it is typical to install software packages in the <i>C:\Program Files</i> directory. Unpack the selected binary distribution file with one of the following commands:
+      </p>
+
+      <source>
+% unzip ${project.artifactId}-${project.version}-bin.zip
+or
+% tar -xzvf ${project.artifactId}-${project.version}-bin.tar.gz
+      </source>
+
+      <p>Note: Depending on the platform, the native version of <i>tar</i> may produce an error when attempting to unpack the distribution file because many of the file paths are greater than 100 characters. If available, the GNU version of tar will resolve this problem. If that is not available or cannot be installed, the zipped package will work just fine in a UNIX environment.
+      </p>
+
+      <p>The commands above will result in the creation of the <i>${project.artifactId}-${project.version}</i> directory with the following directory structure:
+      </p>
+
+      <ul>
+        <li><b>README.txt</b><br/>
+          <p>A README file directing the user to the available documentation for the project.
+          </p>
+        </li>
+        <li><b>LICENSE.txt</b><br/>
+          <p>The copyright notice from the <a href="http://www.caltech.edu/" target="_blank">California Institute of Technology</a> detailing the restrictions regarding the use and distribution of this software. Although the license is strictly worded, the software has been classified as Technology and Software Publicly Available (TSPA) and is available for <i>anyone</i> to download and use.
+          </p>
+        </li>
+        <li><b>transport-registry.war</b><br/>
+          <p>This is the Web ARchive (WAR) file containing the Transport Service software including all dependent JAR files.
+          </p>
+        </li>
+        <li><b>doc/</b><br/>
+          <p>This directory contains a local web site with the Transport Service documentation, javadoc, unit test results and other configuration management related information. Just point the desired web browser to the index.html file in this directory.
+          </p>
+        </li>
+      </ul>
+    </section>
+    
+    <section name="Deploying the Application">
+      <p>The Transport Service web application is packaged as a WAR file and is intended for installation under a standard Java Application Server. For a Tomcat server deployment, the WAR file is normally copied directly to the <i>webapps</i> directory within the Tomcat installation or installed via the Manager interface. Once this step is complete, the application is ready for configuration.
+      </p>
+    </section>
+
+    <section name="Configuring the Application">
+      <p>The preferred method for configuring the Transport Service is to use the web-based interface. There is also a method for file-based configuration, which is especially useful when performing an upgrade of the service. The service comes configured for accessing a local Registry Service and a local Search Service. It is suggested that the final configuration only access one type of service, either registry or search.
+      </p>
+
+      <subsection name="Web-Based Configuration">
+        <p>The Transport Service is a web application and can be accessed with any standard web browser (e.g., Firefox, Safari, Internet Explorer, etc.). Assuming the user is attempting access to the application from the local machine where the application server is running, the application is accessible from the following end point: <i>http://localhost:8080/transport-registry</i>. The following screen should appear in your web browser:
+        </p>
+
+        <center>
+          <a href="../images/main.jpg" target="_blank"><img alt="Transport Service Main Screen" src="../images/main-scale.jpg"/></a><br/>
+          Click on the image for a larger version.
+        </center>
+
+        <p>Select the <i>Configure the Service</i> link, which will display the following login screen:
+        </p>
+
+        <center>
+          <a href="../images/login.jpg" target="_blank"><img alt="Transport Service Login Screen" src="../images/login-scale.jpg"/></a><br/>
+          Click on the image for a larger version.
+        </center>
+
+        <p>Enter the default password of <i>hanalei</i> and select the <i>Log In</i> button to display the following configuration screen:
+        </p>
+
+        <center>
+          <a href="../images/password.jpg" target="_blank"><img alt="Transport Service Configuration Screen" src="../images/password-scale.jpg"/></a><br/>
+          Click on the image for a larger version.
+        </center>
+
+        <p>The top portion of the screen provides access to the following configuration settings:
+        </p>
+
+        <ul>
+          <li>Administrator Password<br/>
+            <p>Change the default administrator password. Enter a new password in the text box. This password will be required to reconfigure the Transport Service in the future.
+            </p>
+          </li>
+          <li>Local Host Access<br/>
+            <p>Select the <i>Yes</i> button if administrative access should be limited to web browsers running on the host machine where the application server is running. Selecting the <i>No</i> button, will allow access to all hosts.
+            </p>
+          </li>
+          <li>HTTPS Access<br/>
+            <p>Select the <i>Yes</i> button to require HTTPS for administrative access. The host application server must support HTTPS. Selecting the <i>No</i> button, will provide access over HTTP.
+            </p>
+          </li>
+        </ul>
+
+        <p>Scroll down the screen to the <i>System Properties</i> section as displayed below:
+        </p>
+
+        <center>
+          <a href="../images/properties.jpg" target="_blank"><img alt="Transport Service Configuration Screen" src="../images/properties-scale.jpg"/></a><br/>
+          Click on the image for a larger version.
+        </center>
+
+        <p>The <i>System Properties</i> section lists the properties for both the Registry and Search product handlers. Depending the desired handler, the properties for the other handler should be deleted. This can be accomplished by selecting the <i>Delete</i> check box next to the property to be deleted and then selecting the <i>Save Changes</i> button at the bottom of the page. If configuring the Registry product handler, the following two properties must be specified:
+        </p>
+
+        <ul>
+          <li>gov.nasa.pds.transport.RegistryProductHandler.registryUrl<br/>
+            <p>This property must contain the end point for the Registry Service to be queried by the Transport Service. The default value for this property is <i>http://localhost:8080/registry</i>. Optionally, the value can be set to a comma-separated list of Registry URLs, which will be queried in sequence by the Transport Service until a match is found, and the corresponding product is returned. For example:
+            <br/>
+            <i>http://localhost:8080/registry-pds3, http://localhost:8080/registry-pds4</i>.
+            </p>
+          </li>
+          <li>gov.nasa.pds.transport.RegistryProductHandler.tmpDir<br/>
+            <p>This property must contain the full path to a local directory that will be used as scratch space for the Transport Service. The default value for this property is <i>/tmp</i>.
+            </p>
+          </li>
+        </ul>
+
+        <p>If configuring the Search product handler, the following three properties must be specified:
+        </p>
+
+        <ul>
+          <li>gov.nasa.pds.transport.SearchProductHandler.searchUrl<br/>
+            <p>This property must contain the end point for the Registry Service to be queried by the Transport Service. The default value for this property is <i>http://localhost:8080/search-service</i>.
+            </p>
+          </li>
+          <li>gov.nasa.pds.transport.SearchProductHandler.useFileRefUrl<br/>
+            <p>This property must contain either <i>true</i> or <i>false</i> indicating whether the Transport Service uses the <i>file_ref_url</i> field or the <i>file_ref_path</i> and <i>file_ref_name</i> fields from the Search Service for accessing a target file. The default value for this property is <i>false</i>.
+            </p>
+          </li>
+          <li>gov.nasa.pds.transport.SearchProductHandler.tmpDir<br/>
+            <p>This property must contain the full path to a local directory that will be used as scratch space for the Transport Service. The default value for this property is <i>/tmp</i>.
+            </p>
+          </li>
+        </ul>
+
+        <p>The Transport Service does offer some more advanced configuration settings including adding code bases and additional product or profile query handlers. These advanced configuration settings will not be covered here. Scroll down to the bottom of the screen as displayed below:
+        </p>
+
+        <center>
+          <a href="../images/handlers.jpg" target="_blank"><img alt="Transport Service Configuration Screen" src="../images/handlers-scale.jpg"/></a><br/>
+          Click on the image for a larger version.
+        </center>
+
+        <p>In the <i>Product Query Handlers</i> section, delete the handler that is not being configured for this instance of the Transport Service. This can be accomplished by selecting the <i>Delete</i> check box next to the handler to be deleted and then selecting the <i>Save Changes</i> button at the bottom of the page. The Transport Service is now ready for operations.
+        </p>
+      </subsection>
+
+      <subsection name="File-Based Configuration">
+        <p>Although not the suggested method for configuring the Transport Service, this method can be useful if the desire is to transfer the configuration from one Transport Service to another (i.e., upgrading versions). The configuration file resides at <i>$TOMCAT_HOME/webapps/transport-registry/WEB-INF/config.xml</i> and should look something like the following for a Registry product handler configuration:
+        </p>
+
+        <source>
+&lt;configuration xmlns='http://oodt.jpl.nasa.gov/web-grid/ns/'
+  https='false' localhost='false' password='aGFuYWxlaQ=='&gt;
+  &lt;server className='gov.nasa.pds.transport.RegistryProductHandler' type='product'/&gt;
+  &lt;properties&gt;
+    &lt;property key='gov.nasa.pds.transport.RegistryProductHandler.registryUrl'&gt;
+      http://localhost:8080/registry
+    &lt;/property&gt;
+    &lt;property key='gov.nasa.pds.transport.RegistryProductHandler.tmpDir'&gt;
+      /tmp
+    &lt;/property&gt;
+  &lt;/properties&gt;
+&lt;/configuration&gt;
+        </source>
+
+        <p>It should look something like the following for a Search product handler configuration:
+        </p>
+
+        <source>
+&lt;configuration xmlns="http://oodt.jpl.nasa.gov/web-grid/ns/"
+  https="false" localhost="false" password="aGFuYWxlaQ=="&gt;
+  &lt;server className="gov.nasa.pds.transport.SearchProductHandler" type="product"/&gt;
+  &lt;properties&gt;
+    &lt;property key="gov.nasa.pds.transport.SearchProductHandler.searchUrl"&gt;
+      http://localhost:8080/search-service
+    &lt;/property&gt;
+    &lt;property key="gov.nasa.pds.transport.SearchProductHandler.useFileRefUrl"&gt;
+      false
+    &lt;/property&gt;
+    &lt;property key="gov.nasa.pds.transport.SearchProductHandler.tmpDir"&gt;
+      /tmp
+    &lt;/property&gt;
+  &lt;/properties&gt;
+&lt;/configuration&gt;
+        </source>
+
+        <p>Note: For readability purposes, the &lt;property&gt; elements in the example above have been broken up into multiple lines. Each of these lines should be represented as a single line (with no line breaks) in the actual configuration file.
+        </p>
+
+        <p>Before upgrading the Transport Service, make a copy of the above configuration file. Install the new Transport Service as specified above. Shutdown the host application server, copy the saved configuration file over the one that came in the new installation and they restart the application server. The Transport Service is now ready for operations.
+        </p>
+      </subsection>
+    </section>
+  </body>
+</document>
