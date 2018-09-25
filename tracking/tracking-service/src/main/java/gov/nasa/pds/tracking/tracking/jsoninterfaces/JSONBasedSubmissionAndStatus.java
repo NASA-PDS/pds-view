@@ -165,10 +165,10 @@ public class JSONBasedSubmissionAndStatus {
 	}
 	
 	@POST
-	@Path("/update")
+	@Path("/addstatus")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)	
-	public Response updateSubmissionStatus(@FormParam("Delivery_ID") int id,
+	public Response createSubmissionStatus(@FormParam("Delivery_ID") int id,
 			@FormParam("SubmissionDate") String submissionDate,
 			@FormParam("Status") String status,
 			@FormParam("Email") String email,
@@ -181,6 +181,45 @@ public class JSONBasedSubmissionAndStatus {
 		
 			String currentTime = DBConnector.ISO_BASIC.format(new Date());
 			SubmissionAndStatus subMS = new SubmissionAndStatus(id, submissionDate, currentTime,
+					status, email, comment);
+			int result = subMD.insertSubmissionStatus(subMS);
+			
+			if(result == 1){
+				message.put(SubmissionAndStatusDao.DEL_IDENTIFIERCOLUME, subMS.getDel_identifier());
+				message.put(SubmissionAndStatusDao.SUBMISSIONDATECOLUME, subMS.getSubmissionDate());
+				message.put(SubmissionAndStatusDao.STATUSDATECOLUME, subMS.getStatusDate());
+				message.put(SubmissionAndStatusDao.STATUSCOLUME, subMS.getStatus());
+				message.put(SubmissionAndStatusDao.EMAILCOLUME, subMS.getEmail());
+				message.put(SubmissionAndStatusDao.COMMENTCOLUME, subMS.getComment() != null ? subMS.getComment() : "");
+			}
+		} catch (ClassNotFoundException | SQLException e) {			
+			e.printStackTrace();
+			message.put("Message", FAILURE_RESULT);
+		}
+		//logger.debug("Result: " + message);
+		relt.append("Submission Status", message);
+		String jsonOutput = "" + relt.toString(4);
+		return Response.status(200).entity(jsonOutput).build();
+	}
+	
+	@POST
+	@Path("/update")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)	
+	public Response updateSubmissionStatus(@FormParam("Delivery_ID") int id,
+			@FormParam("SubmissionDate") String submissionDate,
+			@FormParam("StatusnDate") String statusDate,
+			@FormParam("Status") String status,
+			@FormParam("Email") String email,
+			@FormParam("Comment") String comment) throws IOException{
+		
+		JSONObject relt = new JSONObject();
+		JSONObject message = new JSONObject();
+		try {
+			subMD = new SubmissionAndStatusDao();
+		
+			//String currentTime = DBConnector.ISO_BASIC.format(new Date());
+			SubmissionAndStatus subMS = new SubmissionAndStatus(id, submissionDate, statusDate,
 					status, email, comment);
 			int result = subMD.updateSubmissionStatus(subMS);
 			

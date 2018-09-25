@@ -232,13 +232,13 @@ public class SubmissionAndStatusDao extends DBConnector {
 			// Setup the connection with the DB
 			connect = getConnection();
 			connect.setAutoCommit(false);
-			prepareStm = connect.prepareStatement("UPDATE " + STATUSTABLENAME + " SET " 
-																		+ STATUSDATECOLUME + " = ?, "
+			prepareStm = connect.prepareStatement("UPDATE " + STATUSTABLENAME + " SET "
 																		+ STATUSCOLUME + " = ?, "
 																		+ EMAILCOLUME + " = ?, "
 																		+ COMMENTCOLUME + " = ? "
 														+ "WHERE " + DEL_IDENTIFIERCOLUME + " = ? "
-														+ "AND " + SUBMISSIONDATECOLUME + " = ?");
+														+ "AND " + SUBMISSIONDATECOLUME + " = ? "
+														+ "AND " + STATUSDATECOLUME + " = ?");
 			
 			logger.debug("update vaules: \n" + subMS.getDel_identifier());
 			logger.debug(subMS.getSubmissionDate());
@@ -247,12 +247,13 @@ public class SubmissionAndStatusDao extends DBConnector {
 			logger.debug(subMS.getEmail());
 			logger.debug(subMS.getComment());
 			
-			prepareStm.setString(1, subMS.getStatusDate());
-			prepareStm.setString(2, subMS.getStatus());
-			prepareStm.setString(3, subMS.getEmail());
-			prepareStm.setString(4, subMS.getComment());
-			prepareStm.setInt(5, subMS.getDel_identifier());
-			prepareStm.setString(6, subMS.getSubmissionDate());
+			
+			prepareStm.setString(1, subMS.getStatus());
+			prepareStm.setString(2, subMS.getEmail());
+			prepareStm.setString(3, subMS.getComment());
+			prepareStm.setInt(4, subMS.getDel_identifier());
+			prepareStm.setString(5, subMS.getSubmissionDate());
+			prepareStm.setString(6, subMS.getStatusDate());
 			
 			
 			prepareStm.executeUpdate();

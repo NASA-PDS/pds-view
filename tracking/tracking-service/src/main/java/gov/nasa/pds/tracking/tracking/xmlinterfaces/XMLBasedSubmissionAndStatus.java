@@ -320,10 +320,10 @@ public class XMLBasedSubmissionAndStatus {
 	}
 	
 	@POST
-	@Path("/update")
+	@Path("/addstatus")
 	@Produces(MediaType.APPLICATION_XML)
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)	
-	public Response updateSubmissionStatus(@FormParam("Delivery_ID") int id,
+	public Response createSubmissionAndStatus(@FormParam("Delivery_ID") int id,
 			@FormParam("SubmissionDate") String submissionDate,
 			@FormParam("Status") String status,
 			@FormParam("Email") String email,
@@ -335,6 +335,96 @@ public class XMLBasedSubmissionAndStatus {
 		
 			String currentTime = DBConnector.ISO_BASIC.format(new Date());
 			SubmissionAndStatus subMS = new SubmissionAndStatus(id, submissionDate, currentTime,
+					status, email, comment);
+			int result = subMD.insertSubmissionStatus(subMS);
+			
+			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder statusBuilder;
+
+            statusBuilder = factory.newDocumentBuilder();
+            Document doc = statusBuilder.newDocument();
+            Element rootElement = doc.createElement("Submission_Status");
+            
+			if(result == 1){
+				Element subRootElement = doc.createElement("Status");
+		        
+	            Element idElement = doc.createElement(SubmissionStatus.DEL_IDENTIFIERCOLUME);
+	            idElement.appendChild(doc.createTextNode(String.valueOf(subMS.getDel_identifier())));
+	            subRootElement.appendChild(idElement);
+	            
+	            Element dateElement = doc.createElement(SubmissionStatus.SUBMISSIONDATECOLUME);
+	            dateElement.appendChild(doc.createTextNode(subMS.getSubmissionDate()));
+	            subRootElement.appendChild(dateElement);
+	            
+	            Element statusDateElement = doc.createElement(SubmissionStatus.STATUSDATECOLUME);
+	            statusDateElement.appendChild(doc.createTextNode(subMS.getStatusDate()));
+	            subRootElement.appendChild(statusDateElement);
+	            
+	            Element statusElement = doc.createElement(SubmissionStatus.STATUSCOLUME);
+	            statusElement.appendChild(doc.createTextNode(subMS.getStatus()));
+	            subRootElement.appendChild(statusElement);
+	            
+	            Element emailElement = doc.createElement(SubmissionStatus.EMAILCOLUME);
+	            emailElement.appendChild(doc.createTextNode(subMS.getEmail()));
+	            subRootElement.appendChild(emailElement);
+	            
+	            Element commentElement = doc.createElement(SubmissionStatus.COMMENTCOLUME);
+	            commentElement.appendChild(doc.createTextNode(subMS.getComment() != null ? subMS.getComment(): ""));
+	            subRootElement.appendChild(commentElement);
+	            
+	            rootElement.appendChild(subRootElement);
+
+			}else{
+			
+				Element messageElement = doc.createElement("Message");
+				messageElement.appendChild(doc.createTextNode("Add Submission Status for " + id  + " failure!"));
+				rootElement.appendChild(messageElement);
+			}
+			doc.appendChild(rootElement);
+			
+			DOMSource domSource = new DOMSource(doc);
+	        StringWriter writer = new StringWriter();
+	        StreamResult strResult = new StreamResult(writer);
+	        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+	        Transformer transformer = transformerFactory.newTransformer();
+	        transformer.transform(domSource, strResult);
+	        
+	        logger.debug("Submission Status:\n" + writer.toString());
+	        
+			xmlOutput.append(writer.toString());
+	        
+		} catch (ParserConfigurationException ex) {
+			logger.error(ex);
+	    } catch (TransformerConfigurationException ex) {
+	    	logger.error(ex);
+	    }catch (TransformerException ex) {
+	    	logger.error(ex);
+	    } catch (ClassNotFoundException ex) {
+	    	logger.error(ex);
+		} catch (SQLException ex) {
+			logger.error(ex);
+		}
+	
+	    return Response.status(200).entity(xmlOutput.toString()).build();
+	}
+	
+	@POST
+	@Path("/update")
+	@Produces(MediaType.APPLICATION_XML)
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)	
+	public Response updateSubmissionStatus(@FormParam("Delivery_ID") int id,
+			@FormParam("SubmissionDate") String submissionDate,
+			@FormParam("StatusnDate") String statusDate,
+			@FormParam("Status") String status,
+			@FormParam("Email") String email,
+			@FormParam("Comment") String comment) throws IOException{
+		
+		StringBuffer xmlOutput = new StringBuffer();
+		try {
+			subMD = new SubmissionAndStatusDao();
+		
+			//String currentTime = DBConnector.ISO_BASIC.format(new Date());
+			SubmissionAndStatus subMS = new SubmissionAndStatus(id, submissionDate, statusDate,
 					status, email, comment);
 			int result = subMD.updateSubmissionStatus(subMS);
 			

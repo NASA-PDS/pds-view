@@ -104,7 +104,7 @@ public class ServicesHomePage {
     public String submissionStatusForm() {
     	return HtmlConstants.PAGE_BEGIN +
 		          "<h1>Submission Status</h1>" +
-		          "<h2>Add</h2>" +
+		          "<h2>Add Submission and Submission Status</h2>" +
 		          "<h3>JSON</h3>" +
 		          "<div>" +
 		          "<form action=\"json/submissionstatus/add\" method=\"POST\">" +
@@ -130,13 +130,42 @@ public class ServicesHomePage {
 		          "</form>" +
 		          "</div>" +
 		          "<p></p>" +
-		          "<h2>Update</h2>" +
+		          "<h2>Add Submission Status</h2>" +
+		          "<h3>JSON</h3>" +
+		          "<div>" +
+		          "<form action=\"json/submissionstatus/addstatus\" method=\"POST\">" +
+		          "<table>" +
+		          "<tr><td>Delivery ID: </td><td><input id=\"id\" name=\"Delivery_ID\" /></td></tr>" +
+		          "<tr><td>Submission Time: </td><td><input id=\"submissionDate\" name=\"SubmissionDate\" /> (yyyy-MM-ddTHH:mm:ss)</td></tr>" +
+		          "<tr><td>Status: </td><td><input id=\"status\" name=\"Status\" /></td></tr>" +
+		          "<tr><td>Email: </td><td><input id=\"email\" name=\"Email\" /></td></tr>" +
+		          "<tr><td>Comment: </td><td><input id=\"comment\" name=\"Comment\" /></td></tr>" +
+		          "<tr><td></td><td><input type=\"submit\" value=\"Add\" /></td></tr>" +
+		          "</table>" +    
+		          "</form>" +
+		          "</div>" +
+		          "<h3>XML</h3>" +
+		          "<div>" +
+		          "<form action=\"xml/submissionstatus/addstatus\" method=\"POST\">" +
+		          "<table>" +
+		          "<tr><td>Delivery ID: </td><td><input id=\"id\" name=\"Delivery_ID\" /></td></tr>" +
+		          "<tr><td>Submission Time: </td><td><input id=\"submissionDate\" name=\"SubmissionDate\" /> (yyyy-MM-ddTHH:mm:ss)</td></tr>" +
+		          "<tr><td>Status: </td><td><input id=\"status\" name=\"Status\" /></td></tr>" +
+		          "<tr><td>Email: </td><td><input id=\"email\" name=\"Email\" /></td></tr>" +
+		          "<tr><td>Comment: </td><td><input id=\"comment\" name=\"Comment\" /></td></tr>" +
+		          "<tr><td></td><td><input type=\"submit\" value=\"Add\" /></td></tr>" +
+		          "</table>" +    
+		          "</form>" +
+		          "</div>" +
+		          "<p></p>" +
+		          "<h2>Update submission status</h2>" +
 		          "<h3>JSON</h3>" +
 		          "<div>" +
 		          "<form action=\"json/submissionstatus/update\" method=\"POST\">" +
 		          "<table>" +
 		          "<tr><td>Delivery ID: </td><td><input id=\"id\" name=\"Delivery_ID\" /></td></tr>" +
 		          "<tr><td>Submission Time: </td><td><input id=\"submissionDate\" name=\"SubmissionDate\" /> (yyyy-MM-ddTHH:mm:ss)</td></tr>" +
+		          "<tr><td>Status Time: </td><td><input id=\"statusDate\" name=\"StatusnDate\" /> (yyyy-MM-ddTHH:mm:ss)</td></tr>" +
 		          "<tr><td>Status: </td><td><input id=\"status\" name=\"Status\" /></td></tr>" +
 		          "<tr><td>Email: </td><td><input id=\"email\" name=\"Email\" /></td></tr>" +
 		          "<tr><td>Comment: </td><td><input id=\"comment\" name=\"Comment\" /></td></tr>" +
@@ -150,6 +179,7 @@ public class ServicesHomePage {
 		          "<table>" +
 		          "<tr><td>Delivery ID: </td><td><input id=\"id\" name=\"Delivery_ID\" /></td></tr>" +
 		          "<tr><td>Submission Time: </td><td><input id=\"submissionDate\" name=\"SubmissionDate\" /> (yyyy-MM-ddTHH:mm:ss)</td></tr>" +
+		          "<tr><td>Status Time: </td><td><input id=\"statusDate\" name=\"StatusnDate\" /> (yyyy-MM-ddTHH:mm:ss)</td></tr>" +
 		          "<tr><td>Status: </td><td><input id=\"status\" name=\"Status\" /></td></tr>" +
 		          "<tr><td>Email: </td><td><input id=\"email\" name=\"Email\" /></td></tr>" +
 		          "<tr><td>Comment: </td><td><input id=\"comment\" name=\"Comment\" /></td></tr>" +
