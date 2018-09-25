@@ -29,7 +29,10 @@
 
       <ul>
         <li><a href="#Interface">Interface</a></li>
+        <li><a href="#Parameters">Parameters</a></li>
+        <li><a href="#Status Inserts/Updates">Delivery Inserts/Updates</a></li>
         <li><a href="#Delivery Queries">Delivery Queries</a></li>
+        <li><a href="#Status Inserts/Updates">Status Inserts/Updates</a></li>
         <li><a href="#Status Queries">Status Queries</a></li>
       </ul>
     </section>
@@ -70,20 +73,84 @@ https://pds.nasa.gov/services/tracking
 
       <table>
         <tr><th>Parameter</th><th>Description</th></tr>
+        <tr><td>comment</td><td>An optional comment regarding the insert/update.</td></tr>
         <tr><td>delivery_identifier</td><td>The unique identifier for a delivery which is generated automatically.</td></tr>
+        <tr><td>doi</td><td>The Digital Object Identifier (DOI) assigned by the DOI organization.</td></tr>
         <tr><td>electronic_mail_address</td><td>The unique identifier for a user within the PDS4 system representing their electronic mail address.</td></tr>
         <tr><td>flag</td><td>A flag indicating true or false. Valid values are <i>true</i> and <i>false</i>.</td></tr>
         <tr><td>logical_identifier</td><td>The unique identifier for a product within the PDS4 system. Commonly referred to as the LID and formatted as a URN (e.g., urn:nasa:pds:…).</td></tr>
         <tr><td>product_type</td><td>The type of the product. The valid values are <i>PDS3-Data-Set</i>, <i>PDS4-Bundle</i>, <i>PDS4-Collection</i>, <i>PDS4-Data</i>, <i>PDS4-Document</i>, <i>Model</i> and <i>Software</i>.</td></tr>
         <tr><td>reference_type</td><td>The type of reference. Valid values are <i>instrument_reference</i>, <i>investigation_reference</i> and <i>node_reference</i>.</td></tr>
         <tr><td>return_type</td><td>The format of the content returned from the query. Valid values are <i>html</i>, <i>json</i> and <i>xml</i>.</td></tr>
+        <tr><td>site_url</td><td>The end point of the landing page for the associated product formatted as a URL (e.g., https://…).</td></tr>
+        <tr><td>status</td><td>The status associated with the submission. The valid values are Submitted, Submitted/Partial, Acknowledged, Accepted, Accepted/Partial, Rejected and Withdrawn.</td></tr>
+        <tr><td>status_date_time</td><td>The date/time the submission status update occurred, formatted as YYYY-MM-DD’T’HH:MM:SS.</td></tr>
+        <tr><td>submission_date_time</td><td>The date/time (e.g., current data/time) the submission was inserted, formatted as YYYY-MM-DD’T’HH:MM:SS.</td></tr>
         <tr><td>version_id</td><td>The version identifier provides the version of the product, expressed in the PDS [m.n] notation (e.g., 1.0).</td></tr>
       </table>
 
     </section>
 
+    <section name="Delivery Inserts/Updates">
+      <p>TBD (POST requests ...)
+      </p>
+
+      <subsection name="Submission Insert">
+        <p>This interface inserts a submission record for a given delivery.
+        </p>
+        <source>
+https://&lt;base_url&gt;/&lt;return_type&gt;/submissionstatus/add
+        </source>
+        <p>The following table maps interface parameters to the official parameter names and definitions from the <a href="#Parameters">Parameters</a> section.
+        </p>
+        <table>
+          <tr><th>Parameter</th><th>Parameter Map</th></tr>
+          <tr><td>id</td><td>delivery_identifier</td></tr>
+          <tr><td>email</td><td>electronic_mail_address</td></tr>
+          <tr><td>comment</td><td>comment</td></tr>
+        </table>
+      </subsection>
+
+      <subsection name="Submission Status Insert">
+        <p>This interface inserts a submission status record for a given delivery submission.
+        </p>
+        <source>
+https://&lt;base_url&gt;/&lt;return_type&gt;/submissionstatus/addstatus
+        </source>
+        <p>The following table maps interface parameters to the official parameter names and definitions from the <a href="#Parameters">Parameters</a> section.
+        </p>
+        <table>
+          <tr><th>Parameter</th><th>Parameter Map</th></tr>
+          <tr><td>id</td><td>delivery_identifier</td></tr>
+          <tr><td>submissionDate</td><td>submission_date_time</td></tr>
+          <tr><td>status</td><td>status</td></tr>
+          <tr><td>email</td><td>electronic_mail_address</td></tr>
+          <tr><td>comment</td><td>comment</td></tr>
+        </table>
+      </subsection>
+
+      <subsection name="Submission Status Update">
+        <p>This interface updates a submission status record for a given delivery submission.
+        </p>
+        <source>
+https://&lt;base_url&gt;/&lt;return_type&gt;/submissionstatus/update
+        </source>
+        <p>The following table maps interface parameters to the official parameter names and definitions from the <a href="#Parameters">Parameters</a> section.
+        </p>
+        <table>
+          <tr><th>Parameter</th><th>Parameter Map</th></tr>
+          <tr><td>id</td><td>delivery_identifier</td></tr>
+          <tr><td>submissionDate</td><td>submission_date_time</td></tr>
+          <tr><td>statusDate</td><td>status_date_time</td></tr>
+          <tr><td>status</td><td>status</td></tr>
+          <tr><td>email</td><td>electronic_mail_address</td></tr>
+          <tr><td>comment</td><td>comment</td></tr>
+        </table>
+      </subsection>
+    </section>
+
     <section name="Delivery Queries">
-      <p>TBD
+      <p>TBD (GET requests ...)
       </p>
 
       <subsection name="Delivery Query">
@@ -117,107 +184,149 @@ https://&lt;base_url&gt;/&lt;return_type&gt;/products/[type/product_type]
       </subsection>
       
       <subsection name="Product Delivery Query">
-      <p>This interface retrieves a list of products that have associated deliveries.
+        <p>This interface retrieves a list of products that have associated deliveries.
 	      </p>
 	      <source>
 https://&lt;base_url&gt;/&lt;return_type&gt;products/[value of instrument_reference  | null/value of investigation_reference | null]
-          </source>
+        </source>
         <p>When the optional parameters, <i>value of instrument_reference</i> | <i>null </i> and <i>value of investigation_reference</i> | <i>null</i>, are not specified, the query returns the list of all products. When both parameters are specified, the query returns a list of products for the specified instrument reference and investigation reference,
         	Or, returns a list of products for the specified instrument reference ( when parameter <i>value of investigation_reference</i> is <b>null</b>) or investigation reference ( when parameter <i>value of instrument_reference</i> is <b>null</b>).
         </p>
       </subsection>
       
       <subsection name="Product Instrument Reference Query">
-      <p>This interface retrieves a list of instrument references for a product.
+        <p>This interface retrieves a list of instrument references for a product.
 	      </p>
 	      <source>
 https://&lt;base_url&gt;/&lt;return_type&gt;/references/[logical_identifier/reference_type]
-          </source>
+        </source>
         <p>When the optional parameters, <i>logical_identifier</i> and <i>reference_type</i>, are not specified, the query returns the list of all types of references (instrument, investigation and node) for all products. When both parameters are specified and reference_type is instrument_reference, the query returns a list of instrument references for the specified product.
         </p>
       </subsection>
       
       <subsection name="Product Investigation Reference Query">
-      <p>This interface retrieves a list of investigation references for a product.
+        <p>This interface retrieves a list of investigation references for a product.
 	      </p>
 	      <source>
 https://&lt;base_url&gt;/&lt;return_type&gt;/references/[logical_identifier/reference_type]
-          </source>
+        </source>
         <p>When the optional parameters, <i>logical_identifier</i> and <i>reference_type</i>, are not specified, the query returns the list of all types of references (instrument, investigation and node) for all products. When both parameters are specified and reference_type is investigationt_reference, the query returns a list of investigation references for the specified product.
         </p>
       </subsection>
       
       <subsection name="Product Node Reference Query">
-      <p>This interface retrieves a list of node references for a product.
+        <p>This interface retrieves a list of node references for a product.
 	      </p>
 	      <source>
 https://&lt;base_url&gt;/&lt;return_type&gt;/references/[logical_identifier/reference_type]
-          </source>
+        </source>
         <p>When the optional parameters, <i>logical_identifier</i> and <i>reference_type</i>, are not specified, the query returns the list of all types of references (instrument, investigation and node) for all products. When both parameters are specified and reference_type is node_reference, the query returns a list of node references for the specified product.
         </p>
       </subsection>
       
       <subsection name="Product Instrument Role Query ">
-      <p>This interface retrieves a list of users with the instrument role for a product.
+        <p>This interface retrieves a list of users with the instrument role for a product.
 	      </p>
 	      <source>
 https://&lt;base_url&gt;/&lt;return_type&gt;/users/[logical_identifier/reference_type]
-          </source>
+        </source>
         <p>When the optional parameters, <i>logical_identifier</i> and <i>reference_type</i>, are not specified, the query returns the list of all users. When both parameters are specified and reference_type is instrumente_reference, the query returns a list of users with the instrument role for the specified product.
         </p>
       </subsection>
       
       <subsection name="Product Investigation Role Query">
-      <p>This interface retrieves a list of users with the investigation role for a product.
+        <p>This interface retrieves a list of users with the investigation role for a product.
 	      </p>
 	      <source>
 https://&lt;base_url&gt;/&lt;return_type&gt;/users/[logical_identifier/reference_type]
-          </source>
+        </source>
         <p>When the optional parameters, <i>logical_identifier</i> and <i>reference_type</i>, are not specified, the query returns the list of all users. When both parameters are specified and reference_type is investigation_reference, the query returns a list of users with the investigation role for the specified product.
         </p>
       </subsection>
       
       <subsection name="Product Node Role Query">
-      <p>This interface retrieves a list of users with the node role for a product.
+        <p>This interface retrieves a list of users with the node role for a product.
 	      </p>
 	      <source>
 https://&lt;base_url&gt;/&lt;return_type&gt;/users/[logical_identifier/reference_type]
-          </source>
+        </source>
         <p>When the optional parameters, <i>logical_identifier</i> and <i>reference_type</i>, are not specified, the query returns the list of all users. When both parameters are specified and reference_type is node_reference, the query returns a list of users with the node role for the specified product.
         </p>
       </subsection>
       
       <subsection name="User Query">
-      <p>This interface retrieves a list of users.
+        <p>This interface retrieves a list of users.
 	      </p>
 	      <source>
 https://&lt;base_url&gt;/&lt;return_type&gt;/users
-          </source>
-          <p>The query returns the list of users.
-          </p>        
+        </source>
+        <p>The query returns the list of users.
+        </p>        
       </subsection>
       
       <subsection name="User Role Query">
-      <p>This interface retrieves a list of roles for a given user.
+        <p>This interface retrieves a list of roles for a given user.
 	      </p>
 	      <source>
 https://&lt;base_url&gt;/&lt;return_type&gt;/users/[electronic_mail_address]
-          </source>
+        </source>
         <p>When the optional parameter, <i>electronic_mail_address</i>, is not specified, the query returns the list of all users. When parameter is specified, the query returns a list of roles for the specified user.
         </p>
       </subsection>
     </section>
 
+    <section name="Status Inserts/Updates">
+      <p>TBD (POST requests ...)
+      </p>
+
+      <subsection name="DOI Insert">
+        <p>This interface inserts a DOI status record for a given product.
+        </p>
+        <source>
+https://&lt;base_url&gt;/&lt;return_type&gt;/doi/add
+        </source>
+        <p>The following table maps interface parameters to the official parameter names and definitions from the <a href="#Parameters">Parameters</a> section.
+        </p>
+        <table>
+          <tr><th>Parameter</th><th>Parameter Map</th></tr>
+          <tr><td>id</td><td>logical_identifier</td></tr>
+          <tr><td>ver</td><td>version_id</td></tr>
+          <tr><td>doi</td><td>doi</td></tr>
+          <tr><td>url</td><td>site_url</td></tr>
+          <tr><td>email</td><td>electronic_mail_address</td></tr>
+          <tr><td>comment</td><td>comment</td></tr>
+        </table>
+      </subsection>
+
+      <subsection name="DOI Update">
+        <p>This interface updates a DOI status record for a given product.
+        </p>
+        <source>
+https://&lt;base_url&gt;/&lt;return_type&gt;/doi/update
+        </source>
+        <p>The following table maps interface parameters to the official parameter names and definitions from the <a href="#Parameters">Parameters</a> section.
+        </p>
+        <table>
+          <tr><th>Parameter</th><th>Parameter Map</th></tr>
+          <tr><td>id</td><td>logical_identifier</td></tr>
+          <tr><td>ver</td><td>version_id</td></tr>
+          <tr><td>url</td><td>site_url</td></tr>
+          <tr><td>email</td><td>electronic_mail_address</td></tr>
+          <tr><td>comment</td><td>comment</td></tr>
+        </table>
+      </subsection>
+    </section>
+
     <section name="Status Queries">
-      <p>TBD
+      <p>TBD (GET request ...)
       </p>
 
       <subsection name="Archive Status Query">
         <p>This interface retrieves the latest archive status of a given product.
         </p>
-		<source>
+		    <source>
 https://&lt;base_url&gt;/&lt;return_type&gt;/archivestatus/[logical_identifier/version_id/flag]
-          </source>
+        </source>
         <p>When the optional parameters, <i>logical_identifier</i>, <i>version_id</i> and <i>flag</i>, are not specified, the query returns the list of archive status of all products. When all three parameters are specified and flag is true, the query returns the <b>latest</b> archive status of the specified product.
         </p>
       </subsection>
@@ -225,9 +334,9 @@ https://&lt;base_url&gt;/&lt;return_type&gt;/archivestatus/[logical_identifier/v
       <subsection name="Archive Status List Query">
         <p>This interface retrieves the archive status progression of a given product.
         </p>
-		<source>
+		    <source>
 https://&lt;base_url&gt;/&lt;return_type&gt;/archivestatus/[logical_identifier/version_id/flag]
-          </source>
+        </source>
         <p>When the optional parameters, <i>logical_identifier</i>, <i>version_id</i> and <i>flag</i>, are not specified, the query returns the list of archive status of all products. When all three parameters are specified and flag is false, the query returns the archive status progression of the specified product.
         </p>
       </subsection>
@@ -235,9 +344,9 @@ https://&lt;base_url&gt;/&lt;return_type&gt;/archivestatus/[logical_identifier/v
       <subsection name="Certification Status Query">
         <p>This interface retrieves the latest certification status of a given product.
         </p>
-		<source>
+		    <source>
 https://&lt;base_url&gt;/&lt;return_type&gt;/certificationstatus/[logical_identifier/version_id/flag]
-          </source>
+        </source>
         <p>When the optional parameters, <i>logical_identifier</i>, <i>version_id</i> and <i>flag</i>, are not specified, the query returns the list of certification status of all products. When all three parameters are specified and flag is true, the query returns the <b>latest</b> certificationstatus status of the specified product.
         </p>
       </subsection>
@@ -245,9 +354,9 @@ https://&lt;base_url&gt;/&lt;return_type&gt;/certificationstatus/[logical_identi
       <subsection name="Certification Status List Query">
         <p>This interface retrieves the certification status progression of a given product.
         </p>
-		<source>
+		    <source>
 https://&lt;base_url&gt;/&lt;return_type&gt;/certificationstatus/[logical_identifier/version_id/flag]
-          </source>
+        </source>
         <p>When the optional parameters, <i>logical_identifier</i>, <i>version_id</i> and <i>flag</i>, are not specified, the query returns the list of certification status of all products. When all three parameters are specified and flag is false, the query returns the certification status progression of the specified product.
         </p>
       </subsection>
@@ -255,9 +364,9 @@ https://&lt;base_url&gt;/&lt;return_type&gt;/certificationstatus/[logical_identi
       <subsection name="DOI Query">
         <p>This interface retrieves the DOI and associated information of a given product.
         </p>
-		<source>
+		    <source>
 https://&lt;base_url&gt;/&lt;return_type&gt;/doi/[logical_identifier/version_id]
-          </source>
+        </source>
         <p>When the optional parameters, <i>logical_identifier</i> and <i>version_id</i>, are not specified, the query returns the list of DOIs of all products. When both parameters are specified, the query returns the DOI and associated information of the specified product.
         </p>
       </subsection>
@@ -265,9 +374,9 @@ https://&lt;base_url&gt;/&lt;return_type&gt;/doi/[logical_identifier/version_id]
       <subsection name="NSSDCA Query">
         <p>This interface retrieves the NSSDCA information of a given product.
         </p>
-		<source>
+		    <source>
 https://&lt;base_url&gt;/&lt;return_type&gt;/nssdcastatus/[logical_identifier/version_id]
-          </source>
+        </source>
         <p>When the optional parameters, <i>logical_identifier</i> and <i>version_id</i>, are not specified, the query returns the list of NSSDCA information of all products. When both parameters are specified, the query returns the NSSDCA information of the specified product.
         </p>
       </subsection>
@@ -275,9 +384,9 @@ https://&lt;base_url&gt;/&lt;return_type&gt;/nssdcastatus/[logical_identifier/ve
       <subsection name="Release Query">
         <p>This interface retrieves the the latest release of a given product.
         </p>
-		<source>
+		    <source>
 https://&lt;base_url&gt;/&lt;return_type&gt;/releases/[logical_identifier/version_id/flag]
-          </source>
+        </source>
         <p>When the optional parameters, <i>logical_identifier</i>, <i>version_id</i> and <i>flag</i>, are not specified, the query returns the list of releases of all products. When all three parameters are specified and flag is true, the query returns the <b>latest</b> releases of the specified product.
         </p>
       </subsection>
@@ -285,13 +394,12 @@ https://&lt;base_url&gt;/&lt;return_type&gt;/releases/[logical_identifier/versio
       <subsection name="Release List Query">
         <p>This interface retrieves the release progression of a given product.
         </p>
-		<source>
+		    <source>
 https://&lt;base_url&gt;/&lt;return_type&gt;/releases/[logical_identifier/version_id/flag]
-          </source>
+        </source>
         <p>When the optional parameters, <i>logical_identifier</i>, <i>version_id</i> and <i>flag</i>, are not specified, the query returns the list of releases of all products. When all three parameters are specified and flag is false, the query returns the releases progression of the specified product.
         </p>
       </subsection>
-      
     </section>
   </body>
 </document>
