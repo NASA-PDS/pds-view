@@ -164,40 +164,40 @@ insert into node_reference (logical_identifier, reference, title) values ('urn:n
 
 /* Juno JIRAM Data Sets */
 
-insert into product (logical_identifier, version_id, title, type, alternate_id) values ('urn:nasa:pds:context_pds3:data_set:data_set.juno-l-jiram-2-edr-v3.0', '1.0', 'JUNO-L-JIRAM-2-EDR-V3.0', 'PDS3-Data-Set', 'JUNO-L-JIRAM-2-EDR-V3.0');
+insert into product (logical_identifier, version_id, title, type, alternate_id) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-l-jiram-2-edr-v3.0', '1.0', 'JNO-L-JIRAM-2-EDR-V3.0', 'PDS3-Data-Set', 'JNO-L-JIRAM-2-EDR-V3.0');
 
-insert into investigation_reference (logical_identifier, reference, title) values ('urn:nasa:pds:context_pds3:data_set:data_set.juno-l-jiram-2-edr-v3.0', 'urn:nasa:pds:context_pds3:investigation:mission.juno', 'Juno');
+insert into investigation_reference (logical_identifier, reference, title) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-l-jiram-2-edr-v3.0', 'urn:nasa:pds:context_pds3:investigation:mission.juno', 'Juno');
 
-insert into instrument_reference (logical_identifier, reference, title) values ('urn:nasa:pds:context_pds3:data_set:data_set.juno-l-jiram-2-edr-v3.0', 'urn:nasa:pds:context_pds3:instrument:jiram.jno', 'JIRAM');
+insert into instrument_reference (logical_identifier, reference, title) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-l-jiram-2-edr-v3.0', 'urn:nasa:pds:context_pds3:instrument:jiram.jno', 'JIRAM');
 
-insert into node_reference (logical_identifier, reference, title) values ('urn:nasa:pds:context_pds3:data_set:data_set.juno-l-jiram-2-edr-v3.0', 'urn:nasa:pds:context_pds3:node:node.atmos', 'Atmospheres');
+insert into node_reference (logical_identifier, reference, title) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-l-jiram-2-edr-v3.0', 'urn:nasa:pds:context_pds3:node:node.atmos', 'Atmospheres');
 
 
-insert into product (logical_identifier, version_id, title, type, alternate_id) values ('urn:nasa:pds:context_pds3:data_set:data_set.juno-l-jiram-3-rdr-v3.0', '1.0', 'JUNO-L-JIRAM-3-RDR-V3.0', 'PDS3-Data-Set', 'JUNO-L-JIRAM-3-RDR-V3.0');
+insert into product (logical_identifier, version_id, title, type, alternate_id) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-l-jiram-3-rdr-v3.0', '1.0', 'JNO-L-JIRAM-3-RDR-V3.0', 'PDS3-Data-Set', 'JNO-L-JIRAM-3-RDR-V3.0');
 
-insert into investigation_reference (logical_identifier, reference, title) values ('urn:nasa:pds:context_pds3:data_set:data_set.juno-l-jiram-3-rdr-v3.0', 'urn:nasa:pds:context_pds3:investigation:mission.juno', 'Juno');
+insert into investigation_reference (logical_identifier, reference, title) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-l-jiram-3-rdr-v3.0', 'urn:nasa:pds:context_pds3:investigation:mission.juno', 'Juno');
 
-insert into instrument_reference (logical_identifier, reference, title) values ('urn:nasa:pds:context_pds3:data_set:data_set.juno-l-jiram-3-rdr-v3.0', 'urn:nasa:pds:context_pds3:instrument:jiram.jno', 'JIRAM');
+insert into instrument_reference (logical_identifier, reference, title) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-l-jiram-3-rdr-v3.0', 'urn:nasa:pds:context_pds3:instrument:jiram.jno', 'JIRAM');
 
 insert into node_reference (logical_identifier, reference, title) values ('urn:nasa:pds:context_pds3:data_set:data_set.juno-l-jiram-3-rdr-v3.0', 'urn:nasa:pds:context_pds3:node:node.atmos', 'Atmospheres');
 
 
-insert into product (logical_identifier, version_id, title, type, alternate_id) values ('urn:nasa:pds:context_pds3:data_set:data_set.juno-j-jiram-2-edr-v1.0', '1.0', 'JUNO-J-JIRAM-2-EDR-V1.0', 'PDS3-Data-Set', 'JUNO-J-JIRAM-2-EDR-V1.0');
+insert into product (logical_identifier, version_id, title, type, alternate_id) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-jiram-2-edr-v1.0', '1.0', 'JNO-J-JIRAM-2-EDR-V1.0', 'PDS3-Data-Set', 'JNO-J-JIRAM-2-EDR-V1.0');
 
-insert into investigation_reference (logical_identifier, reference, title) values ('urn:nasa:pds:context_pds3:data_set:data_set.juno-j-jiram-2-edr-v1.0', 'urn:nasa:pds:context_pds3:investigation:mission.juno', 'Juno');
+insert into investigation_reference (logical_identifier, reference, title) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-jiram-2-edr-v1.0', 'urn:nasa:pds:context_pds3:investigation:mission.juno', 'Juno');
 
-insert into instrument_reference (logical_identifier, reference, title) values ('urn:nasa:pds:context_pds3:data_set:data_set.juno-j-jiram-2-edr-v1.0', 'urn:nasa:pds:context_pds3:instrument:jiram.jno', 'JIRAM');
+insert into instrument_reference (logical_identifier, reference, title) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-jiram-2-edr-v1.0', 'urn:nasa:pds:context_pds3:instrument:jiram.jno', 'JIRAM');
 
-insert into node_reference (logical_identifier, reference, title) values ('urn:nasa:pds:context_pds3:data_set:data_set.juno-j-jiram-2-edr-v1.0', 'urn:nasa:pds:context_pds3:node:node.atmos', 'Atmospheres');
+insert into node_reference (logical_identifier, reference, title) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-jiram-2-edr-v1.0', 'urn:nasa:pds:context_pds3:node:node.atmos', 'Atmospheres');
 
 
-insert into product (logical_identifier, version_id, title, type, alternate_id) values ('urn:nasa:pds:context_pds3:data_set:data_set.juno-j-jiram-3-rdr-v1.0', '1.0', 'JUNO-J-JIRAM-3-RDR-V1.0', 'PDS3-Data-Set', 'JUNO-J-JIRAM-3-RDR-V1.0');
+insert into product (logical_identifier, version_id, title, type, alternate_id) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-jiram-3-rdr-v1.0', '1.0', 'JNO-J-JIRAM-3-RDR-V1.0', 'PDS3-Data-Set', 'JNO-J-JIRAM-3-RDR-V1.0');
 
-insert into investigation_reference (logical_identifier, reference, title) values ('urn:nasa:pds:context_pds3:data_set:data_set.juno-j-jiram-3-rdr-v1.0', 'urn:nasa:pds:context_pds3:investigation:mission.juno', 'Juno');
+insert into investigation_reference (logical_identifier, reference, title) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-jiram-3-rdr-v1.0', 'urn:nasa:pds:context_pds3:investigation:mission.juno', 'Juno');
 
-insert into instrument_reference (logical_identifier, reference, title) values ('urn:nasa:pds:context_pds3:data_set:data_set.juno-j-jiram-3-rdr-v1.0', 'urn:nasa:pds:context_pds3:instrument:jiram.jno', 'JIRAM');
+insert into instrument_reference (logical_identifier, reference, title) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-jiram-3-rdr-v1.0', 'urn:nasa:pds:context_pds3:instrument:jiram.jno', 'JIRAM');
 
-insert into node_reference (logical_identifier, reference, title) values ('urn:nasa:pds:context_pds3:data_set:data_set.juno-j-jiram-3-rdr-v1.0', 'urn:nasa:pds:context_pds3:node:node.atmos', 'Atmospheres');
+insert into node_reference (logical_identifier, reference, title) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-jiram-3-rdr-v1.0', 'urn:nasa:pds:context_pds3:node:node.atmos', 'Atmospheres');
 
 /* Juno JunoCam Data Sets */
 
@@ -618,8 +618,6 @@ insert into delivery (logical_identifier, version_id, name, start_date_time, sto
 
 insert into delivery (logical_identifier, version_id, name, start_date_time, stop_date_time, source, target, due_date) values ('urn:nasa:pds:context_pds3:data_set:data_set.juno-j-rss-1-ocru-v1.0', '1.0', 'Perijove 1/2', '2016-07-04T00:00:00', '2016-10-19T23:59:59', 'JSOC', 'Atmospheres Node', '2017-06-20');
 
-insert into delivery (logical_identifier, version_id, name, start_date_time, stop_date_time, source, target, due_date) values ('urn:nasa:pds:context_pds3:data_set:data_set.juno-j-rss-1-ocru-v1.0', '1.0', 'Perijove 3/4', '2016-10-20T00:00:00', '2017-02-02T23:59:59', 'JSOC', 'Atmospheres Node', '2017-08-28');
-
 
 insert into delivery (logical_identifier, version_id, name, start_date_time, stop_date_time, source, target, due_date) values ('urn:nasa:pds:context_pds3:data_set:data_set.juno-j-rss-1-jugr-v1.0', '1.0', 'Perijove 1/2', '2016-07-04T00:00:00', '2016-10-19T23:59:59', 'JSOC', 'Atmospheres Node', '2017-06-20');
 
@@ -641,16 +639,18 @@ insert into delivery (logical_identifier, version_id, name, start_date_time, sto
 
 insert into delivery (logical_identifier, version_id, name, start_date_time, stop_date_time, source, target, due_date) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-sw-jad-3-calibrated-v1.0', '1.0', 'Perijove 3/4', '2016-10-20T00:00:00', '2017-02-02T23:59:59', 'JSOC', 'PPI Node', '2017-08-28');
 
+/* Juno JEDI Deliveries */
+
 /* Juno JIRAM Deliveries */
 
-insert into delivery (logical_identifier, version_id, name, start_date_time, stop_date_time, source, target, due_date) values ('urn:nasa:pds:context_pds3:data_set:data_set.juno-j-jiram-2-edr-v1.0', '1.0', 'Perijove 1/2', '2016-07-04T00:00:00', '2016-10-19T23:59:59', 'JSOC', 'Atmospheres Node', '2017-06-20');
+insert into delivery (logical_identifier, version_id, name, start_date_time, stop_date_time, source, target, due_date) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-jiram-2-edr-v1.0', '1.0', 'Perijove 1/2', '2016-07-04T00:00:00', '2016-10-19T23:59:59', 'JSOC', 'Atmospheres Node', '2017-06-20');
 
-insert into delivery (logical_identifier, version_id, name, start_date_time, stop_date_time, source, target, due_date) values ('urn:nasa:pds:context_pds3:data_set:data_set.juno-j-jiram-2-edr-v1.0', '1.0', 'Perijove 3/4', '2016-10-20T00:00:00', '2017-02-02T23:59:59', 'JSOC', 'Atmospheres Node', '2017-08-28');
+insert into delivery (logical_identifier, version_id, name, start_date_time, stop_date_time, source, target, due_date) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-jiram-2-edr-v1.0', '1.0', 'Perijove 3/4', '2016-10-20T00:00:00', '2017-02-02T23:59:59', 'JSOC', 'Atmospheres Node', '2017-08-28');
 
 
-insert into delivery (logical_identifier, version_id, name, start_date_time, stop_date_time, source, target, due_date) values ('urn:nasa:pds:context_pds3:data_set:data_set.juno-j-jiram-3-edr-v1.0', '1.0', 'Perijove 1/2', '2016-07-04T00:00:00', '2016-10-19T23:59:59', 'JSOC', 'Atmospheres Node', '2017-06-20');
+insert into delivery (logical_identifier, version_id, name, start_date_time, stop_date_time, source, target, due_date) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-jiram-3-rdr-v1.0', '1.0', 'Perijove 1/2', '2016-07-04T00:00:00', '2016-10-19T23:59:59', 'JSOC', 'Atmospheres Node', '2017-06-20');
 
-insert into delivery (logical_identifier, version_id, name, start_date_time, stop_date_time, source, target, due_date) values ('urn:nasa:pds:context_pds3:data_set:data_set.juno-j-jiram-3-edr-v1.0', '1.0', 'Perijove 3/4', '2016-10-20T00:00:00', '2017-02-02T23:59:59', 'JSOC', 'Atmospheres Node', '2017-08-28');
+insert into delivery (logical_identifier, version_id, name, start_date_time, stop_date_time, source, target, due_date) values ('urn:nasa:pds:context_pds3:data_set:data_set.jno-j-jiram-3-rdr-v1.0', '1.0', 'Perijove 3/4', '2016-10-20T00:00:00', '2017-02-02T23:59:59', 'JSOC', 'Atmospheres Node', '2017-08-28');
 
 /* Juno JunoCam Deliveries */
 
