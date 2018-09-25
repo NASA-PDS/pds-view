@@ -1,668 +1,668 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<!--
-  Copyright 2010-2016, by the California Institute of Technology.
-  ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
-  Any commercial use must be negotiated with the Office of Technology Transfer
-  at the California Institute of Technology.
-
-  This software is subject to U. S. export control laws and regulations
-  (22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software
-  is subject to U.S. export control laws and regulations, the recipient has
-  the responsibility to obtain export licenses or other export authority as
-  may be required before exporting such information to foreign countries or
-  providing access to foreign nationals.
-
-  $Id$
--->
-
-<document>
-  <properties>
-    <title>Installation</title>
-    <author email="Paul.Ramirez@jpl.nasa.gov">Paul Ramirez</author>
-    <author email="Sean.Hardman@jpl.nasa.gov">Sean Hardman</author>
-  </properties>
-
-  <body>
-    <section name="Installation">
-      <p>This document describes how to download, install and configure the Registry Service software contained in the <i>${project.artifactId}</i> package. A typical PDS installation calls for two instances of the Registry Service, one named <i>registry-pds3</i> and one named <i>registry-pds4</i>. The instructions in this document pertain to this typical installation. The following topics can be found in this section:
-      </p>
-
-      <ul>
-        <li><a href="#System_Requirements">System Requirements</a></li>
-        <li><a href="#Unpacking_the_Package">Unpacking the Package</a></li>
-        <li><a href="#Deploying_the_Databases">Deploying the Databases</a></li>
-        <li><a href="#Deploying_the_Application">Deploying the Application</a></li>
-        <li><a href="#General_Configuration">General Configuration</a></li>
-        <li><a href="#Secure_Configuration">Secure Configuration</a></li>
-        <li><a href="#Common_Errors">Common Errors</a></li>
-      </ul>
-    </section>
-
-    <section name="System Requirements">
-      <p>This section details the system requirements for installing and operating the Registry Service.
-      </p>
-
-      <subsection name="Java Runtime Environment">
-        <p>The Registry Service was developed using Java and will run on any platform with a supported Java Runtime Environment (JRE). The software was specifically compiled for and tested under Java version 1.8. The following commands test the local Java installation in a UNIX-based environment:
-        </p>
-
-        <source>
-% which java
-/usr/bin/java
-
-% java -version
-java version "1.8.0_101"
-Java(TM) SE Runtime Environment (build 1.8.0_101-b13)
-Java HotSpot(TM) 64-Bit Server VM (build 25.101-b13, mixed mode)
-        </source>
-
-        <p>The first command above checks whether the <i>java</i> executable is in the environment's path and the second command reports the version. If Java is not installed or the version is not at least 1.7, Java will need to be downloaded and installed in the current environment. Consult the local system administrator for installation of this software. For the do-it-yourself crowd, the Java software can be downloaded from the <a href="http://www.oracle.com/technetwork/java/javase/downloads/" target="_blank">Oracle Java Download</a> page. The suggested software package is the Java Standard Edition (SE) 8, either the JDK or the JRE package. The JDK package is not necessary to run the software but could be useful if development and compilation of Java software will also occur in the current environment.
-        </p>
-      </subsection>
-
-      <subsection name="Java Application Server">
-        <p>The Registry Service requires a Java application server for hosting the web application. The suggested application server for this release is Apache Tomcat with a minimal version of 7.0.X. Consult the local system administrator for installation of this software. For the do-it-yourself crowd, see the <a href="../../../release/index-tomcat.html" target="_blank">Tomcat Deployment</a> document for installation and configuration details. If viewing this document from the ${project.artifactId} package, view the <a href="http://pds-engineering.jpl.nasa.gov/development/pds4/current/release/index-tomcat.html" target="_blank">Tomcat Deployment</a> document from the Engineering Node site.
-        </p>
-
-        <p>The top-level directory where Apache Tomcat is installed (i.e. the directory containing the <i>webapps</i> and <i>conf</i> sub-directories) will be referenced in these instructions as $TOMCAT_HOME.
-        </p>
-      </subsection>
-
-      <subsection name="cURL Utility">
-        <p>Although it is generally a useful tool for interacting with the Registry Service, the <a href="http://curl.haxx.se/" target="_blank">cURL</a> command-line application is required by the <i>RegistryConfig</i> script for populating the service with the supported object types. See the <a href="#Configuring_the_Application">Configuration</a> section for more information on configuring the service. If <i>cURL</i> is not installed on the local server but <i>Wget</i> is, see the <a href="../operate/index-wget.html">Using Wget</a> section for converting <i>cURL</i> commands to <i>Wget</i> commands.
-        </p>
-      </subsection>
-
-      <subsection name="Database Server">
-        <p>The Registry Service comes prepackaged with the <a href="http://db.apache.org/derby/" target="_blank">Apache Derby</a> database. If another database solution is desired (i.e., MySQL), it should be installed and accessible by the Registry Service. See the <a href="#Deploying_the_Databases">Deploying the Database</a> section if this is the first time you are installing the registry service and <a href="#Database_Configuration">Configuration</a> section for more information on configuring the service for a different database solution.
-        </p>
-      </subsection>
-    </section>
-
-    <section name="Unpacking the Package">
-      <p>Download the <i>${project.artifactId}</i> package from the PDS <a href="ftp://pds.nasa.gov/pub/toplevel/2010/registry/" target="_blank">FTP</a> site. The binary distribution is available in identical zip or tar/gzip packages. The installation directory may vary from environment to environment but in UNIX-based environments it is typical to install software packages in the <i>/usr/local</i> directory and in Windows-based environments it is typical to install software packages in the <i>C:\Program Files</i> directory. Unpack the selected binary distribution file with one of the following commands:
-      </p>
-
-      <source>
-% unzip ${project.artifactId}-${project.version}-bin.zip
-or
-% tar -xzvf ${project.artifactId}-${project.version}-bin.tar.gz
-      </source>
-
-      <p>Note: Depending on the platform, the native version of <i>tar</i> may produce an error when attempting to unpack the distribution file because many of the file paths are greater than 100 characters. If available, the GNU version of tar will resolve this problem. If that is not available or cannot be installed, the zipped package will work just fine in a UNIX environment.
-      </p>
-
-      <p>The commands above result in the creation of the <i>${project.artifactId}-${project.version}</i> directory with the following directory structure:
-      </p>
-
-      <ul>
-        <li><b>README.txt</b><br/>
-          <p>A README file directing the user to the available documentation for the project.
-          </p>
-        </li>
-        <li><b>LICENSE.txt</b><br/>
-          <p>The copyright notice from the <a href="http://www.caltech.edu/" target="_blank">California Institute of Technology</a> detailing the restrictions regarding the use and distribution of this software. Although the license is strictly worded, the software has been classified as Technology and Software Publicly Available (TSPA) and is available for <i>anyone</i> to download and use.
-          </p>
-        </li>
-        <li><b>registry.war</b><br/>
-          <p>This is the Web ARchive (WAR) file containing the Registry Service software including all dependent JAR files.
-          </p>
-        </li>
-        <li><b>bin/</b><br/>
-          <p>This directory contains the batch and shell scripts for registering the supported object types.
-          </p>
-        </li>
-        <li><b>lib</b><br/>
-          <p>This directory contains jar files for working with the Derby Database.
-          </p>
-        </li>
-        <li><b>conf/</b><br/>
-          <p>This directory contains the policy files identifying the supported object types.
-          </p>
-        </li>
-        <li><b>doc/</b><br/>
-          <p>This directory contains a local web site with the Registry Service documentation, javadoc, unit test results and other configuration management related information. Just point the desired web browser to the <i>index.html</i> file in this directory.
-          </p>
-        </li>
-        <li><b>examples/</b><br/>
-          <p>This directory contains examples of artifact descriptions that can be registered with a service instance.
-          </p>
-        </li>
-      </ul>
-    </section>
-
-    <section name="Deploying the Databases">
-      <p>If this installation is an upgrade of an existing installation, then the determination needs to be made regarding whether to keep or delete the existing databases. If the databases are to be kept, then this section may be skipped. If the databases are to be deleted, then follow the instructions in the <a href="index-db-delete.html">Delete Existing Database</a> section. Once the databases have been deleted or if this is a new installation of the software, follow the instructions below for creating the databases and installing the registry schema. The instructions are dependent on the database server to be used in the current environment.
-      </p>
-
-      <subsection name="Derby">
-        <p>The Derby database comes packaged with the Registry Service. If choosing to utilize Derby as the database server, launch the Derby <i>ij</i> Tool as follows:
-        </p>
-
-        <source>
-% cd ${project.artifactId}-${project.version}
-% java -Djava.ext.dirs=lib/ org.apache.derby.tools.ij
-        </source>
-
-        <p>Then run each of the <i>ij</i> commands below to create the databases and install the registry schema:
-        </p>
-
-        <source>
-ij> connect 'jdbc:derby:registrypds3;create=true;user=registry';
-ij> run 'conf/derby-registry-schema.ddl';
-ij> disconnect;
-ij> connect 'jdbc:derby:registrypds4;create=true;user=registry';
-ij> run 'conf/derby-registry-schema.ddl';
-ij> exit;
-        </source>
-
-        <p>The <i>registrypds3</i> and <i>registrypds4</i> directories, which are the Derby databases, will now be present in the current working directory. Note: For operational installations, the <i>registrypds3</i> and <i>registrypds4</i> directories should be moved to a more permanent location on disk that is accessible by Tomcat so that they don't get overwritten in a future upgrade. In addition, if the Tomcat server is not running as the <i>root</i> user, the <i>registrypds3</i> and <i>registrypds4</i> directories containing the Derby database (wherever it is located) must be owned by the same user account that is utilized to run the Tomcat server.
-        </p>
-      </subsection>
-
-      <subsection name="MySQL">
-        <p>If choosing to utilize an existing MySQL database server, perform the commands below. If installing a new instance of MySQL, consult the local system administrator for installation of this software. For the do-it-yourself crowd, the MySQL software can be downloaded from the <a href="http://www.mysql.com/downloads/mysql/" target="_blank">MySQL Community Server Download</a> page. Choose the appropriate package (version 5.5.X) for the target environment. Once the installation is complete, perform the commands below to create the databases and install the registry schema:
-        </p>
-
-        <source>
-% cd ${project.artifactId}-${project.version}
-% mysqladmin -u root -p create registrypds3
-% mysql -u root -p -e "GRANT ALL ON registrypds3.* TO registry@localhost \
-  IDENTIFIED BY 'p@ssw0rd'"
-% mysql -u root -p -D registrypds3 &lt; conf/mysql-registry-schema.ddl
-% mysqladmin -u root -p create registrypds4
-% mysql -u root -p -e "GRANT ALL ON registrypds4.* TO registry@localhost \
-  IDENTIFIED BY 'p@ssw0rd'"
-% mysql -u root -p -D registrypds4 &lt; conf/mysql-registry-schema.ddl
-        </source>
-      </subsection>
-
-      <subsection name="PostgreSQL">
-        <p>If choosing to utilize an existing PostgreSQL database server, perform the commands below. If installing a new instance of PostgreSQL, consult the local system administrator for installation of this software. For the do-it-yourself crowd, the PostgreSQL software can be downloaded from the <a href="http://www.postgresql.org/download/" target="_blank">PostgreSQL Download</a> page. Choose the appropriate package (version 9.X) for the target environment. Once the installation is complete, perform the commands below to create the databases and install the registry schema:
-        </p>
-
-        <source>
-% cd ${project.artifactId}-${project.version}
-% psql -U postgres
-postgres=# CREATE USER registry WITH password 'p@ssw0rd';
-postgres=# CREATE DATABASE registrypds3 WITH OWNER registry;
-postgres=# \c registrypds3 registry
-postgres=# \i conf/postgres-registry-schema.ddl
-postgres=# \q
-% psql -U postgres
-postgres=# CREATE DATABASE registrypds4 WITH OWNER registry;
-postgres=# \c registrypds4 registry
-postgres=# \i conf/postgres-registry-schema.ddl
-postgres=# \q
-        </source>
-      </subsection>
-    </section>
-
-    <section name="Deploying the Application">
-      <p>The Registry Service web application is packaged as a WAR file (<i>registry.war</i>) and is intended for installation under a standard Java Application Server. If there was a previous installation of the Registry Service, each instance of the application should be un-deployed from the Tomcat server. This can be accomplished by deleting the applications directly (assuming the user has appropriate permission) from the <i>$TOMCAT_HOME/webapps</i> directory (the variable $TOMCAT_HOME may not be set in your environment, if not, replace with the absolute path to the Tomcat installation):
-      </p>
-
-      <source>
-% cd $TOMCAT_HOME/webapps
-% rm -rf registry-pds3 registry-pds3.war
-% rm -rf registry-pds4 registry-pds4.war
-      </source>
-
-      <p>Alternatively, if the Tomcat Manager interface was utilized for the deployment, find the Registry Service entries in the Manager interface and select the <i>Undeploy</i> button for each instance to remove the applications from the server.
-      </p>
-
-      <p>In order to deploy the software for either a new or upgrade installation, the WAR file is normally copied directly to the <i>$TOMCAT_HOME/webapps</i> directory (assuming the user has appropriate permission) or installed via the Manager interface. To copy the WAR file directly, perform the following commands:
-      </p>
-
-      <source>
-% cd ${project.artifactId}-${project.version}
-% mv registry.war registry-pds3.war
-% cp registry-pds3.war $TOMCAT_HOME/webapps
-% mv registry-pds3.war registry-pds4.war
-% cp registry-pds4.war $TOMCAT_HOME/webapps
-      </source>
-
-      <p>Once this step is complete, the application instances are ready for operation. Verify a successful installation by executing the following commands:
-      </p>
-
-      <source>
-% curl -X GET -H "Accept:application/xml" -v \
-http://localhost:8080/registry-pds3/
-% curl -X GET -H "Accept:application/xml" -v \
-http://localhost:8080/registry-pds4/
-      </source>
-
-      <p>The above commands will return the list of links to the service's end points and an HTTP status of 200. The output should look like the following:
-      </p>
-
-      <source>
-* About to connect() to localhost port 8080 (#0)
-*   Trying ::1...
-* connected
-* Connected to localhost (::1) port 8080 (#0)
-&gt; GET /registry-pds3/ HTTP/1.1
-&gt; User-Agent: curl/7.24.0 (x86_64-apple-darwin12.0) libcurl/7.24.0 OpenSSL/0.9.8| zlib/1.2.5
-&gt; Host: localhost:8080
-&gt; Accept:application/xml
-&gt;
-&lt; HTTP/1.1 200 OK
-&lt; Server: Apache-Coyote/1.1
-&lt; Link: &lt;http://localhost:8080/registry-pds3/associations&gt;; rel=associations
-&lt; Link: &lt;http://localhost:8080/registry-pds3/classifications&gt;; rel=classifications
-&lt; Link: &lt;http://localhost:8080/registry-pds3/extrinsics&gt;; rel=extrinsics
-&lt; Link: &lt;http://localhost:8080/registry-pds3/identifiers&gt;; rel=identifiers
-&lt; Link: &lt;http://localhost:8080/registry-pds3/events&gt;; rel=events
-&lt; Link: &lt;http://localhost:8080/registry-pds3/schemes&gt;; rel=schemes
-&lt; Link: &lt;http://localhost:8080/registry-pds3/services&gt;; rel=services
-&lt; Link: &lt;http://localhost:8080/registry-pds3/packages&gt;; rel=packages
-&lt; Link: &lt;http://localhost:8080/registry-pds3/packages&gt;; rel=batch
-&lt; Content-Type: application/xml
-&lt; Transfer-Encoding: chunked
-&lt; Date: Tue, 29 Sep 2015 16:02:26 GMT
-&lt;
-...
-      </source>
-
-      <p>From a web browser, the command returns a welcome page. Make sure to include the trailing slash on the above command.
-      </p>
-    </section>
-
-    <section name="General Configuration">
-      <p>The following steps configure the Registry Service instances for the current environment and ready the services for operation.
-      </p>
-
-      <subsection name="Database Configuration">
-        <p>The following is a set of instructions for configuring the Registry Service instances to access newly created or existing databases.  The instructions are dependent on the database server to be used in the current environment.
-        </p>
-
-        <subsection name="Derby">
-          <p>By default, the Registry Service comes packaged with and configured to utilize Derby as the backend database. The default Derby configuration assumes that you have a database named <i>registry</i> and will use a default user name and password as specified below. In order to change the URL for the <i>registry-pds3</i> instance of the service, edit the <i>derby.properties</i> file located in the <i>$TOMCAT_HOME/webapps/registry-pds3/WEB-INF/classes</i> directory. The following line:
-          </p>
-
-          <source>
-javax.persistence.jdbc.url=jdbc:derby:registry
-
-  should be changed to:
-
-javax.persistence.jdbc.url=jdbc:derby:registrypds3
-          </source>
-
-          <p>In order to change the URL for the <i>registry-pds4</i> instance of the service, edit the <i>derby.properties</i> file located in the <i>$TOMCAT_HOME/webapps/registry-pds4/WEB-INF/classes</i> directory. The following line:
-          </p>
-
-          <source>
-javax.persistence.jdbc.url=jdbc:derby:registry
-
-  should be changed to:
-
-javax.persistence.jdbc.url=jdbc:derby:registrypds4
-          </source>
-
-          <p>The Derby database home directory will default to the current working directory where the Tomcat server was launched. To permanently set the home directory of the databases, add the following property to the <i>CATALINA_OPTS</i> environment variable:
-          </p>
-
-          <source>
-CATALINA_OPTS="-Dderby.system.home=/path/to/registrydb/home"
-          </source>
-
-          <p>Note: The <i>derby.system.home</i> should point to the parent directory which contains the registry databases (i.e. the parent directory of the <i>registrypds3</i> and <i>registrypds4</i> directories). See the Environment Configuration section of the <a href="../../../release/index-tomcat.html" target="_blank">Tomcat Deployment</a> document for details on specifying the <i>CATALINA_OPTS</i> environment variable. If viewing this document from the ${project.artifactId} package, view the <a href="http://pds-engineering.jpl.nasa.gov/development/pds4/current/release/index-tomcat.html" target="_blank">Tomcat Deployment</a> document from the Engineering Node site. The <i>CATALINA_OPTS</i> environment variable is loaded from the Tomcat startup scripts. The Tomcat server will need to be restarted for this configuration to take effect.
-          </p>
-        </subsection>
-
-        <subsection name="MySQL">
-          <p>If utilizing MySQL as the backend database, the configuration can be changed from Derby to MySQL. To modify the configuration for the <i>registry-pds3</i> instance of the service, edit the <i>applicationContext.xml</i> file located in the <i>$TOMCAT_HOME/webapps/registry-pds3/WEB-INF/classes</i> directory. The following line:
-          </p>
-
-          <source>
-&lt;context:property-placeholder location="classpath:derby.properties"/&gt;
-
-  should be changed to:
-
-&lt;context:property-placeholder location="classpath:mysql.properties"/&gt;
-          </source>
-
-          <p>The default configuration assumes that you have MySQL installed with a database named <i>registry</i> and will use a default user name and password as specified below. In order to change the URL for the <i>registry-pds3</i> instance of the service, edit the <i>mysql.properties</i> file located in the <i>$TOMCAT_HOME/webapps/registry-pds3/WEB-INF/classes</i> directory. The following line:
-          </p>
-
-          <source>
-javax.persistence.jdbc.url=jdbc:mysql://localhost:3306/registry
-
-  should be changed to:
-
-javax.persistence.jdbc.url=jdbc:mysql://localhost:3306/registrypds3
-          </source>
-
-          <p>To modify the configuration for the <i>registry-pds4</i> instance of the service, edit the <i>applicationContext.xml</i> file located in the <i>$TOMCAT_HOME/webapps/registry-pds4/WEB-INF/classes</i> directory. The following line:
-          </p>
-
-          <source>
-&lt;context:property-placeholder location="classpath:derby.properties"/&gt;
-
-  should be changed to:
-
-&lt;context:property-placeholder location="classpath:mysql.properties"/&gt;
-          </source>
-
-          <p>In order to change the URL for the <i>registry-pds4</i> instance of the service, edit the <i>mysql.properties</i> file located in the <i>$TOMCAT_HOME/webapps/registry-pds4/WEB-INF/classes</i> directory. The following line:
-          </p>
-
-          <source>
-javax.persistence.jdbc.url=jdbc:mysql://localhost:3306/registry
-
-  should be changed to:
-
-javax.persistence.jdbc.url=jdbc:mysql://localhost:3306/registrypds4
-          </source>
-
-          <p>Additionally for each instance, if you are using a version of MySQL older than 5.x you will need to change the dialect. To do this simply add a "#" before the first hibernate.dialect entry and remove the "#" from the second entry.
-          </p>
-
-          <p>Before:</p>
-          <source>
-# For use with MySQL 5+
-hibernate.dialect=org.hibernate.dialect.MySQL5InnoDBDialect
-# For use with older versions of MySQL. See hibernate documentation.
-#hibernate.dialect=org.hibernate.dialect.MySQLInnoDBDialect
-          </source>
-          <p>After:</p>
-          <source>
-# For use with MySQL 5+
-#hibernate.dialect=org.hibernate.dialect.MySQL5InnoDBDialect
-# For use with older versions of MySQL. See hibernate documentation.
-hibernate.dialect=org.hibernate.dialect.MySQLInnoDBDialect
-          </source>
-        </subsection>
-
-        <subsection name="PostgreSQL">
-          <p>If utilizing MySQL as the backend database, the configuration can be changed from Derby to PostgreSQL. To modify the configuration for the <i>registry-pds3</i> instance of the service, edit the <i>applicationContext.xml</i> file located in the <i>$TOMCAT_HOME/webapps/registry-pds3/WEB-INF/classes</i> directory. The following line:
-          </p>
-
-          <source>
-&lt;context:property-placeholder location="classpath:derby.properties"/&gt;
-
-  should be changed to:
-
-&lt;context:property-placeholder location="classpath:postgres.properties"/&gt;
-          </source>
-
-          <p>The default configuration assumes that you have PostgreSQL installed with a database named <i>registry</i> and will use a default user name and password as specified below. In order to change the URL for the <i>registry-pds3</i> instance of the service, edit the <i>postgres.properties</i> file located in the <i>$TOMCAT_HOME/webapps/registry-pds3/WEB-INF/classes</i> directory. The following line:
-          </p>
-
-          <source>
-javax.persistence.jdbc.url=jdbc:postgresql://localhost:5432/registry
-
-  should be changed to:
-
-javax.persistence.jdbc.url=jdbc:postgresql://localhost:5432/registrypds3
-          </source>
-
-          <p>To modify the configuration for the <i>registry-pds4</i> instance of the service, edit the <i>applicationContext.xml</i> file located in the <i>$TOMCAT_HOME/webapps/registry-pds4/WEB-INF/classes</i> directory. The following line:
-          </p>
-
-          <source>
-&lt;context:property-placeholder location="classpath:derby.properties"/&gt;
-
-  should be changed to:
-
-&lt;context:property-placeholder location="classpath:postgres.properties"/&gt;
-          </source>
-
-          <p>In order to change the URL for the <i>registry-pds4</i> instance of the service, edit the <i>mysql.properties</i> file located in the <i>$TOMCAT_HOME/webapps/registry-pds4/WEB-INF/classes</i> directory. The following line:
-          </p>
-
-          <source>
-javax.persistence.jdbc.url=jdbc:postgresql://localhost:5432/registry
-
-  should be changed to:
-
-javax.persistence.jdbc.url=jdbc:postgresql://localhost:5432/registrypds4
-          </source>
-        </subsection>
-      </subsection>
-
-      <subsection name="Home Configuration">
-        <p>In a distributed environment with multiple Registry Service instances, the registry home value identifies the source of a registry entry when it has been replicated to another registry instance. By default, the registry home is configured as <i>http://localhost:8080/registry</i>. This should be modified to represent the Registry Service URL location of the local installation. Meaning that instead of <i>localhost:8080</i>, the fully qualified name of the local server should be specified (e.g., node.nasa.gov). To modify the configuration for the <i>registry-pds3</i> instance of the service, edit the <i>applicationContext.xml</i> file located in the <i>$TOMCAT_HOME/webapps/registry-pds3/WEB-INF/classes</i> directory. Modify the following line with the new URL location:
-        </p>
-
-        <source>
-&lt;bean id="idGenerator"
-class="gov.nasa.pds.registry.model.naming.DefaultIdentifierGenerator"
-p:home="http://localhost:8080/registry"/&gt;
-
-  should be changed to (if hosted at node.nasa.gov on port 80):
-
-&lt;bean id="idGenerator"
-class="gov.nasa.pds.registry.model.naming.DefaultIdentifierGenerator"
-p:home="http://node.nasa.gov/registry-pds3"/&gt;
-        </source>
-
-        <p>To modify the configuration for the <i>registry-pds4</i> instance of the service, edit the <i>applicationContext.xml</i> file located in the <i>$TOMCAT_HOME/webapps/registry-pds4/WEB-INF/classes</i> directory. Modify the following line with the new URL location:
-        </p>
-
-        <source>
-&lt;bean id="idGenerator"
-class="gov.nasa.pds.registry.model.naming.DefaultIdentifierGenerator"
-p:home="http://localhost:8080/registry"/&gt;
-
-  should be changed to (if hosted at node.nasa.gov on port 80):
-
-&lt;bean id="idGenerator"
-class="gov.nasa.pds.registry.model.naming.DefaultIdentifierGenerator"
-p:home="http://node.nasa.gov/registry-pds4"/&gt;
-        </source>
-      </subsection>
-
-      <p>If either the database configuration or home configuration were changed above in the deployed application directory under the <i>$TOMCAT_HOME</i> directory, the Registry Service applications must be stopped and started for these changes to take effect. This can be accomplished by restarting the Tomcat Server. Alternatively, if the Tomcat Manager interface was utilized for the deployment, find the Registry Service entries in the Manager interface, select the associated <i>Stop</i> button followed by a selection of the associated <i>Start</i> button to stop and then start the applications, respectively.
-      </p>
-
-      <subsection name="Object Type Configuration">
-        <p>Once the Registry Service instances are installed and running, the list of supported object types must be registered with the services. The list of object types corresponds with the types of products that a given instance of the Registry Service will support. If this installation involves an existing database (where this configuration was previously performed), then the previous configuration must be deleted prior to loading the current version's configuration. If this is the case, follow the instructions in the <a href="index-conf-delete.html">Delete Existing Configuration</a> section. Once the configuration packages have been deleted or if this is a new installation of the software, follow the instructions below for loading the configuration.
-        </p>
-
-        <p>The <i>registry-config</i> and <i>registry-config.bat</i> scripts default to a Registry Service end point of <i>http://localhost:8080/registry</i>. In order to configure the <i>registry-pds3</i> instance of the service, set the <i>REGISTRY_SERVICE</i> environment variable to the proper end point prior to executing the script. In addition, this script should be executed prior to applying security to the service URLs since it does not account for a secured interface. Execute the script from the <i>bin</i> directory in order to register the full set of object types:
-        </p>
-
-        <source>
-% cd ${project.artifactId}-${project.version}/bin
-% export REGISTRY_SERVICE=http://localhost:8080/registry-pds3
-% ./registry-config
-        </source>
-
-        <p>In order to configure the <i>registry-pds4</i> instance of the service, set the <i>REGISTRY_SERVICE</i> environment variable to the proper end point and execute the script:
-        </p>
-
-        <source>
-% export REGISTRY_SERVICE=http://localhost:8080/registry-pds4
-% ./registry-config
-        </source>
-
-        <p>The output from these commands should show the registration of the Core object types and PDS object types. Since the configuration files referenced in the configuration script are slightly larger they are sent in chunks. Each configuration will get associated with a Registry Package and can be found by following the location link that comes in the header of the response. The output from the command should look something like the following:
-        </p>
-
-        <source>
-* About to connect() to localhost port 8080 (#0)
-*   Trying ::1... connected
-* Connected to localhost (::1) port 8080 (#0)
-&gt; POST /registry/configure?name=Core+Objects&amp;\
-description=This+configures+the+core+set+of+registry+objects HTTP/1.1
-&gt; User-Agent: curl/7.19.7 ... libcurl/7.19.7 OpenSSL/0.9.8l zlib/1.2.3
-&gt; Host: localhost:8080
-&gt; Accept: */*
-&gt; Content-type:application/xml
-&gt; Content-Length: 5295
-&gt; Expect: 100-continue
-&gt;
-&lt; HTTP/1.1 100 Continue
-&lt; HTTP/1.1 201 Created
-&lt; Server: Apache-Coyote/1.1
-&lt; Location: http://localhost:8080/registry/packages/\
-urn:uuid:bd6e4f7b-dfb0-443c-b845-3378077b1016
-&lt; Content-Type: text/plain
-&lt; Transfer-Encoding: chunked
-&lt; Date: Mon, 21 Mar 2011 19:55:52 GMT
-&lt;
-* Connection #0 to host localhost left intact
-* Closing connection #0
-urn:uuid:bd6e4f7b-dfb0-443c-b845-3378077b1016
-
-* About to connect() to localhost port 8080 (#0)
-*   Trying ::1... connected
-* Connected to localhost (::1) port 8080 (#0)
-&gt; POST /registry/configure?name=PDS+Objects&amp;\
-description=This+configures+PDS+object+types HTTP/1.1
-&gt; User-Agent: curl/7.19.7 ... libcurl/7.19.7 OpenSSL/0.9.8l zlib/1.2.3
-&gt; Host: localhost:8080
-&gt; Accept: */*
-&gt; Content-type:application/xml
-&gt; Content-Length: 18320
-&gt; Expect: 100-continue
-&gt;
-&lt; HTTP/1.1 100 Continue
-&lt; HTTP/1.1 201 Created
-&lt; Server: Apache-Coyote/1.1
-&lt; Location: http://localhost:8080/registry/packages/\
-urn:uuid:a07ad134-42ad-4781-9cbd-826bb9a8dfec
-&lt; Content-Type: text/plain
-&lt; Transfer-Encoding: chunked
-&lt; Date: Mon, 21 Mar 2011 19:55:53 GMT
-&lt;
-* Connection #0 to host localhost left intact
-* Closing connection #0
-urn:uuid:a07ad134-42ad-4781-9cbd-826bb9a8dfec
-        </source>
-
-        <p>Verify successful configuration by executing the following command (where <i>pdsX</i> is either <i>pds3</i> or <i>pds4</i>):
-        </p>
-
-        <source>
-% curl -X GET -H "Accept:application/xml" -v \
-http://localhost:8080/registry-pdsX/report
-        </source>
-
-        <p>The output from this command should look something like the following (with respect to the <i>classificationNodes</i> and <i>classificationSchemes</i> attributes):
-        </p>
-
-        <source>
-&lt;ns2:report xmlns:ns2='http://registry.pds.nasa.gov' registryVersion='${project.version}'
-packages='4' classificationNodes='67' classificationSchemes='2' services='0'
-extrinsics='0' associations='69' serverStarted='2013-08-28T12:45:43.514-07:00'
-status='OK'/&gt;
-        </source>
-      </subsection>
-    </section>
-
-    <section name="Secure Configuration">
-      <p>The preferred configuration for securing applications on the Tomcat server is to limit access via firewall configuration so that external access is blocked but internal access is allowed. Internal access could be limited to users on the local server or could allow servers on the same subnet access. If these kinds of limitations are not possible in the local environment, then the secure configuration described in this section should be implemented.
-      </p>
-
-      <p>The following steps configure the Registry Service for secure access within the Tomcat server. See the <a href="../../../release/index-tomcat.html" target="_blank">Tomcat Deployment</a> document for details on securing the Tomcat Server to support the application configuration that follows. To modify the configuration, edit the <i>web.xml</i> file located in the <i>$TOMCAT_HOME/webapps/registry-pdsX/WEB-INF</i> directory. Add the following blocks of XML to the end of the file:
-      </p>
-
-      <source>
-&lt;web-app&gt;
-  ...
-  &lt;security-constraint&gt;
-    &lt;web-resource-collection&gt;
-      &lt;web-resource-name&gt;Registry Service&lt;/web-resource-name&gt;
-      &lt;url-pattern&gt;/*&lt;/url-pattern&gt;
-      &lt;http-method&gt;DELETE&lt;/http-method&gt;
-      &lt;http-method&gt;POST&lt;/http-method&gt;
-      &lt;http-method&gt;PUT&lt;/http-method&gt;
-    &lt;/web-resource-collection&gt;
-    &lt;auth-constraint&gt;
-      &lt;role-name&gt;{node}-admin&lt;/role-name&gt;
-    &lt;/auth-constraint&gt;
-    &lt;user-data-constraint&gt;
-      &lt;transport-guarantee&gt;CONFIDENTIAL&lt;/transport-guarantee&gt;
-    &lt;/user-data-constraint&gt;
-  &lt;/security-constraint&gt;
-
-  &lt;login-config&gt;
-     &lt;auth-method&gt;BASIC&lt;/auth-method&gt;
-     &lt;realm-name&gt;Tomcat User Manager&lt;/realm-name&gt;
-  &lt;/login-config&gt;
-
-  &lt;security-role&gt;
-     &lt;role-name&gt;{node}-admin&lt;/role-name&gt;
-  &lt;/security-role&gt;
-&lt;/web-app&gt;
-      </source>
-
-      <p>The configuration above allows public access to the HTTP <i>GET</i> method but restricts access to the <i>DELETE</i>, <i>POST</i> and <i>PUT</i> methods. In addition, it sets up the security role that was configured during the Tomcat server installation and forces a switch from <i>http</i> to <i>https</i>, using the secure protocol as follows:
-      </p>
-
-      <source>
-http://localhost:8080/registry-pdsX/extrinsics
-
-  will be automatically redirected to:
-
-https://localhost:8443/registry-pdsX/extrinsics
-      </source>
-
-      <p>The configuration above restricts access to the entire application. In addition, it sets up the security role that was configured during the Tomcat server installation. If the configuration was changed above, the Tomcat server must be restarted.
-      </p>
-    </section>
-
-    <section name="Common Errors">
-      <p>This section details the common errors that may occur during installation of the Registry Service.
-      </p>
-
-      <subsection name="Out of Memory">
-        <p>When deploying the application via the Tomcat Manager interface, users have occasionally encountered a situation where the application appears to hang or generates the following stack trace:
-        </p>
-
-        <source>
-javax.servlet.ServletException: java.lang.OutOfMemoryError: PermGen space
-  com.sun.jersey.spi.container...WebComponent.service(WebComponent.java:424)
-  com.sun.jersey.spi.container...ServletContainer.service(ServletContainer.java:497)
-  com.sun.jersey.spi.container...ServletContainer.doFilter(ServletContainer.java:855)
-  com.sun.jersey.spi.container...ServletContainer.doFilter(ServletContainer.java:828)
-  com.sun.jersey.spi.container...ServletContainer.doFilter(ServletContainer.java:789)
-  org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter.doFilterInternal
-  (OpenEntityManagerInViewFilter.java:113)
-  org.springframework.web...OncePerRequestFilter.doFilter(OncePerRequestFilter.java:76)
-        </source>
-
-        <p>This is likely the result of not utilizing the suggested memory configuration for the Tomcat server specified in the <a href="../../../release/index-tomcat.html" target="_blank">Tomcat Deployment</a> document. If viewing this document from the ${project.artifactId} package, view the <a href="https://pds-engineering.jpl.nasa.gov/development/pds4/current/release/index-tomcat.html" target="_blank">Tomcat Deployment</a> document from the Engineering Node site. If the above situation occurs, verify the memory configuration and then stop and restart the Tomcat server to clear the problem.
-        </p>
-      </subsection>
-
-      <subsection name="Database Permission">
-        <p>When loading the Object Type Configuration for a Registry Service instance using Derby as the backend database, one will encounter the following error if the database directory is not owned by the user account that was used to launch the Tomcat server:
-        </p>
-
-        <source>
-* About to connect() to localhost port 8080 (#0)
-*   Trying ::1... connected
-* Connected to localhost (::1) port 8080 (#0)
-&gt; POST /registry/configure?name=Core+Objects&amp; \
-description=This+configures+the+core+set+of+registry+objects HTTP/1.1
-&gt; User-Agent: curl/7.21.4 ... libcurl/7.21.4 OpenSSL/0.9.8r zlib/1.2.5
-&gt; Host: localhost:8080
-&gt; Accept: */*
-&gt; Content-type:application/xml
-&gt; Content-Length: 6201
-&gt; Expect: 100-continue
-&gt;
-&lt; HTTP/1.1 100 Continue
-&lt; HTTP/1.1 409 Conflict
-&lt; Server: Apache-Coyote/1.1
-&lt; Content-Type: text/plain
-&lt; Transfer-Encoding: chunked
-&lt; Date: Thu, 24 Apr 2014 20:27:48 GMT
-&lt;
-* Connection #0 to host localhost left intact
-* Closing connection #0
-[409 CONFLICT]   Registry object with logical id \
-urn:uuid:626d5a54-6281-4579-ae5a-54dd962ade92 and version name 1.0 \
-already exists.* About to connect() to localhost port 8080 (#0)
-...
-        </source>
-
-        <p>If the Tomcat server is not running as the <i>root</i> user, the <i>registrypds3</i> and <i>registrypds4</i> directories containing the Derby database (wherever it is located) must be owned by the same user account that is utilized to run the Tomcat server.
-        </p>
-      </subsection>
-    </section>
-  </body>
-</document>
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  Copyright 2010-2016, by the California Institute of Technology.
+  ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
+  Any commercial use must be negotiated with the Office of Technology Transfer
+  at the California Institute of Technology.
+
+  This software is subject to U. S. export control laws and regulations
+  (22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software
+  is subject to U.S. export control laws and regulations, the recipient has
+  the responsibility to obtain export licenses or other export authority as
+  may be required before exporting such information to foreign countries or
+  providing access to foreign nationals.
+
+  $Id$
+-->
+
+<document>
+  <properties>
+    <title>Installation</title>
+    <author email="Paul.Ramirez@jpl.nasa.gov">Paul Ramirez</author>
+    <author email="Sean.Hardman@jpl.nasa.gov">Sean Hardman</author>
+  </properties>
+
+  <body>
+    <section name="Installation">
+      <p>This document describes how to download, install and configure the Registry Service software contained in the <i>${project.artifactId}</i> package. A typical PDS installation calls for two instances of the Registry Service, one named <i>registry-pds3</i> and one named <i>registry-pds4</i>. The instructions in this document pertain to this typical installation. The following topics can be found in this section:
+      </p>
+
+      <ul>
+        <li><a href="#System_Requirements">System Requirements</a></li>
+        <li><a href="#Unpacking_the_Package">Unpacking the Package</a></li>
+        <li><a href="#Deploying_the_Databases">Deploying the Databases</a></li>
+        <li><a href="#Deploying_the_Application">Deploying the Application</a></li>
+        <li><a href="#General_Configuration">General Configuration</a></li>
+        <li><a href="#Secure_Configuration">Secure Configuration</a></li>
+        <li><a href="#Common_Errors">Common Errors</a></li>
+      </ul>
+    </section>
+
+    <section name="System Requirements">
+      <p>This section details the system requirements for installing and operating the Registry Service.
+      </p>
+
+      <subsection name="Java Runtime Environment">
+        <p>The Registry Service was developed using Java and will run on any platform with a supported Java Runtime Environment (JRE). The software was specifically compiled for and tested in Java version 1.8. The following commands test the local Java installation in a UNIX-based environment:
+        </p>
+
+        <source>
+% which java
+/usr/bin/java
+
+% java -version
+java version "1.8.0_101"
+Java(TM) SE Runtime Environment (build 1.8.0_101-b13)
+Java HotSpot(TM) 64-Bit Server VM (build 25.101-b13, mixed mode)
+        </source>
+
+        <p>The first command above checks whether the <i>java</i> executable is in the environment's path and the second command reports the version. If Java is not installed or the version is not at least 1.8, Java will need to be downloaded and installed in the current environment. Consult the local system administrator for installation of this software. For the do-it-yourself crowd, the Java software can be downloaded from the <a href="http://www.oracle.com/technetwork/java/javase/downloads/" target="_blank">Oracle Java Download</a> page. The suggested software package is the Java Standard Edition (SE) 8, either the JDK or the JRE package. The JDK package is not necessary to run the software but could be useful if development and compilation of Java software will also occur in the current environment.
+        </p>
+      </subsection>
+
+      <subsection name="Java Application Server">
+        <p>The Registry Service requires a Java application server for hosting the web application. The suggested application server for this release is Apache Tomcat with a minimal version of 7.0.X. Consult the local system administrator for installation of this software. For the do-it-yourself crowd, see the <a href="../../../release/index-tomcat.html" target="_blank">Tomcat Deployment</a> document for installation and configuration details. If viewing this document from the ${project.artifactId} package, view the <a href="http://pds-engineering.jpl.nasa.gov/development/pds4/current/release/index-tomcat.html" target="_blank">Tomcat Deployment</a> document from the Engineering Node site.
+        </p>
+
+        <p>The top-level directory where Apache Tomcat is installed (i.e. the directory containing the <i>webapps</i> and <i>conf</i> sub-directories) will be referenced in these instructions as $TOMCAT_HOME.
+        </p>
+      </subsection>
+
+      <subsection name="cURL Utility">
+        <p>Although it is generally a useful tool for interacting with the Registry Service, the <a href="http://curl.haxx.se/" target="_blank">cURL</a> command-line application is required by the <i>RegistryConfig</i> script for populating the service with the supported object types. See the <a href="#Configuring_the_Application">Configuration</a> section for more information on configuring the service. If <i>cURL</i> is not installed on the local server but <i>Wget</i> is, see the <a href="../operate/index-wget.html">Using Wget</a> section for converting <i>cURL</i> commands to <i>Wget</i> commands.
+        </p>
+      </subsection>
+
+      <subsection name="Database Server">
+        <p>The Registry Service comes prepackaged with the <a href="http://db.apache.org/derby/" target="_blank">Apache Derby</a> database. If another database solution is desired (i.e., MySQL), it should be installed and accessible by the Registry Service. See the <a href="#Deploying_the_Databases">Deploying the Database</a> section if this is the first time you are installing the registry service and <a href="#Database_Configuration">Configuration</a> section for more information on configuring the service for a different database solution.
+        </p>
+      </subsection>
+    </section>
+
+    <section name="Unpacking the Package">
+      <p>Download the <i>${project.artifactId}</i> package from the PDS <a href="ftp://pds.nasa.gov/pub/toplevel/2010/registry/" target="_blank">FTP</a> site. The binary distribution is available in identical zip or tar/gzip packages. The installation directory may vary from environment to environment but in UNIX-based environments it is typical to install software packages in the <i>/usr/local</i> directory and in Windows-based environments it is typical to install software packages in the <i>C:\Program Files</i> directory. Unpack the selected binary distribution file with one of the following commands:
+      </p>
+
+      <source>
+% unzip ${project.artifactId}-${project.version}-bin.zip
+or
+% tar -xzvf ${project.artifactId}-${project.version}-bin.tar.gz
+      </source>
+
+      <p>Note: Depending on the platform, the native version of <i>tar</i> may produce an error when attempting to unpack the distribution file because many of the file paths are greater than 100 characters. If available, the GNU version of tar will resolve this problem. If that is not available or cannot be installed, the zipped package will work just fine in a UNIX environment.
+      </p>
+
+      <p>The commands above result in the creation of the <i>${project.artifactId}-${project.version}</i> directory with the following directory structure:
+      </p>
+
+      <ul>
+        <li><b>README.txt</b><br/>
+          <p>A README file directing the user to the available documentation for the project.
+          </p>
+        </li>
+        <li><b>LICENSE.txt</b><br/>
+          <p>The copyright notice from the <a href="http://www.caltech.edu/" target="_blank">California Institute of Technology</a> detailing the restrictions regarding the use and distribution of this software. Although the license is strictly worded, the software has been classified as Technology and Software Publicly Available (TSPA) and is available for <i>anyone</i> to download and use.
+          </p>
+        </li>
+        <li><b>registry.war</b><br/>
+          <p>This is the Web ARchive (WAR) file containing the Registry Service software including all dependent JAR files.
+          </p>
+        </li>
+        <li><b>bin/</b><br/>
+          <p>This directory contains the batch and shell scripts for registering the supported object types.
+          </p>
+        </li>
+        <li><b>lib</b><br/>
+          <p>This directory contains jar files for working with the Derby Database.
+          </p>
+        </li>
+        <li><b>conf/</b><br/>
+          <p>This directory contains the policy files identifying the supported object types.
+          </p>
+        </li>
+        <li><b>doc/</b><br/>
+          <p>This directory contains a local web site with the Registry Service documentation, javadoc, unit test results and other configuration management related information. Just point the desired web browser to the <i>index.html</i> file in this directory.
+          </p>
+        </li>
+        <li><b>examples/</b><br/>
+          <p>This directory contains examples of artifact descriptions that can be registered with a service instance.
+          </p>
+        </li>
+      </ul>
+    </section>
+
+    <section name="Deploying the Databases">
+      <p>If this installation is an upgrade of an existing installation, then the determination needs to be made regarding whether to keep or delete the existing databases. If the databases are to be kept, then this section may be skipped. If the databases are to be deleted, then follow the instructions in the <a href="index-db-delete.html">Delete Existing Database</a> section. Once the databases have been deleted or if this is a new installation of the software, follow the instructions below for creating the databases and installing the registry schema. The instructions are dependent on the database server to be used in the current environment.
+      </p>
+
+      <subsection name="Derby">
+        <p>The Derby database comes packaged with the Registry Service. If choosing to utilize Derby as the database server, launch the Derby <i>ij</i> Tool as follows:
+        </p>
+
+        <source>
+% cd ${project.artifactId}-${project.version}
+% java -Djava.ext.dirs=lib/ org.apache.derby.tools.ij
+        </source>
+
+        <p>Then run each of the <i>ij</i> commands below to create the databases and install the registry schema:
+        </p>
+
+        <source>
+ij> connect 'jdbc:derby:registrypds3;create=true;user=registry';
+ij> run 'conf/derby-registry-schema.ddl';
+ij> disconnect;
+ij> connect 'jdbc:derby:registrypds4;create=true;user=registry';
+ij> run 'conf/derby-registry-schema.ddl';
+ij> exit;
+        </source>
+
+        <p>The <i>registrypds3</i> and <i>registrypds4</i> directories, which are the Derby databases, will now be present in the current working directory. Note: For operational installations, the <i>registrypds3</i> and <i>registrypds4</i> directories should be moved to a more permanent location on disk that is accessible by Tomcat so that they don't get overwritten in a future upgrade. In addition, if the Tomcat server is not running as the <i>root</i> user, the <i>registrypds3</i> and <i>registrypds4</i> directories containing the Derby database (wherever it is located) must be owned by the same user account that is utilized to run the Tomcat server.
+        </p>
+      </subsection>
+
+      <subsection name="MySQL">
+        <p>If choosing to utilize an existing MySQL database server, perform the commands below. If installing a new instance of MySQL, consult the local system administrator for installation of this software. For the do-it-yourself crowd, the MySQL software can be downloaded from the <a href="http://www.mysql.com/downloads/mysql/" target="_blank">MySQL Community Server Download</a> page. Choose the appropriate package (version 5.5.X) for the target environment. Once the installation is complete, perform the commands below to create the databases and install the registry schema:
+        </p>
+
+        <source>
+% cd ${project.artifactId}-${project.version}
+% mysqladmin -u root -p create registrypds3
+% mysql -u root -p -e "GRANT ALL ON registrypds3.* TO registry@localhost \
+  IDENTIFIED BY 'p@ssw0rd'"
+% mysql -u root -p -D registrypds3 &lt; conf/mysql-registry-schema.ddl
+% mysqladmin -u root -p create registrypds4
+% mysql -u root -p -e "GRANT ALL ON registrypds4.* TO registry@localhost \
+  IDENTIFIED BY 'p@ssw0rd'"
+% mysql -u root -p -D registrypds4 &lt; conf/mysql-registry-schema.ddl
+        </source>
+      </subsection>
+
+      <subsection name="PostgreSQL">
+        <p>If choosing to utilize an existing PostgreSQL database server, perform the commands below. If installing a new instance of PostgreSQL, consult the local system administrator for installation of this software. For the do-it-yourself crowd, the PostgreSQL software can be downloaded from the <a href="http://www.postgresql.org/download/" target="_blank">PostgreSQL Download</a> page. Choose the appropriate package (version 9.X) for the target environment. Once the installation is complete, perform the commands below to create the databases and install the registry schema:
+        </p>
+
+        <source>
+% cd ${project.artifactId}-${project.version}
+% psql -U postgres
+postgres=# CREATE USER registry WITH password 'p@ssw0rd';
+postgres=# CREATE DATABASE registrypds3 WITH OWNER registry;
+postgres=# \c registrypds3 registry
+postgres=# \i conf/postgres-registry-schema.ddl
+postgres=# \q
+% psql -U postgres
+postgres=# CREATE DATABASE registrypds4 WITH OWNER registry;
+postgres=# \c registrypds4 registry
+postgres=# \i conf/postgres-registry-schema.ddl
+postgres=# \q
+        </source>
+      </subsection>
+    </section>
+
+    <section name="Deploying the Application">
+      <p>The Registry Service web application is packaged as a WAR file (<i>registry.war</i>) and is intended for installation under a standard Java Application Server. If there was a previous installation of the Registry Service, each instance of the application should be un-deployed from the Tomcat server. This can be accomplished by deleting the applications directly (assuming the user has appropriate permission) from the <i>$TOMCAT_HOME/webapps</i> directory (the variable $TOMCAT_HOME may not be set in your environment, if not, replace with the absolute path to the Tomcat installation):
+      </p>
+
+      <source>
+% cd $TOMCAT_HOME/webapps
+% rm -rf registry-pds3 registry-pds3.war
+% rm -rf registry-pds4 registry-pds4.war
+      </source>
+
+      <p>Alternatively, if the Tomcat Manager interface was utilized for the deployment, find the Registry Service entries in the Manager interface and select the <i>Undeploy</i> button for each instance to remove the applications from the server.
+      </p>
+
+      <p>In order to deploy the software for either a new or upgrade installation, the WAR file is normally copied directly to the <i>$TOMCAT_HOME/webapps</i> directory (assuming the user has appropriate permission) or installed via the Manager interface. To copy the WAR file directly, perform the following commands:
+      </p>
+
+      <source>
+% cd ${project.artifactId}-${project.version}
+% mv registry.war registry-pds3.war
+% cp registry-pds3.war $TOMCAT_HOME/webapps
+% mv registry-pds3.war registry-pds4.war
+% cp registry-pds4.war $TOMCAT_HOME/webapps
+      </source>
+
+      <p>Once this step is complete, the application instances are ready for operation. Verify a successful installation by executing the following commands:
+      </p>
+
+      <source>
+% curl -X GET -H "Accept:application/xml" -v \
+http://localhost:8080/registry-pds3/
+% curl -X GET -H "Accept:application/xml" -v \
+http://localhost:8080/registry-pds4/
+      </source>
+
+      <p>The above commands will return the list of links to the service's end points and an HTTP status of 200. The output should look like the following:
+      </p>
+
+      <source>
+* About to connect() to localhost port 8080 (#0)
+*   Trying ::1...
+* connected
+* Connected to localhost (::1) port 8080 (#0)
+&gt; GET /registry-pds3/ HTTP/1.1
+&gt; User-Agent: curl/7.24.0 (x86_64-apple-darwin12.0) libcurl/7.24.0 OpenSSL/0.9.8| zlib/1.2.5
+&gt; Host: localhost:8080
+&gt; Accept:application/xml
+&gt;
+&lt; HTTP/1.1 200 OK
+&lt; Server: Apache-Coyote/1.1
+&lt; Link: &lt;http://localhost:8080/registry-pds3/associations&gt;; rel=associations
+&lt; Link: &lt;http://localhost:8080/registry-pds3/classifications&gt;; rel=classifications
+&lt; Link: &lt;http://localhost:8080/registry-pds3/extrinsics&gt;; rel=extrinsics
+&lt; Link: &lt;http://localhost:8080/registry-pds3/identifiers&gt;; rel=identifiers
+&lt; Link: &lt;http://localhost:8080/registry-pds3/events&gt;; rel=events
+&lt; Link: &lt;http://localhost:8080/registry-pds3/schemes&gt;; rel=schemes
+&lt; Link: &lt;http://localhost:8080/registry-pds3/services&gt;; rel=services
+&lt; Link: &lt;http://localhost:8080/registry-pds3/packages&gt;; rel=packages
+&lt; Link: &lt;http://localhost:8080/registry-pds3/packages&gt;; rel=batch
+&lt; Content-Type: application/xml
+&lt; Transfer-Encoding: chunked
+&lt; Date: Tue, 29 Sep 2015 16:02:26 GMT
+&lt;
+...
+      </source>
+
+      <p>From a web browser, the command returns a welcome page. Make sure to include the trailing slash on the above command.
+      </p>
+    </section>
+
+    <section name="General Configuration">
+      <p>The following steps configure the Registry Service instances for the current environment and ready the services for operation.
+      </p>
+
+      <subsection name="Database Configuration">
+        <p>The following is a set of instructions for configuring the Registry Service instances to access newly created or existing databases.  The instructions are dependent on the database server to be used in the current environment.
+        </p>
+
+        <subsection name="Derby">
+          <p>By default, the Registry Service comes packaged with and configured to utilize Derby as the backend database. The default Derby configuration assumes that you have a database named <i>registry</i> and will use a default user name and password as specified below. In order to change the URL for the <i>registry-pds3</i> instance of the service, edit the <i>derby.properties</i> file located in the <i>$TOMCAT_HOME/webapps/registry-pds3/WEB-INF/classes</i> directory. The following line:
+          </p>
+
+          <source>
+javax.persistence.jdbc.url=jdbc:derby:registry
+
+  should be changed to:
+
+javax.persistence.jdbc.url=jdbc:derby:registrypds3
+          </source>
+
+          <p>In order to change the URL for the <i>registry-pds4</i> instance of the service, edit the <i>derby.properties</i> file located in the <i>$TOMCAT_HOME/webapps/registry-pds4/WEB-INF/classes</i> directory. The following line:
+          </p>
+
+          <source>
+javax.persistence.jdbc.url=jdbc:derby:registry
+
+  should be changed to:
+
+javax.persistence.jdbc.url=jdbc:derby:registrypds4
+          </source>
+
+          <p>The Derby database home directory will default to the current working directory where the Tomcat server was launched. To permanently set the home directory of the databases, add the following property to the <i>CATALINA_OPTS</i> environment variable:
+          </p>
+
+          <source>
+CATALINA_OPTS="-Dderby.system.home=/path/to/registrydb/home"
+          </source>
+
+          <p>Note: The <i>derby.system.home</i> should point to the parent directory which contains the registry databases (i.e. the parent directory of the <i>registrypds3</i> and <i>registrypds4</i> directories). See the Environment Configuration section of the <a href="../../../release/index-tomcat.html" target="_blank">Tomcat Deployment</a> document for details on specifying the <i>CATALINA_OPTS</i> environment variable. If viewing this document from the ${project.artifactId} package, view the <a href="http://pds-engineering.jpl.nasa.gov/development/pds4/current/release/index-tomcat.html" target="_blank">Tomcat Deployment</a> document from the Engineering Node site. The <i>CATALINA_OPTS</i> environment variable is loaded from the Tomcat startup scripts. The Tomcat server will need to be restarted for this configuration to take effect.
+          </p>
+        </subsection>
+
+        <subsection name="MySQL">
+          <p>If utilizing MySQL as the backend database, the configuration can be changed from Derby to MySQL. To modify the configuration for the <i>registry-pds3</i> instance of the service, edit the <i>applicationContext.xml</i> file located in the <i>$TOMCAT_HOME/webapps/registry-pds3/WEB-INF/classes</i> directory. The following line:
+          </p>
+
+          <source>
+&lt;context:property-placeholder location="classpath:derby.properties"/&gt;
+
+  should be changed to:
+
+&lt;context:property-placeholder location="classpath:mysql.properties"/&gt;
+          </source>
+
+          <p>The default configuration assumes that you have MySQL installed with a database named <i>registry</i> and will use a default user name and password as specified below. In order to change the URL for the <i>registry-pds3</i> instance of the service, edit the <i>mysql.properties</i> file located in the <i>$TOMCAT_HOME/webapps/registry-pds3/WEB-INF/classes</i> directory. The following line:
+          </p>
+
+          <source>
+javax.persistence.jdbc.url=jdbc:mysql://localhost:3306/registry
+
+  should be changed to:
+
+javax.persistence.jdbc.url=jdbc:mysql://localhost:3306/registrypds3
+          </source>
+
+          <p>To modify the configuration for the <i>registry-pds4</i> instance of the service, edit the <i>applicationContext.xml</i> file located in the <i>$TOMCAT_HOME/webapps/registry-pds4/WEB-INF/classes</i> directory. The following line:
+          </p>
+
+          <source>
+&lt;context:property-placeholder location="classpath:derby.properties"/&gt;
+
+  should be changed to:
+
+&lt;context:property-placeholder location="classpath:mysql.properties"/&gt;
+          </source>
+
+          <p>In order to change the URL for the <i>registry-pds4</i> instance of the service, edit the <i>mysql.properties</i> file located in the <i>$TOMCAT_HOME/webapps/registry-pds4/WEB-INF/classes</i> directory. The following line:
+          </p>
+
+          <source>
+javax.persistence.jdbc.url=jdbc:mysql://localhost:3306/registry
+
+  should be changed to:
+
+javax.persistence.jdbc.url=jdbc:mysql://localhost:3306/registrypds4
+          </source>
+
+          <p>Additionally for each instance, if you are using a version of MySQL older than 5.x you will need to change the dialect. To do this simply add a "#" before the first hibernate.dialect entry and remove the "#" from the second entry.
+          </p>
+
+          <p>Before:</p>
+          <source>
+# For use with MySQL 5+
+hibernate.dialect=org.hibernate.dialect.MySQL5InnoDBDialect
+# For use with older versions of MySQL. See hibernate documentation.
+#hibernate.dialect=org.hibernate.dialect.MySQLInnoDBDialect
+          </source>
+          <p>After:</p>
+          <source>
+# For use with MySQL 5+
+#hibernate.dialect=org.hibernate.dialect.MySQL5InnoDBDialect
+# For use with older versions of MySQL. See hibernate documentation.
+hibernate.dialect=org.hibernate.dialect.MySQLInnoDBDialect
+          </source>
+        </subsection>
+
+        <subsection name="PostgreSQL">
+          <p>If utilizing MySQL as the backend database, the configuration can be changed from Derby to PostgreSQL. To modify the configuration for the <i>registry-pds3</i> instance of the service, edit the <i>applicationContext.xml</i> file located in the <i>$TOMCAT_HOME/webapps/registry-pds3/WEB-INF/classes</i> directory. The following line:
+          </p>
+
+          <source>
+&lt;context:property-placeholder location="classpath:derby.properties"/&gt;
+
+  should be changed to:
+
+&lt;context:property-placeholder location="classpath:postgres.properties"/&gt;
+          </source>
+
+          <p>The default configuration assumes that you have PostgreSQL installed with a database named <i>registry</i> and will use a default user name and password as specified below. In order to change the URL for the <i>registry-pds3</i> instance of the service, edit the <i>postgres.properties</i> file located in the <i>$TOMCAT_HOME/webapps/registry-pds3/WEB-INF/classes</i> directory. The following line:
+          </p>
+
+          <source>
+javax.persistence.jdbc.url=jdbc:postgresql://localhost:5432/registry
+
+  should be changed to:
+
+javax.persistence.jdbc.url=jdbc:postgresql://localhost:5432/registrypds3
+          </source>
+
+          <p>To modify the configuration for the <i>registry-pds4</i> instance of the service, edit the <i>applicationContext.xml</i> file located in the <i>$TOMCAT_HOME/webapps/registry-pds4/WEB-INF/classes</i> directory. The following line:
+          </p>
+
+          <source>
+&lt;context:property-placeholder location="classpath:derby.properties"/&gt;
+
+  should be changed to:
+
+&lt;context:property-placeholder location="classpath:postgres.properties"/&gt;
+          </source>
+
+          <p>In order to change the URL for the <i>registry-pds4</i> instance of the service, edit the <i>mysql.properties</i> file located in the <i>$TOMCAT_HOME/webapps/registry-pds4/WEB-INF/classes</i> directory. The following line:
+          </p>
+
+          <source>
+javax.persistence.jdbc.url=jdbc:postgresql://localhost:5432/registry
+
+  should be changed to:
+
+javax.persistence.jdbc.url=jdbc:postgresql://localhost:5432/registrypds4
+          </source>
+        </subsection>
+      </subsection>
+
+      <subsection name="Home Configuration">
+        <p>In a distributed environment with multiple Registry Service instances, the registry home value identifies the source of a registry entry when it has been replicated to another registry instance. By default, the registry home is configured as <i>http://localhost:8080/registry</i>. This should be modified to represent the Registry Service URL location of the local installation. Meaning that instead of <i>localhost:8080</i>, the fully qualified name of the local server should be specified (e.g., node.nasa.gov). To modify the configuration for the <i>registry-pds3</i> instance of the service, edit the <i>applicationContext.xml</i> file located in the <i>$TOMCAT_HOME/webapps/registry-pds3/WEB-INF/classes</i> directory. Modify the following line with the new URL location:
+        </p>
+
+        <source>
+&lt;bean id="idGenerator"
+class="gov.nasa.pds.registry.model.naming.DefaultIdentifierGenerator"
+p:home="http://localhost:8080/registry"/&gt;
+
+  should be changed to (if hosted at node.nasa.gov on port 80):
+
+&lt;bean id="idGenerator"
+class="gov.nasa.pds.registry.model.naming.DefaultIdentifierGenerator"
+p:home="http://node.nasa.gov/registry-pds3"/&gt;
+        </source>
+
+        <p>To modify the configuration for the <i>registry-pds4</i> instance of the service, edit the <i>applicationContext.xml</i> file located in the <i>$TOMCAT_HOME/webapps/registry-pds4/WEB-INF/classes</i> directory. Modify the following line with the new URL location:
+        </p>
+
+        <source>
+&lt;bean id="idGenerator"
+class="gov.nasa.pds.registry.model.naming.DefaultIdentifierGenerator"
+p:home="http://localhost:8080/registry"/&gt;
+
+  should be changed to (if hosted at node.nasa.gov on port 80):
+
+&lt;bean id="idGenerator"
+class="gov.nasa.pds.registry.model.naming.DefaultIdentifierGenerator"
+p:home="http://node.nasa.gov/registry-pds4"/&gt;
+        </source>
+      </subsection>
+
+      <p>If either the database configuration or home configuration were changed above in the deployed application directory under the <i>$TOMCAT_HOME</i> directory, the Registry Service applications must be stopped and started for these changes to take effect. This can be accomplished by restarting the Tomcat Server. Alternatively, if the Tomcat Manager interface was utilized for the deployment, find the Registry Service entries in the Manager interface, select the associated <i>Stop</i> button followed by a selection of the associated <i>Start</i> button to stop and then start the applications, respectively.
+      </p>
+
+      <subsection name="Object Type Configuration">
+        <p>Once the Registry Service instances are installed and running, the list of supported object types must be registered with the services. The list of object types corresponds with the types of products that a given instance of the Registry Service will support. If this installation involves an existing database (where this configuration was previously performed), then the previous configuration must be deleted prior to loading the current version's configuration. If this is the case, follow the instructions in the <a href="index-conf-delete.html">Delete Existing Configuration</a> section. Once the configuration packages have been deleted or if this is a new installation of the software, follow the instructions below for loading the configuration.
+        </p>
+
+        <p>The <i>registry-config</i> and <i>registry-config.bat</i> scripts default to a Registry Service end point of <i>http://localhost:8080/registry</i>. In order to configure the <i>registry-pds3</i> instance of the service, set the <i>REGISTRY_SERVICE</i> environment variable to the proper end point prior to executing the script. In addition, this script should be executed prior to applying security to the service URLs since it does not account for a secured interface. Execute the script from the <i>bin</i> directory in order to register the full set of object types:
+        </p>
+
+        <source>
+% cd ${project.artifactId}-${project.version}/bin
+% export REGISTRY_SERVICE=http://localhost:8080/registry-pds3
+% ./registry-config
+        </source>
+
+        <p>In order to configure the <i>registry-pds4</i> instance of the service, set the <i>REGISTRY_SERVICE</i> environment variable to the proper end point and execute the script:
+        </p>
+
+        <source>
+% export REGISTRY_SERVICE=http://localhost:8080/registry-pds4
+% ./registry-config
+        </source>
+
+        <p>The output from these commands should show the registration of the Core object types and PDS object types. Since the configuration files referenced in the configuration script are slightly larger they are sent in chunks. Each configuration will get associated with a Registry Package and can be found by following the location link that comes in the header of the response. The output from the command should look something like the following:
+        </p>
+
+        <source>
+* About to connect() to localhost port 8080 (#0)
+*   Trying ::1... connected
+* Connected to localhost (::1) port 8080 (#0)
+&gt; POST /registry/configure?name=Core+Objects&amp;\
+description=This+configures+the+core+set+of+registry+objects HTTP/1.1
+&gt; User-Agent: curl/7.19.7 ... libcurl/7.19.7 OpenSSL/0.9.8l zlib/1.2.3
+&gt; Host: localhost:8080
+&gt; Accept: */*
+&gt; Content-type:application/xml
+&gt; Content-Length: 5295
+&gt; Expect: 100-continue
+&gt;
+&lt; HTTP/1.1 100 Continue
+&lt; HTTP/1.1 201 Created
+&lt; Server: Apache-Coyote/1.1
+&lt; Location: http://localhost:8080/registry/packages/\
+urn:uuid:bd6e4f7b-dfb0-443c-b845-3378077b1016
+&lt; Content-Type: text/plain
+&lt; Transfer-Encoding: chunked
+&lt; Date: Mon, 21 Mar 2011 19:55:52 GMT
+&lt;
+* Connection #0 to host localhost left intact
+* Closing connection #0
+urn:uuid:bd6e4f7b-dfb0-443c-b845-3378077b1016
+
+* About to connect() to localhost port 8080 (#0)
+*   Trying ::1... connected
+* Connected to localhost (::1) port 8080 (#0)
+&gt; POST /registry/configure?name=PDS+Objects&amp;\
+description=This+configures+PDS+object+types HTTP/1.1
+&gt; User-Agent: curl/7.19.7 ... libcurl/7.19.7 OpenSSL/0.9.8l zlib/1.2.3
+&gt; Host: localhost:8080
+&gt; Accept: */*
+&gt; Content-type:application/xml
+&gt; Content-Length: 18320
+&gt; Expect: 100-continue
+&gt;
+&lt; HTTP/1.1 100 Continue
+&lt; HTTP/1.1 201 Created
+&lt; Server: Apache-Coyote/1.1
+&lt; Location: http://localhost:8080/registry/packages/\
+urn:uuid:a07ad134-42ad-4781-9cbd-826bb9a8dfec
+&lt; Content-Type: text/plain
+&lt; Transfer-Encoding: chunked
+&lt; Date: Mon, 21 Mar 2011 19:55:53 GMT
+&lt;
+* Connection #0 to host localhost left intact
+* Closing connection #0
+urn:uuid:a07ad134-42ad-4781-9cbd-826bb9a8dfec
+        </source>
+
+        <p>Verify successful configuration by executing the following command (where <i>pdsX</i> is either <i>pds3</i> or <i>pds4</i>):
+        </p>
+
+        <source>
+% curl -X GET -H "Accept:application/xml" -v \
+http://localhost:8080/registry-pdsX/report
+        </source>
+
+        <p>The output from this command should look something like the following (with respect to the <i>classificationNodes</i> and <i>classificationSchemes</i> attributes):
+        </p>
+
+        <source>
+&lt;ns2:report xmlns:ns2='http://registry.pds.nasa.gov' registryVersion='${project.version}'
+packages='4' classificationNodes='67' classificationSchemes='2' services='0'
+extrinsics='0' associations='69' serverStarted='2013-08-28T12:45:43.514-07:00'
+status='OK'/&gt;
+        </source>
+      </subsection>
+    </section>
+
+    <section name="Secure Configuration">
+      <p>The preferred configuration for securing applications on the Tomcat server is to limit access via firewall configuration so that external access is blocked but internal access is allowed. Internal access could be limited to users on the local server or could allow servers on the same subnet access. If these kinds of limitations are not possible in the local environment, then the secure configuration described in this section should be implemented.
+      </p>
+
+      <p>The following steps configure the Registry Service for secure access within the Tomcat server. See the <a href="../../../release/index-tomcat.html" target="_blank">Tomcat Deployment</a> document for details on securing the Tomcat Server to support the application configuration that follows. To modify the configuration, edit the <i>web.xml</i> file located in the <i>$TOMCAT_HOME/webapps/registry-pdsX/WEB-INF</i> directory. Add the following blocks of XML to the end of the file:
+      </p>
+
+      <source>
+&lt;web-app&gt;
+  ...
+  &lt;security-constraint&gt;
+    &lt;web-resource-collection&gt;
+      &lt;web-resource-name&gt;Registry Service&lt;/web-resource-name&gt;
+      &lt;url-pattern&gt;/*&lt;/url-pattern&gt;
+      &lt;http-method&gt;DELETE&lt;/http-method&gt;
+      &lt;http-method&gt;POST&lt;/http-method&gt;
+      &lt;http-method&gt;PUT&lt;/http-method&gt;
+    &lt;/web-resource-collection&gt;
+    &lt;auth-constraint&gt;
+      &lt;role-name&gt;{node}-admin&lt;/role-name&gt;
+    &lt;/auth-constraint&gt;
+    &lt;user-data-constraint&gt;
+      &lt;transport-guarantee&gt;CONFIDENTIAL&lt;/transport-guarantee&gt;
+    &lt;/user-data-constraint&gt;
+  &lt;/security-constraint&gt;
+
+  &lt;login-config&gt;
+     &lt;auth-method&gt;BASIC&lt;/auth-method&gt;
+     &lt;realm-name&gt;Tomcat User Manager&lt;/realm-name&gt;
+  &lt;/login-config&gt;
+
+  &lt;security-role&gt;
+     &lt;role-name&gt;{node}-admin&lt;/role-name&gt;
+  &lt;/security-role&gt;
+&lt;/web-app&gt;
+      </source>
+
+      <p>The configuration above allows public access to the HTTP <i>GET</i> method but restricts access to the <i>DELETE</i>, <i>POST</i> and <i>PUT</i> methods. In addition, it sets up the security role that was configured during the Tomcat server installation and forces a switch from <i>http</i> to <i>https</i>, using the secure protocol as follows:
+      </p>
+
+      <source>
+http://localhost:8080/registry-pdsX/extrinsics
+
+  will be automatically redirected to:
+
+https://localhost:8443/registry-pdsX/extrinsics
+      </source>
+
+      <p>The configuration above restricts access to the entire application. In addition, it sets up the security role that was configured during the Tomcat server installation. If the configuration was changed above, the Tomcat server must be restarted.
+      </p>
+    </section>
+
+    <section name="Common Errors">
+      <p>This section details the common errors that may occur during installation of the Registry Service.
+      </p>
+
+      <subsection name="Out of Memory">
+        <p>When deploying the application via the Tomcat Manager interface, users have occasionally encountered a situation where the application appears to hang or generates the following stack trace:
+        </p>
+
+        <source>
+javax.servlet.ServletException: java.lang.OutOfMemoryError: PermGen space
+  com.sun.jersey.spi.container...WebComponent.service(WebComponent.java:424)
+  com.sun.jersey.spi.container...ServletContainer.service(ServletContainer.java:497)
+  com.sun.jersey.spi.container...ServletContainer.doFilter(ServletContainer.java:855)
+  com.sun.jersey.spi.container...ServletContainer.doFilter(ServletContainer.java:828)
+  com.sun.jersey.spi.container...ServletContainer.doFilter(ServletContainer.java:789)
+  org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter.doFilterInternal
+  (OpenEntityManagerInViewFilter.java:113)
+  org.springframework.web...OncePerRequestFilter.doFilter(OncePerRequestFilter.java:76)
+        </source>
+
+        <p>This is likely the result of not utilizing the suggested memory configuration for the Tomcat server specified in the <a href="../../../release/index-tomcat.html" target="_blank">Tomcat Deployment</a> document. If viewing this document from the ${project.artifactId} package, view the <a href="https://pds-engineering.jpl.nasa.gov/development/pds4/current/release/index-tomcat.html" target="_blank">Tomcat Deployment</a> document from the Engineering Node site. If the above situation occurs, verify the memory configuration and then stop and restart the Tomcat server to clear the problem.
+        </p>
+      </subsection>
+
+      <subsection name="Database Permission">
+        <p>When loading the Object Type Configuration for a Registry Service instance using Derby as the backend database, one will encounter the following error if the database directory is not owned by the user account that was used to launch the Tomcat server:
+        </p>
+
+        <source>
+* About to connect() to localhost port 8080 (#0)
+*   Trying ::1... connected
+* Connected to localhost (::1) port 8080 (#0)
+&gt; POST /registry/configure?name=Core+Objects&amp; \
+description=This+configures+the+core+set+of+registry+objects HTTP/1.1
+&gt; User-Agent: curl/7.21.4 ... libcurl/7.21.4 OpenSSL/0.9.8r zlib/1.2.5
+&gt; Host: localhost:8080
+&gt; Accept: */*
+&gt; Content-type:application/xml
+&gt; Content-Length: 6201
+&gt; Expect: 100-continue
+&gt;
+&lt; HTTP/1.1 100 Continue
+&lt; HTTP/1.1 409 Conflict
+&lt; Server: Apache-Coyote/1.1
+&lt; Content-Type: text/plain
+&lt; Transfer-Encoding: chunked
+&lt; Date: Thu, 24 Apr 2014 20:27:48 GMT
+&lt;
+* Connection #0 to host localhost left intact
+* Closing connection #0
+[409 CONFLICT]   Registry object with logical id \
+urn:uuid:626d5a54-6281-4579-ae5a-54dd962ade92 and version name 1.0 \
+already exists.* About to connect() to localhost port 8080 (#0)
+...
+        </source>
+
+        <p>If the Tomcat server is not running as the <i>root</i> user, the <i>registrypds3</i> and <i>registrypds4</i> directories containing the Derby database (wherever it is located) must be owned by the same user account that is utilized to run the Tomcat server.
+        </p>
+      </subsection>
+    </section>
+  </body>
+</document>
