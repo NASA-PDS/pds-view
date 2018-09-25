@@ -54,14 +54,14 @@
 
   <properties>
     <!-- Internal Dependency Version -->
-    <pds4-tools-version>0.11.0-dev</pds4-tools-version>
-    <core-version>1.14.0-dev</core-version>
+    <pds4-tools-version>0.11.0</pds4-tools-version>
+    <core-version>1.14.0</core-version>
     <email-version>0.1.0</email-version>
-    <generate-version>0.15.0-dev</generate-version>
+    <generate-version>0.15.0</generate-version>
     <registry-version>1.14.0</registry-version>
     <search-version>1.13.0</search-version>
     <storage-version>1.2.0</storage-version>
-    <transform-version>1.8.0-dev</transform-version>
+    <transform-version>1.8.0</transform-version>
     <!-- External Dependency Versions -->
     <oodt-version>0.12</oodt-version>
     <product-tools-version>3.6.0</product-tools-version>

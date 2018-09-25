@@ -21,7 +21,7 @@
   <parent>
     <groupId>gov.nasa.pds.2010</groupId>
     <artifactId>report</artifactId>
-    <version>1.13.0</version>
+    <version>1.14.0</version>
   </parent>
 
   <groupId>gov.nasa.pds.2010.report</groupId>

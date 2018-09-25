@@ -26,7 +26,7 @@
 
   <groupId>gov.nasa.pds.2010.portal</groupId>
   <artifactId>keyword-search</artifactId>
-  <version>1.0.0-dev</version>
+  <version>1.0.0</version>
   <packaging>pom</packaging>
 
   <name>Keyword Search</name>

@@ -26,7 +26,7 @@
 
   <groupId>gov.nasa.pds.2010.portal</groupId>
   <artifactId>dd-search</artifactId>
-  <version>1.6.0</version>
+  <version>1.7.0</version>
   <packaging>pom</packaging>
 
   <name>Data Dictionary Search</name>

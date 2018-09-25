@@ -22,6 +22,9 @@
     <author email="Sean.Hardman@jpl.nasa.gov">Sean Hardman</author>
   </properties>
   <body>
+    <release version="1.8.0" date="2018-09-28" description="This release of the Transport Proxy is a point build of the component for the integrated release 9.0.0 of the PDS4 System. This is an operational release of the system components to date.">
+    </release>
+      
     <release version="1.7.0" date="2018-03-30" description="This release of the Transport Proxy is a point build of the component for the integrated release 8.1.0 of the PDS4 System. This is an operational release of the system components to date.">
     </release>
 
