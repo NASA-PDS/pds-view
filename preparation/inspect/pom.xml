@@ -26,7 +26,7 @@
 
   <groupId>gov.nasa.pds.2010.preparation</groupId>
   <artifactId>inspect</artifactId>
-  <version>0.3.0</version>
+  <version>0.4.0-dev</version>
   <packaging>pom</packaging>
 
   <name>Inspect Tool</name>

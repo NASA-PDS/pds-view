@@ -26,7 +26,7 @@
 
   <groupId>gov.nasa.pds.2010.ingest</groupId>
   <artifactId>harvest-search</artifactId>
-  <version>0.3.0</version>
+  <version>0.4.0-dev</version>
   <packaging>jar</packaging>
 
   <name>Harvest-Search Tool</name>
