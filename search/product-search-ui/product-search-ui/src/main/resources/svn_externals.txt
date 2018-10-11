@@ -1,0 +1,5 @@
+css      https://starcell.jpl.nasa.gov/repo/websites/pds-portal/css
+include  https://starcell.jpl.nasa.gov/repo/websites/pds-portal/include
+js       https://starcell.jpl.nasa.gov/repo/websites/pds-portal/js
+images   https://starcell.jpl.nasa.gov/repo/websites/pds-portal/images
+scripts  https://starcell.jpl.nasa.gov/repo/websites/pds-portal/scripts
