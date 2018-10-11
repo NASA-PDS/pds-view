@@ -36,7 +36,7 @@ String contextPath = request.getContextPath() + "/";
 
 
 
-<c:import url="/data_menu.html" context="/include" />
+<c:import url="/datasearch_menu.html" context="/include" />
 
 
 <!-- <ul id="submenu_standards"><li>&nbsp;</li></ul> -->
