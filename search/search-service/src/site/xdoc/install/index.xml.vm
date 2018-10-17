@@ -184,7 +184,7 @@ set JAVA_OPTS=%JAVA_OPTS% -Dlog4j.debug=true
             <p>Copy the WAR file to the <i>$TOMCAT_HOME/webapps</i> directory. To copy the WAR file directly, perform the following command:
             </p>
             <source>
-% cp /usr/local/${project.artifactId}${project.artifactId}.war $TOMCAT_HOME/webapps
+% cp /usr/local/${project.artifactId}/${project.artifactId}.war $TOMCAT_HOME/webapps
             </source>
           </li>
           <li>Start Tomcat Server</li>
