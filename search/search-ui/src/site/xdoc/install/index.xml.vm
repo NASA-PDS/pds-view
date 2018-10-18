@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2010-2016, by the California Institute of Technology.
+  Copyright 2010-2018, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -33,6 +33,7 @@
         <li><a href="#Unpacking_the_Package">Unpacking the Package</a></li>
         <li><a href="#Deploying_the_Application">Deploying the Application</a></li>
         <li><a href="#Deploying_the_Extras">Deploying the Extras</a></li>
+        <li><a href="#Configuring_the_Application">Configuring the Application</a></li>
       </ul>
     </section>
 
@@ -150,8 +151,11 @@ or
         <li>scripts</li>
       </ul>
 
+      <p>The above files provide the look-and-feel for the application so that it integrates nicely with the PDS Website, where it is intended to be deployed. Because of this, if the application is not deployed with the PDS Website, several of the links in the menu bar will not function properly. The application portion will still function normally.
+      </p>
+
       <subsection name="PDS Engineering Deployment">
-  <p>The current Search UI is intended for deployment on both the PDS Engineering website, as well as external users.  The remaining installation procedures can be ignored for PDS EN deployment because these directories are already included in the PDS EN website.</p>
+        <p>The current Search UI is intended for deployment on both the PDS Engineering website, as well as external users.  The remaining installation procedures can be ignored for PDS EN deployment because these directories are already included in the PDS EN website.</p>
       </subsection>
 
       <subsection name="All Other Deployments">
@@ -196,11 +200,29 @@ or
         <p><b>Unix Environment</b></p>
 
         <source>
-$ mv extras/* $TOMCAT_HOME/webapps
+% mv extras/* $TOMCAT_HOME/webapps
         </source>
 
         <p>Restart Tomcat to ensure the changes take effect.</p>
       </subsection>
+    </section>
+
+    <section name="Configuring the Application">
+      <p>The Search User Interface is configured to access the Search Service at the <i>/services/search</i> end point on the local HTTP Server assuming both applications are being accessed via reverse proxies from the Tomcat Server. If that is not the case, then the end point will need to be modified. This can be accomplished by editing the <i>search.jsp</i> file located in the <i>$TOMCAT_HOME/webapps/search-ui</i> directory. In the case where both applications are installed on a local Tomcat Server, the above file can be modified as follows:
+      </p>
+
+      <source>
+    $.get(&apos;/services/search/pds/archive-filter?&apos; + query, function(data) {
+      $(&apos;.output&apos;).html(data);
+    });
+with:
+    $.get(&apos;/search-service/pds/archive-filter?&apos; + query, function(data) {
+      $(&apos;.output&apos;).html(data);
+    });
+      </source>
+
+      <p>The above modification will take effect immediately and does not require a Tomcat Server restart.
+      </p>
     </section>
   </body>
 </document>
