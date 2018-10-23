@@ -69,7 +69,7 @@
       <resource>
         <filtering>true</filtering>
         <targetPath>gov/nasa/pds/harvest/search/util</targetPath>
-        <directory>src/main/resources/conf</directory>
+        <directory>src/main/resources/policy</directory>
         <includes>
           <include>harvest-search.properties</include>
         </includes>
