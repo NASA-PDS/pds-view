@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2016, by the California Institute of Technology.
+  Copyright 2016-2018, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -92,12 +92,16 @@ or
           <p>This directory contains a local web site with the Harvest-Search Tool documentation, javadoc, unit test results and other configuration management related information. Just point the desired web browser to the <i>index.html</i> file in this directory.
           </p>
         </li>
-        <li><b>examples/</b><br/>
-          <p>This directory contains examples of the policy file used for specifying how the Harvest-Search Tool discovers products and extracts metadata for registration.
+        <li><b>harvest-conf/</b><br/>
+          <p>This directory contains examples and specific instances of harvest-related policy files used for specifying how the Harvest-Search Tool discovers products and extracts metadata for registration.
           </p>
         </li>
         <li><b>lib/</b><br/>
           <p>This directory contains the dependent jar files for the tool along with the executable jar file (${project.artifactId}-${project.version}.jar) containing the Harvest-Search Tool software.
+          </p>
+        </li>
+        <li><b>search-conf/</b><br/>
+          <p>This directory contains examples and specific instances of search-related policy files used for specifying how the Harvest-Search Tool extracts metadata and generates search index files.
           </p>
         </li>
       </ul>
