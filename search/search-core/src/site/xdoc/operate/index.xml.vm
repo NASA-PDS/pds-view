@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2010-2016, by the California Institute of Technology.
+  Copyright 2010-2018, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology Transfer
   at the California Institute of Technology.
@@ -252,10 +252,6 @@ http://localhost:8080/registry-psa
         <table>
           <tr><th>File Name</th><th>Product Class</th></tr>
           <tr><td colspan="2"><b>PDS3 Products (/usr/local/search-core/conf/defaults/pds/pds3)</b></td></tr>
-          <tr>
-            <td>archiveinfo.xml</td>
-            <td>Product_Context (filters on name="*Archive Information")</td>
-          </tr>
           <tr>
             <td>attribute.xml</td>
             <td>Product_Attribute_Definition</td>
