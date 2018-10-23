@@ -14,7 +14,7 @@
 <policy>
   <registryPackage>
     <name>Harvest Package Atmospheres MAVEN ACC</name>
-    <description>This is a Harvest run of the Atmospheres MAVEN ACC</description>
+    <description>This is a Harvest run of the Atmospheres MAVEN ACC.</description>
   </registryPackage>
 
   <collections>

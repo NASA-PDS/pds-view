@@ -13,8 +13,8 @@
 
 <policy>
   <registryPackage>
-    <name>Harvest Package Atmospheres MAVEN IUVS Processed Products Release 4</name>
-    <description>This is a Harvest run of the Atmospheres MAVEN IUVS Processed products Release 4.</description>
+    <name>Harvest Package Atmospheres MAVEN IUVS Processed</name>
+    <description>This is a Harvest run of the Atmospheres MAVEN IUVS Processed.</description>
   </registryPackage>
 
   <collections>

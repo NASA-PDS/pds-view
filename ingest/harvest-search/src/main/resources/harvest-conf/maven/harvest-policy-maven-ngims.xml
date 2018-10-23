@@ -13,19 +13,19 @@
 
 <policy>
   <registryPackage>
-    <name>Harvest Package Atmospheres MAVEN NGIMS Products release 4</name>
-    <description>This is a Harvest run of the Atmospheres MAVEN NGIMS products release 4.</description>
+    <name>Harvest Package Atmospheres MAVEN NGIMS</name>
+    <description>This is a Harvest run of the Atmospheres MAVEN NGIMS.</description>
   </registryPackage>
 
   <collections>
     <file>/PDS/data/anonymous/PDS/data/PDS4/MAVEN/ngims_bundle/calibration/collection_ngims_calibration_inventory.xml</file>
-    <file>/PDS/data/anonymous/PDS/data/PDS4/MAVEN/ngims_bundle/context/collection_ngims_context_inventory.xml</file>
-    <file>/PDS/data/anonymous/PDS/data/PDS4/MAVEN/ngims_bundle/document/collection_ngims_document_inventory.xml</file>
+    <file>/PDS/data/anonymous/PDS/data/PDS4/MAVEN/ngims_bundle/context/collection_ngims_context.xml</file>
+    <file>/PDS/data/anonymous/PDS/data/PDS4/MAVEN/ngims_bundle/document/collection_ngims_document.xml</file>
     <file>/PDS/data/anonymous/PDS/data/PDS4/MAVEN/ngims_bundle/l1a/collection_ngims_l1a_inventory.xml</file>
     <file>/PDS/data/anonymous/PDS/data/PDS4/MAVEN/ngims_bundle/l1b/collection_ngims_l1b_inventory.xml</file>
     <file>/PDS/data/anonymous/PDS/data/PDS4/MAVEN/ngims_bundle/l2/collection_ngims_l2_inventory.xml</file>
     <file>/PDS/data/anonymous/PDS/data/PDS4/MAVEN/ngims_bundle/l3/collection_ngims_l3_inventory.xml</file>
-    <file>/PDS/data/anonymous/PDS/data/PDS4/MAVEN/ngims_bundle/xml_schema/collection_ngims_xml_schema_inventory.xml</file>
+    <file>/PDS/data/anonymous/PDS/data/PDS4/MAVEN/ngims_bundle/xml_schema/collection_ngims_xml_schema.xml</file>
   </collections>
 
   <directories>
