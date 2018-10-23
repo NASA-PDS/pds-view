@@ -51,6 +51,15 @@
     <field name="product_class" type="string">
       <registryPath>product_class</registryPath>
     </field>
+    <field name="alternate_id" type="string">
+      <registryPath>alternate_id</registryPath>
+    </field>
+    <field name="alternate_title" type="string">
+      <registryPath>alternate_title</registryPath>
+    </field>
+    <field name="citation_keyword" type="string">
+      <registryPath>citation_keyword</registryPath>
+    </field>
     <field name="modification_date" type="date">
       <registryPath>modification_date</registryPath>
     </field>
