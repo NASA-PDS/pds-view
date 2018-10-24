@@ -72,8 +72,8 @@ public class URLCrawler extends Crawler {
       // Check if the given url is a subset of the href value. If it is,
       // assume it is a file or a directory we will need to process.
       if (value.contains(url.toString())) {
-        //Check if the value has a 3-character extension. If so, it is most likely a file
-        if (FilenameUtils.getExtension(value).length() == 3) {
+        //Check if the value has an extension. If so, it is most likely a file
+        if (!FilenameUtils.getExtension(value).isEmpty()) {
           if (fileFilter.accept(new File(value))) {
             results.add(new Target(new URL(value), false));
           }

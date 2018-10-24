@@ -280,7 +280,7 @@ public class LabelValidationRule extends AbstractValidationRule {
             container = labelSchemaResults.get(schemaUrl);
             if (container.getProblems().size() != 0) {
               for (ValidationProblem le : container.getProblems()) {
-                le.setSource(schemaUrl.toURI().toString());
+                le.setSource(label.toURI().toString());
                 getListener().addProblem(le);
               }
               if (container.hasError() || container.hasFatal()) {

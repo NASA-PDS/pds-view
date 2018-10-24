@@ -147,6 +147,8 @@
           </li>
           <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-568'>PDS-568</a>] - Core: Do not perform field format checking for binary tables
           </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-618'>PDS-618</a>] - Core: Hanging issue when crawling a target URL directory
+          </li>
         </ul>
       </subsection>
     </section>
