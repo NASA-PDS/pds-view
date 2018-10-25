@@ -149,6 +149,8 @@
           </li>
           <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-618'>PDS-618</a>] - Core: Hanging issue when crawling a target URL directory
           </li>
+          <li>[<a href='https://oodt.jpl.nasa.gov/jira/browse/PDS-621'>PDS-621</a>] - Transport-Registry: Fixed to support Long data types
+          </li>          
         </ul>
       </subsection>
     </section>

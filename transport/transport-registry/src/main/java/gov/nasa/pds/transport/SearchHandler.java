@@ -76,6 +76,8 @@ public class SearchHandler {
 			else {
 				if (obj instanceof java.lang.Integer) 
 					results.add(String.valueOf(obj));
+        else if (obj instanceof java.lang.Long)
+          results.add(String.valueOf(obj));
 				else 
 					results.add((String)obj);
 				//System.out.println("key = " + key +  "   obj = " + (String)obj);
