@@ -12,6 +12,7 @@ import javax.ws.rs.Produces;
 import org.apache.log4j.Logger;
 
 import gov.nasa.pds.tracking.tracking.db.Product;
+import gov.nasa.pds.tracking.tracking.db.ProductDao;
 import gov.nasa.pds.tracking.tracking.utils.HtmlConstants;
  
 @Path("html/products")
@@ -37,9 +38,9 @@ public class HTMLBasedProducts {
 	              "<td width=\"10%\"><b>Alternate</b></td>" +
     			  "</tr>");
 
-		Product prod;
+		ProductDao prod;
 		try {
-			prod = new Product();
+			prod = new ProductDao();
 			List<Product> prods = prod.getProductsOrderByTitle();
 			logger.info("number of products: "  + prods.size());
 			Iterator<Product> itr = prods.iterator();
@@ -96,9 +97,9 @@ public class HTMLBasedProducts {
 	              "<td width=\"10%\"><b>Alternate</b></td>" +
     			  "</tr>");
 
-		Product prod;
+		ProductDao prod;
 		try {
-			prod = new Product();
+			prod = new ProductDao();
 			List<Product> prods = prod.getProducts(type);
 			logger.info("number of products: "  + prods.size());
 			Iterator<Product> itr = prods.iterator();
@@ -154,9 +155,9 @@ public class HTMLBasedProducts {
 	              "<td width=\"10%\"><b>Alternate</b></td>" +
     			  "</tr>");
 
-		Product prod;
+		ProductDao prod;
 		try {
-			prod = new Product();
+			prod = new ProductDao();
 			List<Product> prods = prod.getProductsAssociatedDeliveriesOrderByTitle(insRef, invRef);
 			logger.info("number of products: "  + prods.size());
 			Iterator<Product> itr = prods.iterator();

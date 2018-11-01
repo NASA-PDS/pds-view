@@ -1,33 +1,16 @@
 package gov.nasa.pds.tracking.tracking.db;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
-
+import java.io.Serializable;
+import javax.xml.bind.annotation.XmlRootElement;
 import org.apache.log4j.Logger;
 
-public class CertificationStatus extends DBConnector {
+@XmlRootElement(name = "certification_status")
+
+public class CertificationStatus implements Serializable  {
+
+	private static final long serialVersionUID = 1L;
 	
 	public static Logger logger = Logger.getLogger(CertificationStatus.class);
-
-	private static final String TABLENAME = "certification_status";
-	private static final String PRODUCTTABLENAME= "product";
-
-	public static final String LOGIDENTIFIERCOLUMN = "logical_identifier";
-	public static final String VERSIONCOLUMN = "version_id";
-	public static final String DATECOLUMN = "status_date_time";
-	public static final String STATUSCOLUMN = "status";
-	public static final String EMAILCOLUMN = "electronic_mail_address";
-	public static final String COMMENTCOLUMN = "comment";
-
-	private Connection connect = null;
-	private Statement statement = null;
-	private PreparedStatement prepareStm = null;
-	private ResultSet resultSet = null;
 
 	private String logIdentifier = null;
 	private String version = null;
@@ -36,6 +19,14 @@ public class CertificationStatus extends DBConnector {
 	private String email = null;
 	private String comment = null;
 	
+	public CertificationStatus(String logIdenf, String ver, String date, String stat, String email, String comm) {
+		this.logIdentifier = logIdenf;
+		this.version = ver;
+		this.date = date;
+		this.status = stat;
+		this.email = email;
+		this.comment = comm;
+	}
 	/**
 	 * @return the logIdentifier
 	 */
@@ -120,236 +111,8 @@ public class CertificationStatus extends DBConnector {
 		this.comment = comment;
 	}
 	
-	public CertificationStatus() throws ClassNotFoundException, SQLException {
+	public CertificationStatus(){
 		// TODO Auto-generated constructor stub
 	}
-	
-	/**
-	 * @param logical_identifier
-	 * @param version
-	 * @param date
-	 * @param status
-	 * @param mail
-	 * @param comment
-	 */
-	public void insertCertificationStatus(String logical_identifier, String version, String date, String status, String email, String comment) {
-		try {
-			// Setup the connection with the DB
-			connect = getConnection();
-			connect.setAutoCommit(false);
-			
-			prepareStm = connect.prepareStatement("INSERT INTO " + TABLENAME + " (" 
-													+ LOGIDENTIFIERCOLUMN + ", " 
-													+ VERSIONCOLUMN + ", "
-													+ DATECOLUMN + ", "
-													+ STATUSCOLUMN + ", "
-													+ EMAILCOLUMN + ", "
-													+ COMMENTCOLUMN + ") VALUES (?, ?, ?, ?, ?, ?)");
-			prepareStm.setString(1, logical_identifier);
-			prepareStm.setString(2, version);
-			prepareStm.setString(3, date);
-			prepareStm.setString(4, status);
-			prepareStm.setString(5, email);
-			prepareStm.setString(6, comment);
-			
-			prepareStm.executeUpdate();
-			
-			connect.commit();
-			logger.info("The Certification Status " + status + " for the product: " + logical_identifier + ", has been added.");
-			
-		} catch (Exception e) {
-			logger.error(e);
-			if (connect != null) {
-	            try {
-	            	logger.error("Transaction is being rolled back");
-	                connect.rollback();
-	            } catch(SQLException excep) {
-	            	logger.error(excep);
-	            }
-	        }
-	    } finally {
-	        close(prepareStm);
-	    }
-	}
-	
-	/**
-	 * Certification Status Query - Query the certification_status table for the latest certification status of a given product.
-	 * @param logical_identifier
-	 * @param ver
-	 * @return
-	 */
-	@SuppressWarnings("finally")
-	public CertificationStatus getLatestCertificationStatus(String logical_identifier, String ver) {
 
-		CertificationStatus certifStatus = null;
-		try {
-			// Setup the connection with the DB
-			connect = getConnection();
-
-			statement = connect.createStatement();
-			
-			resultSet = statement.executeQuery("select * from " + TABLENAME 
-					+ " where " + LOGIDENTIFIERCOLUMN + " = '" + logical_identifier + "' and "
-					+ VERSIONCOLUMN + " = '" + ver + "' order by " + DATECOLUMN + " DESC");
-
-			if (resultSet.next()){
-				certifStatus = new CertificationStatus();
-
-				certifStatus.setLogIdentifier(resultSet.getString(LOGIDENTIFIERCOLUMN));
-				certifStatus.setVersion(resultSet.getString(VERSIONCOLUMN));
-				certifStatus.setStatus(resultSet.getString(STATUSCOLUMN));
-				certifStatus.setEmail(resultSet.getString(EMAILCOLUMN));
-				certifStatus.setComment(resultSet.getString(COMMENTCOLUMN));
-				certifStatus.setDate(resultSet.getString(DATECOLUMN));
-				
-			}	
-			else{
-				logger.info("Can not find Vertifacation Status!");
-			}
-		} catch (Exception e) {
-			logger.error(e);
-		} finally {
-			close(statement);
-			return certifStatus;
-		}
-	}
-	
-	/**
-	 * Certification Status List Query - Query the certification_status table for the certification status progression of a given product.
-	 * @param logical_identifier
-	 * @param ver
-	 * @return
-	 */
-	@SuppressWarnings("finally")
-	public List<CertificationStatus> getCertificationStatusList(String logical_identifier, String ver) {
-		
-		List<CertificationStatus> certifStatuses = new ArrayList<CertificationStatus>();
-		CertificationStatus certifStatus = null;
-		try {
-			// Setup the connection with the DB
-			connect = getConnection();
-
-			statement = connect.createStatement();
-			
-			resultSet = statement.executeQuery("select * from " + TABLENAME 
-					+ " where " + LOGIDENTIFIERCOLUMN + " = '" + logical_identifier + "' and "
-					+ VERSIONCOLUMN + " = '" + ver + "' order by " + DATECOLUMN);
-
-			while (resultSet.next()){
-				certifStatus = new CertificationStatus();
-
-				certifStatus.setLogIdentifier(resultSet.getString(LOGIDENTIFIERCOLUMN));
-				certifStatus.setVersion(resultSet.getString(VERSIONCOLUMN));
-				certifStatus.setStatus(resultSet.getString(STATUSCOLUMN));
-				certifStatus.setEmail(resultSet.getString(EMAILCOLUMN));
-				certifStatus.setComment(resultSet.getString(COMMENTCOLUMN));
-				certifStatus.setDate(resultSet.getString(DATECOLUMN));
-				
-				certifStatuses.add(certifStatus);
-			}	
-
-		} catch (Exception e) {
-			logger.error(e);
-		} finally {
-			close(statement);
-			return certifStatuses;
-		}
-	}
-	/**
-	 * @return a list of Certification Status objects with the title.
-	 */
-	@SuppressWarnings("finally")
-	public List<CertificationStatus> getCertificationStatusOrderByVersion(String title) {
-
-		List<CertificationStatus> cStatuses = new ArrayList<CertificationStatus>();
-		CertificationStatus cStatus = null;
-		try {
-			// Setup the connection with the DB
-			connect = getConnection();
-
-			statement = connect.createStatement();
-
-			resultSet = statement.executeQuery("select a.* from " + PRODUCTTABLENAME + " p, " + TABLENAME + " a"
-					+ " where p." + LOGIDENTIFIERCOLUMN + " = " + "a." + LOGIDENTIFIERCOLUMN + " and p."
-					+ Product.TITLECOLUMN + " = '" + title + "' order by a." + VERSIONCOLUMN);
-
-			while (resultSet.next()) {
-				cStatus = new CertificationStatus();
-
-				cStatus.setLogIdentifier(resultSet.getString(LOGIDENTIFIERCOLUMN));
-				cStatus.setVersion(resultSet.getString(VERSIONCOLUMN));
-				cStatus.setStatus(resultSet.getString(STATUSCOLUMN));
-				cStatus.setEmail(resultSet.getString(EMAILCOLUMN));
-				cStatus.setComment(resultSet.getString(COMMENTCOLUMN));
-				cStatus.setDate(resultSet.getString(DATECOLUMN));
-
-				cStatuses.add(cStatus);
-			}
-
-		} catch (Exception e) {
-			logger.error(e);
-		} finally {
-			close(statement);
-			return cStatuses;
-		}
-	}
-	/**
-	 * @return a list of all Certification Status objects.
-	 */
-	@SuppressWarnings("finally")
-	public List<CertificationStatus> getCertificationStatusOrderByVersion() {
-
-		List<CertificationStatus> cStatuses = new ArrayList<CertificationStatus>();
-		CertificationStatus cStatus = null;
-		try {
-			// Setup the connection with the DB
-			connect = getConnection();
-
-			statement = connect.createStatement();
-
-			resultSet = statement
-					.executeQuery("select c.* from " + PRODUCTTABLENAME + " p, " + TABLENAME + " c" + " where p."
-							+ LOGIDENTIFIERCOLUMN + " = " + "c." + LOGIDENTIFIERCOLUMN + " order by c." + VERSIONCOLUMN);
-
-			while (resultSet.next()) {
-				cStatus = new CertificationStatus();
-
-				cStatus.setLogIdentifier(resultSet.getString(LOGIDENTIFIERCOLUMN));
-				cStatus.setVersion(resultSet.getString(VERSIONCOLUMN));
-				cStatus.setStatus(resultSet.getString(STATUSCOLUMN));
-				cStatus.setEmail(resultSet.getString(EMAILCOLUMN));
-				cStatus.setComment(resultSet.getString(COMMENTCOLUMN));
-				cStatus.setDate(resultSet.getString(DATECOLUMN));
-
-				cStatuses.add(cStatus);
-			}
-
-		} catch (Exception e) {
-			logger.error(e);
-		} finally {
-			close(statement);
-			return cStatuses;
-		}
-	}
-	/**
-	 * @param stm
-	 */
-	private void close(Statement stm) {
-		try {
-			if (resultSet != null) {
-				resultSet.close();
-			}
-
-			if (stm != null) {
-				stm.close();
-			}
-
-			if (connect != null) {
-				connect.setAutoCommit(true);
-				connect.close();				
-			}
-		} catch (Exception e) {
-			logger.error(e);
-		}
-	}
 }

@@ -14,6 +14,7 @@ import org.apache.log4j.Logger;
 
 import gov.nasa.pds.tracking.tracking.db.DBConnector;
 import gov.nasa.pds.tracking.tracking.db.Releases;
+import gov.nasa.pds.tracking.tracking.db.ReleasesDao;
 import gov.nasa.pds.tracking.tracking.utils.HtmlConstants;
 
 @Path("html/releases")
@@ -51,9 +52,9 @@ public class HTMLBasedReleases  extends DBConnector {
     			  "<table border=\"1\" style=\"width: 90%;border-spacing: 0; font:normal; font-size: 12\" >" +
     			  tableTiltes);
 
-    	Releases rel;
+    	ReleasesDao rel;
 		try {	        
-				rel = new Releases();
+				rel = new ReleasesDao();
 				
 				List<Releases> rels = rel.getReleasesList();
 				
@@ -110,19 +111,20 @@ public class HTMLBasedReleases  extends DBConnector {
 	              "<div>" +
     			  "<table border=\"1\" style=\"width: 90%;border-spacing: 0; font:normal; font-size: 12\" >" +
     			  tableTiltes);
-
+    	
+    	ReleasesDao relD;
     	Releases rel;
 		try {	        
-				rel = new Releases();
+				relD = new ReleasesDao();
 				
 				List<Releases> rels = new ArrayList<Releases>();
 				
 				if (latest) {
-					rel = rel.getLatestReleases(id, version);
+					rel = relD.getLatestReleases(id, version);
 					if (rel != null)
 					rels.add(rel);
 				}else{
-					rels = rel.getReleasesList(id, version);
+					rels = relD.getReleasesList(id, version);
 				}
 				
 				logger.info("number of releases: "  + rels.size());

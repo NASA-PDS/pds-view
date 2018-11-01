@@ -186,19 +186,17 @@ public class JSONBasedDOI {
 		
 			Doi d = new Doi(id, ver, null, null, url, email, comment);
 			
-			int result = dd.updateDOI(d);
+			Doi updatedDoi = dd.updateDOI(d);
 			
-			if(result == 1){		
-				//get doi and registration_date for updated DOI 
-				Doi updatedDOI = dd.getDOI(id, ver);
-				//logger.debug(" updated DOI? " + updatedDOI.getLog_identifier() + ", " + updatedDOI.getVersion());
-				message.put(DoiDao.LOG_IDENTIFIERCOLUME, updatedDOI.getLog_identifier());
-				message.put(DoiDao.VERSIONCOLUME, updatedDOI.getVersion());
-				message.put(DoiDao.DOICOLUME, updatedDOI.getDoi());
-				message.put(DoiDao.DATECOLUME, updatedDOI.getDate());
-				message.put(DoiDao.URLCOLUME, updatedDOI.getUrl());
-				message.put(DoiDao.EMAILCOLUME, updatedDOI.getEmail());
-				message.put(DoiDao.COMMENTCOLUME, updatedDOI.getComment() != null ? updatedDOI.getComment() : "");
+			if(updatedDoi != null && updatedDoi.getLog_identifier() != null){		
+
+				message.put(DoiDao.LOG_IDENTIFIERCOLUME, updatedDoi.getLog_identifier());
+				message.put(DoiDao.VERSIONCOLUME, updatedDoi.getVersion());
+				message.put(DoiDao.DOICOLUME, updatedDoi.getDoi());
+				message.put(DoiDao.DATECOLUME, updatedDoi.getDate());
+				message.put(DoiDao.URLCOLUME, updatedDoi.getUrl());
+				message.put(DoiDao.EMAILCOLUME, updatedDoi.getEmail());
+				message.put(DoiDao.COMMENTCOLUME, updatedDoi.getComment() != null ? updatedDoi.getComment() : "");
 				
 			}else{
 				message.put("Message", FAILURE_RESULT);

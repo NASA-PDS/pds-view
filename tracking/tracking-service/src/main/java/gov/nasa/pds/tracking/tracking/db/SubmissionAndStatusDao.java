@@ -43,6 +43,42 @@ public class SubmissionAndStatusDao extends DBConnector {
 	}
 	
 	@SuppressWarnings("finally")
+	private SubmissionAndStatus getSubmissionsAndStatus(int del_identifier, String submissionDate, String statusDate) {
+		
+		SubmissionAndStatus status = null;
+		
+		Connection connect = null;
+		Statement statement = null;
+		try {
+			// Setup the connection with the DB
+			connect = getConnection();
+
+			statement = connect.createStatement();
+
+			resultSet = statement.executeQuery("select * from " + STATUSTABLENAME
+												+ " WHERE " + DEL_IDENTIFIERCOLUME + " = '" + del_identifier
+												+ "' AND " + SUBMISSIONDATECOLUME  + " = '" +  submissionDate
+												+ "' AND " + STATUSDATECOLUME  + " = '" +  statusDate + "'");
+
+			while (resultSet.next()) {
+				status = new SubmissionAndStatus();
+
+				status.setDel_identifier(resultSet.getInt(DEL_IDENTIFIERCOLUME));
+				status.setSubmissionDate(resultSet.getString(SUBMISSIONDATECOLUME));
+				status.setStatusDate(resultSet.getString(STATUSDATECOLUME));
+				status.setStatus(resultSet.getString(STATUSCOLUME));
+				status.setEmail(resultSet.getString(EMAILCOLUME));
+				status.setComment(resultSet.getString(COMMENTCOLUME));
+			}
+
+		} catch (Exception e) {
+			logger.error(e);
+		} finally {
+			close(connect, statement);
+			return status;
+		}		
+	}
+	@SuppressWarnings("finally")
 	public List<SubmissionAndStatus> getSubmissionsAndStatusList() {
 
 		List<SubmissionAndStatus> statuses = new ArrayList<SubmissionAndStatus>();
@@ -221,9 +257,9 @@ public class SubmissionAndStatusDao extends DBConnector {
 		return success;
 	}
 	
-	public int updateSubmissionStatus(SubmissionAndStatus subMS) {
-		
-		int success = 0;
+	public SubmissionAndStatus updateSubmissionStatus(SubmissionAndStatus subMS) {
+
+		SubmissionAndStatus updatedSubMS = null;
 		
 		Connection connect = null;
 		PreparedStatement prepareStm = null;
@@ -232,11 +268,18 @@ public class SubmissionAndStatusDao extends DBConnector {
 			// Setup the connection with the DB
 			connect = getConnection();
 			connect.setAutoCommit(false);
+			
+			boolean hasComment = false;
+			String setComment = "";
+			if (subMS.getComment() != null && subMS.getComment().length() > 0){
+				hasComment = true;
+				setComment = ", " + COMMENTCOLUME + " = ?";
+			}
 			prepareStm = connect.prepareStatement("UPDATE " + STATUSTABLENAME + " SET "
 																		+ STATUSCOLUME + " = ?, "
-																		+ EMAILCOLUME + " = ?, "
-																		+ COMMENTCOLUME + " = ? "
-														+ "WHERE " + DEL_IDENTIFIERCOLUME + " = ? "
+																		+ EMAILCOLUME + " = ?" 
+																		+ setComment
+														+ " WHERE " + DEL_IDENTIFIERCOLUME + " = ? "
 														+ "AND " + SUBMISSIONDATECOLUME + " = ? "
 														+ "AND " + STATUSDATECOLUME + " = ?");
 			
@@ -250,17 +293,19 @@ public class SubmissionAndStatusDao extends DBConnector {
 			
 			prepareStm.setString(1, subMS.getStatus());
 			prepareStm.setString(2, subMS.getEmail());
-			prepareStm.setString(3, subMS.getComment());
-			prepareStm.setInt(4, subMS.getDel_identifier());
-			prepareStm.setString(5, subMS.getSubmissionDate());
-			prepareStm.setString(6, subMS.getStatusDate());
+			
+			if (hasComment)
+				prepareStm.setString(3, subMS.getComment());
+			prepareStm.setInt(hasComment ? 4:3, subMS.getDel_identifier());
+			prepareStm.setString(hasComment ? 5:4, subMS.getSubmissionDate());
+			prepareStm.setString(hasComment ? 6:4, subMS.getStatusDate());
 			
 			
 			prepareStm.executeUpdate();
 			
 			connect.commit();
 			logger.info("Submission Status for " + subMS.getDel_identifier() + " has been updated.");
-			success = 1;
+			updatedSubMS = getSubmissionsAndStatus(subMS.getDel_identifier(), subMS.getSubmissionDate(), subMS.getStatusDate());
 			
 		} catch (Exception e) {
 			logger.error(e);
@@ -272,12 +317,13 @@ public class SubmissionAndStatusDao extends DBConnector {
 	            	logger.error(excep);
 	            }
 	        }
-			success = 0;
 	    } finally {
 	        close(connect, prepareStm);
 	    }
-		return success;
+		return updatedSubMS;
 	}
+	
+
 	/**
 	 * @param stm
 	 */

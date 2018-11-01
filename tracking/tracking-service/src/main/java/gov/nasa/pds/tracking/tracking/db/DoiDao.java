@@ -93,8 +93,9 @@ public class DoiDao extends DBConnector {
 	/**
 	 * @param doi
 	 */
-	public int updateDOI(Doi doi) {
-		int success = 0;
+	public Doi updateDOI(Doi doi) {
+		
+		Doi updatedDoi = null; 
 		Connection connect = null;
 		PreparedStatement prepareStm = null;
 
@@ -103,22 +104,31 @@ public class DoiDao extends DBConnector {
 			connect = getConnection();
 			connect.setAutoCommit(false);
 			
+			boolean hasComment = false;
+			String setComment = "";
+			if (doi.getComment() != null && doi.getComment().length() > 0){
+				hasComment = true;
+				setComment = ", " + COMMENTCOLUME + " = ?";
+			}
+			
 			prepareStm = connect.prepareStatement("UPDATE " + TABLENAME + " SET " + URLCOLUME + " = ?, " 
-																				  + EMAILCOLUME + " = ?, " 
-																				  + COMMENTCOLUME + " = ? WHERE " 
-																				  + LOG_IDENTIFIERCOLUME + " = ? AND " + VERSIONCOLUME + " = ?");
+																				  + EMAILCOLUME + " = ?" 
+																				  + setComment 
+																				  + " WHERE " + LOG_IDENTIFIERCOLUME + " = ? AND " 
+																				  + VERSIONCOLUME + " = ?");
 			prepareStm.setString(1, doi.getUrl());
 			prepareStm.setString(2, doi.getEmail());
-			prepareStm.setString(3, doi.getComment());
-			prepareStm.setString(4, doi.getLog_identifier());
-			prepareStm.setString(5, doi.getVersion());
+			if (hasComment)
+				prepareStm.setString(3, doi.getComment());
+			prepareStm.setString(hasComment ? 4:3, doi.getLog_identifier());
+			prepareStm.setString(hasComment ? 5:4, doi.getVersion());
 			
 			prepareStm.executeUpdate();
 			
 			connect.commit();
-			
-			success = 1;
+
 			logger.info("The site url for product: " + doi.getLog_identifier() + ", has been updated to " + doi.getUrl() + ".");
+			updatedDoi = getDOI(doi.getLog_identifier(), doi.getVersion());
 			
 		} catch (Exception e) {
 			logger.error(e);
@@ -130,11 +140,11 @@ public class DoiDao extends DBConnector {
 	            	logger.error(excep);
 	            }
 	        }
-			success = 0;
+
 	    } finally {
 	        close(connect, prepareStm);
 	    }
-		return success;
+		return updatedDoi;
 	}
 	
 	@SuppressWarnings("finally")

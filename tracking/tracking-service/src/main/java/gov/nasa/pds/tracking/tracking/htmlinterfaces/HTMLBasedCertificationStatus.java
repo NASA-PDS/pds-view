@@ -14,6 +14,7 @@ import org.apache.log4j.Logger;
 
 import gov.nasa.pds.tracking.tracking.db.DBConnector;
 import gov.nasa.pds.tracking.tracking.db.CertificationStatus;
+import gov.nasa.pds.tracking.tracking.db.CertificationStatusDao;
 import gov.nasa.pds.tracking.tracking.utils.HtmlConstants;
 
 @Path("html/certificationstatus")
@@ -47,9 +48,9 @@ public class HTMLBasedCertificationStatus  extends DBConnector {
     			  "<table border=\"1\" style=\"width: 90%;border-spacing: 0; font:normal; font-size: 12\" >" +
     			  tableTiltes);
 
-    	CertificationStatus cStatus;
+    	CertificationStatusDao cStatus;
 		try {
-			cStatus = new CertificationStatus();
+			cStatus = new CertificationStatusDao();
 				
 				List<CertificationStatus> cStatuses = cStatus.getCertificationStatusOrderByVersion();
 				
@@ -103,19 +104,20 @@ public class HTMLBasedCertificationStatus  extends DBConnector {
 	              "<div>" +
     			  "<table border=\"1\" style=\"width: 90%;border-spacing: 0; font:normal; font-size: 12\" >" +
     			  tableTiltes);
-
+    	
+    	CertificationStatusDao cStatusD;
     	CertificationStatus cStatus;
 		try {
-				cStatus = new CertificationStatus();
+				cStatusD = new CertificationStatusDao();
 				
 				List<CertificationStatus> cStatuses = new ArrayList<CertificationStatus>();
 				
 				if (latest) {
-					cStatus = cStatus.getLatestCertificationStatus(id, version);
+					cStatus = cStatusD.getLatestCertificationStatus(id, version);
 					if (cStatus != null)
 					cStatuses.add(cStatus);
 				}else{
-					cStatuses = cStatus.getCertificationStatusList(id, version);
+					cStatuses = cStatusD.getCertificationStatusList(id, version);
 				}
 				
 				
@@ -162,9 +164,9 @@ public class HTMLBasedCertificationStatus  extends DBConnector {
     			  "<table border=\"1\" style=\"width: 90%;border-spacing: 0; font:normal; font-size: 12\" >" +
     			  tableTiltes);
 
-    	CertificationStatus cStatus;
+    	CertificationStatusDao cStatus;
 		try {
-			cStatus = new CertificationStatus();
+			cStatus = new CertificationStatusDao();
 			
 			List<CertificationStatus> cStatuses = cStatus.getCertificationStatusOrderByVersion(title);
 			

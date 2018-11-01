@@ -7,19 +7,25 @@ import javax.ws.rs.Path;
 
 import org.apache.log4j.Logger;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.ws.rs.Consumes;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
  
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import gov.nasa.pds.tracking.tracking.db.NssdcaStatus;
+import gov.nasa.pds.tracking.tracking.db.NssdcaStatusDao;
 
 /**
  * @author danyu dan.yu@jpl.nasa.gov
@@ -29,7 +35,9 @@ import gov.nasa.pds.tracking.tracking.db.NssdcaStatus;
 public class JSONBasedNssdcaStatus {
 	
 	public static Logger logger = Logger.getLogger(JSONBasedNssdcaStatus.class);
-
+	
+	private static final String FAILURE_RESULT="Failure";
+	private NssdcaStatusDao nsD;
 	/**
 	 * @return
 	 * @throws JSONException
@@ -42,11 +50,11 @@ public class JSONBasedNssdcaStatus {
         
         JSONObject jsonNStatus = new JSONObject();
         
-        NssdcaStatus nStatus;
+        NssdcaStatusDao nStatusO;
 		try {
 			
-			nStatus = new NssdcaStatus();
-			List<NssdcaStatus> nStatuses = nStatus.getNssdcaStatusOrderByVersion();
+			nStatusO = new NssdcaStatusDao();
+			List<NssdcaStatus> nStatuses = nStatusO.getNssdcaStatusOrderByVersion();
 			logger.info("number of NSSDCA Status: "  + nStatuses.size());
 			
 			Iterator<NssdcaStatus> itr = nStatuses.iterator();
@@ -57,12 +65,12 @@ public class JSONBasedNssdcaStatus {
 					
 		         jsonNStatus = new JSONObject();
 		     	
-		         jsonNStatus.put(NssdcaStatus.LOGIDENTIFIERCOLUMN, ns.getLogIdentifier());
-		         jsonNStatus.put(NssdcaStatus.VERSIONCOLUMN, ns.getVersion());
-		         jsonNStatus.put(NssdcaStatus.DATECOLUMN, ns.getDate());
-		         jsonNStatus.put(NssdcaStatus.NSSDCACOLUMN, ns.getNssdca());
-		         jsonNStatus.put(NssdcaStatus.EMAILCOLUMN, ns.getEmail());		         
-		         jsonNStatus.put(NssdcaStatus.COMMENTCOLUMN, ns.getComment() != null ? ns.getComment() : "");
+		         jsonNStatus.put(NssdcaStatusDao.LOGIDENTIFIERCOLUMN, ns.getLogIdentifier());
+		         jsonNStatus.put(NssdcaStatusDao.VERSIONCOLUMN, ns.getVersion());
+		         jsonNStatus.put(NssdcaStatusDao.DATECOLUMN, ns.getDate());
+		         jsonNStatus.put(NssdcaStatusDao.NSSDCACOLUMN, ns.getNssdca());
+		         jsonNStatus.put(NssdcaStatusDao.EMAILCOLUMN, ns.getEmail());		         
+		         jsonNStatus.put(NssdcaStatusDao.COMMENTCOLUMN, ns.getComment() != null ? ns.getComment() : "");
 		         
 		     	 jsonNStatuses.append("NSSDCA Status", jsonNStatus);
 		         count++;
@@ -93,10 +101,10 @@ public class JSONBasedNssdcaStatus {
         
         JSONObject jsonNStatus = new JSONObject();
         
-        NssdcaStatus nStatus;
+        NssdcaStatusDao nStatus;
 		try {
 			
-			nStatus = new NssdcaStatus();
+			nStatus = new NssdcaStatusDao();
 			List<NssdcaStatus> nStatuses = nStatus.getNssdcaStatusList(id, version);
 			logger.info("number of NSSDCA Status: "  + nStatuses.size());
 			
@@ -108,12 +116,12 @@ public class JSONBasedNssdcaStatus {
 					
 		         jsonNStatus = new JSONObject();
 		     	
-		         jsonNStatus.put(NssdcaStatus.LOGIDENTIFIERCOLUMN, ns.getLogIdentifier());
-		         jsonNStatus.put(NssdcaStatus.VERSIONCOLUMN, ns.getVersion());
-		         jsonNStatus.put(NssdcaStatus.DATECOLUMN, ns.getDate());
-		         jsonNStatus.put(NssdcaStatus.NSSDCACOLUMN, ns.getNssdca());
-		         jsonNStatus.put(NssdcaStatus.EMAILCOLUMN, ns.getEmail());		         
-		         jsonNStatus.put(NssdcaStatus.COMMENTCOLUMN, ns.getComment() != null ? ns.getComment() : "");
+		         jsonNStatus.put(NssdcaStatusDao.LOGIDENTIFIERCOLUMN, ns.getLogIdentifier());
+		         jsonNStatus.put(NssdcaStatusDao.VERSIONCOLUMN, ns.getVersion());
+		         jsonNStatus.put(NssdcaStatusDao.DATECOLUMN, ns.getDate());
+		         jsonNStatus.put(NssdcaStatusDao.NSSDCACOLUMN, ns.getNssdca());
+		         jsonNStatus.put(NssdcaStatusDao.EMAILCOLUMN, ns.getEmail());		         
+		         jsonNStatus.put(NssdcaStatusDao.COMMENTCOLUMN, ns.getComment() != null ? ns.getComment() : "");
 		         
 		     	 jsonNStatuses.append("NSSDCA Status", jsonNStatus);
 		         count++;
@@ -129,4 +137,42 @@ public class JSONBasedNssdcaStatus {
         return Response.status(200).entity(result).build();
 	
 	}
+	
+	@POST
+	@Path("/add")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)	
+	public Response createNssdcaStatus(@FormParam("LogicalIdentifier") String logicalIdentifier,
+			@FormParam("Version") String ver,
+			@FormParam("Date") String date,
+			@FormParam("NssdcaIdentifier") String nssdca,
+			@FormParam("Email") String email,
+			@FormParam("Comment") String comment) throws IOException{
+		
+		JSONObject relt = new JSONObject();
+		JSONObject message = new JSONObject();
+		try {
+			nsD = new NssdcaStatusDao();
+
+			NssdcaStatus ns = new NssdcaStatus(logicalIdentifier, ver, date, nssdca, email, comment);
+			int result = nsD.insertNssdcaStatus(ns);
+			
+			if(result == 1){
+				message.put(NssdcaStatusDao.LOGIDENTIFIERCOLUMN, ns.getLogIdentifier());
+				message.put(NssdcaStatusDao.VERSIONCOLUMN, ns.getVersion());
+				message.put(NssdcaStatusDao.DATECOLUMN, ns.getDate());
+				message.put(NssdcaStatusDao.NSSDCACOLUMN, ns.getNssdca());
+				message.put(NssdcaStatusDao.EMAILCOLUMN, ns.getEmail());		         
+				message.put(NssdcaStatusDao.COMMENTCOLUMN, ns.getComment() != null ? ns.getComment() : "");
+			}
+		} catch (ClassNotFoundException | SQLException e) {			
+			e.printStackTrace();
+			message.put("Message", FAILURE_RESULT);
+		}
+		//logger.debug("Result: " + message);
+		relt.append("NssdcaStatus", message);
+		String jsonOutput = "" + relt.toString(4);
+		return Response.status(200).entity(jsonOutput).build();
+	}
+	
 }

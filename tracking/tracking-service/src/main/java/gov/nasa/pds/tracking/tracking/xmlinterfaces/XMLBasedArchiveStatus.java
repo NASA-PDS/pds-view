@@ -5,16 +5,22 @@ package gov.nasa.pds.tracking.tracking.xmlinterfaces;
 
 import org.apache.log4j.Logger;
 
+import java.io.IOException;
 import java.io.StringWriter;
 import java.sql.SQLException;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.ws.rs.Consumes;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -29,6 +35,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import gov.nasa.pds.tracking.tracking.db.ArchiveStatus;
+import gov.nasa.pds.tracking.tracking.db.ArchiveStatusDao;
 
 /**
  * @author danyu dan.yu@jpl.nasa.gov
@@ -45,7 +52,7 @@ public class XMLBasedArchiveStatus {
         
 		StringBuffer xmlOutput = new StringBuffer();
 		
-		ArchiveStatus status;
+		ArchiveStatusDao status;
 		try {
 											
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -55,7 +62,7 @@ public class XMLBasedArchiveStatus {
             Document doc = statusBuilder.newDocument();
             Element rootElement = doc.createElement("archive_status");
             
-            status = new ArchiveStatus();
+            status = new ArchiveStatusDao();
 			List<ArchiveStatus> statuses = status.getArchiveStatusOrderByVersion();
 						
 			logger.info("number of Archive Status: "  + statuses.size());
@@ -70,27 +77,27 @@ public class XMLBasedArchiveStatus {
 			        
 					Element subRootElement = doc.createElement("status");
 					
-		            Element idElement = doc.createElement(ArchiveStatus.LOGIDENTIFIERCOLUMN);
+		            Element idElement = doc.createElement(ArchiveStatusDao.LOGIDENTIFIERCOLUMN);
 		            idElement.appendChild(doc.createTextNode(as.getLogIdentifier()));
 		            subRootElement.appendChild(idElement);
 		            
-		            Element verElement = doc.createElement(ArchiveStatus.VERSIONCOLUMN);
+		            Element verElement = doc.createElement(ArchiveStatusDao.VERSIONCOLUMN);
 		            verElement.appendChild(doc.createTextNode(as.getVersion()));
 		            subRootElement.appendChild(verElement);
 		            
-		            Element dateElement = doc.createElement(ArchiveStatus.DATECOLUMN);
+		            Element dateElement = doc.createElement(ArchiveStatusDao.DATECOLUMN);
 		            dateElement.appendChild(doc.createTextNode(as.getDate()));
 		            subRootElement.appendChild(dateElement);
 		            
-		            Element statusElement = doc.createElement(ArchiveStatus.STATUSCOLUMN);
+		            Element statusElement = doc.createElement(ArchiveStatusDao.STATUSCOLUMN);
 		            statusElement.appendChild(doc.createTextNode(as.getStatus()));
 		            subRootElement.appendChild(statusElement);
 		            
-		            Element emailElement = doc.createElement(ArchiveStatus.EMAILCOLUMN);
+		            Element emailElement = doc.createElement(ArchiveStatusDao.EMAILCOLUMN);
 		            emailElement.appendChild(doc.createTextNode(as.getEmail()));
 		            subRootElement.appendChild(emailElement);
 		            
-		            Element commentElement = doc.createElement(ArchiveStatus.COMMENTCOLUMN);
+		            Element commentElement = doc.createElement(ArchiveStatusDao.COMMENTCOLUMN);
 		            commentElement.appendChild(doc.createTextNode(as.getComment() != null ? as.getComment() : ""));
 		            subRootElement.appendChild(commentElement);
 		            
@@ -134,6 +141,7 @@ public class XMLBasedArchiveStatus {
 		
 		StringBuffer xmlOutput = new StringBuffer();
 		
+		ArchiveStatusDao aStatusO;
 		ArchiveStatus aStatus;
 		try {
 											
@@ -144,15 +152,15 @@ public class XMLBasedArchiveStatus {
             Document doc = statusBuilder.newDocument();
             Element rootElement = doc.createElement("archive_status");
             
-            aStatus = new ArchiveStatus();
+            aStatusO = new ArchiveStatusDao();
 			List<ArchiveStatus> aStatuses = new ArrayList<ArchiveStatus>();
 			
 			if (latest) {
-				aStatus = aStatus.getLatestArchiveStatus(id, version);
+				aStatus = aStatusO.getLatestArchiveStatus(id, version);
 				if (aStatus != null)
 				aStatuses.add(aStatus);
 			}else{
-				aStatuses = aStatus.getArchiveStatusList(id, version);
+				aStatuses = aStatusO.getArchiveStatusList(id, version);
 			}
 						
 			logger.info("number of Archive Status: "  + aStatuses.size());
@@ -167,27 +175,27 @@ public class XMLBasedArchiveStatus {
 			        
 					Element subRootElement = doc.createElement("status");
 					
-		            Element idElement = doc.createElement(ArchiveStatus.LOGIDENTIFIERCOLUMN);
+		            Element idElement = doc.createElement(ArchiveStatusDao.LOGIDENTIFIERCOLUMN);
 		            idElement.appendChild(doc.createTextNode(as.getLogIdentifier()));
 		            subRootElement.appendChild(idElement);
 		            
-		            Element verElement = doc.createElement(ArchiveStatus.VERSIONCOLUMN);
+		            Element verElement = doc.createElement(ArchiveStatusDao.VERSIONCOLUMN);
 		            verElement.appendChild(doc.createTextNode(as.getVersion()));
 		            subRootElement.appendChild(verElement);
 		            
-		            Element dateElement = doc.createElement(ArchiveStatus.DATECOLUMN);
+		            Element dateElement = doc.createElement(ArchiveStatusDao.DATECOLUMN);
 		            dateElement.appendChild(doc.createTextNode(as.getDate()));
 		            subRootElement.appendChild(dateElement);
 		            
-		            Element statusElement = doc.createElement(ArchiveStatus.STATUSCOLUMN);
+		            Element statusElement = doc.createElement(ArchiveStatusDao.STATUSCOLUMN);
 		            statusElement.appendChild(doc.createTextNode(as.getStatus()));
 		            subRootElement.appendChild(statusElement);
 		            
-		            Element emailElement = doc.createElement(ArchiveStatus.EMAILCOLUMN);
+		            Element emailElement = doc.createElement(ArchiveStatusDao.EMAILCOLUMN);
 		            emailElement.appendChild(doc.createTextNode(as.getEmail()));
 		            subRootElement.appendChild(emailElement);
 		            
-		            Element commentElement = doc.createElement(ArchiveStatus.COMMENTCOLUMN);
+		            Element commentElement = doc.createElement(ArchiveStatusDao.COMMENTCOLUMN);
 		            commentElement.appendChild(doc.createTextNode(as.getComment() != null ? as.getComment() : ""));
 		            subRootElement.appendChild(commentElement);
 		            
@@ -224,4 +232,91 @@ public class XMLBasedArchiveStatus {
         return Response.status(200).entity(xmlOutput.toString()).build();
 	}
 	
+	@POST
+	@Path("/add")
+	@Produces(MediaType.APPLICATION_XML)
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)	
+	public Response createArchiveStatus(@FormParam("LogicalIdentifier") String logicalIdentifier,
+			@FormParam("Version") String ver,
+			@FormParam("Datte") String date,
+			@FormParam("Status") String status,
+			@FormParam("Email") String email,
+			@FormParam("Comment") String comment) throws IOException{
+
+		StringBuffer xmlOutput = new StringBuffer();
+		ArchiveStatusDao asD;
+		
+		try {
+			asD = new ArchiveStatusDao();
+
+			ArchiveStatus as = new ArchiveStatus(logicalIdentifier, ver, date, status, email, comment);
+			
+			int result = asD.insertArchiveStatus(as);
+			
+			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder doiBuilder;
+
+			doiBuilder = factory.newDocumentBuilder();
+            Document doc = doiBuilder.newDocument();
+            Element rootElement = doc.createElement("archive_status");
+            
+			if(result == 1){
+				Element subRootElement = doc.createElement("status");
+				
+				Element idElement = doc.createElement(ArchiveStatusDao.LOGIDENTIFIERCOLUMN);
+	            idElement.appendChild(doc.createTextNode(as.getLogIdentifier()));
+	            subRootElement.appendChild(idElement);
+	            
+	            Element verElement = doc.createElement(ArchiveStatusDao.VERSIONCOLUMN);
+	            verElement.appendChild(doc.createTextNode(as.getVersion()));
+	            subRootElement.appendChild(verElement);
+	            
+	            Element dateElement = doc.createElement(ArchiveStatusDao.DATECOLUMN);
+	            dateElement.appendChild(doc.createTextNode(as.getDate()));
+	            subRootElement.appendChild(dateElement);
+	            
+	            Element statusElement = doc.createElement(ArchiveStatusDao.STATUSCOLUMN);
+	            statusElement.appendChild(doc.createTextNode(as.getStatus()));
+	            subRootElement.appendChild(statusElement);
+	            
+	            Element emailElement = doc.createElement(ArchiveStatusDao.EMAILCOLUMN);
+	            emailElement.appendChild(doc.createTextNode(as.getEmail()));
+	            subRootElement.appendChild(emailElement);
+	            
+	            Element commentElement = doc.createElement(ArchiveStatusDao.COMMENTCOLUMN);
+	            commentElement.appendChild(doc.createTextNode(as.getComment() != null ? as.getComment() : ""));
+	            subRootElement.appendChild(commentElement);
+	            
+	            rootElement.appendChild(subRootElement);                    
+		}else{
+			Element messageElement = doc.createElement("Message");
+			messageElement.appendChild(doc.createTextNode("Add archive status for " + as.getLogIdentifier() + ", " + as.getVersion() + " failure!"));
+			rootElement.appendChild(messageElement);
+		}
+		doc.appendChild(rootElement);
+		
+		DOMSource domSource = new DOMSource(doc);
+        StringWriter writer = new StringWriter();
+        StreamResult strResult = new StreamResult(writer);
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        Transformer transformer = transformerFactory.newTransformer();
+        transformer.transform(domSource, strResult);
+        
+        logger.debug("archive status:\n" + writer.toString());
+        
+		xmlOutput.append(writer.toString());
+	} catch (ParserConfigurationException ex) {
+		logger.error(ex);
+    } catch (TransformerConfigurationException ex) {
+    	logger.error(ex);
+    }catch (TransformerException ex) {
+    	logger.error(ex);
+    } catch (ClassNotFoundException ex) {
+    	logger.error(ex);
+	} catch (SQLException ex) {
+		logger.error(ex);
+	}
+
+    return Response.status(200).entity(xmlOutput.toString()).build();
+	}
 }

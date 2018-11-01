@@ -426,7 +426,7 @@ public class XMLBasedSubmissionAndStatus {
 			//String currentTime = DBConnector.ISO_BASIC.format(new Date());
 			SubmissionAndStatus subMS = new SubmissionAndStatus(id, submissionDate, statusDate,
 					status, email, comment);
-			int result = subMD.updateSubmissionStatus(subMS);
+			SubmissionAndStatus result = subMD.updateSubmissionStatus(subMS);
 			
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder statusBuilder;
@@ -435,31 +435,31 @@ public class XMLBasedSubmissionAndStatus {
             Document doc = statusBuilder.newDocument();
             Element rootElement = doc.createElement("Submission_Status");
             
-			if(result == 1){
+			if(result != null && result.getDel_identifier() > 0){
 				Element subRootElement = doc.createElement("Status");
 		        
 	            Element idElement = doc.createElement(SubmissionStatus.DEL_IDENTIFIERCOLUME);
-	            idElement.appendChild(doc.createTextNode(String.valueOf(subMS.getDel_identifier())));
+	            idElement.appendChild(doc.createTextNode(String.valueOf(result.getDel_identifier())));
 	            subRootElement.appendChild(idElement);
 	            
 	            Element dateElement = doc.createElement(SubmissionStatus.SUBMISSIONDATECOLUME);
-	            dateElement.appendChild(doc.createTextNode(subMS.getSubmissionDate()));
+	            dateElement.appendChild(doc.createTextNode(result.getSubmissionDate()));
 	            subRootElement.appendChild(dateElement);
 	            
 	            Element statusDateElement = doc.createElement(SubmissionStatus.STATUSDATECOLUME);
-	            statusDateElement.appendChild(doc.createTextNode(subMS.getStatusDate()));
+	            statusDateElement.appendChild(doc.createTextNode(result.getStatusDate()));
 	            subRootElement.appendChild(statusDateElement);
 	            
 	            Element statusElement = doc.createElement(SubmissionStatus.STATUSCOLUME);
-	            statusElement.appendChild(doc.createTextNode(subMS.getStatus()));
+	            statusElement.appendChild(doc.createTextNode(result.getStatus()));
 	            subRootElement.appendChild(statusElement);
 	            
 	            Element emailElement = doc.createElement(SubmissionStatus.EMAILCOLUME);
-	            emailElement.appendChild(doc.createTextNode(subMS.getEmail()));
+	            emailElement.appendChild(doc.createTextNode(result.getEmail()));
 	            subRootElement.appendChild(emailElement);
 	            
 	            Element commentElement = doc.createElement(SubmissionStatus.COMMENTCOLUME);
-	            commentElement.appendChild(doc.createTextNode(subMS.getComment() != null ? subMS.getComment(): ""));
+	            commentElement.appendChild(doc.createTextNode(result.getComment() != null ? result.getComment(): ""));
 	            subRootElement.appendChild(commentElement);
 	            
 	            rootElement.appendChild(subRootElement);

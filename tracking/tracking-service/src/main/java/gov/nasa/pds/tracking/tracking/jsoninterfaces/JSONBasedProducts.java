@@ -7,19 +7,25 @@ import javax.ws.rs.Path;
 
 import org.apache.log4j.Logger;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.ws.rs.Consumes;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
  
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import gov.nasa.pds.tracking.tracking.db.Product;
+import gov.nasa.pds.tracking.tracking.db.ProductDao;
 import gov.nasa.pds.tracking.tracking.db.Reference;
 
 /**
@@ -30,7 +36,11 @@ import gov.nasa.pds.tracking.tracking.db.Reference;
 public class JSONBasedProducts {
 	
 	public static Logger logger = Logger.getLogger(JSONBasedProducts.class);
+	
+	private static final String FAILURE_RESULT="Failure";
 
+	private ProductDao prodD;
+	
 	@GET
     @Produces("application/json")
     public Response defaultProducts() throws JSONException {
@@ -39,9 +49,9 @@ public class JSONBasedProducts {
         
         JSONObject jsonProd = new JSONObject();
         
-        Product prod;
+        ProductDao prod;
 		try {
-			prod = new Product();
+			prod = new ProductDao();
 			List<Product> prods = prod.getProductsOrderByTitle();
 			logger.info("number of products: "  + prods.size());
 			Iterator<Product> itr = prods.iterator();
@@ -80,9 +90,9 @@ public class JSONBasedProducts {
         JSONObject jsonProd = new JSONObject();
         JSONObject jsonRef = new JSONObject();
         
-        Product prod;
+        ProductDao prod;
 		try {
-			prod = new Product();
+			prod = new ProductDao();
 			List<Product> prods = prod.getProductsAssociatedDeliveriesOrderByTitle(insRef, invRef);
 			
 			logger.info("number of products: "  + prods.size());
@@ -136,9 +146,9 @@ public class JSONBasedProducts {
         
         JSONObject jsonProd = new JSONObject();
         
-        Product prod;
+        ProductDao prod;
 		try {
-			prod = new Product();
+			prod = new ProductDao();
 			List<Product> prods = prod.getProducts(type);
 			
 			logger.info("number of products: "  + prods.size());
@@ -167,5 +177,77 @@ public class JSONBasedProducts {
 		}
         String result = "" + jsonProducts.toString(4);
         return Response.status(200).entity(result).build();
+	}
+	
+	@POST
+	@Path("/add")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)	
+	public Response createProduct(@FormParam("LogicalIdentifier") String logicalIdentifier,
+			@FormParam("Version") String ver,
+			@FormParam("Title") String title,
+			@FormParam("Type") String type,
+			@FormParam("AlternateId") String altId) throws IOException{
+		
+		JSONObject relt = new JSONObject();
+		JSONObject message = new JSONObject();
+		try {
+			prodD = new ProductDao();
+
+			Product prod = new Product(logicalIdentifier, ver, title, type, altId);
+			int result = prodD.insertProduct(prod);
+			
+			if(result == 1){
+				message.put(Product.IDENTIFIERCOLUMN, prod.getIdentifier());
+				message.put(Product.VERSIONCOLUMN, prod.getVersion());
+				message.put(Product.TITLECOLUMN, prod.getTitle());
+				message.put(Product.TYPECOLUMN, prod.getType());
+				message.put(Product.ALTERNATECOLUMN, prod.getAlternate() != null ? prod.getAlternate() : "");
+			}
+		} catch (ClassNotFoundException | SQLException e) {			
+			e.printStackTrace();
+			message.put("Message", FAILURE_RESULT);
+		}
+		//logger.debug("Result: " + message);
+		relt.append("Product", message);
+		String jsonOutput = "" + relt.toString(4);
+		return Response.status(200).entity(jsonOutput).build();
+	}
+	
+	@POST
+	@Path("/update")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)	
+	public Response updateProduct(@FormParam("LogicalIdentifier") String logicalIdentifier,
+			@FormParam("Version") String ver,
+			@FormParam("Title") String title,
+			@FormParam("Type") String type,
+			@FormParam("AlternateId") String altId) throws IOException{
+		
+		JSONObject relt = new JSONObject();
+		JSONObject message = new JSONObject();
+		try {
+			prodD = new ProductDao();
+
+			Product prodNew = new Product(logicalIdentifier, ver, title, type, altId);
+			Product prod = prodD.updateProduct(prodNew);
+			
+			if(prod != null && prod.getIdentifier() != null){
+				message.put(Product.IDENTIFIERCOLUMN, prod.getIdentifier());
+				message.put(Product.VERSIONCOLUMN, prod.getVersion());
+				message.put(Product.TITLECOLUMN, prod.getTitle());
+				message.put(Product.TYPECOLUMN, prod.getType());
+				message.put(Product.ALTERNATECOLUMN, prod.getAlternate() != null ? prod.getAlternate() : "");
+			}else{
+				message.put("Message", FAILURE_RESULT);
+			}
+		} catch (ClassNotFoundException | SQLException e) {			
+			e.printStackTrace();
+			message.put("Message", FAILURE_RESULT);
+		}
+		//logger.debug("Rerult: " + message);
+		relt.append("Product", message);
+		String jsonOutput = "" + relt.toString(4);
+		return Response.status(200).entity(jsonOutput).build();
 	}
 }

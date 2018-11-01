@@ -7,20 +7,26 @@ import javax.ws.rs.Path;
 
 import org.apache.log4j.Logger;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.ws.rs.Consumes;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
  
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import gov.nasa.pds.tracking.tracking.db.ArchiveStatus;
+import gov.nasa.pds.tracking.tracking.db.ArchiveStatusDao;
 
 /**
  * @author danyu dan.yu@jpl.nasa.gov
@@ -30,7 +36,10 @@ import gov.nasa.pds.tracking.tracking.db.ArchiveStatus;
 public class JSONBasedArchiveStatus {
 	
 	public static Logger logger = Logger.getLogger(JSONBasedArchiveStatus.class);
-
+	
+	private static final String FAILURE_RESULT="Failure";
+	private ArchiveStatusDao asD;
+	
 	/**
 	 * @return
 	 * @throws JSONException
@@ -43,10 +52,10 @@ public class JSONBasedArchiveStatus {
         
         JSONObject jsonAStatus = new JSONObject();
         
-        ArchiveStatus aStatus;
+        ArchiveStatusDao aStatus;
 		try {
 			
-			aStatus = new ArchiveStatus();
+			aStatus = new ArchiveStatusDao();
 			List<ArchiveStatus> aStatuses = aStatus.getArchiveStatusOrderByVersion();
 			logger.info("number of Archive Status: "  + aStatuses.size());
 			
@@ -58,12 +67,12 @@ public class JSONBasedArchiveStatus {
 					
 		         jsonAStatus = new JSONObject();
 		     	
-		     	 jsonAStatus.put(ArchiveStatus.LOGIDENTIFIERCOLUMN, as.getLogIdentifier());
-		     	 jsonAStatus.put(ArchiveStatus.VERSIONCOLUMN, as.getVersion());
-		     	 jsonAStatus.put(ArchiveStatus.DATECOLUMN, as.getDate());
-		     	 jsonAStatus.put(ArchiveStatus.STATUSCOLUMN, as.getStatus());
-		     	 jsonAStatus.put(ArchiveStatus.EMAILCOLUMN, as.getEmail());		         
-		     	 jsonAStatus.put(ArchiveStatus.COMMENTCOLUMN, as.getComment() != null ? as.getComment() : "");
+		     	 jsonAStatus.put(ArchiveStatusDao.LOGIDENTIFIERCOLUMN, as.getLogIdentifier());
+		     	 jsonAStatus.put(ArchiveStatusDao.VERSIONCOLUMN, as.getVersion());
+		     	 jsonAStatus.put(ArchiveStatusDao.DATECOLUMN, as.getDate());
+		     	 jsonAStatus.put(ArchiveStatusDao.STATUSCOLUMN, as.getStatus());
+		     	 jsonAStatus.put(ArchiveStatusDao.EMAILCOLUMN, as.getEmail());		         
+		     	 jsonAStatus.put(ArchiveStatusDao.COMMENTCOLUMN, as.getComment() != null ? as.getComment() : "");
 		         
 		     	 jsonAStatuses.append("Archive Status", jsonAStatus);
 		         count++;
@@ -94,18 +103,20 @@ public class JSONBasedArchiveStatus {
         
         JSONObject jsonAStatus = new JSONObject();
         
+        ArchiveStatusDao aStatusO;
         ArchiveStatus aStatus;
 		try {
 			
-			aStatus = new ArchiveStatus();
+			aStatusO = new ArchiveStatusDao();
+			
 			List<ArchiveStatus> aStatuses = new ArrayList<ArchiveStatus>();
 			
 			if (latest) {
-				aStatus = aStatus.getLatestArchiveStatus(id, version);
+				aStatus = aStatusO.getLatestArchiveStatus(id, version);
 				if (aStatus != null)
 				aStatuses.add(aStatus);
 			}else{
-				aStatuses = aStatus.getArchiveStatusList(id, version);
+				aStatuses = aStatusO.getArchiveStatusList(id, version);
 			}
 			
 			logger.info("number of Archive Status: "  + aStatuses.size());
@@ -118,12 +129,12 @@ public class JSONBasedArchiveStatus {
 					
 		         jsonAStatus = new JSONObject();
 		     	
-		     	 jsonAStatus.put(ArchiveStatus.LOGIDENTIFIERCOLUMN, as.getLogIdentifier());
-		     	 jsonAStatus.put(ArchiveStatus.VERSIONCOLUMN, as.getVersion());
-		     	 jsonAStatus.put(ArchiveStatus.DATECOLUMN, as.getDate());
-		     	 jsonAStatus.put(ArchiveStatus.STATUSCOLUMN, as.getStatus());
-		     	 jsonAStatus.put(ArchiveStatus.EMAILCOLUMN, as.getEmail());		         
-		     	 jsonAStatus.put(ArchiveStatus.COMMENTCOLUMN, as.getComment() != null ? as.getComment() : "");
+		     	 jsonAStatus.put(ArchiveStatusDao.LOGIDENTIFIERCOLUMN, as.getLogIdentifier());
+		     	 jsonAStatus.put(ArchiveStatusDao.VERSIONCOLUMN, as.getVersion());
+		     	 jsonAStatus.put(ArchiveStatusDao.DATECOLUMN, as.getDate());
+		     	 jsonAStatus.put(ArchiveStatusDao.STATUSCOLUMN, as.getStatus());
+		     	 jsonAStatus.put(ArchiveStatusDao.EMAILCOLUMN, as.getEmail());		         
+		     	 jsonAStatus.put(ArchiveStatusDao.COMMENTCOLUMN, as.getComment() != null ? as.getComment() : "");
 		         
 		     	 jsonAStatuses.append("Archive Status", jsonAStatus);
 		         count++;
@@ -138,5 +149,42 @@ public class JSONBasedArchiveStatus {
         String result = "" + jsonAStatuses.toString(4);
         return Response.status(200).entity(result).build();
 	
+	}
+	
+	@POST
+	@Path("/add")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)	
+	public Response createArchiveStatus(@FormParam("LogicalIdentifier") String logicalIdentifier,
+			@FormParam("Version") String ver,
+			@FormParam("Date") String date,
+			@FormParam("Status") String status,
+			@FormParam("Email") String email,
+			@FormParam("Comment") String comment) throws IOException{
+		
+		JSONObject relt = new JSONObject();
+		JSONObject message = new JSONObject();
+		try {
+			asD = new ArchiveStatusDao();
+
+			ArchiveStatus as = new ArchiveStatus(logicalIdentifier, ver, date, status, email, comment);
+			int result = asD.insertArchiveStatus(as);
+			
+			if(result == 1){
+				message.put(ArchiveStatusDao.LOGIDENTIFIERCOLUMN, as.getLogIdentifier());
+				message.put(ArchiveStatusDao.VERSIONCOLUMN, as.getVersion());
+				message.put(ArchiveStatusDao.DATECOLUMN, as.getDate());
+				message.put(ArchiveStatusDao.STATUSCOLUMN, as.getStatus());
+				message.put(ArchiveStatusDao.EMAILCOLUMN, as.getEmail());		         
+				message.put(ArchiveStatusDao.COMMENTCOLUMN, as.getComment() != null ? as.getComment() : "");
+			}
+		} catch (ClassNotFoundException | SQLException e) {			
+			e.printStackTrace();
+			message.put("Message", FAILURE_RESULT);
+		}
+		//logger.debug("Result: " + message);
+		relt.append("ArchiveStatus", message);
+		String jsonOutput = "" + relt.toString(4);
+		return Response.status(200).entity(jsonOutput).build();
 	}
 }

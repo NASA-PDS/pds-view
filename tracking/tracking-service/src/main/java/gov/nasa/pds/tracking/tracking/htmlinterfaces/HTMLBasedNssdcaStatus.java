@@ -13,6 +13,7 @@ import org.apache.log4j.Logger;
 
 import gov.nasa.pds.tracking.tracking.db.DBConnector;
 import gov.nasa.pds.tracking.tracking.db.NssdcaStatus;
+import gov.nasa.pds.tracking.tracking.db.NssdcaStatusDao;
 import gov.nasa.pds.tracking.tracking.utils.HtmlConstants;
 
 @Path("html/nssdcastatus")
@@ -46,9 +47,9 @@ public class HTMLBasedNssdcaStatus  extends DBConnector {
     			  "<table border=\"1\" style=\"width: 90%;border-spacing: 0; font:normal; font-size: 12\" >" +
     			  tableTiltes);
 
-    	NssdcaStatus nStatus;
+    	NssdcaStatusDao nStatus;
 		try {
-			nStatus = new NssdcaStatus();
+			nStatus = new NssdcaStatusDao();
 			
 			List<NssdcaStatus> nStatuses = nStatus.getNssdcaStatusOrderByVersion();
 			
@@ -97,9 +98,9 @@ public class HTMLBasedNssdcaStatus  extends DBConnector {
     			  "<table border=\"1\" style=\"width: 90%;border-spacing: 0; font:normal; font-size: 12\" >" +
     			  tableTiltes);
 
-    	NssdcaStatus nStatus;
+    	NssdcaStatusDao nStatus;
 		try {
-				nStatus = new NssdcaStatus();
+				nStatus = new NssdcaStatusDao();
 				
 				List<NssdcaStatus> nStatuses = nStatus.getNssdcaStatusList(id, version);
 				
@@ -150,10 +151,10 @@ public class HTMLBasedNssdcaStatus  extends DBConnector {
     			  "<table border=\"1\" style=\"width: 90%;border-spacing: 0; font:normal; font-size: 12\" >" +
     			  tableTiltes);
 
-    	NssdcaStatus nStatus;
+    	NssdcaStatusDao nStatus;
 		try {
 			
-			nStatus = new NssdcaStatus();
+			nStatus = new NssdcaStatusDao();
 			
 			List<NssdcaStatus> nStatuses = nStatus.getNssdcaStatusOrderByVersion(title);
 			

@@ -254,5 +254,206 @@ public class ServicesHomePage {
 		          "</div>"
             + HtmlConstants.PAGE_END;
     }
+    @GET
+    @Path("/productadd")
+    @Produces("text/html")
+    public String productForm() {
+    	return HtmlConstants.PAGE_BEGIN +
+		          "<h1>Product</h1>" +
+		          "<h2>Add</h2>" +
+		          "<h3>JSON</h3>" +
+		          "<div>" +
+		          "<form action=\"json/products/add\" method=\"POST\">" +
+		          "<table>" +
+		          "<tr><td>Logical Identifier: </td><td><input id=\"id\" name=\"LogicalIdentifier\" /></td></tr>" +
+		          "<tr><td>Version: </td><td><input id=\"ver\" name=\"Version\" /></td></tr>" +
+		          "<tr><td>DOI: </td><td><input id=\"name\" name=\"Title\" /></td></tr>" +
+		          "<tr><td>URL: </td><td><input id=\"type\" name=\"Type\" /></td></tr>" +
+		          "<tr><td>Email: </td><td><input id=\"alt_id\" name=\"AlternateId\" /></td></tr>" +
+		          "<tr><td></td><td><input type=\"submit\" value=\"Add\" /></td></tr>" +
+		          "</table>" +    
+		          "</form>" +
+		          "</div>" +
+		          "<h3>XML</h3>" +
+		          "<div>" +
+		          "<form action=\"xml/products/add\" method=\"POST\">" +
+		          "<table>" +
+		          "<tr><td>Logical Identifier: </td><td><input id=\"id\" name=\"LogicalIdentifier\" /></td></tr>" +
+		          "<tr><td>Version: </td><td><input id=\"ver\" name=\"Version\" /></td></tr>" +
+		          "<tr><td>DOI: </td><td><input id=\"name\" name=\"Title\" /></td></tr>" +
+		          "<tr><td>URL: </td><td><input id=\"type\" name=\"Type\" /></td></tr>" +
+		          "<tr><td>Email: </td><td><input id=\"alt_id\" name=\"AlternateId\" /></td></tr>" +
+		          "<tr><td></td><td><input type=\"submit\" value=\"Add\" /></td></tr>" +
+		          "</table>" +    
+		          "</form>" +
+		          "</div>" +
+		          "<p></p>" +
+		          "<h2>Update</h2>" +
+		          "<h3>JSON</h3>" +
+		          "<div>" +
+		          "<form action=\"json/products/update\" method=\"POST\">" +
+		          "<table>" +
+		          "<tr><td>Logical Identifier: </td><td><input id=\"id\" name=\"LogicalIdentifier\" /></td></tr>" +
+		          "<tr><td>Version: </td><td><input id=\"ver\" name=\"Version\" /></td></tr>" +
+		          "<tr><td>DOI: </td><td><input id=\"name\" name=\"Title\" /></td></tr>" +
+		          "<tr><td>URL: </td><td><input id=\"type\" name=\"Type\" /></td></tr>" +
+		          "<tr><td>Email: </td><td><input id=\"alt_id\" name=\"AlternateId\" /></td></tr>" +
+		          "<tr><td></td><td><input type=\"submit\" value=\"Update\" /></td></tr>" +
+		          "</table>" +
+		          "</form>" +
+		          "</div>" +
+		          "<h3>XML</h3>" +
+		          "<div>" +
+		          "<form action=\"xml/products/update\" method=\"POST\">" +
+		          "<table>" +
+		          "<tr><td>Logical Identifier: </td><td><input id=\"id\" name=\"LogicalIdentifier\" /></td></tr>" +
+		          "<tr><td>Version: </td><td><input id=\"ver\" name=\"Version\" /></td></tr>" +
+		          "<tr><td>DOI: </td><td><input id=\"name\" name=\"Title\" /></td></tr>" +
+		          "<tr><td>URL: </td><td><input id=\"type\" name=\"Type\" /></td></tr>" +
+		          "<tr><td>Email: </td><td><input id=\"alt_id\" name=\"AlternateId\" /></td></tr>" +
+		          "<tr><td></td><td><input type=\"submit\" value=\"Update\" /></td></tr>" +
+		          "</table>" +
+		          "</form>" +
+		          "</div>"
+            + HtmlConstants.PAGE_END;
+    }
+    @GET
+    @Path("/statusadd")
+    @Produces("text/html")
+    public String statusForm() {
+    	return HtmlConstants.PAGE_BEGIN +
+		          "<h1>Archive Status</h1>" +
+		          "<h2>Add</h2>" +
+		          "<h3>JSON</h3>" +
+		          "<div>" +
+		          "<form action=\"json/archivestatus/add\" method=\"POST\">" +
+		          "<table>" +
+		          "<tr><td>Logical Identifier: </td><td><input id=\"id\" name=\"LogicalIdentifier\" /></td></tr>" +
+		          "<tr><td>Version: </td><td><input id=\"ver\" name=\"Version\" /></td></tr>" +
+		          "<tr><td>DOI: </td><td><input id=\"date\" name=\"Date\" /></td></tr>" +
+		          "<tr><td>URL: </td><td><input id=\"status\" name=\"Status\" /></td></tr>" +
+		          "<tr><td>Email: </td><td><input id=\"email\" name=\"Email\" /></td></tr>" +
+		          "<tr><td>Comment: </td><td><input id=\"comment\" name=\"Comment\" /></td></tr>" +
+		          "<tr><td></td><td><input type=\"submit\" value=\"Add\" /></td></tr>" +
+		          "</table>" +    
+		          "</form>" +
+		          "</div>" +
+		          "<h3>XML</h3>" +
+		          "<div>" +
+		          "<form action=\"xml/archivestatus/add\" method=\"POST\">" +
+		          "<table>" +
+		          "<tr><td>Logical Identifier: </td><td><input id=\"id\" name=\"LogicalIdentifier\" /></td></tr>" +
+		          "<tr><td>Version: </td><td><input id=\"ver\" name=\"Version\" /></td></tr>" +
+		          "<tr><td>DOI: </td><td><input id=\"date\" name=\"Date\" /></td></tr>" +
+		          "<tr><td>URL: </td><td><input id=\"status\" name=\"Status\" /></td></tr>" +
+		          "<tr><td>Email: </td><td><input id=\"email\" name=\"Email\" /></td></tr>" +
+		          "<tr><td>Comment: </td><td><input id=\"comment\" name=\"Comment\" /></td></tr>" +
+		          "<tr><td></td><td><input type=\"submit\" value=\"Add\" /></td></tr>" +
+		          "</table>" +    
+		          "</form>" +
+		          "</div>" +
+		          
+		          "<h1>Certification Status</h1>" +
+		          "<h2>Add</h2>" +
+		          "<h3>JSON</h3>" +
+		          "<div>" +
+		          "<form action=\"json/certificationstatus/add\" method=\"POST\">" +
+		          "<table>" +
+		          "<tr><td>Logical Identifier: </td><td><input id=\"id\" name=\"LogicalIdentifier\" /></td></tr>" +
+		          "<tr><td>Version: </td><td><input id=\"ver\" name=\"Version\" /></td></tr>" +
+		          "<tr><td>DOI: </td><td><input id=\"date\" name=\"Date\" /></td></tr>" +
+		          "<tr><td>URL: </td><td><input id=\"status\" name=\"Status\" /></td></tr>" +
+		          "<tr><td>Email: </td><td><input id=\"email\" name=\"Email\" /></td></tr>" +
+		          "<tr><td>Comment: </td><td><input id=\"comment\" name=\"Comment\" /></td></tr>" +
+		          "<tr><td></td><td><input type=\"submit\" value=\"Add\" /></td></tr>" +
+		          "</table>" +    
+		          "</form>" +
+		          "</div>" +
+		          "<h3>XML</h3>" +
+		          "<div>" +
+		          "<form action=\"xml/certificationstatus/add\" method=\"POST\">" +
+		          "<table>" +
+		          "<tr><td>Logical Identifier: </td><td><input id=\"id\" name=\"LogicalIdentifier\" /></td></tr>" +
+		          "<tr><td>Version: </td><td><input id=\"ver\" name=\"Version\" /></td></tr>" +
+		          "<tr><td>DOI: </td><td><input id=\"date\" name=\"Date\" /></td></tr>" +
+		          "<tr><td>URL: </td><td><input id=\"status\" name=\"Status\" /></td></tr>" +
+		          "<tr><td>Email: </td><td><input id=\"email\" name=\"Email\" /></td></tr>" +
+		          "<tr><td>Comment: </td><td><input id=\"comment\" name=\"Comment\" /></td></tr>" +
+		          "<tr><td></td><td><input type=\"submit\" value=\"Add\" /></td></tr>" +
+		          "</table>" +    
+		          "</form>" +
+		          "</div>" +
+		          
+		          "<h1>NSSDCA Status</h1>" +
+		          "<h2>Add</h2>" +
+		          "<h3>JSON</h3>" +
+		          "<div>" +
+		          "<form action=\"json/nssdcastatus/add\" method=\"POST\">" +
+		          "<table>" +
+		          "<tr><td>Logical Identifier: </td><td><input id=\"id\" name=\"LogicalIdentifier\" /></td></tr>" +
+		          "<tr><td>Version: </td><td><input id=\"ver\" name=\"Version\" /></td></tr>" +
+		          "<tr><td>DOI: </td><td><input id=\"date\" name=\"Date\" /></td></tr>" +
+		          "<tr><td>URL: </td><td><input id=\"nssdca_id\" name=\"NssdcaIdentifier\" /></td></tr>" +
+		          "<tr><td>Email: </td><td><input id=\"email\" name=\"Email\" /></td></tr>" +
+		          "<tr><td>Comment: </td><td><input id=\"comment\" name=\"Comment\" /></td></tr>" +
+		          "<tr><td></td><td><input type=\"submit\" value=\"Add\" /></td></tr>" +
+		          "</table>" +    
+		          "</form>" +
+		          "</div>" +
+		          "<h3>XML</h3>" +
+		          "<div>" +
+		          "<form action=\"xml/nssdcastatus/add\" method=\"POST\">" +
+		          "<table>" +
+		          "<tr><td>Logical Identifier: </td><td><input id=\"id\" name=\"LogicalIdentifier\" /></td></tr>" +
+		          "<tr><td>Version: </td><td><input id=\"ver\" name=\"Version\" /></td></tr>" +
+		          "<tr><td>DOI: </td><td><input id=\"date\" name=\"Date\" /></td></tr>" +
+		          "<tr><td>URL: </td><td><input id=\"nssdca_id\" name=\"NssdcaIdentifier\" /></td></tr>" +
+		          "<tr><td>Email: </td><td><input id=\"email\" name=\"Email\" /></td></tr>" +
+		          "<tr><td>Comment: </td><td><input id=\"comment\" name=\"Comment\" /></td></tr>" +
+		          "<tr><td></td><td><input type=\"submit\" value=\"Add\" /></td></tr>" +
+		          "</table>" +    
+		          "</form>" +
+		          "</div>"
+            + HtmlConstants.PAGE_END;
+    }
+    @GET
+    @Path("/releaseadd")
+    @Produces("text/html")
+    public String releaseForm() {
+    	return HtmlConstants.PAGE_BEGIN +
+		          "<h1>Release</h1>" +
+		          "<h2>Add</h2>" +
+		          "<h3>JSON</h3>" +
+		          "<div>" +
+		          "<form action=\"json/releases/add\" method=\"POST\">" +
+		          "<table>" +
+		          "<tr><td>Logical Identifier: </td><td><input id=\"id\" name=\"LogicalIdentifier\" /></td></tr>" +
+		          "<tr><td>Version: </td><td><input id=\"ver\" name=\"Version\" /></td></tr>" +
+		          "<tr><td>DOI: </td><td><input id=\"date\" name=\"Date\" /></td></tr>" +
+		          "<tr><td>URL: </td><td><input id=\"name\" name=\"Name\" /></td></tr>" +
+		          "<tr><td>URL: </td><td><input id=\"desc\" name=\"Desc\" /></td></tr>" +
+		          "<tr><td>Email: </td><td><input id=\"email\" name=\"Email\" /></td></tr>" +
+		          "<tr><td>Comment: </td><td><input id=\"comment\" name=\"Comment\" /></td></tr>" +
+		          "<tr><td></td><td><input type=\"submit\" value=\"Add\" /></td></tr>" +
+		          "</table>" +    
+		          "</form>" +
+		          "</div>" +
+		          "<h3>XML</h3>" +
+		          "<div>" +
+		          "<form action=\"xml/releases/add\" method=\"POST\">" +
+		          "<table>" +
+		          "<tr><td>Logical Identifier: </td><td><input id=\"id\" name=\"LogicalIdentifier\" /></td></tr>" +
+		          "<tr><td>Version: </td><td><input id=\"ver\" name=\"Version\" /></td></tr>" +
+		          "<tr><td>DOI: </td><td><input id=\"date\" name=\"Date\" /></td></tr>" +
+		          "<tr><td>URL: </td><td><input id=\"name\" name=\"Name\" /></td></tr>" +
+		          "<tr><td>URL: </td><td><input id=\"desc\" name=\"Desc\" /></td></tr>" +
+		          "<tr><td>Email: </td><td><input id=\"email\" name=\"Email\" /></td></tr>" +
+		          "<tr><td>Comment: </td><td><input id=\"comment\" name=\"Comment\" /></td></tr>" +
+		          "<tr><td></td><td><input type=\"submit\" value=\"Add\" /></td></tr>" +
+		          "</table>" +    
+		          "</form>" +
+		          "</div>"		          
+            + HtmlConstants.PAGE_END;
+    }
 }
 

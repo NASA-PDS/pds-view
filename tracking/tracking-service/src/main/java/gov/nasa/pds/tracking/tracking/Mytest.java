@@ -8,11 +8,14 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import gov.nasa.pds.tracking.tracking.db.ArchiveStatus;
+import gov.nasa.pds.tracking.tracking.db.ArchiveStatusDao;
 import gov.nasa.pds.tracking.tracking.db.CertificationStatus;
+import gov.nasa.pds.tracking.tracking.db.CertificationStatusDao;
 import gov.nasa.pds.tracking.tracking.db.Delivery;
 //import gov.nasa.pds.tracking.tracking.db.Doi;
 //import gov.nasa.pds.tracking.tracking.db.NssdcaStatus;
 import gov.nasa.pds.tracking.tracking.db.Product;
+import gov.nasa.pds.tracking.tracking.db.ProductDao;
 import gov.nasa.pds.tracking.tracking.db.Reference;
 //import gov.nasa.pds.tracking.tracking.db.Releases;
 import gov.nasa.pds.tracking.tracking.db.Role;
@@ -82,9 +85,9 @@ public class Mytest {
 	@SuppressWarnings("unused")
 	private void getProducts(String type) {
 		// Get all Products in the product table
-		Product prod;
+		ProductDao prod;
 		try {
-			prod = new Product();
+			prod = new ProductDao();
 			
 			List<Product> prods = prod.getProducts(type);
 			
@@ -447,8 +450,9 @@ public class Mytest {
 			Input: logical_identifier (required), version_id (required)
 			Output: status_date_time, status, electronic_mail_address, comment
 			***********************************************************/
+			ArchiveStatusDao latestASD = new ArchiveStatusDao();
 			ArchiveStatus latestAS = new ArchiveStatus();
-			latestAS = latestAS.getLatestArchiveStatus("urn:nasa:pds:context_pds3:data_set:data_set.jno-e-j-ss-wav-2-edr-v1.0", "1.0");
+			latestAS = latestASD.getLatestArchiveStatus("urn:nasa:pds:context_pds3:data_set:data_set.jno-e-j-ss-wav-2-edr-v1.0", "1.0");
 			logger.info("Archive Status: " + latestAS.getStatus());
 			logger.info("Email: " + latestAS.getEmail());
 			logger.info("Comment: " + latestAS.getComment());
@@ -460,7 +464,7 @@ public class Mytest {
 			Output: status_date_time, status, electronic_mail_address, comment
 			***********************************************************/
 			List<ArchiveStatus> asList = new ArrayList<ArchiveStatus>();
-			ArchiveStatus aStatus = new ArchiveStatus();
+			ArchiveStatusDao aStatus = new ArchiveStatusDao();
 			asList = aStatus.getArchiveStatusList("urn:nasa:pds:context_pds3:data_set:data_set.jno-e-j-ss-wav-2-edr-v1.0", "1.0");
 			
 			Iterator<ArchiveStatus> itrAS = asList.iterator();
@@ -477,8 +481,9 @@ public class Mytest {
 			Input: logical_identifier (required), version_id (required)
 			Output: status_date_time, status, electronic_mail_address, comment
 			***********************************************************/
+			CertificationStatusDao latestCSD = new CertificationStatusDao();
 			CertificationStatus latestCS = new CertificationStatus();
-			latestCS = latestCS.getLatestCertificationStatus("urn:nasa:pds:context_pds3:data_set:data_set.jno-e-j-ss-wav-2-edr-v1.0", "1.0");
+			latestCS = latestCSD.getLatestCertificationStatus("urn:nasa:pds:context_pds3:data_set:data_set.jno-e-j-ss-wav-2-edr-v1.0", "1.0");
 			logger.info("Certification Status: " + latestCS.getStatus());
 			logger.info("Email: " + latestCS.getEmail());
 			logger.info("Comment: " + latestAS.getComment());
@@ -491,7 +496,7 @@ public class Mytest {
 			***********************************************************/
 			List<CertificationStatus> csList;
 			
-			csList = (new CertificationStatus()).getCertificationStatusList("urn:nasa:pds:context_pds3:data_set:data_set.jno-e-j-ss-wav-2-edr-v1.0", "1.0");
+			csList = (new CertificationStatusDao()).getCertificationStatusList("urn:nasa:pds:context_pds3:data_set:data_set.jno-e-j-ss-wav-2-edr-v1.0", "1.0");
 			
 			Iterator<CertificationStatus> itrCS = csList.iterator();
 			int countCS = 1;
@@ -675,10 +680,11 @@ public class Mytest {
 
 	@SuppressWarnings("unused")
 	private void updateProduct(String logicalIdentifier, String versionId, String title, String type, String alternateId) {
-		Product product;
+		ProductDao product;
 		try {
-			product = new Product();
-			product.updateProduct(logicalIdentifier, versionId, title, type, alternateId);
+			product = new ProductDao();
+			Product prod = new Product(logicalIdentifier, versionId, title, type, alternateId);
+			product.updateProduct(prod);
 		} catch (ClassNotFoundException | SQLException e) {
 			
 			e.printStackTrace();
@@ -687,10 +693,11 @@ public class Mytest {
 
 	@SuppressWarnings("unused")
 	private void InsertProduct(String logicalIdentifier, String versionId, String title, String type, String alternateId) {
-		Product product;
+		ProductDao product;
 		try {
-			product = new Product();
-			product.insertProduct(logicalIdentifier, versionId, title, type, alternateId);
+			product = new ProductDao();
+			Product prod = new Product(logicalIdentifier, versionId, title, type, alternateId);
+			product.insertProduct(prod);
 		} catch (ClassNotFoundException | SQLException e) {
 			
 			e.printStackTrace();

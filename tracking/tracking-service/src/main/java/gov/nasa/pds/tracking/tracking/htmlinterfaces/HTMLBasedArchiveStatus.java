@@ -14,6 +14,7 @@ import org.apache.log4j.Logger;
 
 import gov.nasa.pds.tracking.tracking.db.DBConnector;
 import gov.nasa.pds.tracking.tracking.db.ArchiveStatus;
+import gov.nasa.pds.tracking.tracking.db.ArchiveStatusDao;
 import gov.nasa.pds.tracking.tracking.utils.HtmlConstants;
 
 @Path("html/archivestatus")
@@ -50,9 +51,9 @@ public class HTMLBasedArchiveStatus  extends DBConnector {
     			  "<table border=\"1\" style=\"width: 90%;border-spacing: 0; font:normal; font-size: 12\" >" +
     			  tableTiltes);
 
-    	ArchiveStatus aStatus;
+    	ArchiveStatusDao aStatus;
 		try {	        
-				aStatus = new ArchiveStatus();
+				aStatus = new ArchiveStatusDao();
 				
 				List<ArchiveStatus> aStatuses = aStatus.getArchiveStatusOrderByVersion();
 				
@@ -103,9 +104,9 @@ public class HTMLBasedArchiveStatus  extends DBConnector {
     			  "<table border=\"1\" style=\"width: 90%;border-spacing: 0; font:normal; font-size: 12\" >" +
     			  tableTiltes);
 
-    	ArchiveStatus aStatus;
+    	ArchiveStatusDao aStatus;
 		try {
-				aStatus = new ArchiveStatus();
+				aStatus = new ArchiveStatusDao();
 				
 				List<ArchiveStatus> aStatuses = aStatus.getArchiveStatusList(id, version);
 				
@@ -161,18 +162,19 @@ public class HTMLBasedArchiveStatus  extends DBConnector {
     			  "<table border=\"1\" style=\"width: 90%;border-spacing: 0; font:normal; font-size: 12\" >" +
     			  tableTiltes);
 
+    	ArchiveStatusDao aStatusO;
     	ArchiveStatus aStatus;
 		try {
-				aStatus = new ArchiveStatus();
+			aStatusO = new ArchiveStatusDao();
 				
 				List<ArchiveStatus> aStatuses = new ArrayList<ArchiveStatus>();
 				
 				if (latest) {
-					aStatus = aStatus.getLatestArchiveStatus(id, version);
+					aStatus = aStatusO.getLatestArchiveStatus(id, version);
 					if (aStatus != null)
 					aStatuses.add(aStatus);
 				}else{
-					aStatuses = aStatus.getArchiveStatusList(id, version);
+					aStatuses = aStatusO.getArchiveStatusList(id, version);
 				}
 				
 				
@@ -221,9 +223,9 @@ public class HTMLBasedArchiveStatus  extends DBConnector {
     			  "<table border=\"1\" style=\"width: 90%;border-spacing: 0; font:normal; font-size: 12\" >" +
     			  tableTiltes);
 
-    	ArchiveStatus aStatus;
+    	ArchiveStatusDao aStatus;
 		try {
-				aStatus = new ArchiveStatus();
+				aStatus = new ArchiveStatusDao();
 				
 				List<ArchiveStatus> aStatuses = aStatus.getArchiveStatusOrderByVersion(title);
 				

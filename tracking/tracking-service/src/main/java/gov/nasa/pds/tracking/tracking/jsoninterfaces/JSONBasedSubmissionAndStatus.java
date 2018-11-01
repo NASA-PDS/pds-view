@@ -221,15 +221,15 @@ public class JSONBasedSubmissionAndStatus {
 			//String currentTime = DBConnector.ISO_BASIC.format(new Date());
 			SubmissionAndStatus subMS = new SubmissionAndStatus(id, submissionDate, statusDate,
 					status, email, comment);
-			int result = subMD.updateSubmissionStatus(subMS);
+			SubmissionAndStatus result = subMD.updateSubmissionStatus(subMS);
 			
-			if(result == 1){
-				message.put(SubmissionAndStatusDao.DEL_IDENTIFIERCOLUME, subMS.getDel_identifier());
-				message.put(SubmissionAndStatusDao.SUBMISSIONDATECOLUME, subMS.getSubmissionDate());
-				message.put(SubmissionAndStatusDao.STATUSDATECOLUME, subMS.getStatusDate());
-				message.put(SubmissionAndStatusDao.STATUSCOLUME, subMS.getStatus());
-				message.put(SubmissionAndStatusDao.EMAILCOLUME, subMS.getEmail());
-				message.put(SubmissionAndStatusDao.COMMENTCOLUME, subMS.getComment() != null ? subMS.getComment() : "");
+			if(result != null && result.getDel_identifier() > 0){
+				message.put(SubmissionAndStatusDao.DEL_IDENTIFIERCOLUME, result.getDel_identifier());
+				message.put(SubmissionAndStatusDao.SUBMISSIONDATECOLUME, result.getSubmissionDate());
+				message.put(SubmissionAndStatusDao.STATUSDATECOLUME, result.getStatusDate());
+				message.put(SubmissionAndStatusDao.STATUSCOLUME, result.getStatus());
+				message.put(SubmissionAndStatusDao.EMAILCOLUME, result.getEmail());
+				message.put(SubmissionAndStatusDao.COMMENTCOLUME, result.getComment() != null ? result.getComment() : "");
 			}else{
 				message.put("Message", FAILURE_RESULT);
 			}

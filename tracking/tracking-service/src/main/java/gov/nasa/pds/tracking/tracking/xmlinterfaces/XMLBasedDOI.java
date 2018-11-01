@@ -344,7 +344,7 @@ public class XMLBasedDOI {
 		
 			Doi d = new Doi(id, ver, null, null, url, email, comment);
 			
-			int result = dd.updateDOI(d);
+			Doi updatedDOI = dd.updateDOI(d);
 			
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder doiBuilder;
@@ -353,9 +353,8 @@ public class XMLBasedDOI {
             Document doc = doiBuilder.newDocument();
             Element rootElement = doc.createElement("dois");
 			
-			if(result == 1){		
-				//get doi and registration_date for updated DOI 
-				Doi updatedDOI = dd.getDOI(id, ver);
+			if(updatedDOI != null && updatedDOI.getLog_identifier() != null){		
+
 				Element subRootElement = doc.createElement("doi");
 				
 		        Element idElement = doc.createElement(Doi.LOG_IDENTIFIERCOLUME);

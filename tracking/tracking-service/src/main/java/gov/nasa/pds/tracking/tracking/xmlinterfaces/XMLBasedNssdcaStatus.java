@@ -7,14 +7,19 @@ import javax.ws.rs.Path;
 
 import org.apache.log4j.Logger;
 
+import java.io.IOException;
 import java.io.StringWriter;
 import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.ws.rs.Consumes;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -29,7 +34,8 @@ import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import gov.nasa.pds.tracking.tracking.db.NssdcaStatus;;
+import gov.nasa.pds.tracking.tracking.db.NssdcaStatus;
+import gov.nasa.pds.tracking.tracking.db.NssdcaStatusDao;;
 
 /**
  * @author danyu dan.yu@jpl.nasa.gov
@@ -49,10 +55,10 @@ public class XMLBasedNssdcaStatus {
  
 		StringBuffer xmlOutput = new StringBuffer();
         
-        NssdcaStatus nStatus;
+        NssdcaStatusDao nStatus;
 		try {
 			
-			nStatus = new NssdcaStatus();
+			nStatus = new NssdcaStatusDao();
 			List<NssdcaStatus> nStatuses = nStatus.getNssdcaStatusOrderByVersion();
 			logger.info("number of Nssdca Statuses: "  + nStatuses.size());
 			
@@ -73,27 +79,27 @@ public class XMLBasedNssdcaStatus {
 			         
 			         Element subRootElement = doc.createElement("nssdca_status");
 	
-			        Element idElement = doc.createElement(NssdcaStatus.LOGIDENTIFIERCOLUMN);
+			        Element idElement = doc.createElement(NssdcaStatusDao.LOGIDENTIFIERCOLUMN);
 		            idElement.appendChild(doc.createTextNode((ns.getLogIdentifier())));
 		            subRootElement.appendChild(idElement);
 		            
-		            Element verElement = doc.createElement(NssdcaStatus.VERSIONCOLUMN);
+		            Element verElement = doc.createElement(NssdcaStatusDao.VERSIONCOLUMN);
 		            verElement.appendChild(doc.createTextNode(ns.getVersion()));
 		            subRootElement.appendChild(verElement);
 			         
-		            Element doiElement = doc.createElement(NssdcaStatus.NSSDCACOLUMN);
+		            Element doiElement = doc.createElement(NssdcaStatusDao.NSSDCACOLUMN);
 		            doiElement.appendChild(doc.createTextNode(ns.getNssdca()));
 		            subRootElement.appendChild(doiElement);
 		            
-		            Element dateElement = doc.createElement(NssdcaStatus.DATECOLUMN);
+		            Element dateElement = doc.createElement(NssdcaStatusDao.DATECOLUMN);
 		            dateElement.appendChild(doc.createTextNode(ns.getDate()));
 		            subRootElement.appendChild(dateElement);
 		            		            
-		            Element emailElement = doc.createElement(NssdcaStatus.EMAILCOLUMN);
+		            Element emailElement = doc.createElement(NssdcaStatusDao.EMAILCOLUMN);
 		            emailElement.appendChild(doc.createTextNode(ns.getEmail()));
 		            subRootElement.appendChild(emailElement);
 		            
-		            Element commentElement = doc.createElement(NssdcaStatus.COMMENTCOLUMN);
+		            Element commentElement = doc.createElement(NssdcaStatusDao.COMMENTCOLUMN);
 		            commentElement.appendChild(doc.createTextNode(ns.getComment() != null ? ns.getComment() : ""));
 		            subRootElement.appendChild(commentElement);
 		            
@@ -146,10 +152,10 @@ public class XMLBasedNssdcaStatus {
 		
 		StringBuffer xmlOutput = new StringBuffer();
         
-        NssdcaStatus nStatus;
+		NssdcaStatusDao nStatus;
 		try {
 			
-			nStatus = new NssdcaStatus();
+			nStatus = new NssdcaStatusDao();
 			List<NssdcaStatus> nStatuses = nStatus.getNssdcaStatusList(id, version);
 			logger.info("number of Nssdca Statuses: "  + nStatuses.size());
 			
@@ -170,27 +176,27 @@ public class XMLBasedNssdcaStatus {
 			         
 			         Element subRootElement = doc.createElement("nssdca_status");
 	
-			        Element idElement = doc.createElement(NssdcaStatus.LOGIDENTIFIERCOLUMN);
+			        Element idElement = doc.createElement(NssdcaStatusDao.LOGIDENTIFIERCOLUMN);
 		            idElement.appendChild(doc.createTextNode((ns.getLogIdentifier())));
 		            subRootElement.appendChild(idElement);
 		            
-		            Element verElement = doc.createElement(NssdcaStatus.VERSIONCOLUMN);
+		            Element verElement = doc.createElement(NssdcaStatusDao.VERSIONCOLUMN);
 		            verElement.appendChild(doc.createTextNode(ns.getVersion()));
 		            subRootElement.appendChild(verElement);
 			         
-		            Element doiElement = doc.createElement(NssdcaStatus.NSSDCACOLUMN);
+		            Element doiElement = doc.createElement(NssdcaStatusDao.NSSDCACOLUMN);
 		            doiElement.appendChild(doc.createTextNode(ns.getNssdca()));
 		            subRootElement.appendChild(doiElement);
 		            
-		            Element dateElement = doc.createElement(NssdcaStatus.DATECOLUMN);
+		            Element dateElement = doc.createElement(NssdcaStatusDao.DATECOLUMN);
 		            dateElement.appendChild(doc.createTextNode(ns.getDate()));
 		            subRootElement.appendChild(dateElement);
 		            		            
-		            Element emailElement = doc.createElement(NssdcaStatus.EMAILCOLUMN);
+		            Element emailElement = doc.createElement(NssdcaStatusDao.EMAILCOLUMN);
 		            emailElement.appendChild(doc.createTextNode(ns.getEmail()));
 		            subRootElement.appendChild(emailElement);
 		            
-		            Element commentElement = doc.createElement(NssdcaStatus.COMMENTCOLUMN);
+		            Element commentElement = doc.createElement(NssdcaStatusDao.COMMENTCOLUMN);
 		            commentElement.appendChild(doc.createTextNode(ns.getComment() != null ? ns.getComment() : ""));
 		            subRootElement.appendChild(commentElement);
 		            
@@ -230,5 +236,91 @@ public class XMLBasedNssdcaStatus {
 
         return Response.status(200).entity(xmlOutput.toString()).build();
 	}
-	
+
+	@POST
+	@Path("/add")
+	@Produces(MediaType.APPLICATION_XML)
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)	
+	public Response createNssdcaStatus(@FormParam("LogicalIdentifier") String logicalIdentifier,
+		@FormParam("Version") String ver,
+		@FormParam("Datte") String date,
+		@FormParam("NssdcaIdentifier") String nssdca,
+		@FormParam("Email") String email,
+		@FormParam("Comment") String comment) throws IOException{
+
+		StringBuffer xmlOutput = new StringBuffer();
+		NssdcaStatusDao nsD;
+		
+		try {
+			nsD = new NssdcaStatusDao();
+
+			NssdcaStatus ns = new NssdcaStatus(logicalIdentifier, ver, date, nssdca, email, comment);
+			int result = nsD.insertNssdcaStatus(ns);
+			
+			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder doiBuilder;
+
+			doiBuilder = factory.newDocumentBuilder();
+            Document doc = doiBuilder.newDocument();
+            Element rootElement = doc.createElement("nssdca_statuses");
+            
+			if(result == 1){
+				Element subRootElement = doc.createElement("nssdca_status");
+				
+		        Element idElement = doc.createElement(NssdcaStatusDao.LOGIDENTIFIERCOLUMN);
+	            idElement.appendChild(doc.createTextNode((ns.getLogIdentifier())));
+	            subRootElement.appendChild(idElement);
+	            
+	            Element verElement = doc.createElement(NssdcaStatusDao.VERSIONCOLUMN);
+	            verElement.appendChild(doc.createTextNode(ns.getVersion()));
+	            subRootElement.appendChild(verElement);
+		         
+	            Element doiElement = doc.createElement(NssdcaStatusDao.NSSDCACOLUMN);
+	            doiElement.appendChild(doc.createTextNode(ns.getNssdca()));
+	            subRootElement.appendChild(doiElement);
+	            
+	            Element dateElement = doc.createElement(NssdcaStatusDao.DATECOLUMN);
+	            dateElement.appendChild(doc.createTextNode(ns.getDate()));
+	            subRootElement.appendChild(dateElement);
+	            		            
+	            Element emailElement = doc.createElement(NssdcaStatusDao.EMAILCOLUMN);
+	            emailElement.appendChild(doc.createTextNode(ns.getEmail()));
+	            subRootElement.appendChild(emailElement);
+	            
+	            Element commentElement = doc.createElement(NssdcaStatusDao.COMMENTCOLUMN);
+	            commentElement.appendChild(doc.createTextNode(ns.getComment() != null ? ns.getComment() : ""));
+	            subRootElement.appendChild(commentElement);
+	            
+	            rootElement.appendChild(subRootElement);                    
+		}else{
+			Element messageElement = doc.createElement("Message");
+			messageElement.appendChild(doc.createTextNode("Add Nssdca status for " + ns.getLogIdentifier() + ", " + ns.getVersion() + " failure!"));
+			rootElement.appendChild(messageElement);
+		}
+		doc.appendChild(rootElement);
+		
+		DOMSource domSource = new DOMSource(doc);
+        StringWriter writer = new StringWriter();
+        StreamResult strResult = new StreamResult(writer);
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        Transformer transformer = transformerFactory.newTransformer();
+        transformer.transform(domSource, strResult);
+        
+        logger.debug("Nssdca status:\n" + writer.toString());
+        
+		xmlOutput.append(writer.toString());
+	} catch (ParserConfigurationException ex) {
+		logger.error(ex);
+    } catch (TransformerConfigurationException ex) {
+    	logger.error(ex);
+    }catch (TransformerException ex) {
+    	logger.error(ex);
+    } catch (ClassNotFoundException ex) {
+    	logger.error(ex);
+	} catch (SQLException ex) {
+		logger.error(ex);
+	}
+
+    return Response.status(200).entity(xmlOutput.toString()).build();
+	}
 }
