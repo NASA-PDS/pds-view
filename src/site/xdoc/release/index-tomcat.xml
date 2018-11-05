@@ -39,7 +39,7 @@
     </section>
 
     <section name="Download">
-      <p>New releases of the Apache Tomcat server are made available periodically, with the latest version of <i>7.0.X</i> available from the <a href="http://tomcat.apache.org/download-70.cgi" target="_blank">Apache Tomcat 7 Downloads</a> page. Version <i>8.0.X</i> is available from the <a href="http://tomcat.apache.org/download-80.cgi" target="_blank">Apache Tomcat 8 Downloads</a> page. The download page has several binary distributions to choose from:
+      <p>New releases of the Apache Tomcat server are made available periodically, with the latest version of <i>8.5.X</i> available from the <a href="http://tomcat.apache.org/download-80.cgi" target="_blank">Apache Tomcat 8 Downloads</a> page. The download page has several binary distributions to choose from:
       </p>
 
       <center>
@@ -57,11 +57,11 @@
 
       <source>
 % cd /usr/local
-% tar xzvf apache-tomcat-7.0.X.tar.gz
-% ln -s apache-tomcat-7.0.X tomcat
+% tar xzvf apache-tomcat-8.5.X.tar.gz
+% ln -s apache-tomcat-8.5.X tomcat
       </source>
 
-      <p>The symbolic link will be useful when upgrading to future versions, minimizing the number path changes to be made in startup scripts. There are a number of configuration options that can be made to a Tomcat deployment but the software will pretty much run out of the box. Extensive documentation with respect to configuration options is available from the <a href="http://tomcat.apache.org/tomcat-7.0-doc/" target="_blank">Apache Documentation 7 Documentation Index</a> page. That said, this document will cover general and secure configuration for a PDS installation below.
+      <p>The symbolic link will be useful when upgrading to future versions, minimizing the number path changes to be made in startup scripts. There are a number of configuration options that can be made to a Tomcat deployment but the software will pretty much run out of the box. Extensive documentation with respect to configuration options is available from the <a href="http://tomcat.apache.org/tomcat-8.5-doc/" target="_blank">Apache Documentation 8 Documentation Index</a> page. That said, this document will cover general and secure configuration for a PDS installation below.
       </p>
     </section>
 
@@ -135,7 +135,7 @@
 
         <source>
 #!/bin/sh
-CATALINA_OPTS="-Xms512m -Xmx2048m -XX:MaxPermSize=256m"
+CATALINA_OPTS="-Xms512m -Xmx2048m"
         </source>
 
         <p>Note: For Red Hat RPM installations, the environment variables can be specified in the <i>/etc/tomcatX/tomcatX.conf</i> file where <i>X</i> is the major version of Tomcat. Although the environment configuration is not limited to the following variables, these two are the most common:
@@ -147,7 +147,7 @@ CATALINA_OPTS="-Xms512m -Xmx2048m -XX:MaxPermSize=256m"
             </p>
           </li>
           <li>JAVA_HOME<br/>
-            <p>In most environments there will be one Java installation and this variable should reference the root directory of that installation (i.e., JAVA_HOME=/usr/local/java). Because Tomcat 7 and the PDS software require Java 1.6, it may have been required to install this version of Java while version 1.5 was already installed in the local environment. By referencing the Java 1.6 installation with this variable in the <i>setenv.sh</i> script, it allows the rest of the local environment to utilize the Java 1.5 installation.
+            <p>In most environments there will be one Java installation and this variable should reference the root directory of that installation (i.e., JAVA_HOME=/usr/local/java).
             </p>
           </li>
         </ul>
@@ -193,106 +193,8 @@ CATALINA_OPTS="-Xms512m -Xmx2048m -XX:MaxPermSize=256m"
     </section>
 
     <section name="Secure Configuration">
-      <p>A secure configuration would only be necessary if the Tomcat Server was configured to respond directly to operational requests on port <i>80</i>. As mentioned above, the preferred configuration is to use an Apache HTTPD Server for accepting these requests and then redirecting them to the Tomcat Server.
+      <p>As of Build 9a, the Engineering Node is requiring a secure configuration for its Tomcat Server instances (accepting incoming traffic on port 8443 via HTTPS). Details on this configuration will be provided at at later date.
       </p>
-
-      <p>If the local installation requires secure access, then follow the instructions in this section to secure the installation. This is not common and would only be required is exposing the Tomcat Server to the public network. It is suggested that the port hosting the Tomcat Server only allow local server access or access to servers from the same subnet. This configuration coupled with a few reverse proxy configurations from a publicly available Apache HTTPD Server (as suggested in the Release Description document), for example, provide sufficient security for the Tomcat Server while allowing its hosted applications to function properly.
-      </p>
-
-      <subsection name="Certificate Generation">
-        <p>Although a certificate can be purchased from a well-known <i>Certificate Authority(CA)</i> such as VeriSign or Thawte, this section will detail generating a self-signed certificate. Execute the following command to generate a self-signed certificate for the Tomcat Server:
-        </p>
-
-        <source>
-% $JAVA_HOME/bin/keytool -genkey -alias &lt;virtual-host-name&gt; -keyalg RSA \
--keystore /usr/local/tomcat/.keystore
-        </source> 
-
-        <p>The &lt;virtual-host-name&gt; parameter above should be the name of the machine where the Tomcat Server will be accessed. The password entered in the first password prompt will be the password for the keystore where your server certificate is stored. The <i>keytool</i> command will prompt for additional information. The following is an example of executing the <i>keytool</i> command in the EN environment:
-        </p>
-
-        <source>
-Enter keystore password:  &lt;password&gt;
-Re-enter new password: &lt;password&gt;
-What is your first and last name?
-  [Unknown]:  Sean Hardman
-What is the name of your organizational unit?
-  [Unknown]:  Engineering Node
-What is the name of your organization?
-  [Unknown]:  Planetary Data System
-What is the name of your City or Locality?
-  [Unknown]:  Pasadena
-What is the name of your State or Province?
-  [Unknown]:  California
-What is the two-letter country code for this unit?
-  [Unknown]:  US
-Is CN=Sean Hardman, OU=Engineering Node, O=Planetary Data System, \
-L=Pasadena, ST=California, C=US correct?
-  [no]:  yes
-
-Enter key password for &lt;pdsops.jpl.nasa.gov&gt;
-  (RETURN if same as keystore password):  
-        </source> 
-
-        <p>Although the above is informational, it will help browser clients identify the source of the certificate.
-        </p>
-      </subsection>
-        
-      <subsection name="SSL Configuration">
-        <p>After generating the server certificate, configure the Tomcat Server to enable Secure Sockets Layer (SSL) access. Execute the following commands to edit the <i>server.xml</i> configuration file (the example uses <i>vi</i>, but any editor will suffice):
-        </p> 
-
-        <source>
-% cd /usr/local/tomcat/conf
-% vi server.xml
-        </source>
-
-        <p>Configure the Tomcat Server to listen on the port 8443, with an SSL transport. Make sure the following block is not commented out and add the <i>keystoreFile</i> and <i>keystorePass</i> attributes as follows:
-        </p> 
- 
-        <source>
-&lt;Connector port="8443" protocol="HTTP/1.1" SSLEnabled="true"
-          maxThreads="150" scheme="https" secure="true"
-          clientAuth="false" sslProtocol="TLS" 
-          keystoreFile="/usr/local/tomcat/.keystore"
-          keystorePass="&lt;password&gt;"/&gt;
-        </source> 
-
-        <p>The <i>&lt;password&gt;</i> value should be the password that was entered above during the certificate generation step. To enable the single sign on feature of the Tomcat server, make sure following element is not commented out:
-        </p>
-
-        <source>
-&lt;Valve class="org.apache.catalina.authenticator.SingleSignOn"/&gt;
-        </source>
-
-        <p>Additional configuration is required for each deployed application (e.g., Registry Service) to take advantage of secure access via SSL. See the Installation documents for each of those services.
-        </p>
-      </subsection>
-
-      <subsection name="User Configuration">
-        <p>Setup user accounts for accessing the secure Tomcat Server. These accounts must be specified in the Tomcat users configuration file with the appropriate role. Execute the following commands to edit the <i>tomcat-users.xml</i> configuration file:
-        </p>
-
-        <source>
-% cd /usr/local/tomcat/conf
-% vi tomcat-users.xml
-        </source>
-
-        <p>Add the two XML statements listed below within the &lt;tomcat-users&gt; block.
-        </p>
-
-        <source>
-&lt;tomcat-users&gt;
-  ...
-  &lt;role rolename="{node}-admin"/&gt;
-  &lt;user username="&lt;username&gt;" password="&lt;password&gt;" roles="{node}-admin"/&gt;
-  ...
-&lt;/tomcat-users&gt;
-        </source>
-
-        <p>The first statement defines the <i>{node}-admin</i> role and the second statement defines a user with that role. Replace the <i>{node}</i> portion of the role with your PDS Node abbreviation (e.g., atm, en, geo, img, naif, ppi, rings, rs, sbn). Replace the &lt;username&gt; and &lt;password&gt; in the second statement with the desired account for the local environment.
-        </p>
-      </subsection>
     </section>
 
     <section name="Launch Tomcat">
@@ -304,7 +206,7 @@ Enter key password for &lt;pdsops.jpl.nasa.gov&gt;
 % ./startup.sh
       </source>
 
-      <p>If launching the Tomcat server automatically upon system startup is desired, the <a href="http://tomcat.apache.org/tomcat-7.0-doc/setup.html" target="_blank">Tomcat Setup</a> portion of the Tomcat documentation provides details on setting this up. Alternatively, consult your system administrator for standard mechanisms of accomplishing this in the local environment. Once the Tomcat server has been launched by one of the methods above, the server should be accessible via the following URL: <i>http://localhost:8080/</i>. This assumes the listening port was not changed during the configuration. Accessing this URL from the desired web browser, should produce the following display:
+      <p>If launching the Tomcat server automatically upon system startup is desired, the <a href="https://tomcat.apache.org/tomcat-8.5-doc/setup.html" target="_blank">Tomcat Setup</a> portion of the Tomcat documentation provides details on setting this up. Alternatively, consult your system administrator for standard mechanisms of accomplishing this in the local environment. Once the Tomcat server has been launched by one of the methods above, the server should be accessible via the following URL: <i>http://localhost:8080/</i> or <i>http://localhost:8443/</i> (depending on the configuration). This assumes the listening port was not changed during the configuration. Accessing this URL from the desired web browser, should produce the following display:
       </p>
 
       <center>
@@ -337,37 +239,6 @@ Enter key password for &lt;pdsops.jpl.nasa.gov&gt;
 % cd /usr/local/tomcat/bin
 % ./shutdown.sh
       </source>
-
-      <p>Depending on the environment or the load that the Tomcat server is under, it may fail to shutdown completely. Normally this won't be discovered until the user attempts to start the server again, where they will most likely encounter a "port in use" message. 
-      </p>
-
-      <source>
-% ps -ef | grep tomcat
-      </source>
-
-      <p>You should get something like the following, assuming the server is still up and running:
-      </p>
-
-      <source>
-pds   16870     1  0 Feb15 ?        00:04:43 /usr/java/latest/bin/java \
-  -Djava.util.logging.config.file=/usr/local/acce/tomcat5/conf/logging.properties \
-  -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager \
-  -Djava.endorsed.dirs=/usr/local/acce/tomcat5/common/endorsed \
-  -classpath /usr/local/acce/tomcat5/bin/bootstrap.jar \
-  -Dcatalina.base=/usr/local/acce/tomcat5 \
-  -Dcatalina.home=/usr/local/acce/tomcat5 \
-  -Djava.io.tmpdir=/usr/local/acce/tomcat5/temp org.apache.catalina.startup.Bootstrap start
-      </source>
-
-      <p>The process listed above can be terminated with the following command by specifying its process identifier (16870 as listed in the example above):
-      </p>
-
-      <source>
-% kill -9 16870
-      </source>
-
-      <p>The successful termination can be tested by re-executing the <i>ps</i> command from above which returns an empty result set this time around. If for some reason it is still lingering, ask the local system administrator to terminate the process for you.
-      </p>
     </section>
   </body>
 </document>

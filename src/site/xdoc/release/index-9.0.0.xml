@@ -188,7 +188,7 @@ Java HotSpot(TM) 64-Bit Server VM (build 25.101-b13, mixed mode)
       </subsection>
 
       <subsection name="Java Application Server">
-        <p>The other main system requirement pertains to providing a Java application server for hosting certain components (e.g., Registry Service, Search Service, etc.). The suggested application server for this release is Apache Tomcat with a minimal version of <i>7.0.X</i>. Version <i>8.0.X</i> is also supported in this release and is required if you are running Java version 1.8 in your environment. Consult the local system administrator for installation of this software. For the do-it-yourself crowd, see the <a href="index-tomcat.html">Tomcat Deployment</a> document for installation and configuration details.
+        <p>The other main system requirement pertains to providing a Java application server for hosting certain components (e.g., Registry Service, Search Service, etc.). The suggested application server for this release is Apache Tomcat with a minimal version of <i>8.0.X</i>. Version <i>8.5.X</i> is also supported in this release. Consult the local system administrator for installation of this software. For the do-it-yourself crowd, see the <a href="index-tomcat.html">Tomcat Deployment</a> document for installation and configuration details.
         </p>
       </subsection>
 
