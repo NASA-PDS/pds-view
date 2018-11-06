@@ -459,7 +459,7 @@ ProxyPassReverse /services/registry-pds4 http://localhost:8080/registry-pds4
             <ul>
               <li>Make a copy of the <i>harvest</i> script provided with the software for each Registry Service instance:<br/>
               <source>
-% cd $HOME/harvest-1.14.0/bin
+% cd $HOME/harvest-1.15.0/bin
 % cp harvest harvest-pds3
 % cp harvest harvest-pds4
               </source>
@@ -490,7 +490,7 @@ ProxyPassReverse /services/registry-pds4 http://localhost:8080/registry-pds4
             <p>The next step exercises the Validate Tool by validating the Example Bundle. The <a href="../preparation/validate/operate/index.html">Operation</a> document for the Validate Tool provides the details for executing the software. Execute the Validate Tool against the Example Bundle with the following commands:
             </p>
             <source>
-% cd $HOME/validate-1.13.0/bin
+% cd $HOME/validate-1.14.0/bin
 % ./validate -f -t $HOME/V1900/dph_example_archive
             </source>
             <p>The above run results in a known single error:
@@ -513,7 +513,7 @@ End of Report
             <p>The next step exercises the Harvest Tool and Registry Service by registering the contents of the Example Bundle. The <a href="../ingest/harvest/operate/index.html">Operation</a> document for the Harvest Tool provides the details for executing the software. A configuration file (<i>harvest-policy-example-new.xml</i>) for registering the Example Bundle can be found in the <i>examples</i> directory of the Harvest Tool distribution package. Depending on the location of the Example Bundle in the local environment, the file and path specifications in the configuration file will likely need to be updated for the Example Bundle location in the local environment. Execute the Harvest Tool against the Example Bundle with the following commands:
             </p>
             <source>
-% cd $HOME/harvest-1.14.0/bin
+% cd $HOME/harvest-1.15.0/bin
 % ./harvest-pds4 -c ../examples/harvest-policy-example-new.xml
             </source>
             <p>The above run will result in no errors and no warnings. The summary should look something like the following:
