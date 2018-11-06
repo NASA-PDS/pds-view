@@ -39,7 +39,7 @@
     </section>
 
     <section name="Download">
-      <p>New releases of the Apache Tomcat server are made available periodically, with the latest version of <i>8.5.X</i> available from the <a href="http://tomcat.apache.org/download-80.cgi" target="_blank">Apache Tomcat 8 Downloads</a> page. The download page has several binary distributions to choose from:
+      <p>New releases of the Apache Tomcat server are made available periodically, with the latest version of 7.0.X available from the <a href="http://tomcat.apache.org/download-70.cgi" target="_blank">Apache Tomcat 7 Downloads</a> page. Version <i>8.5.X</i> is available from the <a href="http://tomcat.apache.org/download-80.cgi" target="_blank">Apache Tomcat 8 Downloads</a> page. The download page has several binary distributions to choose from:
       </p>
 
       <center>
