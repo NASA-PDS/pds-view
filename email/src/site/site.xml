@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!-- 
-  Copyright 2017, by the California Institute of Technology.
+  Copyright 2017-2018, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology 
   Transfer at the California Institute of Technology.
@@ -16,7 +16,7 @@
   $Id$
 -->
 
-<project name="email">
+<project name="Email">
   <bannerLeft>
     <src>images/pds4_logo.png</src>
     <href>https://pds-cm.jpl.nasa.gov/pds4/</href>
@@ -30,7 +30,7 @@
 
   <body>
     <links>
-      <item name="email" href="https://pds-cm.jpl.nasa.gov/pds4/email/index.html" />
+      <item name="Email" href="https://pds-cm.jpl.nasa.gov/pds4/email/index.html" />
     </links>
 
     <menu name="Software Documentation">
