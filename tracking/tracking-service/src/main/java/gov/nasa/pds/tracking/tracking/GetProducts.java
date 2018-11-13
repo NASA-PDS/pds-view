@@ -10,6 +10,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import gov.nasa.pds.tracking.tracking.db.Product;
+import gov.nasa.pds.tracking.tracking.db.ProductDao;
 
 /**
  * @author danyu dan.yu@jpl.nasa.gov
@@ -35,9 +36,9 @@ public class GetProducts {
 			type = args[0];
 		}
 		logger.info("Type = " + type);
-		Product prod;
+		ProductDao prod;
 		try {
-			prod = new Product();
+			prod = new ProductDao();
 			
 			List<Product> prods = prod.getProducts(type);
 			
