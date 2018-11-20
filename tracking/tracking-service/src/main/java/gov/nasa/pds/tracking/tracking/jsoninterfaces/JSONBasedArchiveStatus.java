@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -27,6 +28,7 @@ import org.json.JSONObject;
 
 import gov.nasa.pds.tracking.tracking.db.ArchiveStatus;
 import gov.nasa.pds.tracking.tracking.db.ArchiveStatusDao;
+import gov.nasa.pds.tracking.tracking.db.DBConnector;
 
 /**
  * @author danyu dan.yu@jpl.nasa.gov
@@ -157,7 +159,6 @@ public class JSONBasedArchiveStatus {
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)	
 	public Response createArchiveStatus(@FormParam("LogicalIdentifier") String logicalIdentifier,
 			@FormParam("Version") String ver,
-			@FormParam("Date") String date,
 			@FormParam("Status") String status,
 			@FormParam("Email") String email,
 			@FormParam("Comment") String comment) throws IOException{
@@ -166,8 +167,9 @@ public class JSONBasedArchiveStatus {
 		JSONObject message = new JSONObject();
 		try {
 			asD = new ArchiveStatusDao();
-
-			ArchiveStatus as = new ArchiveStatus(logicalIdentifier, ver, date, status, email, comment);
+			
+			String currentTime = DBConnector.ISO_BASIC.format(new Date());
+			ArchiveStatus as = new ArchiveStatus(logicalIdentifier, ver, currentTime, status, email, comment);
 			int result = asD.insertArchiveStatus(as);
 			
 			if(result == 1){

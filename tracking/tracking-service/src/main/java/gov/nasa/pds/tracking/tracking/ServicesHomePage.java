@@ -165,7 +165,7 @@ public class ServicesHomePage {
 		          "<table>" +
 		          "<tr><td>Delivery ID: </td><td><input id=\"id\" name=\"Delivery_ID\" /></td></tr>" +
 		          "<tr><td>Submission Time: </td><td><input id=\"submissionDate\" name=\"SubmissionDate\" /> (yyyy-MM-ddTHH:mm:ss)</td></tr>" +
-		          "<tr><td>Status Time: </td><td><input id=\"statusDate\" name=\"StatusnDate\" /> (yyyy-MM-ddTHH:mm:ss)</td></tr>" +
+		          "<tr><td>Status Time: </td><td><input id=\"statusDate\" name=\"StatusDate\" /> (yyyy-MM-ddTHH:mm:ss)</td></tr>" +
 		          "<tr><td>Status: </td><td><input id=\"status\" name=\"Status\" /></td></tr>" +
 		          "<tr><td>Email: </td><td><input id=\"email\" name=\"Email\" /></td></tr>" +
 		          "<tr><td>Comment: </td><td><input id=\"comment\" name=\"Comment\" /></td></tr>" +
@@ -179,7 +179,7 @@ public class ServicesHomePage {
 		          "<table>" +
 		          "<tr><td>Delivery ID: </td><td><input id=\"id\" name=\"Delivery_ID\" /></td></tr>" +
 		          "<tr><td>Submission Time: </td><td><input id=\"submissionDate\" name=\"SubmissionDate\" /> (yyyy-MM-ddTHH:mm:ss)</td></tr>" +
-		          "<tr><td>Status Time: </td><td><input id=\"statusDate\" name=\"StatusnDate\" /> (yyyy-MM-ddTHH:mm:ss)</td></tr>" +
+		          "<tr><td>Status Time: </td><td><input id=\"statusDate\" name=\"StatusDate\" /> (yyyy-MM-ddTHH:mm:ss)</td></tr>" +
 		          "<tr><td>Status: </td><td><input id=\"status\" name=\"Status\" /></td></tr>" +
 		          "<tr><td>Email: </td><td><input id=\"email\" name=\"Email\" /></td></tr>" +
 		          "<tr><td>Comment: </td><td><input id=\"comment\" name=\"Comment\" /></td></tr>" +
@@ -267,9 +267,9 @@ public class ServicesHomePage {
 		          "<table>" +
 		          "<tr><td>Logical Identifier: </td><td><input id=\"id\" name=\"LogicalIdentifier\" /></td></tr>" +
 		          "<tr><td>Version: </td><td><input id=\"ver\" name=\"Version\" /></td></tr>" +
-		          "<tr><td>DOI: </td><td><input id=\"name\" name=\"Title\" /></td></tr>" +
-		          "<tr><td>URL: </td><td><input id=\"type\" name=\"Type\" /></td></tr>" +
-		          "<tr><td>Email: </td><td><input id=\"alt_id\" name=\"AlternateId\" /></td></tr>" +
+		          "<tr><td>Title: </td><td><input id=\"title\" name=\"Title\" /></td></tr>" +
+		          "<tr><td>Type: </td><td><input id=\"type\" name=\"Type\" /></td></tr>" +
+		          "<tr><td>Alternate ID: </td><td><input id=\"alt_id\" name=\"AlternateId\" /></td></tr>" +
 		          "<tr><td></td><td><input type=\"submit\" value=\"Add\" /></td></tr>" +
 		          "</table>" +    
 		          "</form>" +
@@ -280,9 +280,9 @@ public class ServicesHomePage {
 		          "<table>" +
 		          "<tr><td>Logical Identifier: </td><td><input id=\"id\" name=\"LogicalIdentifier\" /></td></tr>" +
 		          "<tr><td>Version: </td><td><input id=\"ver\" name=\"Version\" /></td></tr>" +
-		          "<tr><td>DOI: </td><td><input id=\"name\" name=\"Title\" /></td></tr>" +
-		          "<tr><td>URL: </td><td><input id=\"type\" name=\"Type\" /></td></tr>" +
-		          "<tr><td>Email: </td><td><input id=\"alt_id\" name=\"AlternateId\" /></td></tr>" +
+		          "<tr><td>Title: </td><td><input id=\"title\" name=\"Title\" /></td></tr>" +
+		          "<tr><td>Type: </td><td><input id=\"type\" name=\"Type\" /></td></tr>" +
+		          "<tr><td>Alternate ID: </td><td><input id=\"alt_id\" name=\"AlternateId\" /></td></tr>" +
 		          "<tr><td></td><td><input type=\"submit\" value=\"Add\" /></td></tr>" +
 		          "</table>" +    
 		          "</form>" +
@@ -295,9 +295,9 @@ public class ServicesHomePage {
 		          "<table>" +
 		          "<tr><td>Logical Identifier: </td><td><input id=\"id\" name=\"LogicalIdentifier\" /></td></tr>" +
 		          "<tr><td>Version: </td><td><input id=\"ver\" name=\"Version\" /></td></tr>" +
-		          "<tr><td>DOI: </td><td><input id=\"name\" name=\"Title\" /></td></tr>" +
-		          "<tr><td>URL: </td><td><input id=\"type\" name=\"Type\" /></td></tr>" +
-		          "<tr><td>Email: </td><td><input id=\"alt_id\" name=\"AlternateId\" /></td></tr>" +
+		          "<tr><td>Title: </td><td><input id=\"title\" name=\"Title\" /></td></tr>" +
+		          "<tr><td>Type: </td><td><input id=\"type\" name=\"Type\" /></td></tr>" +
+		          "<tr><td>Alternate ID: </td><td><input id=\"alt_id\" name=\"AlternateId\" /></td></tr>" +
 		          "<tr><td></td><td><input type=\"submit\" value=\"Update\" /></td></tr>" +
 		          "</table>" +
 		          "</form>" +
@@ -308,9 +308,9 @@ public class ServicesHomePage {
 		          "<table>" +
 		          "<tr><td>Logical Identifier: </td><td><input id=\"id\" name=\"LogicalIdentifier\" /></td></tr>" +
 		          "<tr><td>Version: </td><td><input id=\"ver\" name=\"Version\" /></td></tr>" +
-		          "<tr><td>DOI: </td><td><input id=\"name\" name=\"Title\" /></td></tr>" +
-		          "<tr><td>URL: </td><td><input id=\"type\" name=\"Type\" /></td></tr>" +
-		          "<tr><td>Email: </td><td><input id=\"alt_id\" name=\"AlternateId\" /></td></tr>" +
+		          "<tr><td>Title: </td><td><input id=\"title\" name=\"Title\" /></td></tr>" +
+		          "<tr><td>Type: </td><td><input id=\"type\" name=\"Type\" /></td></tr>" +
+		          "<tr><td>Alternate ID: </td><td><input id=\"alt_id\" name=\"AlternateId\" /></td></tr>" +
 		          "<tr><td></td><td><input type=\"submit\" value=\"Update\" /></td></tr>" +
 		          "</table>" +
 		          "</form>" +
@@ -330,8 +330,7 @@ public class ServicesHomePage {
 		          "<table>" +
 		          "<tr><td>Logical Identifier: </td><td><input id=\"id\" name=\"LogicalIdentifier\" /></td></tr>" +
 		          "<tr><td>Version: </td><td><input id=\"ver\" name=\"Version\" /></td></tr>" +
-		          "<tr><td>DOI: </td><td><input id=\"date\" name=\"Date\" /></td></tr>" +
-		          "<tr><td>URL: </td><td><input id=\"status\" name=\"Status\" /></td></tr>" +
+		          "<tr><td>Status: </td><td><input id=\"status\" name=\"Status\" /></td></tr>" +
 		          "<tr><td>Email: </td><td><input id=\"email\" name=\"Email\" /></td></tr>" +
 		          "<tr><td>Comment: </td><td><input id=\"comment\" name=\"Comment\" /></td></tr>" +
 		          "<tr><td></td><td><input type=\"submit\" value=\"Add\" /></td></tr>" +
@@ -344,8 +343,7 @@ public class ServicesHomePage {
 		          "<table>" +
 		          "<tr><td>Logical Identifier: </td><td><input id=\"id\" name=\"LogicalIdentifier\" /></td></tr>" +
 		          "<tr><td>Version: </td><td><input id=\"ver\" name=\"Version\" /></td></tr>" +
-		          "<tr><td>DOI: </td><td><input id=\"date\" name=\"Date\" /></td></tr>" +
-		          "<tr><td>URL: </td><td><input id=\"status\" name=\"Status\" /></td></tr>" +
+		          "<tr><td>Status: </td><td><input id=\"status\" name=\"Status\" /></td></tr>" +
 		          "<tr><td>Email: </td><td><input id=\"email\" name=\"Email\" /></td></tr>" +
 		          "<tr><td>Comment: </td><td><input id=\"comment\" name=\"Comment\" /></td></tr>" +
 		          "<tr><td></td><td><input type=\"submit\" value=\"Add\" /></td></tr>" +
@@ -361,8 +359,7 @@ public class ServicesHomePage {
 		          "<table>" +
 		          "<tr><td>Logical Identifier: </td><td><input id=\"id\" name=\"LogicalIdentifier\" /></td></tr>" +
 		          "<tr><td>Version: </td><td><input id=\"ver\" name=\"Version\" /></td></tr>" +
-		          "<tr><td>DOI: </td><td><input id=\"date\" name=\"Date\" /></td></tr>" +
-		          "<tr><td>URL: </td><td><input id=\"status\" name=\"Status\" /></td></tr>" +
+		          "<tr><td>Status: </td><td><input id=\"status\" name=\"Status\" /></td></tr>" +
 		          "<tr><td>Email: </td><td><input id=\"email\" name=\"Email\" /></td></tr>" +
 		          "<tr><td>Comment: </td><td><input id=\"comment\" name=\"Comment\" /></td></tr>" +
 		          "<tr><td></td><td><input type=\"submit\" value=\"Add\" /></td></tr>" +
@@ -375,8 +372,7 @@ public class ServicesHomePage {
 		          "<table>" +
 		          "<tr><td>Logical Identifier: </td><td><input id=\"id\" name=\"LogicalIdentifier\" /></td></tr>" +
 		          "<tr><td>Version: </td><td><input id=\"ver\" name=\"Version\" /></td></tr>" +
-		          "<tr><td>DOI: </td><td><input id=\"date\" name=\"Date\" /></td></tr>" +
-		          "<tr><td>URL: </td><td><input id=\"status\" name=\"Status\" /></td></tr>" +
+		          "<tr><td>Status: </td><td><input id=\"status\" name=\"Status\" /></td></tr>" +
 		          "<tr><td>Email: </td><td><input id=\"email\" name=\"Email\" /></td></tr>" +
 		          "<tr><td>Comment: </td><td><input id=\"comment\" name=\"Comment\" /></td></tr>" +
 		          "<tr><td></td><td><input type=\"submit\" value=\"Add\" /></td></tr>" +
@@ -392,8 +388,7 @@ public class ServicesHomePage {
 		          "<table>" +
 		          "<tr><td>Logical Identifier: </td><td><input id=\"id\" name=\"LogicalIdentifier\" /></td></tr>" +
 		          "<tr><td>Version: </td><td><input id=\"ver\" name=\"Version\" /></td></tr>" +
-		          "<tr><td>DOI: </td><td><input id=\"date\" name=\"Date\" /></td></tr>" +
-		          "<tr><td>URL: </td><td><input id=\"nssdca_id\" name=\"NssdcaIdentifier\" /></td></tr>" +
+		          "<tr><td>Nssdca Identifier: </td><td><input id=\"nssdca_id\" name=\"NssdcaIdentifier\" /></td></tr>" +
 		          "<tr><td>Email: </td><td><input id=\"email\" name=\"Email\" /></td></tr>" +
 		          "<tr><td>Comment: </td><td><input id=\"comment\" name=\"Comment\" /></td></tr>" +
 		          "<tr><td></td><td><input type=\"submit\" value=\"Add\" /></td></tr>" +
@@ -406,8 +401,7 @@ public class ServicesHomePage {
 		          "<table>" +
 		          "<tr><td>Logical Identifier: </td><td><input id=\"id\" name=\"LogicalIdentifier\" /></td></tr>" +
 		          "<tr><td>Version: </td><td><input id=\"ver\" name=\"Version\" /></td></tr>" +
-		          "<tr><td>DOI: </td><td><input id=\"date\" name=\"Date\" /></td></tr>" +
-		          "<tr><td>URL: </td><td><input id=\"nssdca_id\" name=\"NssdcaIdentifier\" /></td></tr>" +
+		          "<tr><td>Nssdca Identifier: </td><td><input id=\"nssdca_id\" name=\"NssdcaIdentifier\" /></td></tr>" +
 		          "<tr><td>Email: </td><td><input id=\"email\" name=\"Email\" /></td></tr>" +
 		          "<tr><td>Comment: </td><td><input id=\"comment\" name=\"Comment\" /></td></tr>" +
 		          "<tr><td></td><td><input type=\"submit\" value=\"Add\" /></td></tr>" +
@@ -429,9 +423,9 @@ public class ServicesHomePage {
 		          "<table>" +
 		          "<tr><td>Logical Identifier: </td><td><input id=\"id\" name=\"LogicalIdentifier\" /></td></tr>" +
 		          "<tr><td>Version: </td><td><input id=\"ver\" name=\"Version\" /></td></tr>" +
-		          "<tr><td>DOI: </td><td><input id=\"date\" name=\"Date\" /></td></tr>" +
-		          "<tr><td>URL: </td><td><input id=\"name\" name=\"Name\" /></td></tr>" +
-		          "<tr><td>URL: </td><td><input id=\"desc\" name=\"Desc\" /></td></tr>" +
+		          "<tr><td>Release Date Time: </td><td><input id=\"date\" name=\"Date\" /></td></tr>" +
+		          "<tr><td>Name: </td><td><input id=\"name\" name=\"Name\" /></td></tr>" +
+		          "<tr><td>Description: </td><td><input id=\"desc\" name=\"Desc\" /></td></tr>" +
 		          "<tr><td>Email: </td><td><input id=\"email\" name=\"Email\" /></td></tr>" +
 		          "<tr><td>Comment: </td><td><input id=\"comment\" name=\"Comment\" /></td></tr>" +
 		          "<tr><td></td><td><input type=\"submit\" value=\"Add\" /></td></tr>" +
@@ -444,15 +438,175 @@ public class ServicesHomePage {
 		          "<table>" +
 		          "<tr><td>Logical Identifier: </td><td><input id=\"id\" name=\"LogicalIdentifier\" /></td></tr>" +
 		          "<tr><td>Version: </td><td><input id=\"ver\" name=\"Version\" /></td></tr>" +
-		          "<tr><td>DOI: </td><td><input id=\"date\" name=\"Date\" /></td></tr>" +
-		          "<tr><td>URL: </td><td><input id=\"name\" name=\"Name\" /></td></tr>" +
-		          "<tr><td>URL: </td><td><input id=\"desc\" name=\"Desc\" /></td></tr>" +
+		          "<tr><td>Release Date Time: </td><td><input id=\"date\" name=\"Date\" /></td></tr>" +
+		          "<tr><td>Name: </td><td><input id=\"name\" name=\"Name\" /></td></tr>" +
+		          "<tr><td>Description: </td><td><input id=\"desc\" name=\"Desc\" /></td></tr>" +
 		          "<tr><td>Email: </td><td><input id=\"email\" name=\"Email\" /></td></tr>" +
 		          "<tr><td>Comment: </td><td><input id=\"comment\" name=\"Comment\" /></td></tr>" +
 		          "<tr><td></td><td><input type=\"submit\" value=\"Add\" /></td></tr>" +
 		          "</table>" +    
 		          "</form>" +
 		          "</div>"		          
+            + HtmlConstants.PAGE_END;
+    }
+    
+    @GET
+    @Path("/deliveryadd")
+    @Produces("text/html")
+    public String deliveryForm() {
+    	return HtmlConstants.PAGE_BEGIN +
+		          "<h1>Delivery</h1>" +
+		          "<h2>Add</h2>" +
+		          "<h3>JSON</h3>" +
+		          "<div>" +
+		          "<form action=\"json/delivery/add\" method=\"POST\">" +
+		          "<table>" +
+		          "<tr><td>Logical Identifier: </td><td><input id=\"id\" name=\"Log_Identifier\" /></td></tr>" +
+		          "<tr><td>Version: </td><td><input id=\"ver\" name=\"Version\" /></td></tr>" +
+		          "<tr><td>Name: </td><td><input id=\"name\" name=\"Name\" /></td></tr>" +
+		          "<tr><td>Start Time: </td><td><input id=\"startT\" name=\"Start_Time\" /></td></tr>" +
+		          "<tr><td>Stop Time: </td><td><input id=\"stopT\" name=\"Stop_Time\" /></td></tr>" +
+		          "<tr><td>Source: </td><td><input id=\"src\" name=\"Source\" /></td></tr>" +
+		          "<tr><td>Target: </td><td><input id=\"tgt\" name=\"Target\" /></td></tr>" +
+		          "<tr><td>Due Date: </td><td><input id=\"dueD\" name=\"Due_Date\" /></td></tr>" +
+		          "<tr><td></td><td><input type=\"submit\" value=\"Add\" /></td></tr>" +
+		          "</table>" +    
+		          "</form>" +
+		          "</div>" +
+		          "<h3>XML</h3>" +
+		          "<div>" +
+		          "<form action=\"xml/delivery/add\" method=\"POST\">" +
+		          "<table>" +
+		          "<tr><td>Logical Identifier: </td><td><input id=\"id\" name=\"Log_Identifier\" /></td></tr>" +
+		          "<tr><td>Version: </td><td><input id=\"ver\" name=\"Version\" /></td></tr>" +
+		          "<tr><td>Name: </td><td><input id=\"name\" name=\"Name\" /></td></tr>" +
+		          "<tr><td>Start Time: </td><td><input id=\"startT\" name=\"Start_Time\" /></td></tr>" +
+		          "<tr><td>Stop Time: </td><td><input id=\"stopT\" name=\"Stop_Time\" /></td></tr>" +
+		          "<tr><td>Source: </td><td><input id=\"src\" name=\"Source\" /></td></tr>" +
+		          "<tr><td>Target: </td><td><input id=\"tgt\" name=\"Target\" /></td></tr>" +
+		          "<tr><td>Due Date: </td><td><input id=\"dueD\" name=\"Due_Date\" /></td></tr>" +
+		          "<tr><td></td><td><input type=\"submit\" value=\"Add\" /></td></tr>" +
+		          "</table>" +    
+		          "</form>" +
+		          "</div>" +
+		          "<p></p>" +
+		          "<h2>Update</h2>" +
+		          "<h3>JSON</h3>" +
+		          "<div>" +
+		          "<form action=\"json/delivery/update\" method=\"POST\">" +
+		          "<table>" +
+		          "<tr><td>Logical Identifier: </td><td><input id=\"id\" name=\"Log_Identifier\" /></td></tr>" +
+		          "<tr><td>Deliveryl Identifier: </td><td><input id=\"delId\" name=\"Del_Identifier\" /></td></tr>" +
+		          "<tr><td>Version: </td><td><input id=\"ver\" name=\"Version\" /></td></tr>" +
+		          "<tr><td>Name: </td><td><input id=\"name\" name=\"Name\" /></td></tr>" +
+		          "<tr><td>Start Time: </td><td><input id=\"startT\" name=\"Start_Time\" /></td></tr>" +
+		          "<tr><td>Stop Time: </td><td><input id=\"stopT\" name=\"Stop_Time\" /></td></tr>" +
+		          "<tr><td>Source: </td><td><input id=\"src\" name=\"Source\" /></td></tr>" +
+		          "<tr><td>Target: </td><td><input id=\"tgt\" name=\"Target\" /></td></tr>" +
+		          "<tr><td>Due Date: </td><td><input id=\"dueD\" name=\"Due_Date\" /></td></tr>" +
+		          "<tr><td></td><td><input type=\"submit\" value=\"Update\" /></td></tr>" +
+		          "</table>" +
+		          "</form>" +
+		          "</div>" +
+		          "<h3>XML</h3>" +
+		          "<div>" +
+		          "<form action=\"xml/delivery/update\" method=\"POST\">" +
+		          "<table>" +
+		          "<tr><td>Logical Identifier: </td><td><input id=\"id\" name=\"Log_Identifier\" /></td></tr>" +
+		          "<tr><td>Deliveryl Identifier: </td><td><input id=\"delId\" name=\"Del_Identifier\" /></td></tr>" +
+		          "<tr><td>Version: </td><td><input id=\"ver\" name=\"Version\" /></td></tr>" +
+		          "<tr><td>Name: </td><td><input id=\"name\" name=\"Name\" /></td></tr>" +
+		          "<tr><td>Start Time: </td><td><input id=\"startT\" name=\"Start_Time\" /></td></tr>" +
+		          "<tr><td>Stop Time: </td><td><input id=\"stopT\" name=\"Stop_Time\" /></td></tr>" +
+		          "<tr><td>Source: </td><td><input id=\"src\" name=\"Source\" /></td></tr>" +
+		          "<tr><td>Target: </td><td><input id=\"tgt\" name=\"Target\" /></td></tr>" +
+		          "<tr><td>Due Date: </td><td><input id=\"dueD\" name=\"Due_Date\" /></td></tr>" +
+		          "<tr><td></td><td><input type=\"submit\" value=\"Update\" /></td></tr>" +
+		          "</table>" +
+		          "</form>" +
+		          "</div>"
+            + HtmlConstants.PAGE_END;
+    }
+    
+    @GET
+    @Path("/useradd")
+    @Produces("text/html")
+    public String userForm() {
+    	return HtmlConstants.PAGE_BEGIN +
+		          "<h1>User</h1>" +
+		          "<h2>Add</h2>" +
+		          "<h3>JSON</h3>" +
+		          "<div>" +
+		          "<form action=\"json/users/add\" method=\"POST\">" +
+		          "<table>" +
+		          "<tr><td>User Email: </td><td><input id=\"email\" name=\"Email\" /></td></tr>" +
+		          "<tr><td>User Name: </td><td><input id=\"name\" name=\"Name\" /></td></tr>" +
+		          "<tr><td></td><td><input type=\"submit\" value=\"Add\" /></td></tr>" +
+		          "</table>" +    
+		          "</form>" +
+		          "</div>" +
+		          "<h3>XML</h3>" +
+		          "<div>" +
+		          "<form action=\"xml/users/add\" method=\"POST\">" +
+		          "<table>" +
+		          "<tr><td>User Email: </td><td><input id=\"email\" name=\"Email\" /></td></tr>" +
+		          "<tr><td>User Name: </td><td><input id=\"name\" name=\"Name\" /></td></tr>" +
+		          "<tr><td></td><td><input type=\"submit\" value=\"Add\" /></td></tr>" +
+		          "</table>" +    
+		          "</form>" +
+		          "</div>" +
+		          "<p></p>" +
+		          "<h2>Update</h2>" +
+		          "<h3>JSON</h3>" +
+		          "<div>" +
+		          "<form action=\"json/users/update\" method=\"POST\">" +
+		          "<table>" +
+		          "<tr><td>User Email: </td><td><input id=\"email\" name=\"Email\" /></td></tr>" +
+		          "<tr><td>User Name: </td><td><input id=\"name\" name=\"Name\" /></td></tr>" +
+		          "<tr><td></td><td><input type=\"submit\" value=\"Update\" /></td></tr>" +
+		          "</table>" +
+		          "</form>" +
+		          "</div>" +
+		          "<h3>XML</h3>" +
+		          "<div>" +
+		          "<form action=\"xml/users/update\" method=\"POST\">" +
+		          "<table>" +
+		          "<tr><td>User Email: </td><td><input id=\"email\" name=\"Email\" /></td></tr>" +
+		          "<tr><td>User Name: </td><td><input id=\"name\" name=\"Name\" /></td></tr>" +
+		          "<tr><td></td><td><input type=\"submit\" value=\"Update\" /></td></tr>" +
+		          "</table>" +
+		          "</form>" +
+		          "</div>"
+            + HtmlConstants.PAGE_END;
+    }
+    
+    @GET
+    @Path("/roleadd")
+    @Produces("text/html")
+    public String roleForm() {
+    	return HtmlConstants.PAGE_BEGIN +
+		          "<h1>User Role</h1>" +
+		          "<h2>Add</h2>" +
+		          "<h3>JSON</h3>" +
+		          "<div>" +
+		          "<form action=\"json/users/addrole\" method=\"POST\">" +
+		          "<table>" +
+		          "<tr><td>User Email: </td><td><input id=\"email\" name=\"Email\" /></td></tr>" +
+		          "<tr><td>Reference: </td><td><input id=\"ref\" name=\"Reference\" /></td></tr>" +
+		          "<tr><td></td><td><input type=\"submit\" value=\"Add\" /></td></tr>" +
+		          "</table>" +    
+		          "</form>" +
+		          "</div>" +
+		          "<h3>XML</h3>" +
+		          "<div>" +
+		          "<form action=\"xml/users/addrole\" method=\"POST\">" +
+		          "<table>" +
+		          "<tr><td>User Email: </td><td><input id=\"email\" name=\"Email\" /></td></tr>" +
+		          "<tr><td>Reference: </td><td><input id=\"ref\" name=\"Reference\" /></td></tr>" +
+		          "<tr><td></td><td><input type=\"submit\" value=\"Add\" /></td></tr>" +
+		          "</table>" +    
+		          "</form>" +
+		          "</div>"
             + HtmlConstants.PAGE_END;
     }
 }

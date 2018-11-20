@@ -12,6 +12,7 @@ import javax.ws.rs.Produces;
 import org.apache.log4j.Logger;
 
 import gov.nasa.pds.tracking.tracking.db.Delivery;
+import gov.nasa.pds.tracking.tracking.db.DeliveryDao;
 import gov.nasa.pds.tracking.tracking.utils.HtmlConstants;
  
 @Path("html/delivery")
@@ -42,10 +43,10 @@ public class HTMLBasedDelivery {
     			  "<table border=\"1\" style=\"width: 90%;border-spacing: 0; font:normal; font-size: 14\" >" +
     			  tableTiltes);
 
-    	Delivery del;
+    	DeliveryDao delD;
 		try {
-			del = new Delivery();
-			List<Delivery> dels = del.getDeliveries();
+			delD = new DeliveryDao();
+			List<Delivery> dels = delD.getDeliveries();
 			logger.info("number of deliveris: "  + dels.size());
 			
 			Iterator<Delivery> itr = dels.iterator();
@@ -94,10 +95,10 @@ public class HTMLBasedDelivery {
     			  "<table border=\"1\" style=\"width: 90%;border-spacing: 0; font:normal; font-size: 14\" >" +
     			  tableTiltes);
 
-    	Delivery del;
+    	DeliveryDao delD;
 		try {
-			del = new Delivery();
-			List<Delivery> dels = del.getProductDeliveries(id, version);
+			delD = new DeliveryDao();
+			List<Delivery> dels = delD.getProductDeliveries(id, version);
 			logger.info("number of deliveris: "  + dels.size());
 			Iterator<Delivery> itr = dels.iterator();
 			int count = 1;
@@ -147,10 +148,10 @@ public class HTMLBasedDelivery {
     			  "<table border=\"1\" style=\"width: 90%;border-spacing: 0; font:normal; font-size: 14\" >" +
     			  tableTiltes);
 
-    	Delivery del;
+    	DeliveryDao delD;
 		try {
-			del = new Delivery();
-			List<Delivery> dels = del.getDeliveriesOrderByDueDate(title);
+			delD = new DeliveryDao();
+			List<Delivery> dels = delD.getDeliveriesOrderByDueDate(title);
 			logger.info("number of deliveris: "  + dels.size());
 			Iterator<Delivery> itr = dels.iterator();
 			int count = 1;

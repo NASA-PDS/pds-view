@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -23,10 +24,11 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
  
 import org.json.JSONException;
-import org.json.JSONObject;
+import org.json.JSONObject; 
 
 import gov.nasa.pds.tracking.tracking.db.CertificationStatus;
 import gov.nasa.pds.tracking.tracking.db.CertificationStatusDao;
+import gov.nasa.pds.tracking.tracking.db.DBConnector;
 
 /**
  * @author danyu dan.yu@jpl.nasa.gov
@@ -156,7 +158,6 @@ public class JSONBasedCertificationStatus {
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)	
 	public Response createCertificationStatus(@FormParam("LogicalIdentifier") String logicalIdentifier,
 			@FormParam("Version") String ver,
-			@FormParam("Date") String date,
 			@FormParam("Status") String status,
 			@FormParam("Email") String email,
 			@FormParam("Comment") String comment) throws IOException{
@@ -165,8 +166,9 @@ public class JSONBasedCertificationStatus {
 		JSONObject message = new JSONObject();
 		try {
 			csD = new CertificationStatusDao();
-
-			CertificationStatus cs = new CertificationStatus(logicalIdentifier, ver, date, status, email, comment);
+			
+			String currentTime = DBConnector.ISO_BASIC.format(new Date());
+			CertificationStatus cs = new CertificationStatus(logicalIdentifier, ver, currentTime, status, email, comment);
 			int result = csD.insertCertificationStatus(cs);
 			
 			if(result == 1){

@@ -192,7 +192,7 @@ public class CertificationStatusDao extends DBConnector {
 
 			resultSet = statement.executeQuery("select a.* from " + PRODUCTTABLENAME + " p, " + TABLENAME + " a"
 					+ " where p." + LOGIDENTIFIERCOLUMN + " = " + "a." + LOGIDENTIFIERCOLUMN + " and p."
-					+ Product.TITLECOLUMN + " = '" + title + "' order by a." + VERSIONCOLUMN);
+					+ ProductDao.TITLECOLUMN + " = '" + title + "' order by a." + VERSIONCOLUMN);
 
 			while (resultSet.next()) {
 				cStatus = new CertificationStatus();

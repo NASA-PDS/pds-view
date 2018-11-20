@@ -12,8 +12,9 @@ import javax.ws.rs.Produces;
 import org.apache.log4j.Logger;
 
 import gov.nasa.pds.tracking.tracking.db.Reference;
-import gov.nasa.pds.tracking.tracking.db.Role;
+import gov.nasa.pds.tracking.tracking.db.RoleDao;
 import gov.nasa.pds.tracking.tracking.db.User;
+import gov.nasa.pds.tracking.tracking.db.UserDao;
 import gov.nasa.pds.tracking.tracking.utils.HtmlConstants;
  
 @Path("html/users")
@@ -34,11 +35,10 @@ public class HTMLBasedUsers {
     			  "<td width=\"50%\"><b>Name</b></td>"+
 	              "<td width=\"50%\"><b>Email</b></td>" +
     			  "</tr>");
-
-		User user;
+    	UserDao userD;
 		try {
-			user = new User();
-			List<User> users = user.getUsers();
+			userD = new UserDao();
+			List<User> users = userD.getUsers();
 			logger.info("number of users: "  + users.size());
 							         
 			Iterator<User> itr = users.iterator();
@@ -82,10 +82,10 @@ public class HTMLBasedUsers {
 	              "<td width=\"40%\"><b>Role References</b></td>" +
 	              "</tr>");
         
-		User user;
+		UserDao userD;
 		try {
-			user = new User();
-			List<User> users = user.getUserRole(email);
+			userD = new UserDao();
+			List<User> users = userD.getUserRole(email);
 			logger.info("Number of Role References for " + email + ": "  + users.size());
 			Iterator<User> itr = users.iterator();
 			int count = 1;
@@ -124,13 +124,13 @@ public class HTMLBasedUsers {
     			  "<td width=\"20%\"><b>Email</b></td>"+
 	              "<td width=\"20%\"><b>Name</b></td>" +
 	              "<td width=\"25%\"><b>" + Reference.TITLECOLUMN + "</b></td>" +
-	              "<td width=\"25%\"><b>" + Role.REFERENCECOLUMN + "</b></td>" +
+	              "<td width=\"25%\"><b>" + RoleDao.REFERENCECOLUMN + "</b></td>" +
 	              "</tr>");
 
-		User user;
+		UserDao userD;
 		try {
-			user = new User();
-			List<User> users = user.getProductRoleUsers(id, refType);
+			userD = new UserDao();
+			List<User> users = userD.getProductRoleUsers(id, refType);
 			logger.info("Number of " + refType  + " for " + id + ": "  + users.size());
 			Iterator<User> itr = users.iterator();
 			int count = 1;

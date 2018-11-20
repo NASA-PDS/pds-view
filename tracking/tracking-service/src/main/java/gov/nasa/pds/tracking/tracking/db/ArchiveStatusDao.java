@@ -100,11 +100,11 @@ public class ArchiveStatusDao extends DBConnector {
 			statement = connect.createStatement();
 
 			logger.debug("select a.* from " + PRODUCTTABLENAME + " p, " + TABLENAME + " a" + " where p."
-					+ LOGIDENTIFIERCOLUMN + " = " + "a." + LOGIDENTIFIERCOLUMN + " and p." + Product.TITLECOLUMN + " = '"
+					+ LOGIDENTIFIERCOLUMN + " = " + "a." + LOGIDENTIFIERCOLUMN + " and p." + ProductDao.TITLECOLUMN + " = '"
 					+ title + "' order by a." + VERSIONCOLUMN);
 			resultSet = statement.executeQuery("select a.* from " + PRODUCTTABLENAME + " p, " + TABLENAME + " a"
 					+ " where p." + LOGIDENTIFIERCOLUMN + " = " + "a." + LOGIDENTIFIERCOLUMN + " and p."
-					+ Product.TITLECOLUMN + " = '" + title + "' order by a." + VERSIONCOLUMN);
+					+ ProductDao.TITLECOLUMN + " = '" + title + "' order by a." + VERSIONCOLUMN);
 
 			while (resultSet.next()) {
 				archStatus = new ArchiveStatus();

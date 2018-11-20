@@ -6,45 +6,20 @@
  */
 package gov.nasa.pds.tracking.tracking.db;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
-
+import java.io.Serializable;
+import javax.xml.bind.annotation.XmlRootElement;
 import org.apache.log4j.Logger;
 
+@XmlRootElement(name = "delivery")
 /**
  * @author danyu dan.yu@jpl.nasa.gov
  *
  */
-/**
- * @author danyu dan.yu@jpl.nasa.gov
- *
- */
-public class Delivery extends DBConnector {
-	  
-	  public static Logger logger = Logger.getLogger(Delivery.class);
+public class Delivery implements Serializable  {
 
-		private static String TABLENAME  = "delivery";
-		private static String PRODUCTTABLENAME = "product";
-	
-		public static String LOG_IDENTIFIERCOLUMN  = "logical_identifier";
-		public static String DEL_IDENTIFIERCOLUMN  = "delivery_identifier";		
-		public static String VERSIONCOLUMN  = "version_id";
-		public static String NAMECOLUMN  = "name";
-		public static String STARTCOLUMN  = "start_date_time";
-		public static String STOPCOLUMN  = "stop_date_time";
-		public static String SOURCECOLUMN  = "source";
-		public static String TARGETCOLUMN  = "target";
-		public static String DUEDATECOLUMN = "due_date";
-		
-		private Connection connect = null;
-		private Statement statement = null;
-		private PreparedStatement prepareStm = null;
-		private ResultSet resultSet = null;
+		private static final long serialVersionUID = 1L;
+	  
+		public static Logger logger = Logger.getLogger(Delivery.class);
 		
 		private String log_identifier = null;
 		private int del_identifier = 0;
@@ -56,6 +31,18 @@ public class Delivery extends DBConnector {
 		private String target = null;
 		private String dueDate = null;
 		
+		public Delivery(String logIdentifier, int delIdentifier, String ver, String name, String startTime, String stopTime, String src, String tgt, String dueD){
+			
+			this.log_identifier = logIdentifier;
+			this.del_identifier = delIdentifier;
+			this.version = ver;
+			this.name = name;
+			this.start = startTime;
+			this.stop = stopTime;
+			this.source = src;
+			this.target = tgt;
+			this.dueDate = dueD;
+		}
 		/**
 		 * @return the log_identifier
 		 */
@@ -182,287 +169,7 @@ public class Delivery extends DBConnector {
 			this.dueDate = dueDate;
 		}
 
-
-	/**
-	 * @throws ClassNotFoundException
-	 * @throws SQLException
-	 */
-	public Delivery() throws ClassNotFoundException, SQLException {
+	public Delivery(){
 		// TODO Auto-generated constructor stub
-	}
-	
-	/**
-	 * @return a list of all delivery objects
-	 */
-	@SuppressWarnings("finally")
-	public List<Delivery> getDeliveries() {
-		List<Delivery> delObjs = new ArrayList<Delivery>();
-		Delivery  del = null;
-		try {
-			// Setup the connection with the DB
-			connect = getConnection();
-
-			statement = connect.createStatement();
-			resultSet = statement.executeQuery("select * from " 
-												+ TABLENAME
-												+ " order by " + DUEDATECOLUMN);
-			
-			while (resultSet.next()) {
-				del = new Delivery();
-				
-				del.setLogIdentifier(resultSet.getString(LOG_IDENTIFIERCOLUMN));
-				del.setDelIdentifier(resultSet.getInt(DEL_IDENTIFIERCOLUMN));								
-				del.setVersion(resultSet.getString(VERSIONCOLUMN));				
-				del.setName(resultSet.getString(NAMECOLUMN));				
-				del.setStart(resultSet.getString(STARTCOLUMN));
-				del.setStop(resultSet.getString(STOPCOLUMN));
-				del.setSource(resultSet.getString(SOURCECOLUMN));
-				del.setTarget(resultSet.getString(TARGETCOLUMN));
-				del.setDueDate(resultSet.getString(DUEDATECOLUMN));
-
-				delObjs.add(del);
-			}
-			
-		} catch (Exception e) {
-			logger.error(e);
-		} finally {
-			close(statement);
-			return delObjs;
-		}
-	}
-	
-	/**
-	 * @return a list of delivery objects with the title.
-	 */
-	@SuppressWarnings("finally")
-	public List<Delivery> getDeliveriesOrderByDueDate(String title) {
-		List<Delivery> delObjs = new ArrayList<Delivery>();
-		Delivery  del = null;
-		try {
-			// Setup the connection with the DB
-			connect = getConnection();
-
-			statement = connect.createStatement();
-			logger.debug("select * from " 
-					+ PRODUCTTABLENAME + " p, " + TABLENAME + " d"
-					+ " where p." + LOG_IDENTIFIERCOLUMN + " = " + "d." + LOG_IDENTIFIERCOLUMN 
-					+ " and p." + Product.TITLECOLUMN + " = '" + title
-					+ "' order by " + DUEDATECOLUMN);
-			resultSet = statement.executeQuery("select * from " 
-												+ PRODUCTTABLENAME + " p, " + TABLENAME + " d"
-												+ " where p." + LOG_IDENTIFIERCOLUMN + " = " + "d." + LOG_IDENTIFIERCOLUMN 
-												+ " and p." + Product.TITLECOLUMN + " = '" + title
-												+ "' order by " + DUEDATECOLUMN);
-			
-			while (resultSet.next()) {
-				del = new Delivery();
-				
-				del.setLogIdentifier(resultSet.getString(LOG_IDENTIFIERCOLUMN));
-				del.setDelIdentifier(resultSet.getInt(DEL_IDENTIFIERCOLUMN));								
-				del.setVersion(resultSet.getString(VERSIONCOLUMN));				
-				del.setName(resultSet.getString(NAMECOLUMN));				
-				del.setStart(resultSet.getString(STARTCOLUMN));
-				del.setStop(resultSet.getString(STOPCOLUMN));
-				del.setSource(resultSet.getString(SOURCECOLUMN));
-				del.setTarget(resultSet.getString(TARGETCOLUMN));
-				del.setDueDate(resultSet.getString(DUEDATECOLUMN));
-
-				delObjs.add(del);
-			}
-			
-		} catch (Exception e) {
-			logger.error(e);
-		} finally {
-			close(statement);
-			return delObjs;
-		}
-	}
-	/**
-	 * Delivery Query - Query the delivery table for a list of deliveries for a given product.
-	 * @return a list of delivery objects with the logical identifier and version id .
-	 */
-	@SuppressWarnings("finally")
-	public List<Delivery> getProductDeliveries(String log_identifer, String version) {
-		List<Delivery> delObjs = new ArrayList<Delivery>();
-		Delivery  del = null;
-		try {
-			// Setup the connection with the DB
-			connect = getConnection();
-			statement = connect.createStatement();
-			
-			logger.debug("select * from " 
-					+ TABLENAME
-					+ " where " + LOG_IDENTIFIERCOLUMN + " = '" + log_identifer 
-					+ "' and " + VERSIONCOLUMN + " = '" + version
-					+ "' order by " + DUEDATECOLUMN);
-			resultSet = statement.executeQuery("select * from " 
-												+ TABLENAME
-												+ " where " + LOG_IDENTIFIERCOLUMN + " = '" + log_identifer 
-												+ "' and " + VERSIONCOLUMN + " = '" + version
-												+ "' order by " + DUEDATECOLUMN);
-			
-			while (resultSet.next()) {
-				del = new Delivery();
-				
-				del.setLogIdentifier(resultSet.getString(LOG_IDENTIFIERCOLUMN));
-				del.setDelIdentifier(resultSet.getInt(DEL_IDENTIFIERCOLUMN));								
-				del.setVersion(resultSet.getString(VERSIONCOLUMN));				
-				del.setName(resultSet.getString(NAMECOLUMN));				
-				del.setStart(resultSet.getString(STARTCOLUMN));
-				del.setStop(resultSet.getString(STOPCOLUMN));
-				del.setSource(resultSet.getString(SOURCECOLUMN));
-				del.setTarget(resultSet.getString(TARGETCOLUMN));
-				del.setDueDate(resultSet.getString(DUEDATECOLUMN));
-
-				delObjs.add(del);
-			}
-			
-		} catch (Exception e) {
-			logger.error(e);
-		} finally {
-			close(statement);
-			return delObjs;
-		}
-	}
-	
-	/**
-	 * @param stm
-	 */
-	private void close(Statement stm) {
-		try {
-			if (resultSet != null) {
-				resultSet.close();
-			}
-
-			if (stm != null) {
-				stm.close();
-			}
-
-			if (connect != null) {
-				connect.setAutoCommit(true);
-				connect.close();				
-			}
-		} catch (Exception e) {
-			logger.error(e);
-		}
-	}
-
-	/**
-	 * @param logicalIdentifier
-	 * @param versionId
-	 * @param name
-	 * @param startDateTime
-	 * @param stopDateTime
-	 * @param source
-	 * @param target
-	 * @param dueDate
-	 * @return Delivery Identifier
-	 */
-	public int insertDelivery(String logicalIdentifier, String versionId, String name, String startDateTime,
-			String stopDateTime, String source, String target, String dueDate) {
-		
-		int newDelIdentifer = -1;
-		
-		try {
-			// Setup the connection with the DB
-			connect = getConnection();
-			connect.setAutoCommit(false);
-			
-			prepareStm = connect.prepareStatement("INSERT INTO " + TABLENAME + " (" 
-												+ LOG_IDENTIFIERCOLUMN + ", "
-												+ VERSIONCOLUMN + ", "
-												+ NAMECOLUMN + ", "
-												+ STARTCOLUMN + ", "
-												+ STOPCOLUMN + ", "
-												+ SOURCECOLUMN + ", "
-												+ TARGETCOLUMN + ", "
-												+ DUEDATECOLUMN + ") VALUES (?, ?, ?, ?, ?, ?, ?, ?)", Statement. RETURN_GENERATED_KEYS);
-			prepareStm.setString(1, logicalIdentifier);
-			prepareStm.setString(2, versionId);
-			prepareStm.setString(3, name);
-			prepareStm.setString(4, startDateTime);
-			prepareStm.setString(5, stopDateTime);
-			prepareStm.setString(6, source);
-			prepareStm.setString(7, target);
-			prepareStm.setString(8, dueDate);
-			
-			prepareStm.executeUpdate();
-			
-			connect.commit();
-			resultSet = prepareStm.getGeneratedKeys();
-			while (resultSet.next()) {
-				newDelIdentifer = resultSet.getInt(1);
-				logger.info("New Delivery Identifier: " + newDelIdentifer);
-				
-			}
-			logger.info("The delivery " + name + " has been added.");
-			
-		} catch (Exception e) {
-			logger.error(e);
-			if (connect != null) {
-	            try {
-	            	logger.error("Transaction is being rolled back");
-	                connect.rollback();
-	            } catch(SQLException excep) {
-	            	logger.error(excep);
-	            }
-	        }
-	    } finally {
-	        close(prepareStm);
-	    }
-		return newDelIdentifer;
-	}
-
-	/**
-	 * @param name
-	 * @param startDateTime
-	 * @param stopDateTime
-	 * @param source
-	 * @param target
-	 * @param dueDate
-	 * @param delIdentifier
-	 */
-	public void updateDelivery(String name, String startDateTime, String stopDateTime, String source, String target,
-			String dueDate, String delIdentifier) {
-		try {
-			// Setup the connection with the DB
-			connect = getConnection();
-			connect.setAutoCommit(false);
-			
-			prepareStm = connect.prepareStatement("UPDATE " + TABLENAME + " SET " + NAMECOLUMN + " = ?, " 
-																			   + STARTCOLUMN + " = ?, "
-																			   + STOPCOLUMN + " = ?, "
-																			   + SOURCECOLUMN + " = ?, "
-																			   + TARGETCOLUMN + " = ?, "
-																			   + DUEDATECOLUMN + " = ? "
-													+ "WHERE " + DEL_IDENTIFIERCOLUMN + " = ?");
-			
-			prepareStm.setString(1, name);
-			prepareStm.setString(2, startDateTime);
-			prepareStm.setString(3, stopDateTime);
-			prepareStm.setString(4, source);
-			prepareStm.setString(5, target);
-			prepareStm.setString(6, dueDate);
-			prepareStm.setString(7, delIdentifier);
-			
-			prepareStm.executeUpdate();
-			
-			connect.commit();
-			logger.info("The delivery " + name + " has been updated.");
-			
-		} catch (Exception e) {
-			logger.error(e);
-			if (connect != null) {
-	            try {
-	            	logger.error("Transaction is being rolled back");
-	                connect.rollback();
-	            } catch(SQLException excep) {
-	            	logger.error(excep);
-	            }
-	        }
-	    } finally {
-	        close(prepareStm);
-	    }
-		
 	}
 }

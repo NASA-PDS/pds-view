@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -34,6 +35,7 @@ import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import gov.nasa.pds.tracking.tracking.db.DBConnector;
 import gov.nasa.pds.tracking.tracking.db.NssdcaStatus;
 import gov.nasa.pds.tracking.tracking.db.NssdcaStatusDao;;
 
@@ -243,7 +245,6 @@ public class XMLBasedNssdcaStatus {
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)	
 	public Response createNssdcaStatus(@FormParam("LogicalIdentifier") String logicalIdentifier,
 		@FormParam("Version") String ver,
-		@FormParam("Datte") String date,
 		@FormParam("NssdcaIdentifier") String nssdca,
 		@FormParam("Email") String email,
 		@FormParam("Comment") String comment) throws IOException{
@@ -253,8 +254,9 @@ public class XMLBasedNssdcaStatus {
 		
 		try {
 			nsD = new NssdcaStatusDao();
-
-			NssdcaStatus ns = new NssdcaStatus(logicalIdentifier, ver, date, nssdca, email, comment);
+			
+			String currentTime = DBConnector.ISO_BASIC.format(new Date());
+			NssdcaStatus ns = new NssdcaStatus(logicalIdentifier, ver, currentTime, nssdca, email, comment);
 			int result = nsD.insertNssdcaStatus(ns);
 			
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();

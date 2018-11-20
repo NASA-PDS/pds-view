@@ -75,23 +75,23 @@ public class XMLBasedProducts {
 			         
 			        Element subRootElement = doc.createElement("product");
 
-		            Element idElement = doc.createElement(Product.IDENTIFIERCOLUMN);
+		            Element idElement = doc.createElement(ProductDao.IDENTIFIERCOLUMN);
 		            idElement.appendChild(doc.createTextNode(p.getIdentifier()));
 		            subRootElement.appendChild(idElement);
 		            
-		            Element verElement = doc.createElement(Product.VERSIONCOLUMN);
+		            Element verElement = doc.createElement(ProductDao.VERSIONCOLUMN);
 		            verElement.appendChild(doc.createTextNode(p.getVersion()));
 		            subRootElement.appendChild(verElement);
 		            
-		            Element titleElement = doc.createElement(Product.TITLECOLUMN);
+		            Element titleElement = doc.createElement(ProductDao.TITLECOLUMN);
 		            titleElement.appendChild(doc.createTextNode(p.getTitle()));
 		            subRootElement.appendChild(titleElement);
 		            
-		            Element typeElement = doc.createElement(Product.TYPECOLUMN);
+		            Element typeElement = doc.createElement(ProductDao.TYPECOLUMN);
 		            typeElement.appendChild(doc.createTextNode(p.getType()));
 		            subRootElement.appendChild(typeElement);
 		            
-		            Element altElement = doc.createElement(Product.ALTERNATECOLUMN);
+		            Element altElement = doc.createElement(ProductDao.ALTERNATECOLUMN);
 		            altElement.appendChild(doc.createTextNode(p.getAlternate() != null ? p.getAlternate() : ""));
 		            subRootElement.appendChild(altElement);
 		            
@@ -161,23 +161,23 @@ public class XMLBasedProducts {
 			         
 			        Element subRootElement = doc.createElement("product");
 
-		            Element idElement = doc.createElement(Product.IDENTIFIERCOLUMN);
+		            Element idElement = doc.createElement(ProductDao.IDENTIFIERCOLUMN);
 		            idElement.appendChild(doc.createTextNode(p.getIdentifier()));
 		            subRootElement.appendChild(idElement);
 		            
-		            Element verElement = doc.createElement(Product.VERSIONCOLUMN);
+		            Element verElement = doc.createElement(ProductDao.VERSIONCOLUMN);
 		            verElement.appendChild(doc.createTextNode(p.getVersion()));
 		            subRootElement.appendChild(verElement);
 		            
-		            Element titleElement = doc.createElement(Product.TITLECOLUMN);
+		            Element titleElement = doc.createElement(ProductDao.TITLECOLUMN);
 		            titleElement.appendChild(doc.createTextNode(p.getTitle()));
 		            subRootElement.appendChild(titleElement);
 		            
-		            Element typeElement = doc.createElement(Product.TYPECOLUMN);
+		            Element typeElement = doc.createElement(ProductDao.TYPECOLUMN);
 		            typeElement.appendChild(doc.createTextNode(p.getType()));
 		            subRootElement.appendChild(typeElement);
 		            
-		            Element altElement = doc.createElement(Product.ALTERNATECOLUMN);
+		            Element altElement = doc.createElement(ProductDao.ALTERNATECOLUMN);
 		            altElement.appendChild(doc.createTextNode(p.getAlternate() != null ? p.getAlternate() : ""));
 		            subRootElement.appendChild(altElement);
 			         
@@ -278,23 +278,23 @@ public class XMLBasedProducts {
 			         
 			        Element subRootElement = doc.createElement("product");
 
-		            Element idElement = doc.createElement(Product.IDENTIFIERCOLUMN);
+		            Element idElement = doc.createElement(ProductDao.IDENTIFIERCOLUMN);
 		            idElement.appendChild(doc.createTextNode(p.getIdentifier()));
 		            subRootElement.appendChild(idElement);
 		            
-		            Element verElement = doc.createElement(Product.VERSIONCOLUMN);
+		            Element verElement = doc.createElement(ProductDao.VERSIONCOLUMN);
 		            verElement.appendChild(doc.createTextNode(p.getVersion()));
 		            subRootElement.appendChild(verElement);
 		            
-		            Element titleElement = doc.createElement(Product.TITLECOLUMN);
+		            Element titleElement = doc.createElement(ProductDao.TITLECOLUMN);
 		            titleElement.appendChild(doc.createTextNode(p.getTitle()));
 		            subRootElement.appendChild(titleElement);
 		            
-		            Element typeElement = doc.createElement(Product.TYPECOLUMN);
+		            Element typeElement = doc.createElement(ProductDao.TYPECOLUMN);
 		            typeElement.appendChild(doc.createTextNode(p.getType()));
 		            subRootElement.appendChild(typeElement);
 		            
-		            Element altElement = doc.createElement(Product.ALTERNATECOLUMN);
+		            Element altElement = doc.createElement(ProductDao.ALTERNATECOLUMN);
 		            altElement.appendChild(doc.createTextNode(p.getAlternate() != null ? p.getAlternate() : ""));
 		            subRootElement.appendChild(altElement);
 			         
@@ -392,23 +392,23 @@ public class XMLBasedProducts {
 			if(result == 1){
 				Element subRootElement = doc.createElement("Product");
 				
-	            Element idElement = doc.createElement(Product.IDENTIFIERCOLUMN);
+	            Element idElement = doc.createElement(ProductDao.IDENTIFIERCOLUMN);
 	            idElement.appendChild(doc.createTextNode(prod.getIdentifier()));
 	            subRootElement.appendChild(idElement);
 	            
-	            Element verElement = doc.createElement(Product.VERSIONCOLUMN);
+	            Element verElement = doc.createElement(ProductDao.VERSIONCOLUMN);
 	            verElement.appendChild(doc.createTextNode(prod.getVersion()));
 	            subRootElement.appendChild(verElement);
 	            
-	            Element titleElement = doc.createElement(Product.TITLECOLUMN);
+	            Element titleElement = doc.createElement(ProductDao.TITLECOLUMN);
 	            titleElement.appendChild(doc.createTextNode(prod.getTitle()));
 	            subRootElement.appendChild(titleElement);
 	            
-	            Element typeElement = doc.createElement(Product.TYPECOLUMN);
+	            Element typeElement = doc.createElement(ProductDao.TYPECOLUMN);
 	            typeElement.appendChild(doc.createTextNode(prod.getType()));
 	            subRootElement.appendChild(typeElement);
 	            
-	            Element altIdElement = doc.createElement(Product.ALTERNATECOLUMN);
+	            Element altIdElement = doc.createElement(ProductDao.ALTERNATECOLUMN);
 	            altIdElement.appendChild(doc.createTextNode(prod.getAlternate() != null ? prod.getAlternate() : ""));
 	            subRootElement.appendChild(altIdElement);
 	            
@@ -475,23 +475,23 @@ public class XMLBasedProducts {
 			if(prodUpdated != null && prodUpdated.getIdentifier() != null){
 				Element subRootElement = doc.createElement("Product");
 				
-	            Element idElement = doc.createElement(Product.IDENTIFIERCOLUMN);
+	            Element idElement = doc.createElement(ProductDao.IDENTIFIERCOLUMN);
 	            idElement.appendChild(doc.createTextNode(prodUpdated.getIdentifier()));
 	            subRootElement.appendChild(idElement);
 	            
-	            Element verElement = doc.createElement(Product.VERSIONCOLUMN);
+	            Element verElement = doc.createElement(ProductDao.VERSIONCOLUMN);
 	            verElement.appendChild(doc.createTextNode(prodUpdated.getVersion()));
 	            subRootElement.appendChild(verElement);
 	            
-	            Element titleElement = doc.createElement(Product.TITLECOLUMN);
+	            Element titleElement = doc.createElement(ProductDao.TITLECOLUMN);
 	            titleElement.appendChild(doc.createTextNode(prodUpdated.getTitle()));
 	            subRootElement.appendChild(titleElement);
 	            
-	            Element typeElement = doc.createElement(Product.TYPECOLUMN);
+	            Element typeElement = doc.createElement(ProductDao.TYPECOLUMN);
 	            typeElement.appendChild(doc.createTextNode(prodUpdated.getType()));
 	            subRootElement.appendChild(typeElement);
 	            
-	            Element altIdElement = doc.createElement(Product.ALTERNATECOLUMN);
+	            Element altIdElement = doc.createElement(ProductDao.ALTERNATECOLUMN);
 	            altIdElement.appendChild(doc.createTextNode(prodUpdated.getAlternate() != null ? prodUpdated.getAlternate() : ""));
 	            subRootElement.appendChild(altIdElement);
 	            

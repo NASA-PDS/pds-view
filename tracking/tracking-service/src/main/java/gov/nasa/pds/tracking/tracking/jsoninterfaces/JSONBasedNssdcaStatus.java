@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -24,6 +25,7 @@ import javax.ws.rs.core.Response;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import gov.nasa.pds.tracking.tracking.db.DBConnector;
 import gov.nasa.pds.tracking.tracking.db.NssdcaStatus;
 import gov.nasa.pds.tracking.tracking.db.NssdcaStatusDao;
 
@@ -144,7 +146,6 @@ public class JSONBasedNssdcaStatus {
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)	
 	public Response createNssdcaStatus(@FormParam("LogicalIdentifier") String logicalIdentifier,
 			@FormParam("Version") String ver,
-			@FormParam("Date") String date,
 			@FormParam("NssdcaIdentifier") String nssdca,
 			@FormParam("Email") String email,
 			@FormParam("Comment") String comment) throws IOException{
@@ -153,8 +154,10 @@ public class JSONBasedNssdcaStatus {
 		JSONObject message = new JSONObject();
 		try {
 			nsD = new NssdcaStatusDao();
-
-			NssdcaStatus ns = new NssdcaStatus(logicalIdentifier, ver, date, nssdca, email, comment);
+			
+			String currentTime = DBConnector.ISO_BASIC.format(new Date());
+			NssdcaStatus ns = new NssdcaStatus(logicalIdentifier, ver, currentTime, nssdca, email, comment);
+			
 			int result = nsD.insertNssdcaStatus(ns);
 			
 			if(result == 1){

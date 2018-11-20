@@ -208,7 +208,7 @@ public class JSONBasedSubmissionAndStatus {
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)	
 	public Response updateSubmissionStatus(@FormParam("Delivery_ID") int id,
 			@FormParam("SubmissionDate") String submissionDate,
-			@FormParam("StatusnDate") String statusDate,
+			@FormParam("StatusDate") String statusDate,
 			@FormParam("Status") String status,
 			@FormParam("Email") String email,
 			@FormParam("Comment") String comment) throws IOException{

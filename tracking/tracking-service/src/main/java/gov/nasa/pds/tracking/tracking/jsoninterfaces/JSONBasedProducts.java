@@ -62,11 +62,11 @@ public class JSONBasedProducts {
 		         logger.debug("Product " + count + ":\n " + p.getIdentifier() + " : " + p.getTitle());
 		         
 		         jsonProd = new JSONObject();
-		         jsonProd.put(Product.IDENTIFIERCOLUMN, p.getIdentifier());
-		         jsonProd.put(Product.VERSIONCOLUMN, p.getVersion());
-		         jsonProd.put(Product.TITLECOLUMN, p.getTitle());
-		         jsonProd.put(Product.TYPECOLUMN, p.getType());
-		         jsonProd.put(Product.ALTERNATECOLUMN, p.getAlternate() != null ? p.getAlternate() : "");
+		         jsonProd.put(ProductDao.IDENTIFIERCOLUMN, p.getIdentifier());
+		         jsonProd.put(ProductDao.VERSIONCOLUMN, p.getVersion());
+		         jsonProd.put(ProductDao.TITLECOLUMN, p.getTitle());
+		         jsonProd.put(ProductDao.TYPECOLUMN, p.getType());
+		         jsonProd.put(ProductDao.ALTERNATECOLUMN, p.getAlternate() != null ? p.getAlternate() : "");
 
 		         jsonProducts.append("products", jsonProd);
 		         count++;
@@ -104,11 +104,11 @@ public class JSONBasedProducts {
 		         logger.debug("Product " + count + ":\n " + p.getIdentifier() + " : " + p.getTitle());
 		         
 		         jsonProd = new JSONObject();
-		         jsonProd.put(Product.IDENTIFIERCOLUMN, p.getIdentifier());
-		         jsonProd.put(Product.VERSIONCOLUMN, p.getVersion());
-		         jsonProd.put(Product.TITLECOLUMN, p.getTitle());
-		         jsonProd.put(Product.TYPECOLUMN, p.getType());
-		         jsonProd.put(Product.ALTERNATECOLUMN, p.getAlternate() != null ? p.getAlternate() : "");
+		         jsonProd.put(ProductDao.IDENTIFIERCOLUMN, p.getIdentifier());
+		         jsonProd.put(ProductDao.VERSIONCOLUMN, p.getVersion());
+		         jsonProd.put(ProductDao.TITLECOLUMN, p.getTitle());
+		         jsonProd.put(ProductDao.TYPECOLUMN, p.getType());
+		         jsonProd.put(ProductDao.ALTERNATECOLUMN, p.getAlternate() != null ? p.getAlternate() : "");
 		         
 		         jsonRef = new JSONObject();		         
 		         jsonRef.put(Reference.REFERENCECOLUMN, p.getInstRef());
@@ -160,11 +160,11 @@ public class JSONBasedProducts {
 		         logger.debug("Product " + count + ":\n " + p.getIdentifier() + " : " + p.getTitle());
 		         
 		         jsonProd = new JSONObject();
-		         jsonProd.put(Product.IDENTIFIERCOLUMN, p.getIdentifier());
-		         jsonProd.put(Product.VERSIONCOLUMN, p.getVersion());
-		         jsonProd.put(Product.TITLECOLUMN, p.getTitle());
-		         jsonProd.put(Product.TYPECOLUMN, p.getType());
-		         jsonProd.put(Product.ALTERNATECOLUMN, p.getAlternate() != null ? p.getAlternate() : "");
+		         jsonProd.put(ProductDao.IDENTIFIERCOLUMN, p.getIdentifier());
+		         jsonProd.put(ProductDao.VERSIONCOLUMN, p.getVersion());
+		         jsonProd.put(ProductDao.TITLECOLUMN, p.getTitle());
+		         jsonProd.put(ProductDao.TYPECOLUMN, p.getType());
+		         jsonProd.put(ProductDao.ALTERNATECOLUMN, p.getAlternate() != null ? p.getAlternate() : "");
 
 		         jsonProducts.append("products", jsonProd);
 		         count++;
@@ -198,11 +198,11 @@ public class JSONBasedProducts {
 			int result = prodD.insertProduct(prod);
 			
 			if(result == 1){
-				message.put(Product.IDENTIFIERCOLUMN, prod.getIdentifier());
-				message.put(Product.VERSIONCOLUMN, prod.getVersion());
-				message.put(Product.TITLECOLUMN, prod.getTitle());
-				message.put(Product.TYPECOLUMN, prod.getType());
-				message.put(Product.ALTERNATECOLUMN, prod.getAlternate() != null ? prod.getAlternate() : "");
+				message.put(ProductDao.IDENTIFIERCOLUMN, prod.getIdentifier());
+				message.put(ProductDao.VERSIONCOLUMN, prod.getVersion());
+				message.put(ProductDao.TITLECOLUMN, prod.getTitle());
+				message.put(ProductDao.TYPECOLUMN, prod.getType());
+				message.put(ProductDao.ALTERNATECOLUMN, prod.getAlternate() != null ? prod.getAlternate() : "");
 			}
 		} catch (ClassNotFoundException | SQLException e) {			
 			e.printStackTrace();
@@ -233,11 +233,11 @@ public class JSONBasedProducts {
 			Product prod = prodD.updateProduct(prodNew);
 			
 			if(prod != null && prod.getIdentifier() != null){
-				message.put(Product.IDENTIFIERCOLUMN, prod.getIdentifier());
-				message.put(Product.VERSIONCOLUMN, prod.getVersion());
-				message.put(Product.TITLECOLUMN, prod.getTitle());
-				message.put(Product.TYPECOLUMN, prod.getType());
-				message.put(Product.ALTERNATECOLUMN, prod.getAlternate() != null ? prod.getAlternate() : "");
+				message.put(ProductDao.IDENTIFIERCOLUMN, prod.getIdentifier());
+				message.put(ProductDao.VERSIONCOLUMN, prod.getVersion());
+				message.put(ProductDao.TITLECOLUMN, prod.getTitle());
+				message.put(ProductDao.TYPECOLUMN, prod.getType());
+				message.put(ProductDao.ALTERNATECOLUMN, prod.getAlternate() != null ? prod.getAlternate() : "");
 			}else{
 				message.put("Message", FAILURE_RESULT);
 			}

@@ -237,7 +237,7 @@ public class Status extends DBConnector {
 					+ title + " order by " + VERSIONCOLUMN);*/
 			resultSet = statement.executeQuery("select * from " + PRODUCTTABLENAME + " p, " + tableName + " a"
 					+ " where p." + LOGIDENTIFIERCOLUMN + " = " + "a." + LOGIDENTIFIERCOLUMN + " and p."
-					+ Product.TITLECOLUMN + " = " + title + " order by " + VERSIONCOLUMN);
+					+ ProductDao.TITLECOLUMN + " = " + title + " order by " + VERSIONCOLUMN);
 
 			while (resultSet.next()) {
 				status = new Status();

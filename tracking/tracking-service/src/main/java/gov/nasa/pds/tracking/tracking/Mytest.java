@@ -12,6 +12,7 @@ import gov.nasa.pds.tracking.tracking.db.ArchiveStatusDao;
 import gov.nasa.pds.tracking.tracking.db.CertificationStatus;
 import gov.nasa.pds.tracking.tracking.db.CertificationStatusDao;
 import gov.nasa.pds.tracking.tracking.db.Delivery;
+import gov.nasa.pds.tracking.tracking.db.DeliveryDao;
 //import gov.nasa.pds.tracking.tracking.db.Doi;
 //import gov.nasa.pds.tracking.tracking.db.NssdcaStatus;
 import gov.nasa.pds.tracking.tracking.db.Product;
@@ -19,9 +20,11 @@ import gov.nasa.pds.tracking.tracking.db.ProductDao;
 import gov.nasa.pds.tracking.tracking.db.Reference;
 //import gov.nasa.pds.tracking.tracking.db.Releases;
 import gov.nasa.pds.tracking.tracking.db.Role;
+import gov.nasa.pds.tracking.tracking.db.RoleDao;
 import gov.nasa.pds.tracking.tracking.db.Submission;
 import gov.nasa.pds.tracking.tracking.db.SubmissionStatus;
-import gov.nasa.pds.tracking.tracking.db.User;;
+import gov.nasa.pds.tracking.tracking.db.User;
+import gov.nasa.pds.tracking.tracking.db.UserDao;;
 
 /**
  * @author danyu dan.yu@jpl.nasa.gov
@@ -42,10 +45,10 @@ public class Mytest {
 
 	public void getUsers() {
 		// Get all users in the user table
-		User user;
+		UserDao userD;
 		try {
-			user = new User();
-			List<User> users = user.getUsers();
+			userD = new UserDao();
+			List<User> users = userD.getUsers();
 			logger.info(" ============== number of users: " + users.size() + " =====================");
 			Iterator<User> itr = users.iterator();
 			int count = 1;
@@ -63,10 +66,10 @@ public class Mytest {
 	}
 	public void getUserRoles(String email) {
 		// Get user roles for the user (email)
-		User user;
+		UserDao userD;
 		try {
-			user = new User();
-			List<User> users = user.getUserRole(email);
+			userD = new UserDao();
+			List<User> users = userD.getUserRole(email);
 			logger.info(" ============== number roles of the user: " + users.size() + " =====================");
 			Iterator<User> itr = users.iterator();
 			int count = 1;
@@ -110,11 +113,11 @@ public class Mytest {
 
 	private void getProductDeliveries(String log_identifer, String version) {
 		
-		Delivery del;
+		DeliveryDao delD;
 		try {
-			del = new Delivery();
+			delD = new DeliveryDao();
 			
-			List<Delivery> dels = del.getProductDeliveries(log_identifer, version);
+			List<Delivery> dels = delD.getProductDeliveries(log_identifer, version);
 			
 			logger.info(" ============== number of deliveries for " + log_identifer + ", " + version + ": " + dels.size() + " =====================");
 			
@@ -189,11 +192,11 @@ public class Mytest {
 	
 	private void getProductRoleUsers(String log_identifer,String refTableName) {
 		
-		User user;
+		UserDao userD;
 		try {
-			user = new User();
+			userD = new UserDao();
 			
-			List<User> users = user.getProductRoleUsers(log_identifer,refTableName);
+			List<User> users = userD.getProductRoleUsers(log_identifer,refTableName);
 			
 			logger.info(" ============== number of users for " + log_identifer + " and " + refTableName + ": " + users.size() + " =====================");
 			
@@ -354,7 +357,8 @@ public class Mytest {
 			Role Insert – Insert a role record into the role table for a given user.
 			Input: electronic_mail_address (required), reference (required)
 			***********************************************************/
-			test.insertRole("danyu@jpl.nasa.gov", "DanY_Atmospheres");
+			Role role = new Role("danyu@jpl.nasa.gov", "DanY_Atmospheres");
+			test.insertRole(role);
 			
 			/**********************************************************
 			Submission Insert – Insert a submission record into the submission and submission_status tables for a given delivery.
@@ -580,10 +584,12 @@ public class Mytest {
 
 	@SuppressWarnings("unused")
 	private void updateUser(String email, String name) {
+		UserDao userD;
 		User user;
 		try {
-			user = new User();
-			user.updateUser(email, name);
+			userD = new UserDao();
+			user = new User(email, name);
+			userD.updateUser(user);
 		} catch (ClassNotFoundException | SQLException e) {
 			
 			e.printStackTrace();
@@ -593,10 +599,12 @@ public class Mytest {
 
 	@SuppressWarnings("unused")
 	private void insertUser(String email, String name) {
+		UserDao userD;
 		User user;
 		try {
-			user = new User();
-			user.insertUser(email, name);
+			userD = new UserDao();
+			user = new User(email, name);
+			userD.insertUser(user);
 		} catch (ClassNotFoundException | SQLException e) {
 			
 			e.printStackTrace();
@@ -643,11 +651,11 @@ public class Mytest {
 		
 	}
 
-	private void insertRole(String email, String reference) {
-		Role role;
+	private void insertRole(Role role) {
+		RoleDao roleD;
 		try {
-			role = new Role();
-			role.insertRole(email, reference);
+			roleD = new RoleDao();
+			roleD.insertRole(role);
 		} catch (ClassNotFoundException | SQLException e) {
 			
 			e.printStackTrace();
@@ -707,12 +715,13 @@ public class Mytest {
 
 	@SuppressWarnings("unused")
 	private void updateDelivery(String name, String startDateTime, String stopDateTime,
-			String source, String target, String dueDate, String DelIdentifier) {
+			String source, String target, String dueDate, int delIdentifier) {
+		DeliveryDao delD;
 		Delivery del;
 		try {
-			del = new Delivery();
-			del.updateDelivery(name, startDateTime, stopDateTime,
-					source, target, dueDate, DelIdentifier);
+			delD = new DeliveryDao();
+			del = new Delivery(null, delIdentifier, null, name, startDateTime, stopDateTime, source, target, dueDate);
+			delD.updateDelivery(del);
 		} catch (ClassNotFoundException | SQLException e) {
 			
 			e.printStackTrace();
@@ -722,17 +731,19 @@ public class Mytest {
 	@SuppressWarnings("unused")
 	private int InsertDelivery(String logicalIdentifier, String versionId, String name, String startDateTime, String stopDateTime,
 			String source, String target, String dueDate) {
+		DeliveryDao delD;
 		Delivery del;
-		int Del_identifier = -1;
+		int del_identifier = -1;
 		try {
-			del = new Delivery();
-			Del_identifier = del.insertDelivery(logicalIdentifier, versionId, name, startDateTime, stopDateTime,
+			delD = new DeliveryDao();
+			del = new Delivery(logicalIdentifier, -1, versionId, name, startDateTime, stopDateTime,
 					source, target, dueDate);
+			del_identifier = delD.insertDelivery(del);
 		} catch (ClassNotFoundException | SQLException e) {
 			
 			e.printStackTrace();
 		}
-		return Del_identifier;
+		return del_identifier;
 	}
 
 }

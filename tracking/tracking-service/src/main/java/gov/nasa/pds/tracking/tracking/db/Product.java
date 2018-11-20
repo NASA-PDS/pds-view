@@ -24,20 +24,7 @@ public class Product  implements Serializable  {
 	private static final long serialVersionUID = 1L;
 
 	public static Logger logger = Logger.getLogger(Product.class);
-	
-	public static final String IDENTIFIERCOLUMN  = "logical_identifier";	
-	public static final String VERSIONCOLUMN  = "version_id";	
-	public static final String TITLECOLUMN  = "title";
-	public static final String TYPECOLUMN  = "type";
-	public static final String ALTERNATECOLUMN = "alternate_id";
-	
-	public static final String INVESTREFCOLUMN = "investigation_reference";	
-	public static final String INVESTTITLECOLUMN = "investigation_title";
-	public static final String INSTREFCOLUMN = "instrument_reference";
-	public static final String INSTTITLECOLUMN = "instrument_title";
-	public static final String NODEREFCOLUMN = "node_reference";
-	public static final String NODETITLECOLUMN = "node_title";
-	
+		
 	private String identifier = null;
 	private String version = null;
 	private String title = null;
