@@ -3,13 +3,19 @@
 import os
 import csv
 
-from pds4_tools import *
-from pds4_tools.reader.table_objects import Meta_TableStructure
+from pds4_tools.reader import *
+# from pds4_tools.reader.table_objects import Meta_TableStructure
 # from pds4_tools.viewer.widgets.tree import TreeView
 import numpy as np
 from PyQt4 import QtCore, QtGui
 
 Qt = QtCore.Qt
+
+class Pds4UnableToRetrieveData(IOError):
+    """Raised when PDS4 Reader cannot process the file passed to it."""
+    pass
+
+
 
 class SummaryItemsModel(QtCore.QAbstractItemModel):
     def __init__(self, fname):
@@ -23,8 +29,20 @@ class SummaryItemsModel(QtCore.QAbstractItemModel):
             self.fileName = fname
             try:
                 self.last_open_dir = os.path.dirname(self.fileName)
-                self.structure_list = pds4_read(self.fileName, lazy_load=True, decode_strings=False)
-
+                try:
+                    self.structure_list = pds4_read(self.fileName, lazy_load=True, decode_strings=False)
+                except:
+                    message_box = QtGui.QMessageBox()
+                    message_box.setText("Unable to successfully read file. Exit program?")
+                    message_box.setWindowTitle("Fatal Error.")
+                    message_box.setStandardButtons(QtGui.QMessageBox.Yes | QtGui.QMessageBox.Ignore)
+                    message_box.setWindowModality(Qt.ApplicationModal)
+                    self.set_style_sheet(message_box)
+                    retVal = message_box.exec_()
+                    if retVal == QtGui.QMessageBox.Yes:
+                        exit()
+                    elif retVal == QtGui.QMessageBox.Ignore:
+                        pass
             except Exception as e:
                 print("Trouble opening file: %s %s" % (self.fileName, e))
 
@@ -59,6 +77,17 @@ class SummaryItemsModel(QtCore.QAbstractItemModel):
         self.summaryItems.append(type)
         self.summaryItems.append(dimension)
         return self.title, self.summaryItems, num_of_structures, dimension
+
+    def set_style_sheet(self, messageBox):
+        messageBox.setStyleSheet("""
+            .QMessageBox{ 
+                Background-color: QLinearGradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #727272, stop: 0.1 #7f7f7f, stop: 0.5 #8b8b8b, stop: 0.9 #989898, stop: 1 #a5a5a5);
+                font: italic 14pt;
+                border: 1px solid #31c6f7;
+            }
+        """)
+
+
 
     def get_display_settings_for_lid(self, local_identifier, label):
         """ Search a PDS4 label for Display_Settings of a data structure with local_identifier.
@@ -201,15 +230,15 @@ class SummaryItemsModel(QtCore.QAbstractItemModel):
 
         # TODO check zero index used here: it may not work in all the different cases
         table_name = str(self.summaryItems[0][index.row()])
-        # print('MODEL DEBUG:')
-        # print('length: {}'.format(len(table_name)))
-        # print('table name: {}'.format(table_name))
-        # print("DEBUG from MODEL.PY: table_name: {}".format(table_name))
-        # print("DEBUG: structures")
-        # print(self.structure_list.structures)
-        # print(self.structure_list.__len__())
-        # print(self.structure_list.type)
-        # print(self.structure_list.info)
+        #print('MODEL DEBUG: @@@@@@@@@@@@@@@@@@@@@@@@@')
+        #print('length: {}'.format(len(table_name)))
+        #print('table name: {}'.format(table_name))
+        #print("DEBUG from MODEL.PY: table_name: {}".format(table_name))
+        #print("DEBUG: structures")
+        #print(self.structure_list.structures)
+        #print(self.structure_list.__len__())
+        #print(self.structure_list.type)
+        #print(self.structure_list.info)
 
         # commented out for debug reasons
         table = self.structure_list[table_name]
@@ -222,11 +251,18 @@ class SummaryItemsModel(QtCore.QAbstractItemModel):
 
         title = table.id
 
+        # print('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^')
+        # print(table.data)
+        # print(table.id)
 
         try:
             dimension = table.meta_data.dimensions()
+            #print('!!!!!!!!DIMENSION!!!!!!!!!!!')
+            #print(dimension)
+            # print('################')
+            # <local_identifier>$object_placeholder</local_identifier>dimension)
         except AttributeError as e:
-            print "No dimenstion is this table."
+            print "No dimension is this table."
             dimension = (0, 0)
 
         # print('FROM MODEL: {}'.format(type(table)))
@@ -256,16 +292,20 @@ class TwoDImageModel(QtCore.QAbstractTableModel):
     def __init__(self, data, parent=None):
         QtCore.QAbstractTableModel.__init__(self, parent)
         self._data = np.array(data)
+
         try:
             self.r, self.c = np.shape(self._data)
         except:
             print('Exception: Not a 2D Image Model.')
+
 
     def rowCount(self, parent=None):
         return self.r
 
     def columnCount(self, parent=None):
         return self.c
+
+
 
     # The role tells the model which type of data is being referred to.
     # Qt.DisplayRole indicates the data is to be rendered in the form of text (QString)
@@ -311,8 +351,10 @@ class TableModel(QtCore.QAbstractTableModel):
         QtCore.QAbstractTableModel.__init__(self, parent)
 
         self._data = np.array(data)
-        # print("FROM TABLE MODEL, rows: {}".format(len(self._data[1])))
-        # print("FROM TABLE MODEL, columns: {}".format(len(self._data)))
+
+       # print('In Model: len data: {}'.format(len(self._data)))
+        #print("FROM TABLE MODEL, rows: {}".format(len(self._data[1])))
+        #print("FROM TABLE MODEL, columns: {}".format(len(self._data)))
         self.table_type = type
         self.groupFinder = []
         self.group_list = []  # the indexes that refer to groups, and a group id
@@ -327,8 +369,12 @@ class TableModel(QtCore.QAbstractTableModel):
 
         col_len, self.groupFinder, self.headerDict = self.findGroups()
 
-        # print(col_len)
-        # print("((((((())))))))))((((((((((()))))))")
+        # Account for tables with only one column
+        if col_len == 0:
+            col_len += 1
+
+       # print('num of columns (in MODEL): {}'.format(col_len))
+       #  print("((((((())))))))))((((((((((()))))))")
 
         temp = np.shape(self._data)
 
@@ -356,7 +402,12 @@ class TableModel(QtCore.QAbstractTableModel):
 
         if index.isValid():
             if role == QtCore.Qt.DisplayRole:
-                data = self.flatten(self._data.item(index.row()))
+                # Test for single row where the value is returned rather than a tuple containing the row
+                test_for_single = self._data.item(index.row())
+                if not isinstance(test_for_single, tuple):
+                    data = (test_for_single,)  # pass it to be written to the table as a tuple
+                else:
+                    data = self.flatten(self._data.item(index.row()))
                 write_data = data[index.column()]
                 return write_data
             elif role == QtCore.Qt.TextAlignmentRole:
@@ -469,14 +520,16 @@ class TableModel(QtCore.QAbstractTableModel):
         col_num = 0
         index = 0
         group_num = 0
+        header_dictionary = {}
         self.keys = table.dtype.names
         # print("Keys")
         # print(self.keys)
         # print("total")
         # print(table.dtype)
         if self.keys is None:
-            return
+            return 0, [], {}
         for key in self.keys:
+
             # print key
             # print(table[key].shape)
             shape = (table[key].shape)
@@ -533,6 +586,8 @@ class ImageModel():
 
 
 def assignTableModel(data, table_type):
+    # print('*************')
+    # print(table_type)
     if table_type == 'Array_2D_Image':
         # print("Length of data: {}".format(len(data)))
         return TwoDImageModel(data)
@@ -546,6 +601,11 @@ def assignTableModel(data, table_type):
     elif table_type == 'Table_Character':
         return TableModel(data, table_type)
     elif table_type == 'Table_Binary':
+        return TableModel(data, table_type)
+    elif table_type == 'Array':
+        return TableModel(data, table_type)
+    elif table_type == 'Array_2D_Map':
+        # print("Length of data: {}".format(len(data)))
         return TableModel(data, table_type)
     else:
         # possible_groups = True

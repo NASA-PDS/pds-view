@@ -1,6 +1,5 @@
 # Delegate.py - modified controller model
 # import os
-from pds4_tools import *
 from PyQt4 import QtCore, QtGui
 Qt = QtCore.Qt
 
