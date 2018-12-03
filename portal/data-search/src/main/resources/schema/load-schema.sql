@@ -405,6 +405,8 @@ insert into investigation_tools (investigation, title, description, url, rank) v
 
 insert into investigation_tools (investigation, title, description, url, rank) values ('Phoenix', 'Phoenix Archive at the Atmospheres Node', 'The Phoenix Archive page provides details on the investigation, instruments and targets associated with the archive as well as additional resources for discovering Phoenix data.', 'https://atmos.nmsu.edu/data_and_services/atmospheres_data/phoenix/phoenix.html', 101);
 
+insert into investigation_tools (investigation, title, description, url, rank) values ('Phoenix', 'Phoenix Archive at the Geosciences Node', 'The Phoenix Archive page provides details on the investigation, instruments and targets associated with the archive as well as additional resources for discovering Phoenix data.', 'http://pds-geosciences.wustl.edu/missions/phoenix/index.htm', 102);
+
 /* Pioneer */
 
 insert into investigation_tools (investigation, title, description, url, rank) values ('Pioneer', 'Pioneer 10 Archive at the Planetary Plasma Intractions Node', 'The Pioneer 10 Archive page provides details on the investigation, instruments and targets associated with the archive as well as additional resources for discovering Pioneer 10 data.', 'https://pds-ppi.igpp.ucla.edu/mission/Pioneer_10', 101);
