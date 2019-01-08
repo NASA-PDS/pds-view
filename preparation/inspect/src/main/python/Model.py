@@ -2,6 +2,7 @@
 # are accessed
 import os
 import csv
+import sys
 
 from pds4_tools.reader import *
 # from pds4_tools.reader.table_objects import Meta_TableStructure
@@ -40,7 +41,7 @@ class SummaryItemsModel(QtCore.QAbstractItemModel):
                     self.set_style_sheet(message_box)
                     retVal = message_box.exec_()
                     if retVal == QtGui.QMessageBox.Yes:
-                        exit()
+                        sys.exit()
                     elif retVal == QtGui.QMessageBox.Ignore:
                         pass
             except Exception as e:

@@ -968,9 +968,6 @@ class MainWindow(QMainWindow):
                                             type(path_repr).__name__))
 
     def save_image_as(self):
-        # print('Not finished yet')
-        # return
-
         # if self.image == None:
         #     return True
 
@@ -1052,7 +1049,8 @@ class MainWindow(QMainWindow):
         event.accept()
 
 
-    def file_message_box(self, msg):
+    def file_message_box(self, message, fname):
+        msg = message + '\n\n' + fname
         message_box = QMessageBox()
         message_box.setIcon(QMessageBox.Critical)
         message_box.setTextFormat(3)
@@ -1073,6 +1071,7 @@ class MainWindow(QMainWindow):
         :param full_path: full path to the file
         :return: full path the the file (original .xml or translated .xml)
         '''
+        current_pds3_extensions = ['LBL', 'IMG', 'TAB', 'DAT', 'CSV']
         if self.platform == 'Windows':
             fname = full_path.split('\\')[-1]
         else:
@@ -1081,13 +1080,20 @@ class MainWindow(QMainWindow):
             self.file_message_box("Missing file extension in: {}".format(fname))
             return 'problem with file'
         # get the extension
-        extension = fname.split('.')[1].lower()
-        if extension == 'xml':
+        extension = fname.split('.')[1].upper()
+
+        if extension == 'XML':
+            # print('Full Path: '.format(full_path))
             return full_path
-        else:
+        elif extension in current_pds3_extensions:
             translate = Translate.Translate(full_path)
             path_to_xml = translate.convert_to_pds4()
+            # print("Path to xml")
+            # print(path_to_xml)
             return path_to_xml
+        else:
+            self.file_message_box("Did not find a PDS3 extension that can  be translated in:", fname)
+            return 'problem with file'
 
     def file_open(self):
         '''
@@ -1155,7 +1161,6 @@ class MainWindow(QMainWindow):
         for url in event.mimeData().urls():
             path = url.toLocalFile().toLocal8Bit().data()
             if os.path.isfile(path):
-                # print(path)
                 # Check file for possible translation
                 file_with_path = self.pds_file_check(path)
                 if file_with_path == 'problem with file':
@@ -1163,6 +1168,7 @@ class MainWindow(QMainWindow):
                 else:
                     self.set_defaults()
                     self.mainToolBar.show()
+                    # print('file with path: {}'.format(file_with_path))
                     self.open_summary_gui(file_with_path)
                     self.summaryTab.setDisabled(False)
                     self.imageMenu.setDisabled(True)  # Disable image functionality until an image is rendered
@@ -1332,7 +1338,7 @@ class MainWindow(QMainWindow):
         self.hold_slider_checkBox.setDisabled(True)
         self.nextCubeDataFileAction.setDisabled(True)
         self.lastCubeDataFileAction.setDisabled(True)
-        self.tableLabel.setText(QString('Bands '))
+        self.tableLabel.setText(QString('Band '))
         self.tableLabel.setDisabled(True)
         self.tableNumDisplay.setDisabled(True)
         self.tableNumDisplay.setText(str(''))
@@ -1398,6 +1404,9 @@ class MainWindow(QMainWindow):
             self.rgb_combo.setDisabled(False)
 
         elif viewType == 'Array_3D_Spectrum':
+
+            self.set_tab_state(viewType)
+
             self.rgb_data_flag = False
             self.draw_table(index)
             self.configure_tabs(True, True, True, self.three_d_table_index)
@@ -1496,17 +1505,11 @@ class MainWindow(QMainWindow):
         label = self.model.get_label(index.row(), labelType)
 
         label_dict = label.to_dict()
-        #  print('************ LABEL DICT ****************')
-        #  print(label_dict)
-        #  print('Label type: {}'.format(labelType))
+
         self.labelWidget = LabelFrame(label_dict, self.dimension, index, viewType, labelType)
         self.clear_layout(self.labelLayout)
         self.labelLayout.addWidget(self.labelWidget)
         self.labelTab.setLayout(self.labelLayout)
-
-        #  print('************ LABEL parent child DICT ****************')
-        #  temp = self.labelWidget.get_parent_child_dict()
-        # print(temp)
 
         self.labelDockWidget = QDockWidget(self.title, self)
         self.labelDockWidget.setObjectName("labelDockWidget")
@@ -1520,7 +1523,8 @@ class MainWindow(QMainWindow):
         self.addDockWidget(Qt.RightDockWidgetArea, self.labelDockWidget)
         self.labelLayout.addWidget(self.labelDockWidget)
 
-    def draw_rgb_image_array(self, table):
+    def draw_rgb_image_array(self, dimension, table):
+        self.individual_table_dimension = dimension
         color = ('Red', 'Green', 'Blue')
         bg = ('(128, 0, 0)', '(0, 128, 0)', '(0, 0, 128)')
         buttons = {}
@@ -1552,7 +1556,11 @@ class MainWindow(QMainWindow):
         '''
 
         # print("DIMENSION: {}".format(dimension))
-        self.num_tables = dimension
+        # Individual table dimension is needed when we draw the table in draw_indexed_table()
+        # This is a convenient place to pick it up.  Need when there are multiple PDS types in one file
+        self.num_tables = dimension[0]
+        self.individual_table_dimension = dimension
+
         # Add the 3D table tab then move the other tabs to accommodate the 2nd position
         # self.tabFrame.setMovable(True)
         # self.tabFrame.tabBar().moveTab(1,2)  # move
@@ -1563,12 +1571,12 @@ class MainWindow(QMainWindow):
         self.clear_layout(self.threeDTableLayout)
         buttons = {}
 
-        self.num_of_bands = dimension
+        self.num_of_bands = dimension[0]
 
         self.clear_layout(self.threeDTableLayout)
 
-        len_last_row = dimension % 10
-        rows = dimension/10
+        len_last_row = self.num_of_bands % 10
+        rows = self.num_of_bands/10
         count = 1
 
         # Layout for buttons for a variable number of bands
@@ -1625,9 +1633,9 @@ class MainWindow(QMainWindow):
         # print('INDEXED (draw_indexed_table)')
         # TODO This is assuming that all the tables are the same size and the same type
         self.three_d_table = True
-        row_col = self.dimension[1].split('X')
-        num_rows = int(row_col[0])
-        num_columns = int(row_col[1])
+
+        num_rows = int(self.individual_table_dimension[1])
+        num_columns = int(self.individual_table_dimension[2])
         self.table_num = index
 
         # TODO Need to study the GroupTest.py to make sure I access all I need properly
@@ -1650,6 +1658,7 @@ class MainWindow(QMainWindow):
         self.clear_layout(self.tableLayout)
 
         self.render_table(title, self.table_num)
+
         self.draw_indexed_image(table, index)
         # print('return from draw_indexed_image')
         self.current_view = self.three_d_table_index
@@ -1662,16 +1671,10 @@ class MainWindow(QMainWindow):
         self.hold_slider_checkBox.setChecked(False)
 
     def draw_indexed_image(self, table, index):
-        # print('INDEXED Image')
-        table_type = self.summary[1][1]  # this is the type of each array
-        # print('table_type: {}'.format(table_type))
         # TODO move this to _init_ after you're sure you've got them all
         image_types = ('Array_2D_Image', 'Array_3D_Image', 'Array_3D_Spectrum')
-        if table_type in image_types:
+        if self.table_type in image_types:
             self.clear_layout(self.imageLayout)
-            # print("In Draw Indexed Image")
-            # print(self.full_table.shape)
-            # print('Call Draw 2d Image.')
             self.draw_2d_image(self.full_table, index=index, rgb=self.rgb_data_flag, redraw=False)
             self.current_view = self.image_index + 1
 
@@ -1718,12 +1721,12 @@ class MainWindow(QMainWindow):
             self.tableTab.setDisabled(False)
             # If we have an 'Array_3D_Specturm" we have to make a new tab with a button for each element
             if self.table_type == 'Array_3D_Spectrum':
-                self.draw_table_array(dimension[0], self.table)
+                self.draw_table_array(dimension, self.table)
                 # self.current_view = self.three_d_table_index
                 return
 
             elif self.table_type == 'Array_3D_Image':
-                self.draw_rgb_image_array(self.table)
+                self.draw_rgb_image_array(dimension, self.table)
 # TODO Delete the else below
             else:
                 if self.threeDTabInPlace and not self.cubeData:
@@ -1741,8 +1744,6 @@ class MainWindow(QMainWindow):
             else:
                 num_rows    = dimension[0]
                 num_columns = dimension[1]
-                # print('number of rows: {}'.format(num_rows))
-                # print('number of columns: {}'.format(num_columns))
 
             # print(num_rows, num_columns)
 
@@ -2191,15 +2192,13 @@ class MainWindow(QMainWindow):
             # remove the item from layout
             layout.removeItem(item)
 
-    # This opents the summary table Gui to allow further selection
+    # This opens the summary table Gui to allow further selection
     def open_summary_gui(self, fname):
         # print("fname: {}".format(fname))
         self.setCentralWidget(self.tabFrame)
         # get the summary data
         self.model = Model.SummaryItemsModel(fname)
         self.title, self.summary, self.num_structs, self.dimension = self.model.get_summary()
-        #print('@@@@@@@@@@@ Dimension @@@@@@@@@@@@@')
-        #print(self.dimension)
 
         # Get the length of the summary data to use as a minimum value in the window
         length = 0
@@ -2243,12 +2242,8 @@ class MainWindow(QMainWindow):
             self.file_type = self.summary[1][1]
         self.set_tab_state(self.file_type)
 
-    def set_tab_state(self, file_type):
+    def set_tab_state(self, file_type, update=False):
         self.cubeData = False
-        # print('set up Tabs for specific file types: in this case: {}'.format(file_type))
-        # print('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
-        # first remove all the tabs before re-installing them
-        # print("how many tabs: {}".format(self.tabFrame.count()))
         self.tabFrame.setCurrentIndex(3)
         for i in range(self.tabFrame.count()):
             self.tabFrame.removeTab(i)
@@ -2267,7 +2262,6 @@ class MainWindow(QMainWindow):
         self.tabFrame.setTabEnabled(self.summary_index, True)
 
         if file_type == 'Array_3D_Spectrum':
-            # print("SET TAB STATE")
             self.tabFrame.addTab(self.threeDTableTab, "3D Table")
             # Add the 3D table tab then move the other tabs to accommodate the 2nd position
             self.tabFrame.setMovable(True)
@@ -2275,7 +2269,10 @@ class MainWindow(QMainWindow):
             self.tabFrame.setMovable(False)
             self.threeDTabInPlace = True
             self.cubeData = True
-            self.configure_tabs(False, False, False, self.summary_index+1)
+            if update:
+                self.configure_tabs(True, True, True, self.summary_index + 1)
+            else:
+                self.configure_tabs(False, False, False, self.summary_index+1)
 
         elif file_type == 'Array_3D_Image':
             #print("SET RGB TAB STATE")
@@ -2578,9 +2575,6 @@ class LabelFrame(QWidget, QObject):
 
     # Use method to return the list of categories in the label that have a value of 'None'
     def get_empty_label_list(self):
-
-       # print('222222222222222222222222222222222222')
-       # print(self.empty_labels)
         return self.empty_labels
 
     @staticmethod
@@ -2980,6 +2974,17 @@ class ItemTable(QTableView):
         selection = QItemSelection(top_left, bottom_right)
         self.selectModel(selection, QItemSelectionModel.Select)
 
+class color:
+   PURPLE = '\033[95m'
+   CYAN = '\033[96m'
+   DARKCYAN = '\033[36m'
+   BLUE = '\033[94m'
+   GREEN = '\033[92m'
+   YELLOW = '\033[93m'
+   RED = '\033[91m'
+   BOLD = '\033[1m'
+   UNDERLINE = '\033[4m'
+   END = '\033[0m'
 
 class TextWindow(QTextBrowser):
     textFont = QFont()
