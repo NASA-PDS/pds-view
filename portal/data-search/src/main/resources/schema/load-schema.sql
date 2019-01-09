@@ -654,7 +654,7 @@ insert into target_tools (target, title, description, url, rank) values ('Uranus
 
 insert into target_tools (target, title, description, url, rank) values ('Uranus System', 'Planetary Satellite Data at the Small Bodies Node', 'Supports data sets containing planetary satellite data for browse and download.', 'https://sbn.psi.edu/pds/archive/sat.html', 102);
 
-insert into target_tools (target, title, description, url, rank) values ('Uranus System', 'SPICE Data Holdings at the Navigation and Ancillary Information Facility Node', 'Supports Cassini, Galileo, Juno, New Horizons, Pioneer 10/11 and Voyager 1/2 SPICE product browse and download, and subsequent science data analysis.', 'https://naif.jpl.nasa.gov/naif/data_archived.html', 103);
+insert into target_tools (target, title, description, url, rank) values ('Uranus System', 'SPICE Data Holdings at the Navigation and Ancillary Information Facility Node', 'Supports Voyager 2 SPICE product browse and download, and subsequent science data analysis.', 'https://naif.jpl.nasa.gov/naif/data_outer.html', 103);
 
 /* Neptune System */
 
@@ -669,7 +669,7 @@ insert into target_tools (target, title, description, url, rank) values ('Neptun
 
 insert into target_tools (target, title, description, url, rank) values ('Neptune System', 'Planetary Satellite Data at the Small Bodies Node', 'Supports data sets containing planetary satellite data for browse and download.', 'https://sbn.psi.edu/pds/archive/sat.html', 102);
 
-insert into target_tools (target, title, description, url, rank) values ('Neptune System', 'SPICE Data Holdings at the Navigation and Ancillary Information Facility Node', 'Supports Cassini, Galileo, Juno, New Horizons, Pioneer 10/11 and Voyager 1/2 SPICE product browse and download, and subsequent science data analysis.', 'https://naif.jpl.nasa.gov/naif/data_archived.html', 103);
+insert into target_tools (target, title, description, url, rank) values ('Neptune System', 'SPICE Data Holdings at the Navigation and Ancillary Information Facility Node', 'Supports Voyager 2 SPICE product browse and download, and subsequent science data analysis.', 'https://naif.jpl.nasa.gov/naif/data_outer.html', 103);
 
 /* Pluto System */
 
@@ -686,7 +686,7 @@ insert into target_tools (target, title, description, url, rank) values ('Pluto 
 
 insert into target_tools (target, title, description, url, rank) values ('Pluto System', 'Transneptunian, Centaur, and Pluto Data Sets at the Small Bodies Node', 'Supports multiple investigations for data browse and download.', 'https://sbn.psi.edu/pds/archive/tnos.html', 102);
 
-insert into target_tools (target, title, description, url, rank) values ('Pluto System', 'SPICE Data Holdings at the Navigation and Ancillary Information Facility Node', 'Supports Cassini, Galileo, Juno, New Horizons, Pioneer 10/11 and Voyager 1/2 SPICE product browse and download, and subsequent science data analysis.', 'https://naif.jpl.nasa.gov/naif/data_archived.html', 103);
+insert into target_tools (target, title, description, url, rank) values ('Pluto System', 'SPICE Data Holdings at the Navigation and Ancillary Information Facility Node', 'Supports New Horizons SPICE product browse and download, and subsequent science data analysis.', 'https://naif.jpl.nasa.gov/naif/data_outer.html', 103);
 
 /* KBOs */
 
@@ -699,6 +699,8 @@ insert into target_tools (target, title, description, url, rank) values ('KBOs',
 insert into target_tools (target, title, description, url, rank) values ('Dust', 'Dust Archive at the Small Bodies Node', 'Supports Cassini, Deep Space 1, Galileo, IRAS, MSX, New Horizons, LADEE, Rosetta, Stardust and Ulysses dust data browse and download.', 'https://sbn.psi.edu/pds/archive/dust.html', 101);
 
 insert into target_tools (target, title, description, url, rank) values ('Dust', 'Dust Data Holdings at the Planetary Plasma Interactions Node', 'Supports Galileo and Ulysses product browse and download.', 'https://pds-ppi.igpp.ucla.edu/search/?t=Dust&facet=TARGET_NAME', 102);
+
+insert into target_tools (target, title, description, url, rank) values ('Dust', 'SPICE Data Holdings at the Navigation and Ancillary Information Facility Node', 'Supports Stardust SPICE product browse and download, and subsequent science data analysis.', 'https://naif.jpl.nasa.gov/naif/data_archived.html', 103);
 
 /* Solar Wind */
 
