@@ -589,7 +589,7 @@ class ImageModel():
 def assignTableModel(data, table_type):
     # print('*************')
     # print(table_type)
-    if table_type == 'Array_2D_Image':
+    if table_type == 'Array_2D_Image' or 'Array_2D_Map':
         # print("Length of data: {}".format(len(data)))
         return TwoDImageModel(data)
     elif table_type == 'Array_3D_Image':

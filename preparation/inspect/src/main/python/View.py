@@ -1376,7 +1376,7 @@ class MainWindow(QMainWindow):
             self.labelMenu.setDisabled(True)
             self.tabFrame.setCurrentIndex(self.label_index)    # open up in the label tab
 
-        elif viewType == 'Array_2D_Image':
+        elif viewType == 'Array_2D_Image' or 'Array_2D_Map':
             self.rgb_data_flag = False
             if self.cubeData:
                 self.tabFrame.setCurrentIndex(self.image_index + 1)  # account for the 3D Table tab
@@ -1672,8 +1672,8 @@ class MainWindow(QMainWindow):
 
     def draw_indexed_image(self, table, index):
         # TODO move this to _init_ after you're sure you've got them all
-        image_types = ('Array_2D_Image', 'Array_3D_Image', 'Array_3D_Spectrum')
-        if self.table_type in image_types:
+        #image_types = ('Array_2D_Image', 'Array_3D_Image', 'Array_3D_Spectrum', 'Array_2D_Map')
+        if self.table_type in self.image_types:
             self.clear_layout(self.imageLayout)
             self.draw_2d_image(self.full_table, index=index, rgb=self.rgb_data_flag, redraw=False)
             self.current_view = self.image_index + 1
@@ -2741,7 +2741,7 @@ class ItemTable(QTableView):
         self.column_keys = self.table.dtype.names
         self.showHeaders = False
         self.newKey = ''
-        self.image_types = ('Array','Array_2D_Image', 'Array_3D_Spectrum', 'Array_3D_Image')
+        self.image_types = ('Array','Array_2D_Image', 'Array_3D_Spectrum', 'Array_3D_Image', 'Array_2D_Map')
         self.int_data_types = ('b1', 'i1', 'i2', 'i4', 'i8', 'u1', 'u2', 'u4', 'u8',
                                'uint1', 'uint2', 'uint4', 'uint8',)
         self.float_data_types = ('f2', 'f4', 'f8', 'float16', 'float32', 'float64')
