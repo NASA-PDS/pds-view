@@ -22,6 +22,11 @@
     <author email="Sean.Hardman@jpl.nasa.gov">Sean Hardman</author>
   </properties>
   <body>
+    <release version="1.1.0" date="TBD" description="This release of Data Search is a component of the integrated release 9.1.0 of the PDS4 System. This is an operational release of the system components to date.">
+      <action dev="csuh" type="update">
+        Modify SPICE Data Holdings' entries (descriptions and URLs) for targets Uranus, Neptune, Pluto, and Dust per Chuck Acton's request.
+      </action>
+    </release>
     <release version="1.0.0" date="2018-03-30" description="This release of Data Search is a component of the integrated release 8.1.0 of the PDS4 System. This is an operational release of the system components to date.">
       <action dev="earevalo" type="add">
         Initial release of the Data Search interface that queries a local database for search tools and resources.
