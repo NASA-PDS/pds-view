@@ -616,7 +616,7 @@ insert into target_tools (target, title, description, url, rank) values ('Jupite
 
 insert into target_tools (target, title, description, url, rank) values ('Jupiter System', 'Jupiter Data Holdings at the Planetary Plasma Interactions Node', 'Supports Cassini, Galileo, Juno, New Horizons, Pioneer 10/11, Ulysses and Voyager 1/2 product browse and download.', 'https://pds-ppi.igpp.ucla.edu/search/?t=Jupiter&facet=TARGET_NAME', 101);
 
-insert into target_tools (target, title, description, url, rank) values ('Jupiter System', 'Jupiter Data Archive at the Planetary Atmospheres Node', 'Supports access to Cassini, Galileo, Juno, New Horizons, Pioneer and Voyager product browse and download.', 'https://pds-atmospheres.nmsu.edu/data_and_services/atmospheres_data/JUPITER/matrice.html', 102);
+insert into target_tools (target, title, description, url, rank) values ('Jupiter System', 'Jupiter Data Archive at the Planetary Atmospheres Node', 'Supports access to Cassini, Galileo, Juno, New Horizons, Pioneer and Voyager product browse and download.', 'https://pds-atmospheres.nmsu.edu/data_and_services/atmospheres_data/JUPITER/matrices.html', 102);
 
 insert into target_tools (target, title, description, url, rank) values ('Jupiter System', 'Planetary Satellite Data at the Small Bodies Node', 'Supports data sets containing planetary satellite data for browse and download.', 'https://sbn.psi.edu/pds/archive/sat.html', 103);
 
