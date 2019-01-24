@@ -1,11 +1,21 @@
-Copyright 2010-2018, by the California Institute of Technology. 
-ALL RIGHTS RESERVED. United States Government sponsorship acknowledged. 
-Any commercial use must be negotiated with the Office of Technology Transfer 
-at the California Institute of Technology. 
+MIT License
 
-This software is subject to U. S. export control laws and regulations 
-(22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software 
-is subject to U.S. export control laws and regulations, the recipient has 
-the responsibility to obtain export licenses or other export authority as 
-may be required before exporting such information to foreign countries or 
-providing access to foreign nationals.
+Copyright (c) 2019 by the California Institute of Technology
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
