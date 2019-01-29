@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<classificationNode xmlns="http://registry.pds.nasa.gov" 
-    guid="urn:registry:ObjectTypeScheme:ExtrinsicObject:Product:Test"
-    name="Test Node" 
-    description="This is the classification node for test which has a parent of extrinsic object."
-    parent="urn:registry:ObjectTypeScheme:ExtrinsicObject:Product"
-    code="Test"/>

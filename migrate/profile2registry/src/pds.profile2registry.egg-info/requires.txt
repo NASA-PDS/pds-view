@@ -1,6 +1,0 @@
-setuptools
-pds.registry
-oodt
-lxml
-
-[test]

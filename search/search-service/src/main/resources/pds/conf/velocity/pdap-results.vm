@@ -1,9 +1,0 @@
-#if ($request.params.RESOURCE_CLASS == 'DATA_SET')
-  #parse("pdap-dataset.vm")
-#elseif ($request.params.RESOURCE_CLASS == 'PRODUCT')
-  #parse("pdap-product.vm")
-#elseif ($request.params.RESOURCE_CLASS == 'MAP_PROJECTED')
-  #parse("pdap-mapprojected.vm")
-#elseif ($request.params.RESOURCE_CLASS == 'METADATA')
-  #parse("pdap-metadata.vm")
-#end

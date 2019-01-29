@@ -1,1 +1,0 @@
-{"description":"This is a new version test product 5678 v1","name":"Product 5678 v1","objectType":"Product","lid":"5678","slots":[{"name":"last-name","values":["Doe"]},{"name":"phone","values":["(818)123-4567","(818)765-4321"]},{"name":"first-name","values":["Jane"]}]}

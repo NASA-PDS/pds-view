@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<classificationScheme xmlns="http://registry.pds.nasa.gov" 
-    guid="urn:registry:classificationScheme:ObjectTypeScheme:Test"
-    name="TestObjectType" 
-    description="This is the canonical object type classification that is one of the core registry objects"
-    isInternal="true"
-    nodeType="UniqueCode"/>

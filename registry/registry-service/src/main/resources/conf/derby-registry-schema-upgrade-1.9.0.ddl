@@ -1,1 +1,0 @@
-    create index targetObjectIndex on Association(targetObject);

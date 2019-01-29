@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<classificationNode xmlns="http://registry.pds.nasa.gov"  
-    guid="urn:registry:ObjectTypeScheme:ClassificationScheme"
-    name="Classification Scheme Node" 
-    description="This is the classification node for classification scheme"
-    parent="urn:registry:ObjectTypeScheme"
-    code="ClassificationScheme"/>

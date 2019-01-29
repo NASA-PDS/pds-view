@@ -1,8 +1,0 @@
-%R 2008PDSS...91F
-%A Fornasier, S.;Dotto, E.;Hainaut, O.;Marzari, F.;Boehnhardt, H.;De Luise, F.;Barucci, M.A.;de Bergh, C.
-%T Spectroscopy and Photometry of Jupiter Trojans V1.0
-%D 07/2008
-%J NASA Planetary Data System, EAR-A-EMMI-3-FORNASIER-V1.0
-%U http://pdsquery.jpl.nasa.gov/query?Identifier=EAR-A-EMMI-3-FORNASIER-V1.0&resclass=data.dataset
-%B This data set contains the results of the visible spectroscopic and photometric survey of Jupiter Trojans reported in Fornasier et al. 2004 and Fornasier et al. 2007.  The survey was carried out in the years 2002-2005 at the 3.5 m New Technology Telescope of the European Southern Observatory at La Silla, Chile.    Included are visible spectroscopy and BVRI photometry of 73 Jupiter Trojans.
-

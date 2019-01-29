@@ -1,2 +1,0 @@
-141.8.144.21, 192.168.1.33 - - [28/Jul/2017:17:17:37 -0700] "GET /w10n/m3/thumbnail/CH1M3_0002/20090415_20090816/200907/L1B/M3G20090729T022657_V01_RDN.jpeg_small HTTP/1.1" 200 4093 "-" "Mozilla/5.0 (compatible; YandexBot/3.0; +http://yandex.com/bots)" 608 4609
-66.249.75.4, 192.168.1.33 - - [28/Jul/2017:17:08:09 -0700] "GET /pds/prod?q=OFSN+%3D+/data/voyager/vg_0008/extras/pds/jupiter/c2069xxx//c2069127.img+AND+RT+%3D+PDS_LABEL HTTP/1.1" 200 33851 "-" "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)" 689 34444

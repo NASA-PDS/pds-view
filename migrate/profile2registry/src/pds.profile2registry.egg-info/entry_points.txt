@@ -1,3 +1,0 @@
-[console_scripts]
-profile2registry = pds.profile2registry:main
-
