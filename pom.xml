@@ -1,16 +1,17 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright 2010-2018, by the California Institute of Technology.
+  Copyright 2017-2018, by the California Institute of Technology.
   ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
   Any commercial use must be negotiated with the Office of Technology
   Transfer at the California Institute of Technology.
 
-  This software may be subject to U.S. export control laws. By accepting
-  this software, the user agrees to comply with all applicable U.S. export
-  laws and regulations. User has the responsibility to obtain export licenses,
-  or other export authority as may be required before exporting such
-  information to foreign countries or providing access to foreign persons.
+  This software is subject to U. S. export control laws and regulations
+  (22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software
+  is subject to U.S. export control laws and regulations, the recipient has
+  the responsibility to obtain export licenses or other export authority as
+  may be required before exporting such information to foreign countries or
+  providing access to foreign nationals.
 
   $Id$
 -->
@@ -18,56 +19,29 @@
 <project>
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>gov.nasa.pds</groupId>
-    <artifactId>pds</artifactId>
+    <groupId>gov.nasa.pds.2010</groupId>
+    <artifactId>preparation</artifactId>
     <version>0.0.0</version>
   </parent>
 
-  <groupId>gov.nasa.pds</groupId>
-  <artifactId>2010</artifactId>
-  <version>0.0.0</version>
+  <groupId>gov.nasa.pds.2010.preparation</groupId>
+  <artifactId>inspect</artifactId>
+  <version>0.4.0-dev</version>
   <packaging>pom</packaging>
 
-  <name>PDS4</name>
+  <name>Inspect Tool</name>
   <description>
-    This project provides documentation for the PDS4 effort and contains the PDS4 parent Project Object Model (POM).
+    The Inspect Tool provides support for visualizing PDS3 and PDS4 data products.
   </description>
-  <url>https://pds-cm.jpl.nasa.gov/pds4/</url>
+  <url>https://pds-cm.jpl.nasa.gov/pds4/preparation/inspect/</url>
 
-  <inceptionYear>2010</inceptionYear>
-
-  <modules>
-    <module>email</module>
-    <module>ingest</module>
-    <module>migrate</module>
-    <module>model</module>
-    <module>portal</module>
-    <module>preparation</module>
-    <module>registry</module>
-    <module>report</module>
-    <module>search</module>
-    <module>security</module>
-    <module>storage</module>
-    <module>tracking</module>
-    <module>transport</module>
-  </modules>
-
-  <properties>
-    <!-- Internal Dependency Version -->
-    <pds4-tools-version>0.11.0</pds4-tools-version>
-    <core-version>1.14.0</core-version>
-    <email-version>0.1.0</email-version>
-    <generate-version>0.15.0</generate-version>
-    <registry-version>1.14.0</registry-version>
-    <search-version>1.13.0</search-version>
-    <storage-version>1.2.0</storage-version>
-    <transform-version>1.8.0</transform-version>
-    <!-- External Dependency Versions -->
-    <oodt-version>0.12</oodt-version>
-    <product-tools-version>3.6.0</product-tools-version>
-    <vicario-version>4.2</vicario-version>
-    <model-version>1B00</model-version>
-  </properties>
+  <licenses>
+    <license>
+      <name>California Institute of Technology</name>
+      <url>file:///${basedir}/LICENSE.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
 
   <developers>
     <developer>
@@ -77,34 +51,6 @@
       <organization>NASA Jet Propulsion Laboratory</organization>
       <roles>
         <role>Development Lead</role>
-        <role>System Design Working Group Member</role>
-      </roles>
-    </developer>
-    <developer>
-      <name>Eddie Arevalo</name>
-      <id>earevalo</id>
-      <email>Eddie.Arevalo@jpl.nasa.gov</email>
-      <organization>Columbus Technologies</organization>
-      <roles>
-        <role>Developer</role>
-      </roles>
-    </developer>
-    <developer>
-      <name>Michael Cayanan</name>
-      <id>mcayanan</id>
-      <email>Michael.Cayanan@jpl.nasa.gov</email>
-      <organization>NASA Jet Propulsion Laboratory</organization>
-      <roles>
-        <role>Developer</role>
-      </roles>
-    </developer>
-    <developer>
-      <name>Pearl Haw</name>
-      <id>pearl</id>
-      <email>Pearl.Haw@jpl.nasa.gov</email>
-      <organization>NASA Jet Propulsion Laboratory</organization>
-      <roles>
-        <role>Developer</role>
       </roles>
     </developer>
     <developer>
@@ -116,220 +62,31 @@
         <role>Developer</role>
       </roles>
     </developer>
-    <developer>
-      <name>Sean Kelly</name>
-      <id>kelly</id>
-      <email>Sean.Kelly@jpl.nasa.gov</email>
-      <organization>Independent Consultant</organization>
-      <roles>
-        <role>Developer</role>
-      </roles>
-    </developer>
-    <developer>
-      <name>Hyun Lee</name>
-      <id>hyunlee</id>
-      <email>Hyun.Lee@jpl.nasa.gov</email>
-      <organization>NASA Jet Propulsion Laboratory</organization>
-      <roles>
-        <role>Developer</role>
-      </roles>
-    </developer>
-    <developer>
-      <name>Steven Levoe</name>
-      <id>srlevoe</id>
-      <email>Steven.R.Levoe@jpl.nasa.gov</email>
-      <organization>NASA Jet Propulsion Laboratory</organization>
-      <roles>
-        <role>Developer</role>
-      </roles>
-    </developer>
-    <developer>
-      <name>Gabe Resneck</name>
-      <id>resneck</id>
-      <email>Gabriel.M.Resneck@jpl.nasa.gov</email>
-      <organization>NASA Jet Propulsion Laboratory</organization>
-      <roles>
-        <role>Developer</role>
-      </roles>
-    </developer>
-    <developer>
-      <name>Dan Yu</name>
-      <id>danyu</id>
-      <email>Dan.Yu@jpl.nasa.gov</email>
-      <organization>NASA Jet Propulsion Laboratory</organization>
-      <roles>
-        <role>Developer</role>
-      </roles>
-    </developer>
-    <developer>
-      <name>Luca Cinquini</name>
-      <id>cinquini</id>
-      <email>Luca.Cinquini@jpl.nasa.gov</email>
-      <organization>NASA Jet Propulsion Laboratory</organization>
-      <roles>
-        <role>Former Developer</role>
-      </roles>
-    </developer>
-    <developer>
-      <name>Joshua Ganderson</name>
-      <id>jagander</id>
-      <email>Joshua.Ganderson@nasa.gov</email>
-      <organization>NASA Ames Research Center</organization>
-      <roles>
-        <role>Former Developer</role>
-      </roles>
-    </developer>
-    <developer>
-      <name>Eric Lee</name>
-      <id>elee</id>
-      <email>Eric.C.Lee@jpl.nasa.gov</email>
-      <organization>NASA Jet Propulsion Laboratory</organization>
-      <roles>
-        <role>Former Developer</role>
-      </roles>
-    </developer>
-    <developer>
-      <name>Jordan Padams</name>
-      <id>jpadams</id>
-      <email>Jordan.Padams@jpl.nasa.gov</email>
-      <organization>NASA Jet Propulsion Laboratory</organization>
-      <roles>
-        <role>Former Developer</role>
-      </roles>
-    </developer>
-    <developer>
-      <name>Paul Ramirez</name>
-      <id>pramirez</id>
-      <email>Paul.Ramirez@jpl.nasa.gov</email>
-      <organization>NASA Jet Propulsion Laboratory</organization>
-      <roles>
-        <role>Former Developer</role>
-      </roles>
-    </developer>
-    <developer>
-      <name>Mark Rose</name>
-      <id>mrose</id>
-      <email>Mark.Rose@nasa.gov</email>
-      <organization>NASA Ames Research Center</organization>
-      <roles>
-        <role>Former Developer</role>
-      </roles>
-    </developer>
-    <developer>
-      <name>Julie Wang</name>
-      <id>jwang</id>
-      <organization>NASA Jet Propulsion Laboratory</organization>
-      <roles>
-        <role>Former Developer</role>
-      </roles>
-    </developer>
   </developers>
 
-  <contributors>
-    <contributor>
-      <name>Dan Crichton</name>
-      <email>Dan.Crichton@jpl.nasa.gov</email>
-      <organization>NASA Jet Propulsion Laboratory</organization>
-      <roles>
-        <role>Project Manager</role>
-        <role>System Design Working Group Member</role>
-      </roles>
-    </contributor>
-    <contributor>
-      <name>Steve Hughes</name>
-      <email>John.S.Hughes@jpl.nasa.gov</email>
-      <organization>NASA Jet Propulsion Laboratory</organization>
-      <roles>
-        <role>System Engineering Lead</role>
-      </roles>
-    </contributor>
-    <contributor>
-      <name>Ron Joyner</name>
-      <email>Ronald.Joyner@jpl.nasa.gov</email>
-      <organization>NASA Jet Propulsion Laboratory</organization>
-      <roles>
-        <role>System Engineer</role>
-      </roles>
-    </contributor>
-    <contributor>
-      <name>Elizabeth Rye</name>
-      <email>Elizabeth.Rye@jpl.nasa.gov</email>
-      <organization>NASA Jet Propulsion Laboratory</organization>
-      <roles>
-        <role>System Engineer</role>
-      </roles>
-    </contributor>
-    <contributor>
-      <name>Todd King</name>
-      <email>tking@igpp.ucla.edu</email>
-      <organization>University of California, Los Angeles</organization>
-      <roles>
-        <role>System Design Working Group Member</role>
-      </roles>
-    </contributor>
-    <contributor>
-      <name>Mike Martin</name>
-      <email>tahoe_mike@sbcglobal.net</email>
-      <organization>Independent Consultant</organization>
-      <roles>
-        <role>System Design Working Group Member</role>
-      </roles>
-    </contributor>
-    <contributor>
-      <name>Alice Stanboli</name>
-      <email>Alice.Stanboli@jpl.nasa.gov</email>
-      <organization>NASA Jet Propulsion Laboratory</organization>
-      <roles>
-        <role>System Design Working Group Member</role>
-      </roles>
-    </contributor>
-    <contributor>
-      <name>Tom Stein</name>
-      <email>stein@rsmail.wustl.edu</email>
-      <organization>Washington University</organization>
-      <roles>
-        <role>System Design Working Group Member</role>
-      </roles>
-    </contributor>
-  </contributors>
-
-  <!-- Build inherited from parent. -->
   <build>
     <plugins>
-      <!--
       <plugin>
-        <inherited>false</inherited>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>properties-maven-plugin</artifactId>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-assembly-plugin</artifactId>
         <executions>
           <execution>
-            <phase>initialize</phase>
+            <id>bin-release</id>
+            <phase>package</phase>
             <goals>
-              <goal>read-project-properties</goal>
+              <goal>single</goal>
             </goals>
             <configuration>
-              <files>
-                <file>${basedir}/project.properties</file>
-              </files>
+              <descriptors>
+                <descriptor>src/main/assembly/tar-assembly.xml</descriptor>
+                <descriptor>src/main/assembly/zip-assembly.xml</descriptor>
+              </descriptors>
             </configuration>
           </execution>
         </executions>
       </plugin>
-      -->
     </plugins>
   </build>
-
-  <profiles>
-    <profile>
-      <id>disable-java8-doclint</id>
-        <activation>
-          <jdk>[1.8,)</jdk>
-        </activation>
-        <properties>
-          <additionalparam>-Xdoclint:none</additionalparam>
-        </properties>
-    </profile>
-  </profiles>
 
   <repositories>
     <!-- Hosts the PDS and OODT artifacts. -->
@@ -348,54 +105,6 @@
     </repository>
   </repositories>
 
-  <reporting>
-    <plugins>
-      <!-- Project Information inherited by project modules. -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-project-info-reports-plugin</artifactId>
-        <inherited>true</inherited>
-        <reportSets>
-          <reportSet>
-            <reports>
-              <report>dependencies</report>
-              <report>issue-tracking</report>
-              <report>license</report>
-              <report>mailing-list</report>
-              <report>project-team</report>
-              <report>summary</report>
-            </reports>
-          </reportSet>
-        </reportSets>
-      </plugin>
-      <!-- Project Reports inherited by the project modules. -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-changes-plugin</artifactId>
-        <inherited>true</inherited>
-        <reportSets>
-          <reportSet>
-            <reports>
-              <report>changes-report</report>
-            </reports>
-          </reportSet>
-        </reportSets>
-      </plugin>
-      <!-- Disable due to issue with building in Java 1.8.
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-checkstyle-plugin</artifactId>
-        <inherited>true</inherited>
-      </plugin>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>findbugs-maven-plugin</artifactId>
-        <inherited>true</inherited>
-        <configuration>
-          <findbugsXmlOutput>true</findbugsXmlOutput>
-        </configuration>
-      </plugin>
-      -->
-    </plugins>
-  </reporting>
+  <!-- Project Information and Reports inherited from parent. -->
+  <reporting/>
 </project>
