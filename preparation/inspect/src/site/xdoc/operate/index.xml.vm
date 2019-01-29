@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  Copyright 2017-2018, by the California Institute of Technology.
+  ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
+  Any commercial use must be negotiated with the Office of Technology Transfer
+  at the California Institute of Technology.
+
+  This software is subject to U. S. export control laws and regulations
+  (22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software
+  is subject to U.S. export control laws and regulations, the recipient has
+  the responsibility to obtain export licenses or other export authority as
+  may be required before exporting such information to foreign countries or
+  providing access to foreign nationals.
+
+  $Id$
+-->
+
+<document>
+  <properties>
+    <title>Operation</title>
+        <author email="James.E.Hofman@jpl.nasa.gov">Jim Hofman</author>
+  </properties>
+
+  <body>
+    <section name="Operation">
+      <p>This document describes how to operate the Inspect Tool. The following topics can be found in this document:
+      </p>
+
+      <ul>
+        <li><a href="#Quick_Start">Quick Start</a></li>
+        <li><a href="#Feedback">Feedback</a></li>
+      </ul>
+    </section>
+
+    <section name="Quick Start">
+      <p>This section is intended to provide a quick and easy way to run the Inpsect Tool. The following command demonstrates how to launch the tool:
+      </p>
+
+      <source>
+% python View.py
+      </source>
+    </section>
+
+    <section name="Feedback">
+      <p>The Inspect Tool is under development. Future releases will:
+      </p>    
+
+      <ul>
+        <li>Improve the user interface</li>
+        <li>Add Features</li>
+        <ul>
+          <li>Allow inspection of PDS 3 files</li>
+          <li>Be compatible with Python 3</li>
+          <li>Be released as an executable</li>
+        </ul> 
+      </ul>
+
+      <p>Please send any feedback (likes/dislikes, bugs, suggested features) to <a href="mailto:james.e.hofman@jpl.nasa.gov">Inspect Tool Feedback</a>
+      </p>
+    </section>
+  </body>
+</document>

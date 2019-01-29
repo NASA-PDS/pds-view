@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  Copyright 2010-2013, by the California Institute of Technology.
+  ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged.
+  Any commercial use must be negotiated with the Office of Technology 
+  Transfer at the California Institute of Technology.
+
+  This software is subject to U. S. export control laws and regulations
+  (22 C.F.R. 120-130 and 15 C.F.R. 730-774). To the extent that the software
+  is subject to U.S. export control laws and regulations, the recipient has
+  the responsibility to obtain export licenses or other export authority as
+  may be required before exporting such information to foreign countries or
+  providing access to foreign nationals.
+
+  $Id$
+-->
+
+<document>
+  <properties>
+    <title>Release Description 1.0.0</title>
+    <author email="Sean.Hardman@jpl.nasa.gov">Sean Hardman</author>
+  </properties>
+
+  <body>
+    <section name="Release Description 1.0.0">
+      <p>This release of the PDS4 System represents Build 1 and is intended as a prototype release in support of the assessment of the PDS4 standards. The following sections can be found in this document:
+      </p>
+
+      <ul>
+        <li><a href="#Reference_Documents">Reference Documents</a></li>
+        <li><a href="#Capabilities">Capabilities</a></li>
+        <li><a href="#Liens">Liens</a></li>
+        <li><a href="#System_Requirements">System Requirements</a></li>
+        <li><a href="#InstallationOperation">Installation/Operation</a></li>
+      </ul>
+    </section>
+
+    <section name="Reference Documents">
+      <p>This section details the controlling and applicable documents referenced for this release. The controlling documents are as follows:
+      </p>
+
+      <ul>
+        <li>Planetary Data System (PDS) Level 1, 2 and 3 Requirements, March 26, 2010.</li>
+        <li>Planetary Data System (PDS) 2010 Project Plan, February 2010.</li>
+        <li>Planetary Data System (PDS) 2010 System Architecture Specification, Version 1.1, May 5, 2010.</li>
+        <li>Planetary Data System (PDS) 2010 Operations Concept, February 2010.</li>
+        <li>Planetary Data System (PDS) General System Software Requirements Document (SRD), Version 0.1, September 27, 2010.</li>
+        <li>Planetary Data System (PDS) Harvest Tool Software Requirements and Design Document (SRD/SDD), Version 0.4, September 28, 2010.</li>
+        <li>Planetary Data System (PDS) Preparation Tools Software Requirements and Design Document (SRD/SDD), Version 0.1, October 6, 2010.</li>
+        <li>Planetary Data System (PDS) Registry Service Software Requirements and Design Document (SRD/SDD), Version 0.6, September 28, 2010.</li>
+        <li>Planetary Data System (PDS) Report Service Software Requirements and Design Document (SRD/SDD), Version 0.7, September 28, 2010.</li>
+        <li>Planetary Data System (PDS) Security Service Software Requirements and Design Document (SRD/SDD), Version 0.6, September 28, 2010.</li>
+      </ul>
+
+      <p>The applicable documents are as follows:
+      </p>
+
+      <ul>
+        <li>NASA Planetary Data System (PDS) 2010 System Build I Test Plan</li>
+      </ul>
+    </section>
+
+    <section name="Capabilities">
+      <p>This section details the new, modified and corrected capabilities that comprise this release. They are summarized here for a system-level view. A more detailed list of capabilities can be found in the release notes and change logs for each component. Since this is essentially the first release, all of the capabilities are considered new. They are as follows:
+      </p>
+
+      <ul>
+        <li>Ingestion Subsystem</li>
+        <ul>
+          <li>Provide the Registry Service for registration and retrieval of product metadata (e.g., bundles, collections, data, documents, etc.), associations and services.</li>
+          <li>The Registry Service provides a REST-based interface for interacting with the service over HTTP.</li>
+          <li>Provide the Harvest Tool for crawling product collections, extracting metadata from product labels and registering discovered products with the Registry Service.</li>
+          <li>Provide the Registry User Interface for browsing products and associations registered with the Registry Service.</li>
+          <li>Provide the Security Service for controlling access to specific interfaces.</li>
+          <li>Provide the Report Service for gathering and reporting on metrics.</li>
+        </ul>
+
+        <li>Data Provider Tool Suite</li>
+        <ul>
+          <li>Provide the initial Core Library where functions for validating product labels reside.</li>
+          <li>Provide the Validate Tool for validation of products against their associated XML Schemas.</li>
+          <li>Provide Installation and Operation documentation for the recommended Design Tools, Oxygen and Eclipse.</li>
+        </ul>
+      </ul>
+    </section>
+
+    <section name="Liens">
+      <p>This section details the liens against the capabilities that have yet to be implemented or are partially implemented. They are summarized here for a system-level view. A more detailed list of liens can be found in the release notes for each component.
+      </p>
+
+      <ul>
+        <li>Need to expand the Registry Service functionality to include registration of federation and registry objects. Also need to expand the query support for objects beyond products and associations.</li>
+        <li>Need to add support for validation of products to the Harvest Tool.</li>
+        <li>Need to expand the Registry User Interface to support browsing of objects beyond products and associations. Also need to add support for updating status and single product registration.</li>
+        <li>Need to correct the issue with defining policy for multiple HTTP methods on the same URL for the Security Service.</li>
+      </ul>
+    </section>
+
+    <section name="System Requirements">
+      <p>This section details the system requirements for installing and operating the software. The custom software contained in this release was developed using Java and will run on any platform with a supported Java Runtime Environment (JRE). The software was specifically developed under Sun Java version 1.6 and has only been tested with this version.
+      </p>
+
+      <p>The other main system requirement pertains to providing an application server for hosting certain components (Registry Service, Registry User Interface, Report Service and Security Service). The suggested application server for this release is Apache Tomcat with a minimal version of 6.0.20.
+      </p>
+
+      <p>Specific system requirements for each component in this release can be found in their respective Installation documents.
+      </p>
+    </section>
+
+    <section name="Installation/Operation">
+      <p>This section details the installation and operation of the software in this release. This release is intended for deployment in the Engineering Node operations environment with certain components deployed in the environments of participating Nodes. Details regarding the release for each of these components, including installation of the packages and operation of the associated software, can be found in the documentation for each component. This release is comprised of the following components:
+      </p>
+
+      <ul>
+        <li>Harvest Tool - Release 0.2.0</li>
+        <li>Preparation Tools</li>
+        <ul>
+          <li>Core Library - Release 0.1.0</li>
+          <li>Design Tool - Release 0.1.0</li>
+          <li>Validate Tool - Release 0.1.0</li>
+        </ul>
+        <li>Registry</li>
+        <ul>
+          <li>Registry Service - 0.5.0</li>
+          <li>Registry User Interface - 0.2.0</li>
+        </ul>
+        <li>Report Service - 0.1.0</li>
+        <li>Security Service - 0.2.0</li>
+      </ul>
+
+      <subsection name="EN Environment">
+        <p>This section details deployment to the EN operations environment. The following diagram details the deployment of the major components of this release and gives a very high-level view of the interfaces between the components and system resources:
+        </p>
+
+        <center>
+          <a href="../images/en-deploy-1.0.0.jpg" target="_blank"><img alt="EN Deployment" src="../images/en-deploy-1.0.0-scale.jpg" border="1" /></a><br/>
+          If viewing this document in online form, click the image for a larger version.
+        </center>
+
+        <p>The above components (web-based) can be found at the following endpoints:
+        </p>
+
+        <ul>
+          <li>Registry Service</li>
+          <ul>
+            <li>Service - <a href="http://pdsops2.jpl.nasa.gov/registry-service/registry/" target="_blank">http://pdsops2.jpl.nasa.gov/registry-service/registry/</a></li>
+            <li>API Docs - <a href="http://pdsops2.jpl.nasa.gov/registry-service/docs/" target="_blank">http://pdsops2.jpl.nasa.gov/registry-service/docs/</a></li>
+          </ul>
+          <li>Registry User Interface - <a href="http://pdsops2.jpl.nasa.gov/registry-ui/" target="_blank">http://pdsops2.jpl.nasa.gov/registry-ui/</a></li>
+          <li>Report Service - <a href="http://pdsops.jpl.nasa.gov/report-service/" target="_blank">http://pdsops.jpl.nasa.gov/report-service/</a></li>
+          <li>Security Service - <a href="http://pdsops.jpl.nasa.gov/security-service/" target="_blank">http://pdsops.jpl.nasa.gov/security-service/</a></li>
+        </ul>
+      </subsection>
+
+      <subsection name="Node Environment">
+        <p>This section details the deployment to a participating Node environment. The following diagram details the deployment of selected components:
+        </p>
+
+        <center>
+          <img alt="Node Deployment" src="../images/dn-deploy-1.0.0.jpg" border="1" />
+        </center>
+
+        <p>The endpoints for the web-based components are dependent on the Node host machine.
+        </p>
+      </subsection>
+    </section>
+  </body>
+</document>
