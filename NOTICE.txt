@@ -1,0 +1,22 @@
+PDS Inspect Tool
+Copyright 2019 California Institute of Technology
+
+---
+
+This software leverages Macports (https://www.macports.org) to install
+dependencies.
+
+---
+
+This software leverages the Qt4 (https://doc.qt.io/archives/qt-4.8/) widget toolkit.
+
+---
+
+This software leverages matplotlib (https://matplotlib.org/) Python library.
+
+--- 
+
+This software uses the Tkinter library (https://wiki.python.org/moin/TkInter) for 
+the Python user interface.
+
+---
