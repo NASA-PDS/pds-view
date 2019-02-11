@@ -99,11 +99,16 @@ class MainWindow(QMainWindow):
         self.cubeData = False
         self.rgb_data_flag = False
         self.rgb_image = None
+        # Tick state variables
         self.x_tick_visible = True
         self.y_tick_visible = True
-        self.current_ticks_state = 'Hide'
+        self.current_ticks_state = 'Show'
+        # must initialize to the same as current_ticks_state to maintain proper interaction between
+        # the tick controls in the pulldowns and on the taskbar PDS-740
         self.ticks_last_state = 'Show'
+        self.last_visible_state = 'Show'   # PDS-740
         self.color_bar_orientation = 'hide'
+        self.last_visible_cb_state = ''
         self.color_bar_last_state = 'horizontal'
 
         self._norm = mpl.colors.Normalize(clip=False)   # Linear normalization
@@ -150,6 +155,8 @@ class MainWindow(QMainWindow):
         self.bounding_box_rectangle = None   # This is used to match an image selection to the table
         self.allow_rect = False
         self.active_histogram = False
+
+        self.image_types = ('Array', 'Array_2D_Image', 'Array_3D_Spectrum', 'Array_3D_Image', 'Array_2D_Map')
 
         self.logo = QLabel()
         try:
@@ -375,7 +382,7 @@ class MainWindow(QMainWindow):
         self.imageOptionsMenu = self.menuBar().addMenu("Image Options")
 
         # Interpolation
-        interpolation_sub_menu = self.imageOptionsMenu.addMenu("Interpolation method")
+        self.interpolation_sub_menu = self.imageOptionsMenu.addMenu("Interpolation method")
         interpolation_group = QActionGroup(self, exclusive=True)
         interpolation_options =  ('none', 'nearest', 'bilinear', 'bicubic', 'spline16', 'spline36',
                                   'hanning', 'hamming', 'hermite', 'kaiser', 'quadric', 'catrom',
@@ -386,7 +393,7 @@ class MainWindow(QMainWindow):
                                                                     tip="Select Interpolation Mode", checkable=True,
                                                                     group_action=True)
             interpolation_actions = interpolation_group.addAction(self.interpolationActionDict[mode])
-            interpolation_sub_menu.addAction(interpolation_actions)
+            self.interpolation_sub_menu.addAction(interpolation_actions)
 
         self.interpolationActionDict['none'].setChecked(True)
 
@@ -409,7 +416,7 @@ class MainWindow(QMainWindow):
         tick_sub_menu = self.imageOptionsMenu.addMenu("Ticks")
 
         tick_group = QActionGroup(self, exclusive=True)
-        tick_options = ('Show', 'Hide','Show X-Tick', 'Show Y-Tick')
+        tick_options = ('Show', 'Hide', 'Show X-Tick', 'Show Y-Tick')
         self.ticks_removed = False
         for tick in tick_options:
             self.tickActionDict[tick] = self.create_action(tick, self.set_ticks, icon="ticks.svg",
@@ -418,14 +425,14 @@ class MainWindow(QMainWindow):
             tick_actions = tick_group.addAction(self.tickActionDict[tick])
             tick_sub_menu.addAction(tick_actions)
 
-        self.tickActionDict['Hide'].setChecked(True)
+        self.tickActionDict['Show'].setChecked(True)
         self.x_tick_visible = False
         self.y_tick_visible = False
 
         self.imageOptionsMenu.addSeparator()
 
         # Normalization
-        normalization_sub_menu = self.imageOptionsMenu.addMenu("Normalize")
+        self.normalization_sub_menu = self.imageOptionsMenu.addMenu("Normalize")
         normalization_group = QActionGroup(self, exclusive=True)
         norm_options = ('Linear', 'Logarithmic', 'Squared', 'Square Root')
         for mode in norm_options:
@@ -434,7 +441,7 @@ class MainWindow(QMainWindow):
                                                                     tip="Select Normalization Mode", checkable=True,
                                                                     group_action=True)
             normalization_actions = normalization_group.addAction(self.normalizationActionDict[mode])
-            normalization_sub_menu.addAction(normalization_actions)
+            self.normalization_sub_menu.addAction(normalization_actions)
         # set default
         self.normalizationActionDict['Linear'].setChecked(True)
         if PowerNorm is None:
@@ -460,7 +467,7 @@ class MainWindow(QMainWindow):
         # Add the 'Color Maps' menu bar items
         self.invert_colormap = False
 
-        self.imageMenu = self.menuBar().addMenu("Color Maps")
+        self.colorMapMenu = self.menuBar().addMenu("Color Maps")
 
         view_basic_color_group = QActionGroup(self, exclusive=True)
         self.colorMaps = ('gray', 'Reds', 'Greens', 'Blues', 'hot', 'afmhot', 'gist_heat', 'cool', 'coolwarm',
@@ -470,21 +477,21 @@ class MainWindow(QMainWindow):
 
         for color in self.colorMaps:
             if color == 'separator':
-                self.imageMenu.addSeparator()
+                self.colorMapMenu.addSeparator()
             else:
                 self.colorActionList[color] = self.create_action(color, self.select_color_map,
                                                                  icon='show'+color, tip='Display '+color+' in image',
                                                                  checkable=True, group_action=True)
                 group_action = view_basic_color_group.addAction(self.colorActionList[color])
-                self.imageMenu.addAction(group_action)
+                self.colorMapMenu.addAction(group_action)
 
         self.colorActionList['gray'].setChecked(True)   # note: ...setDisabled(True) can be used individually
 
-        self.imageMenu.addSeparator()
+        self.colorMapMenu.addSeparator()
 
         # add an all colormaps pulldown
 
-        all_sub_menu = self.imageMenu.addMenu("All")
+        all_sub_menu = self.colorMapMenu.addMenu("All")
 
         self.actionListAll = {}
         view_all_color_group = QActionGroup(self, exclusive=True)
@@ -498,7 +505,7 @@ class MainWindow(QMainWindow):
 
         self.actionListAll['gray'].setChecked(True)
 
-        self.imageMenu.addSeparator()
+        self.colorMapMenu.addSeparator()
 
         # add and Invert choice to the menu
         self.invertColorAction = self.create_action("Invert", self.invert_color_map, shortcut="Ctrl+I",
@@ -506,7 +513,7 @@ class MainWindow(QMainWindow):
 
         self.invertColorAction.setChecked(False)
 
-        self.imageMenu.addAction(self.invertColorAction)
+        self.colorMapMenu.addAction(self.invertColorAction)
 
         # Add the 'Display Styles' menu bar items
         self.stylesActionList = {}
@@ -595,7 +602,7 @@ class MainWindow(QMainWindow):
         # Disable until the 'View' button is pushed
         self.tableMenu.setDisabled(True)
         self.labelMenu.setDisabled(True)
-        self.imageMenu.setDisabled(True)
+        self.colorMapMenu.setDisabled(True)
 
         # Disable image functionality until an image is rendered
         self.viewMenu.setDisabled(True)
@@ -732,49 +739,86 @@ class MainWindow(QMainWindow):
 
 
     def toggle_colorbar(self):
+        '''
+        This is used in the toolbar to toggle the colorbar
+        :return:
+        '''
         current = self.color_bar_orientation
         display_states = ('horizontal', 'vertical')
         if current in display_states:
             self.set_colorbar('hide')
         else:
-            #print(self.color_bar_last_state)
+            if self.color_bar_last_state == 'hide':
+                self.color_bar_last_state = self.last_visible_cb_state   # PDS-740 fix corner case
             self.set_colorbar(self.color_bar_last_state)
         self.color_bar_last_state = current
 
     def set_colorbar(self, option):
         if not self.cb_removed:           # This prevents multiple color bars from being rendered
             self.imageWidget.cbar.remove()
-            # print("Removed the color bar")
         if option == 'horizontal':
             self.color_bar_orientation = 'horizontal'
             self.cb_removed = False
+            self.last_visible_cb_state = 'horizontal'
         elif option == 'vertical':
             self.color_bar_orientation = 'vertical'
             self.cb_removed = False
+            self.last_visible_cb_state = 'vertical'
         elif option == 'hide':
             self.color_bar_orientation = 'hide'
             self.cb_removed = True
-        # self.renderImage(peripheral='ColorBar')
-        # The different calls are need for the methods draw_2d_image() to properly read dimension of the array
         if self.three_d_table:
-            # print("X: from set_colorbar()")
             self.draw_2d_image(None, rgb=self.rgb_data_flag, redraw=True)
         else:
-            # print("X: from set_colorbar()")
             self.draw_2d_image(None, rgb=self.rgb_data_flag, redraw=False)
+        # This call with the added parameter is part of PDS-740 where tick state was not preserved
+        self.set_ticks(self.current_ticks_state, "colorbar")
+        self.colorbarActionDict[self.color_bar_orientation].setChecked(True)
 
     def toggle_ticks(self):
-        # print("CURRENT TICK STATE: {}".format(self.current_ticks_state))
+        '''
+        This is used on the toolbar to simply toggle on and off the saved state.
+        :return:
+        '''
         current = self.current_ticks_state
         visible_states= ('Show', 'Show X-Tick', 'Show Y-Tick')
         if current in visible_states:
             self.set_ticks('Hide')
         else:
-            self.set_ticks(self.ticks_last_state)
+            if self.ticks_last_state == 'Hide':
+                self.ticks_last_state = self.last_visible_state
+            self.set_ticks(self.ticks_last_state, "callback")
         self.ticks_last_state = current
 
+    def set_ticks(self, selection, callType = "callback"):  # callType parameter added PDS-740
+        if selection == 'Show':
+            self.x_tick_visible = True
+            self.y_tick_visible = True
+            self.last_visible_state = 'Show'
+        elif selection == 'Hide':
+            self.x_tick_visible = False
+            self.y_tick_visible = False
+        elif selection == 'Show X-Tick':
+            self.x_tick_visible = True
+            self.y_tick_visible = False
+            self.last_visible_state = 'Show X-Tick'
+        elif selection == 'Show Y-Tick':
+            self.x_tick_visible = False
+            self.y_tick_visible = True
+            self.last_visible_state = 'Show Y-Tick'
+
+        if callType == 'callback':  # Avoid multiple renders if call is from set_colorbar() PDS-740
+            if self.three_d_table:
+                self.draw_2d_image(None, rgb=self.rgb_data_flag, redraw=True)
+            else:
+                self.draw_2d_image(None, rgb=self.rgb_data_flag, redraw=False)
+
+        self.render_image(peripheral='Ticks')
+        self.current_ticks_state = selection
+        self.tickActionDict[self.current_ticks_state].setChecked(True)
+
     def rgb_options(self, option):
-        rgbArray = np.zeros((self.height, self.width, self.num_of_channels), 'uint8')   # Initialize the array with zeros
+        rgbArray = np.zeros((self.height, self.width, self.num_of_channels), 'uint8')  # Initialize the array with zeros
         if option == 0:  # RGB
             rgbArray[..., 0] = self.table[0]
             rgbArray[..., 1] = self.table[1]
@@ -798,33 +842,7 @@ class MainWindow(QMainWindow):
         self.rgb_image = Image.fromarray(rgbArray)
         self.draw_2d_image(None, rgb=self.rgb_data_flag, redraw=True)
 
-    def set_ticks(self, selection):
-        # Had a case where grid lines were drawn for no apparent reason
-        if selection == 'Show':
-            self.x_tick_visible = True
-            self.y_tick_visible = True
-        elif selection == 'Hide':
-            # ('HideTicks')
-            self.x_tick_visible = False
-            self.y_tick_visible = False
-        elif selection == 'Show X-Tick':
-            self.x_tick_visible = True
-            self.y_tick_visible = False
-        elif selection == 'Show Y-Tick':
-            self.x_tick_visible = False
-            self.y_tick_visible = True
-        if self.three_d_table:
-            # print("X: from set_ticks()")
-            self.draw_2d_image(None, rgb=self.rgb_data_flag, redraw=True)
-        else:
-            # print("X: from set_ticks()")
-            self.draw_2d_image(None, rgb=self.rgb_data_flag, redraw=False)
-        self.render_image(peripheral='Ticks')
-        # print('From set_ticks: {}'.format(selection))
-        self.current_ticks_state = selection
-
     def setStyle(self, style):
-        # print('SET STYLE')
         style_sheet = ''
         MainWindow.style_group = style
 
@@ -867,7 +885,6 @@ class MainWindow(QMainWindow):
             # ('cmap: {}'.format(self.cmap))
         else:
             self.cmap = colorMap
-            # print('cmap: {}'.format(self.cmap))
         if colorMap in self.allColormaps:
             self.colorActionList["current selection in 'All'"].setDisabled(False)
             self.actionListAll[colorMap].setChecked(True)
@@ -876,7 +893,6 @@ class MainWindow(QMainWindow):
         else:
             self.colorActionList["current selection in 'All'"].setDisabled(True)
         self.clear_layout(self.imageLayout)
-        # print("X: from set_colormap()")
         self.draw_2d_image(None, redraw=True)
 
     def invert_color_map(self):
@@ -935,7 +951,7 @@ class MainWindow(QMainWindow):
         self.colorActionList['gray'].setChecked(True)
         self.actionListAll['gray'].setChecked(True)
         self.normalizationActionDict['Linear'].setChecked(True)
-        self.tickActionDict['Hide'].setChecked(True)
+        self.tickActionDict['Show'].setChecked(True)
         self.colorbarActionDict['hide'].setChecked(True)
         self.interpolationActionDict['none'].setChecked(True)
 
@@ -958,9 +974,6 @@ class MainWindow(QMainWindow):
 
 
     def search_highlight_table(self):
-        # Start the dialog and return the indices to select
-        # ('FROM CALL: self.table shape is : {}'.format(self.table.shape))
-        # print('type of table: {}'.format(type(self.table)))
         search_table_gui = searchTableDialog.SearchTableDialog(self.table, self.tableWidget)
         search_table_gui.exec_()
 
@@ -1144,7 +1157,7 @@ class MainWindow(QMainWindow):
         self.mainToolBar.show()
         self.open_summary_gui(file_with_path)
         self.summaryTab.setDisabled(False)
-        self.imageMenu.setDisabled(True)  # Disable image functionality until an image is rendered
+        self.colorMapMenu.setDisabled(True)  # Disable image functionality until an image is rendered
         self.viewMenu.setDisabled(False)
         self.imageOptionsMenu.setDisabled(True)   # Disable image functionality until an image is rendered
         self.tableMenu.setDisabled(True)
@@ -1201,7 +1214,7 @@ class MainWindow(QMainWindow):
                     # print('file with path: {}'.format(file_with_path))
                     self.open_summary_gui(file_with_path)
                     self.summaryTab.setDisabled(False)
-                    self.imageMenu.setDisabled(True)  # Disable image functionality until an image is rendered
+                    self.colorMapMenu.setDisabled(True)  # Disable image functionality until an image is rendered
                     self.viewMenu.setDisabled(False)
                     self.imageOptionsMenu.setDisabled(True)
                     self.tableMenu.setDisabled(True)
@@ -1253,14 +1266,19 @@ class MainWindow(QMainWindow):
             self.height = (self.start_y - min(rows)) * -1
             # print('({},{}), width = {}, height = {}'.format(self.start_x, self.start_y, self.width, -self.height))
             self.clear_bounding_box = False
-            # print("draw_2d_image called from get_selection (table)")
-            # print("X: from get_selection()")
             self.draw_2d_image(self, rgb=self.rgb_data_flag, redraw=True, drawBoundingBox=True)
             # change view to 'image'
-            self.tabFrame.setCurrentIndex(self.image_index)
+
+            if self.view_type == 'Array_3D_Image' or self.view_type == 'Array_3D_Spectrum':
+                self.tabFrame.setCurrentIndex(self.image_index + 1)
+            else:
+                self.tabFrame.setCurrentIndex(self.image_index)
+
             self.hideBoundingBoxAction.setDisabled(False)
             self.showBoundingBoxAction.setDisabled(True)
-            self.showMouseSelectionAction.setDisabled(True)
+            # PDs 370 - Prevent this from being turned on when Array-3D_Image
+            if self.view_type != 'Array_3D_Image':
+                self.showMouseSelectionAction.setDisabled(True)
         else:
             results = 'Nothing selected in table.'
             QMessageBox.information(self, 'Selection Highlight', results)
@@ -1268,8 +1286,6 @@ class MainWindow(QMainWindow):
     def hide_selection(self):
         if self.indices:
             self.clear_bounding_box = True
-            # print("draw_2d_image called from hide_selection (table)")
-            # print("X: from hide_selection()")
             self.draw_2d_image(self, rgb=self.rgb_data_flag, redraw=True, drawBoundingBox=False)
             self.hideBoundingBoxAction.setDisabled(True)
             self.showBoundingBoxAction.setDisabled(False)
@@ -1287,9 +1303,8 @@ class MainWindow(QMainWindow):
         # print('ok checking')
         # print('bounding_box_rectange is : {}'.format(self.bounding_box_rectangle))
         if self.bounding_box_rectangle is not None:
-            # self.bounding_box_rectangle.remove()
+            self.bounding_box_rectangle.remove()
             self.allow_rect = True  # allow rectangle drawing over the 2d image
-            #self.draw_2d_image(None, rgb=self.rgb_data, redraw=False)
             self.bounding_box_rectangle = None
 
     def make_selection(self, x1, y1, x2, y2):
@@ -1334,12 +1349,8 @@ class MainWindow(QMainWindow):
         self.tableWidget.clearSelection()
 
     def get_mouse_selection(self):
-#        if self.indices:
-#            self.hide_selection()   # remove any selection from 'Table Options'
         self.check_for_selection()         # check for and clear any current mouse selection
         self.allow_rect = True             # allow rectangle drawing over the 2d image
-        # print("draw_2d_image called from get_mouse_selection")
-        # print("X: from get_mouse_selection()")
         self.draw_2d_image(None, rgb=self.rgb_data_flag, redraw=False)
         self.hideMouseSelectionAction.setDisabled(False)
         self.showMouseSelectionAction.setDisabled(True)
@@ -1356,6 +1367,39 @@ class MainWindow(QMainWindow):
             self.hideMouseSelectionAction.setDisabled(True)
             self.showMouseSelectionAction.setDisabled(False)
             self.showBoundingBoxAction.setDisabled(False)
+
+    def reset_state(self):
+        self.hideMouseSelectionAction.setDisabled(True)
+        self.showMouseSelectionAction.setDisabled(False)
+        self.hideBoundingBoxAction.setDisabled(False)
+        self.showBoundingBoxAction.setDisabled(False)
+
+    def configure_options(self, pds_type):
+        ''' Selectively disable options that cause crashes with
+            these types of files.  NOTE: Need to reinforce for
+            multiple files with a file loaded.
+        '''
+        # # Selectively disable options for Array_3D_Image also disabled Color Map Option PDS-740
+        if pds_type == 'Array_3D_Spectrum':
+            self.colorMapMenu.setDisabled(False)
+            self.imageOptionsMenu.setDisabled(False)
+            # Disable selectively under imageOptionsMenu
+            self.interpolation_sub_menu.setDisabled(False)
+            self.normalization_sub_menu.setDisabled(False)
+            self.showMouseSelectionAction.setDisabled(True)
+            self.hideMouseSelectionAction.setDisabled(True)
+        elif pds_type == 'Array_3D_Image':
+            self.imageOptionsMenu.setDisabled(False)
+            self.interpolation_sub_menu.setDisabled(True)
+            self.normalization_sub_menu.setDisabled(True)
+            self.colorMapMenu.setDisabled(True)
+        elif pds_type == 'Array_2D_Image':
+            self.colorMapMenu.setDisabled(False)
+            self.imageOptionsMenu.setDisabled(False)
+            self.interpolation_sub_menu.setDisabled(False)
+            self.normalization_sub_menu.setDisabled(False)
+            self.showMouseSelectionAction.setDisabled(False)
+            self.hideMouseSelectionAction.setDisabled(False)
 
     def handle_view_clicked(self, index):
         '''
@@ -1376,7 +1420,6 @@ class MainWindow(QMainWindow):
         self.clear_layout(self.imageLayout)
         # self.summary[1] is a list of all the 'Name' fiels in the Summary
         viewType = self.get_type(index, self.summary[1])
-        # print('ViewType: {}'.format(viewType))
 
         self.tableMenu.setDisabled(False)
         self.labelMenu.setDisabled(False)
@@ -1389,6 +1432,9 @@ class MainWindow(QMainWindow):
         self.draw_label(index, viewType)
         self.current_index = index  # These are used when label options change within the same file
         self.view_type = viewType
+        self.array_3d_Spectrum = False
+        # reset desired state on change
+        self.reset_state()
 
         self.test_for_label()
         # self.adjust_availability()
@@ -1399,58 +1445,54 @@ class MainWindow(QMainWindow):
             self.tabFrame.setTabEnabled(1, False)
             self.tabFrame.setTabEnabled(2, False)
             self.tabFrame.setTabEnabled(3, True)
-            self.imageMenu.setDisabled(True)
+            self.colorMapMenu.setDisabled(True)
             self.viewMenu.setDisabled(False)
             self.imageOptionsMenu.setDisabled(True)
             self.tableMenu.setDisabled(True)
             self.labelMenu.setDisabled(True)
             self.tabFrame.setCurrentIndex(self.label_index)    # open up in the label tab
 
-        elif viewType == 'Array_2D_Image' or 'Array_2D_Map':
+        elif viewType == 'Array_2D_Image' or viewType == 'Array_2D_Map':
             self.rgb_data_flag = False
             if self.cubeData:
                 self.tabFrame.setCurrentIndex(self.image_index + 1)  # account for the 3D Table tab
                 self.current_view = self.image_index + 1
                 self.configure_tabs(True, False, True, self.current_view)
-
             else:
                 self.tabFrame.setCurrentIndex(self.image_index)  # open up in the image tab
                 self.current_view = self.image_index
                 self.configure_tabs(True, True, True, self.current_view)
 
+            self.configure_options('Array_2D_Image')
             self.draw_table(index)
             self.clear_layout(self.imageLayout)
             self.draw_2d_image(None, rgb=self.rgb_data_flag, redraw=False)
 
         elif viewType == 'Array_3D_Image':
             self.rgb_data_flag = True
-            #if self.rgb_data_flag:
-            self.tabFrame.setCurrentIndex(self.image_index + 1)  # account for the 3D Table tab
+            self.tabFrame.setCurrentIndex(self.table_index)  # Open in RGB Table tab
             self.current_view = self.image_index + 1
             self.configure_tabs(True, True, True, self.current_view)
+            self.configure_options('Array_3D_Image')
             self.draw_table(index)
             self.clear_layout(self.imageLayout)
             self.draw_2d_image(None, rgb=self.rgb_data_flag, redraw=False)
             self.rgb_combo.setDisabled(False)
 
         elif viewType == 'Array_3D_Spectrum':
-
+            self.array_3d_Spectrum = 'True'
             self.set_tab_state(viewType)
-
             self.rgb_data_flag = False
             self.draw_table(index)
             self.configure_tabs(True, True, True, self.three_d_table_index)
+            self.configure_options('Array_3D_Spectrum')
             self.tabFrame.setTabEnabled(3, True)
             self.tabFrame.setCurrentIndex(self.table_index)
-            # print('TABLE ++++++ INDEX: {}'.format(self.table_index))
-            # self.tabFrame.addTab(self.threeDTableTab, "3D Table")
-            # self.tabFrame.setCurrentIndex(self.table_index)  # open up in the table tab
-            # self.cubeData = True
 
         else:  # Table Data with no image
             # print("SEEM TO HAVE FOUND THE RIGHT PLACE, viewtype is: {}".format(viewType))
             self.rgb_data_flag = False
-            self.imageMenu.setDisabled(True)
+            self.colorMapMenu.setDisabled(True)
             self.viewMenu.setDisabled(False)
             self.imageOptionsMenu.setDisabled(True)
             self.showBoundingBoxAction.setDisabled(True)
@@ -1478,8 +1520,6 @@ class MainWindow(QMainWindow):
         self.tabFrame.setTabEnabled(3, True)
         self.current_view = view
 
-
-
     def test_for_label(self, none_returned = []):
         # This is called when a view is changed from the Summary GUI area
         # It enables the label areas that are present for that view, and disables those that are not.
@@ -1502,7 +1542,6 @@ class MainWindow(QMainWindow):
             self.select_label('Full Label')  # Decide what we have based on the full lable
             self.adjust_availability()
 
-
     def adjust_availability(self):
         '''
         This disables categories in the Label pulldown with a value of 'none'
@@ -1514,8 +1553,6 @@ class MainWindow(QMainWindow):
             print('list not made yet')
         for cat in disable_categories:
             cat = str(cat.replace('_', ' '))
-            # print('***********************')
-            # print(cat)
             self.labelActionList[cat].setDisabled(True)
         # Restore default label
         self.select_label('Object Label')
@@ -1642,9 +1679,7 @@ class MainWindow(QMainWindow):
         self.tableNumDisplay.setDisabled(False)
 
         table_index_for_cube_data = self.table_index + 1   # This reflects the current table index
-        # self.summary_index = self.summary_index + 1
         self.full_table = data  # This is used in a callback for next and previous tables
-        # try:
         self.tabFrame.setTabEnabled(2, True)
         self.tabFrame.setTabEnabled(3, True)
         sending_button = self.sender()
@@ -1656,12 +1691,8 @@ class MainWindow(QMainWindow):
         # set up the table for rendering
         self.draw_indexed_table(data, button_number - 1)
         self.tabFrame.setCurrentIndex(table_index_for_cube_data)  # open up in the table tab
-        # except:
-        #     print("3D table array button click did not work")
 
     def draw_indexed_table(self, table, index):
-        # print('INDEXED (draw_indexed_table)')
-        # TODO This is assuming that all the tables are the same size and the same type
         self.three_d_table = True
 
         num_rows = int(self.individual_table_dimension[1])
@@ -1757,15 +1788,6 @@ class MainWindow(QMainWindow):
 
             elif self.table_type == 'Array_3D_Image':
                 self.draw_rgb_image_array(dimension, self.table)
-# TODO Delete the else below
-            else:
-                if self.threeDTabInPlace and not self.cubeData:
-                    #print('DID I GET HERE?')
-                    #print(self.cubeData)
-                    #self.tabFrame.removeTab(1)
-                    #self.threeDTabInPlace = False
-                    # self.current_view = self.table_index
-                    pass
 
             # check for one dimensional array
             if len(dimension) == 1:
@@ -2065,8 +2087,8 @@ class MainWindow(QMainWindow):
                 # print('ARRAY data')
                 # print(self.image_data.shape)
 
-        self._settings = {'dpi': self.dpi, 'axes': Model._AxesProperties(), 'selected_axis': 0,
-                          'is_rgb': False, 'rgb_bands': (None, None, None)}
+        # self._settings = {'dpi': self.dpi, 'axes': Model._AxesProperties(), 'selected_axis': 0,
+        #                   'is_rgb': False, 'rgb_bands': (None, None, None)}
         self.clear_layout(self.imageLayout)
         self.figure = Figure((10.0, 8.0), dpi=self._settings['dpi'])
         self.imageWidget = FigureCanvas(self.figure)
@@ -2074,12 +2096,11 @@ class MainWindow(QMainWindow):
         self.figure.clear()
 
         self.axes = self.figure.add_subplot(111)
-        # print("adding axes")
 
-        self.axes.autoscale_view(True,True,True)
+        self.axes.autoscale_view(True, True, True)
         self.axes.set_xlabel(self.title)
 
-        # Add Toolbar to widget
+                # Add Toolbar to widget
         nav_toolbar = NavigationToolbar(self.imageWidget, self)
         toolbar = nav_toolbar
 
@@ -2147,18 +2168,10 @@ class MainWindow(QMainWindow):
         :param peripheral: This flag tells the methods to only change the ticks or colorbar
         :return:
         '''
+
         if peripheral == None:  # Only render these when redrawing the image.
             self.viewMenu.setDisabled(False)
-            # Image options do not work on RGB images.
-            if self.rgb_data_flag:
-                self.imageMenu.setDisabled(True)
-                self.imageOptionsMenu.setDisabled(True)
-            else:
-                self.imageMenu.setDisabled(False)
-                self.imageOptionsMenu.setDisabled(False)
-
             self.fileSaveImageAsAction.setDisabled(False)
-
             self.imageDockWidget = QDockWidget(self.title, self)
             self.imageDockWidget.setObjectName("imageDockWidget")
             # Make the dock widget floatable, but not closeable
@@ -2181,19 +2194,13 @@ class MainWindow(QMainWindow):
             self.axes.get_yaxis().set_visible(self.y_tick_visible)
         else:
             pass
-
         # print('calling is_floating()')
+
         self.is_floating()
         self.imageDockWidget.sizeHint()
         self.imageWidget.setWindowTitle(QString("Yogi Bear"))
-
-        # print("DIMENSION")
-        # print(self.imageWidget.geometry())
-        # self.imageWidget.resize(100, 100)
-
         self.imageTab.setLayout(self.imageLayout)
 
-#################################################
 
     def Yogi(self):
         print("Smarter than the average Bear.")
@@ -2771,7 +2778,7 @@ class ItemTable(QTableView):
         self.column_keys = self.table.dtype.names
         self.showHeaders = False
         self.newKey = ''
-        self.image_types = ('Array','Array_2D_Image', 'Array_3D_Spectrum', 'Array_3D_Image', 'Array_2D_Map')
+        self.image_types = ('Array', 'Array_2D_Image', 'Array_3D_Spectrum', 'Array_3D_Image', 'Array_2D_Map')
         self.int_data_types = ('b1', 'i1', 'i2', 'i4', 'i8', 'u1', 'u2', 'u4', 'u8',
                                'uint1', 'uint2', 'uint4', 'uint8',)
         self.float_data_types = ('f2', 'f4', 'f8', 'float16', 'float32', 'float64')

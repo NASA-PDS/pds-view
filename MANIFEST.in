@@ -1,0 +1,3 @@
+recursive-include pds_inspect_tool/Icons *
+recursive-include pds_inspect_tool/styleSheets *
+recursive-include pds_inspect_tool/templates *

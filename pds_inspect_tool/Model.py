@@ -316,14 +316,13 @@ class TwoDImageModel(QtCore.QAbstractTableModel):
     TwoDImageModel class
     This class handles the modelling of 2D image table data
     Allows large nump[y array to be loaded directly into a tableView
-    It is also used for 3D cube data, as the individual slices are 2D images
+    It is also used for 3D cube data and Array_3D_Image, as the individual slices are 2D images
     It is for the display of pixel data in a table not for image display
     '''
 
     def __init__(self, data, parent=None):
         QtCore.QAbstractTableModel.__init__(self, parent)
         self._data = np.array(data)
-
         try:
             self.r, self.c = np.shape(self._data)
         except:
@@ -617,31 +616,34 @@ class ImageModel():
 
 
 def assignTableModel(data, table_type):
-    # print('*************')
-    # print(table_type)
-    if table_type == 'Array_2D_Image' or 'Array_2D_Map':
-        # print("Length of data: {}".format(len(data)))
+    image_types = ['Array_2D_Image', 'Array_3D_Image', 'Array_3D_Spectrum', 'Array_2D_Map']
+
+    if table_type in image_types:
         return TwoDImageModel(data)
-    elif table_type == 'Array_3D_Image':
-        # print("Length of data: {}".format(len(data)))
-        return TwoDImageModel(data)
-    elif table_type == 'Array_3D_Spectrum':
-        # print 'Array_3D_Spectrum'
-        # print("Length of data: {}".format(len(data)))
-        return TwoDImageModel(data)
-    elif table_type == 'Table_Character':
-        return TableModel(data, table_type)
-    elif table_type == 'Table_Binary':
-        return TableModel(data, table_type)
-    elif table_type == 'Array':
-        return TableModel(data, table_type)
-    elif table_type == 'Array_2D_Map':
-        # print("Length of data: {}".format(len(data)))
-        return TableModel(data, table_type)
     else:
-        # possible_groups = True
-        # print("In else: table type is, {}".format(table_type))
         return TableModel(data, table_type)
+
+
+    # if table_type == 'Array_2D_Image':
+    #     return TwoDImageModel(data)
+    # elif table_type == 'Array_3D_Image':
+    #     return TwoDImageModel(data)
+    # elif table_type == 'Array_3D_Spectrum':
+    #     # print 'Array_3D_Spectrum'
+    #     # print("Length of data: {}".format(len(data)))
+    #     return TwoDImageModel(data)
+    # elif table_type == 'Table_Character':
+    #     return TableModel(data, table_type)
+    # elif table_type == 'Table_Binary':
+    #     return TableModel(data, table_type)
+    # elif table_type == 'Array':
+    #     return TableModel(data, table_type)
+    # elif table_type == 'Array_2D_Map':
+    #     return TwoDImageModel(data)
+    # else:
+    #     # possible_groups = True
+    #     # print("In else: table type is, {}".format(table_type))
+    #     return TableModel(data, table_type)
 
 
 class _AxesProperties(object):

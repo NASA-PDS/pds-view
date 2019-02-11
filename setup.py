@@ -44,7 +44,6 @@ with open(path.join(here, 'CHANGES.txt'), encoding='utf-8') as changes_file:
     changes = changes_file.read().replace('.. :changelog:', '')
 
 requirements = [
-    # TODO: put package requirements here
     'py27-pip'
 ]
 
@@ -57,18 +56,17 @@ setup(
     author_email='Sean.Hardman@jpl.nasa.gov,James.E.Hofman@jpl.nasa.gov',
     url='https://github.jpl.nasa.gov/PDSEN/pds-inspect-tool',
     packages=find_packages(exclude=['contrib', 'docs', 'tests']),
-    entry_points={
-        'console_scripts':[
-            'pds-inspect-tool=pds_inspect_tool.View:main',
-            ],
-        },
+    package_data={
+        # If any package contains *.txt or *.rst files, include them:
+        '': ['*.txt', '*.rst']
+    },
     include_package_data=True,
     install_requires=requirements,
-    license="MIT",
+    license="Apache License 2.0",
     classifiers=[
         'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
-        'License :: OSI Approved :: MIT License',
+        'License :: OSI Approved :: Apache Software License',
         'Natural Language :: English',
         "Programming Language :: Python :: 2",
         'Programming Language :: Python :: 2.7',
