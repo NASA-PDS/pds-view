@@ -71,6 +71,8 @@ import Translate
 import searchTableDialog
 import searchLabelDialog
 
+from . import resource_path
+
 MAC = "qt_mac_set_native_menubar" in dir()
 __version__ = "1.0.1"
 
@@ -160,7 +162,7 @@ class MainWindow(QMainWindow):
 
         self.logo = QLabel()
         try:
-            self.logo.setPixmap(QPixmap("./Icons/PDS_Logo_2.png"))
+            self.logo.setPixmap(QPixmap(resource_path("./Icons/PDS_Logo_2.png")))
         except:
             print('Could not read logo')
         self.setCentralWidget(self.logo)
@@ -691,7 +693,7 @@ class MainWindow(QMainWindow):
         self.mainToolBar.hide()
         self.initial_gray_scale_setting()
         self.setWindowTitle("PDS Inspect Tool")
-        self.setWindowIcon(QIcon("./Icons/MagGlass.png"))
+        self.setWindowIcon(QIcon(resource_path("./Icons/MagGlass.png")))
 
     def close_app(self):
         sys.exit()
@@ -850,19 +852,19 @@ class MainWindow(QMainWindow):
             self.group_color_dict = self.group_bg_dict_default
             self.group_text_color = self.group_text_color_default
         elif style == 'Dark Orange':
-            f = open('./styleSheets/darkorange.stylesheet', 'r')
+            f = open(resource_path('./styleSheets/darkorange.stylesheet', 'r'))
             style_sheet = f.read()
             f.close
             self.group_color_dict = self.group_bg_dict_dark
             self.group_text_color = self.group_bg_dict_dark_orange
         elif style == 'Dark Blue':
-            f = open('./styleSheets/darkblue.stylesheet', 'r')
+            f = open(resource_path('./styleSheets/darkblue.stylesheet', 'r'))
             style_sheet = f.read()
             f.close
             self.group_color_dict = self.group_bg_dict_dark
             self.group_text_color = self.group_bg_dict_dark_blue
         elif style == 'Neon Lights':
-            f = open('./styleSheets/neonlights.stylesheet', 'r')
+            f = open(resource_path('./styleSheets/neonlights.stylesheet', 'r'))
             style_sheet = f.read()
             f.close
             self.group_color_dict = self.group_bg_dict_dark
@@ -912,7 +914,7 @@ class MainWindow(QMainWindow):
                       checkable=False, group_action=False, signal="triggered()"):
         action = QAction(text, self)
         if icon is not None:
-            action.setIcon(QIcon("./Icons/{}".format(icon)))
+            action.setIcon(QIcon(resource_path("./Icons/{}".format(icon))))
         if shortcut is not None:
             action.setShortcut(shortcut)
         if tip is not None:
