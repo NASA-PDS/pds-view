@@ -39,15 +39,22 @@ Regardless of platform, the requirements are the same. First, install Python
 Then, make a virtualenv from *that* installation, letting the virtualenv
 have access to PyQt4 by passing ``--system-site-packages``::
 
-    virtualenv --system-site-packages /tmp/mypython
+    virtualenv --system-site-packages /tmp/mypython  (macOS, Linux, other Unix-like)
+    virtualenv.exe --system-site-packages \tmp\mypython  (Windows)
 
 (If your Python 2.7 installation didn't come with ``vitualenv``, you may have
 to install it separately.) Inside that virutalenv, install ``matplotlib``,
-``seaborn``, and PDS4_tools-1.0::
+``seaborn``, and PDS4_tools-1.0; on macOS, Linux, or other Unix-like systems::
 
     cd /tmp/mypython
     bin/pip install matplotlib seaborn
     bin/pip install http://pdssbn.astro.umd.edu/ftp/tools/readpds_python/1.0/PDS4_tools-1.0.zip
+
+On Windows::
+
+    cd \tmp\mypython
+    Scripts\pip.exe install matplotlib seaborn
+    Scripts\pip.exe install http://pdssbn.astro.umd.edu/ftp/tools/readpds_python/1.0/PDS4_tools-1.0.zip
 
 
 Building Out
@@ -55,7 +62,8 @@ Building Out
 
 Building the platform-specific installers leverages Buildout_.  The Buildout
 bootstrapper script, ``boostrap.py`` is included with the PDS Inspect Tool
-source.  Simply do the following:
+source.  Simply do the following (adjusting paths and platform-specifics as
+needed):
 
 1. Use the Python from your vitualenv to bootstrap:
    ``/tmp/mypython/bin/python2.7 bootstrap.py``
