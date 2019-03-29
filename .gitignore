@@ -1,5 +1,6 @@
 build/
 dist/
+eggs
 PDS_Inspect_Tool.egg-info
 *.spec
 .DS_Store
