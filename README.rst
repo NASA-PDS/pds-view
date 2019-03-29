@@ -76,7 +76,7 @@ For Windows
     ``dist/PDS-Inspect-Tool.exe`` which Windows users can double-click
     to run.
 For macOS
-    ``bin/buildout install macOS``. This will create
+    ``bin/buildout install macos``. This will create
     ``dist/PDS-Inspect-Tool.app`` which macOS users can double-click
     to run.
 For Linux
