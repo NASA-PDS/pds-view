@@ -1,3 +1,15 @@
 build/
 dist/
+eggs
 PDS_Inspect_Tool.egg-info
+*.spec
+.DS_Store
+.installed.cfg
+bin
+develop-eggs
+*.log
+parts
+*.py[co]
+typescript
+.*.swp
+*.sublime-*

@@ -1,4 +1,6 @@
-# Copyright (c) 2019, California Institute of Technology ("Caltech").  
+# encoding: utf-8
+#
+# Copyright © 2019, California Institute of Technology ("Caltech").
 # U.S. Government sponsorship acknowledged.
 #
 # All rights reserved.
@@ -6,12 +8,12 @@
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
 #
-# * Redistributions of source code must retain the above copyright notice,
+# • Redistributions of source code must retain the above copyright notice,
 #   this list of conditions and the following disclaimer.
-# * Redistributions must reproduce the above copyright notice, this list of
+# • Redistributions must reproduce the above copyright notice, this list of
 #   conditions and the following disclaimer in the documentation and/or other
 #   materials provided with the distribution.
-# * Neither the name of Caltech nor its operating division, the Jet Propulsion
+# • Neither the name of Caltech nor its operating division, the Jet Propulsion
 #   Laboratory, nor the names of its contributors may be used to endorse or
 #   promote products derived from this software without specific prior written
 #   permission.
@@ -28,23 +30,5 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-from __future__ import print_function
-import sys, os, os.path
-
-__author__ = 'Sean Hardman,Jim Hofman'
-__email__ = 'Sean.Hardman@jpl.nasa.gov,James.E.Hofman@jpl.nasa.gov'
-__version__ = '0.4.0-dev'
-
-
-def resource_path(path):
-    u'''Return the package-normalized path to the resource at ``path``.
-    Normally, we'd use pkg_resources for this, except PyInstaller doesn't
-    support pkg_resources except in eggs, and this is a source distribution.
-    '''
-    base = getattr(sys, '_MEIPASS', None)
-    if base is not None:
-        return os.path.join(base, path)
-    else:
-        cwd = os.getcwd()
-        pkg = os.path.join(cwd, 'pds_inspect_tool')
-        return os.path.join(pkg, path) if os.path.isdir(pkg) else os.path.join(cwd, path)
+import sip
+sip.setapi('QVariant', 2)

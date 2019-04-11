@@ -1,4 +1,7 @@
-# Copyright (c) 2019, California Institute of Technology ("Caltech").  
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+# Copyright (c) 2019, California Institute of Technology ("Caltech").
 # U.S. Government sponsorship acknowledged.
 #
 # All rights reserved.
@@ -28,9 +31,6 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
 from codecs import open
 from os import path
 from setuptools import setup, find_packages
@@ -40,11 +40,19 @@ here = path.abspath(path.dirname(__file__))
 with open(path.join(here, 'README.rst'), encoding='utf-8') as readme_file:
     readme = readme_file.read()
 
-with open(path.join(here, 'CHANGES.txt'), encoding='utf-8') as changes_file:
+# PyPI expectes reStructuredText, but the changelog is apparently in Markdown.
+# Oh well!
+with open(path.join(here, 'CHANGELOG.md'), encoding='utf-8') as changes_file:
     changes = changes_file.read().replace('.. :changelog:', '')
 
 requirements = [
-    'py27-pip'
+    'setuptools',                     # All modern setup.py's should require setuptools
+    'matplotlib==2.2.3',              # 3.0.0 and later require Python 3
+    'backports.functools_lru_cache',  # matplotlib fails to declare this dependency
+    'seaborn==0.9.0',                 # May as well pin this version too for future resiliency
+    'pillow',                         # Needed by PDS-Inspect-Tool
+    'airspeed',                       # Needed by PDS-Inspect-Tool
+    'six',                            # Needed for PyInstaller
 ]
 
 setup(
@@ -55,6 +63,10 @@ setup(
     author="Sean Hardman,Jim Hofman",
     author_email='Sean.Hardman@jpl.nasa.gov,James.E.Hofman@jpl.nasa.gov',
     url='https://github.jpl.nasa.gov/PDSEN/pds-inspect-tool',
+    entry_points={
+        # This should be `gui_scripts` but I get no script generated
+        'console_scripts': ['PDS-Inspect-Tool=pds_inspect_tool.View:main']
+    },
     packages=find_packages(exclude=['contrib', 'docs', 'tests']),
     package_data={
         # If any package contains *.txt or *.rst files, include them:

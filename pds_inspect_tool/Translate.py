@@ -42,6 +42,8 @@ from pds.core.parse_duplicate_ids import ParseDuplicateIds
 from pds.core.parser_jh import Parser_jh
 from pds.core.parser import Parser
 
+from . import resource_path
+
 class Translate():
     def __init__(self, file_to_convert):
         self.data_pointers = ['^IMAGE', '^TABLE', '^SERIES', '^SPREADSHEET']
@@ -209,7 +211,7 @@ class Translate():
         # TODO "strip all leading and trailing whitespace in dict. = done
         # TODO "Strip double quotes from entries in dict.  - done
 
-        loader = CachingFileLoader("./templates")
+        loader = CachingFileLoader(resource_path("./templates"))
         template = loader.load_template("InspectTemplate.vm")
         map = {'label': self.labels, 'str': str, 'generate': self.generate, 'ptr_object_map': self.ptr_object_dict,
                'ptr_offset_map': self.ptr_offset_dict, 'object_placeholder': self.object_type}
