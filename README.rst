@@ -144,13 +144,3 @@ License
 
 The project is licensed under the Apache License, version 2.  See the
 ``LICENSE.txt`` file for details.
-
-
-
-.. References:
-.. _unsigned: https://support.apple.com/kb/ph25088?locale=en_US
-.. _releases: https://github.com/NASA-PDS-Incubator/pds-inspect-tool/releases
-.. _`Python 2.7`: https://www.python.org/downloads/
-.. _Qt4: https://www.qt.io
-.. _PyQt4: https://www.riverbankcomputing.com/software/pyqt/download
-.. _`PDS4 Tools`: http://sbndev.astro.umd.edu/wiki/Python_PDS4_Tools
