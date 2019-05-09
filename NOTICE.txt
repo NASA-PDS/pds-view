@@ -1,4 +1,4 @@
-PDS Inspect Tool
+PDSView
 Copyright 2019 California Institute of Technology
 
 ---

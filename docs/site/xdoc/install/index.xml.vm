@@ -41,7 +41,7 @@
 
   <body>
     <section name="Installation">
-      <p>This document describes how to install the Inspect Tool contained in the <i>${project.artifactId}</i> package. The following topics can be found in this document:
+      <p>This document describes how to install PDSView contained in the <i>${project.artifactId}</i> package. The following topics can be found in this document:
       </p>
 
       <ul>
@@ -52,11 +52,11 @@
     </section>
 
     <section name="System Requirements">
-      <p>This section details the system requirements for installing and operating the Inspect Tool software.
+      <p>This section details the system requirements for installing and operating PDSView software.
       </p>
 
       <subsection name="Python">
-        <p>The Inspect Tool software was developed using Python and will run on any platform with a supported Python environment. It is compatible with Python 2.6 or 2.7 (Python above 2.7.8 is recommended). It is not compatible with Python 2.5 or earlier versions; or currently with Python 3. The following commands test the local Python installation in a UNIX-based environment:
+        <p>PDSView software was developed using Python and will run on any platform with a supported Python environment. It is compatible with Python 2.6 or 2.7 (Python above 2.7.8 is recommended). It is not compatible with Python 2.5 or earlier versions; or currently with Python 3. The following commands test the local Python installation in a UNIX-based environment:
         </p>
 
         <source>
@@ -67,12 +67,12 @@
 Python 2.7.12
         </source>
 
-        <p>The first command above checks whether the <i>python</i> executable is in the environment's path and the second command reports the version. If Python is not installed or the version is not 2.7 (python versions above 2.7.8 are recommended for easier installation of the Inspect Tool), Python will need to be downloaded and installed in the current environment. Consult the local system administrator for installation of this software on networked machines.  Most systems should have both Python 2.7 and Python 3 installed.  On local machines, current versions of <i>python</i> can be downloaded from <a href="https://www.python.org/downloads/">Python download page</a>
+        <p>The first command above checks whether the <i>python</i> executable is in the environment's path and the second command reports the version. If Python is not installed or the version is not 2.7 (python versions above 2.7.8 are recommended for easier installation of PDSView), Python will need to be downloaded and installed in the current environment. Consult the local system administrator for installation of this software on networked machines.  Most systems should have both Python 2.7 and Python 3 installed.  On local machines, current versions of <i>python</i> can be downloaded from <a href="https://www.python.org/downloads/">Python download page</a>
         </p>
       </subsection>
 
       <subsection name="Python Dependencies">
-        <p>The Inspect Tool software has dependencies on a number of Python libraries. In the future the code will be packaged as a standalone executable. However for now, utilize one of the following procedures for installing these dependencies on your target platform:
+        <p>PDSView software has dependencies on a number of Python libraries. In the future the code will be packaged as a standalone executable. However for now, utilize one of the following procedures for installing these dependencies on your target platform:
         </p>
 
         <ul>
@@ -113,14 +113,14 @@ or
           </p>
         </li>
         <li><b>doc/</b><br/>
-          <p>This directory contains a local web site with the Inspect Tool documentation and other configuration management related information. Just point the desired web browser to the <i>index.html</i> file in this directory.
+          <p>This directory contains a local web site with PDSView documentation and other configuration management related information. Just point the desired web browser to the <i>index.html</i> file in this directory.
           </p>
         </li>
       </ul>
     </section>
 
     <section name="Configuring the Environment">
-      <p>In order to manage and interact with the Inspect Tool, the local environment must first be configured appropriately. This section describes how to setup the user environment on UNIX-based and Windows machines.
+      <p>In order to manage and interact with PDSView, the local environment must first be configured appropriately. This section describes how to setup the user environment on UNIX-based and Windows machines.
       </p>
 
       <subsection name="UNIX-Based Environment">

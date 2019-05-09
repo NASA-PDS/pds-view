@@ -46,5 +46,5 @@ def resource_path(path):
         return os.path.join(base, path)
     else:
         cwd = os.getcwd()
-        pkg = os.path.join(cwd, 'pds_inspect_tool')
+        pkg = os.path.join(cwd, 'pds_view')
         return os.path.join(pkg, path) if os.path.isdir(pkg) else os.path.join(cwd, path)

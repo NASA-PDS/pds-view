@@ -41,11 +41,11 @@
 
   <body>
     <section name="Python Dependency Installation for General Platform">
-      <p>This document describes how to install the Python dependencies for the Inspect Tool contained in the <i>${project.artifactId}</i> package on a general platform.
+      <p>This document describes how to install the Python dependencies for PDSView contained in the <i>${project.artifactId}</i> package on a general platform.
       </p>
 
       <subsection name="Dependencies">
-        <p>The following modules must be installed in order to run the Inspect Tool:
+        <p>The following modules must be installed in order to run PDSView:
         </p>
 
         <ul>
@@ -107,7 +107,7 @@ or
              <p><i>    # error(</i>=</p>
              <p><i>          # "This version of PyQt4 and the commercial version of Qt have "</i></p>
              <p><i>          # "incompatible licenses.”)</i></p>
-          <li>Try running the Inspect Tool again:</li>
+          <li>Try running PDSView again:</li>
             <p> You may get the following error:</p>
             <p> <i>RuntimeError: Python is not installed as a framework. The Mac OS X backend will not be able to function correctly if Python is not installed as a framework. See the Python documentation for more information on installing Python as a framework on Mac OS X. Please either reinstall Python as a framework, or try one of the other backends. If you are using (Ana)Conda please install python.app and replace the use of 'python' with 'pythonw'. See 'Working with Matplotlib on OSX' in the Matplotlib FAQ for more information.</i></p>
             <p> If so try the following steps:</p>
