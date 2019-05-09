@@ -11,8 +11,6 @@ Features
 
 • Visualization of PDS3 data products
 • Visualization of PDS4 data products
-• Drag-and-drop of files for easy opening and exploration (on certain
-  platforms only)
 
 
 Installation
