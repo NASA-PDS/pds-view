@@ -55,7 +55,8 @@ the desktop is not guaranteed to work on macOS at all. In this case, choosing
 Windows
 -------
 
-Two downloads are provided and tested on 64-bit Windows version 10. These versions are identical except as noted below:
+Two downloads are provided and tested on 64-bit Windows version 10. These
+versions are identical except as noted below:
 
 • ``PDS-Inspect-Tool-Windows-single-exe.zip``. Downloading and unpacking this
   archive yields a single executable file ``PDS-Inspect-Tool.exe`` that you
