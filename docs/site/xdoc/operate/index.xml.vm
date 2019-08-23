@@ -40,7 +40,7 @@
 
   <body>
     <section name="Operation">
-      <p>This document describes how to operate the Inspect Tool. The following topics can be found in this document:
+      <p>This document describes how to operate PDSView. The following topics can be found in this document:
       </p>
 
       <ul>
@@ -59,7 +59,7 @@
     </section>
 
     <section name="Feedback">
-      <p>The Inspect Tool is under development. Future releases will:
+      <p>PDSView is under development. Future releases will:
       </p>    
 
       <ul>
@@ -72,7 +72,7 @@
         </ul> 
       </ul>
 
-      <p>Please send any feedback (likes/dislikes, bugs, suggested features) to <a href="mailto:james.e.hofman@jpl.nasa.gov">Inspect Tool Feedback</a>
+      <p>Please send any feedback (likes/dislikes, bugs, suggested features) to <a href="mailto:james.e.hofman@jpl.nasa.gov">PDSView Feedback</a>
       </p>
     </section>
   </body>

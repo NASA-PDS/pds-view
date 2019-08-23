@@ -1,7 +1,7 @@
 build/
 dist/
 eggs
-PDS_Inspect_Tool.egg-info
+*.egg-info
 *.spec
 .DS_Store
 .installed.cfg

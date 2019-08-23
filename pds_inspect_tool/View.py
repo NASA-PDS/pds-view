@@ -692,7 +692,7 @@ class MainWindow(QMainWindow):
         # Hide main toolbar until a file is loaded.
         self.mainToolBar.hide()
         self.initial_gray_scale_setting()
-        self.setWindowTitle("PDS Inspect Tool")
+        self.setWindowTitle("PDSView")
         self.setWindowIcon(QIcon(resource_path("./Icons/MagGlass.png")))
 
     def close_app(self):

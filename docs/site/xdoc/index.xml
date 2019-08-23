@@ -34,13 +34,13 @@
 
 <document>
   <properties>
-    <title>About Inspect Tool</title>
+    <title>About PDSView</title>
     <author email="Sean.Hardman@jpl.nasa.gov">Sean Hardman</author>
   </properties>
 
   <body>
-    <section name="About Inspect Tool">
-      <p>The Inspect Tool provides support for visualizing PDS3 and PDS4 data products.
+    <section name="About PDSView">
+      <p>PDSView provides support for visualizing PDS3 and PDS4 data products.
       </p>
 
       <p>Please send comments, change requests and bug reports to the <a href="mailto:pds_operator@jpl.nasa.gov">PDS Operator</a> at pds_operator@jpl.nasa.gov.

@@ -50,22 +50,22 @@ requirements = [
     'matplotlib==2.2.3',              # 3.0.0 and later require Python 3
     'backports.functools_lru_cache',  # matplotlib fails to declare this dependency
     'seaborn==0.9.0',                 # May as well pin this version too for future resiliency
-    'pillow',                         # Needed by PDS-Inspect-Tool
-    'airspeed',                       # Needed by PDS-Inspect-Tool
+    'pillow',                         # Needed by PDSView
+    'airspeed',                       # Needed by PDSView
     'six',                            # Needed for PyInstaller
 ]
 
 setup(
-    name='PDS-Inspect-Tool',
-    version='0.4.0-dev',
-    description="PDS Inspect Tool",
+    name='PDSView',
+    version='0.4.0dev0',
+    description="PDSView tool for viewing PDS products",
     long_description=readme + '\n\n' + changes,
     author="Sean Hardman,Jim Hofman",
     author_email='Sean.Hardman@jpl.nasa.gov,James.E.Hofman@jpl.nasa.gov',
-    url='https://github.jpl.nasa.gov/PDSEN/pds-inspect-tool',
+    url='https://github.com/NASA-PDS-Incubator/pds-view',
     entry_points={
         # This should be `gui_scripts` but I get no script generated
-        'console_scripts': ['PDS-Inspect-Tool=pds_inspect_tool.View:main']
+        'console_scripts': ['PDSView=pds_inspect_tool.View:main']
     },
     packages=find_packages(exclude=['contrib', 'docs', 'tests']),
     package_data={
