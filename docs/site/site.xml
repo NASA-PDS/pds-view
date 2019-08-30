@@ -32,25 +32,25 @@
 # POSSIBILITY OF SUCH DAMAGE.
 -->
 
-<project name="Inspect Tool">
+<project name="PDSView">
   <bannerLeft>
     <src>images/pds4_logo.png</src>
     <href>https://pds-cm.jpl.nasa.gov/pds4/</href>
   </bannerLeft>
 
   <bannerRight>
-    <name>Inspect Tool</name>
+    <name>PDSView</name>
   </bannerRight>
 
   <version/>
 
   <body>
     <links>
-      <item name="Inspect" href="https://pds-cm.jpl.nasa.gov/pds4/preparation/inspect/index.html" />
+      <item name="PDSView" href="./docs/index.html" />
     </links>
 
     <menu name="Software Documentation">
-      <item name="About Inspect Tool" href="index.html"/>
+      <item name="About PDSView" href="index.html"/>
       <item name="Installation" href="install/index.html"/>
       <item name="Operation" href="operate/index.html"/>
     </menu>

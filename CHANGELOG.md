@@ -1,8 +1,13 @@
-# PDS Inspect Tool
+# PDSView
 
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
+
+## [TBD] — TBD
+
+Renames the built executable to `PDSView` and updates the documentation to
+reflect the same naming.
 
 ## [0.4.0] - 2019-03-29
 

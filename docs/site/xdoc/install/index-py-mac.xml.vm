@@ -41,7 +41,7 @@
 
   <body>
     <section name="Python Dependency Installation for Mac OS X">
-      <p>This document describes how to install the Python dependencies for the Inspect Tool contained in the <i>${project.artifactId}</i> package on the Mac OS X platform.
+      <p>This document describes how to install the Python dependencies for PDSView contained in the <i>${project.artifactId}</i> package on the Mac OS X platform.
       </p>
 
       <subsection name="Mac Ports">
@@ -107,7 +107,7 @@ OpenSSL 1.0.2o  27 Mar 2018
 % sudo pip install PDS4_tools-X.X.zip
         </source>
 
-        <p>With successful installation of the PDS4 Tools package, the target computer should support execution of the Inspect Tool.
+        <p>With successful installation of the PDS4 Tools package, the target computer should support execution of PDSView.
         </p>
       </subsection>
     </section>

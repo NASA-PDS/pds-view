@@ -1,9 +1,9 @@
 Packaging
 =========
 
-This documentation is relevant to those who need to build packages of the PDS
-Inspect Tool for specific platforms. If you're looking to download and use the
-PDS Inspect Tool, see the ``README.rst`` file instead.
+This documentation is relevant to those who need to build packages of PDSView
+for specific platforms. If you're looking to download and use PDSView, see the
+``README.rst`` file instead.
 
 
 Requirements
@@ -23,27 +23,24 @@ have access to PyQt4 by passing ``--system-site-packages``::
 
 (If your Python 2.7 installation didn't come with ``vitualenv``, you may have
 to install it separately.) Inside that virutalenv, install ``matplotlib``,
-``seaborn``, and PDS4_tools-1.0. On macOS, Linux, or other Unix-like systems,
-that looks something like this::
+and ``seaborn``. On macOS, Linux, or other Unix-like systems, that looks
+something like this::
 
     cd /tmp/mypython
     bin/pip install matplotlib seaborn
-    bin/pip install http://pdssbn.astro.umd.edu/ftp/tools/readpds_python/1.0/PDS4_tools-1.0.zip
 
 While on Windows, it might go like this::
 
     cd \tmp\mypython
     Scripts\pip.exe install matplotlib seaborn
-    Scripts\pip.exe install http://pdssbn.astro.umd.edu/ftp/tools/readpds_python/1.0/PDS4_tools-1.0.zip
 
 
 Building Out
 ------------
 
 Building the platform-specific installers leverages Buildout_.  The Buildout
-bootstrapper script, ``boostrap.py`` is included with the PDS Inspect Tool
-source.  Simply do the following (adjusting paths and platform-specifics as
-needed):
+bootstrapper script, ``boostrap.py`` is included with the PDSView source.
+Simply do the following (adjusting paths and platform-specifics as needed):
 
 1. Use the Python from your vitualenv to bootstrap:
    ``/tmp/mypython/bin/python2.7 bootstrap.py``
@@ -53,15 +50,18 @@ Then, run the platform-specific installation:
 
 For Windows
     ``bin/buildout install windows``. This will create
-    ``dist/PDS-Inspect-Tool.exe`` which Windows users can double-click
-    to run.
+    ``dist/PDSView.exe`` which Windows users can double-click to run. Or do
+    ``bin/buildout install windows-dir`` to create
+    ``dist/PDSView``, which contains a hundred different support files plus
+    the ``PDSView.exe`` executable. This version launches faster but comes
+    as a full directory of files, while the single ``.exe`` launches much
+    more slowly but ships more conveniently.
 For macOS
     ``bin/buildout install macos``. This will create
-    ``dist/PDS-Inspect-Tool.app`` which macOS users can double-click
-    to run.
+    ``dist/PDSView.app`` which macOS users can double-click to run.
 For Linux
     ``bin/buildout install linux``. This will create
-    ``dist/PDS-Inspect-Tool`` which Linux users can run.
+    ``dist/PDSView`` which Linux users can run.
 
 You can optionally compress the target files/directories prior to distribution
 if you wish.

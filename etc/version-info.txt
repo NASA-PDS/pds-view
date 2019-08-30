@@ -31,12 +31,12 @@ VSVersionInfo(
         u'040904b0',
         [StringStruct(u'Comments', u'https://pds.nasa.gov/'),
         StringStruct(u'CompanyName', u'Planetary Data System'),
-        StringStruct(u'FileDescription', u'PDS Inspect Tool'),
+        StringStruct(u'FileDescription', u'PDSView'),
         StringStruct(u'FileVersion', u'0,4,0,0'),
-        StringStruct(u'InternalName', u'PDS_Inspect_Tool'),
+        StringStruct(u'InternalName', u'PDSView'),
         StringStruct(u'LegalCopyright', u'Copyright © 2019 Caltech.'),
-        StringStruct(u'OriginalFilename', u'PDS_Inspect_Tool.exe'),
-        StringStruct(u'ProductName', u'PDS Inspect Tool 0.4.0-dev 2019'),
+        StringStruct(u'OriginalFilename', u'PDSView.exe'),
+        StringStruct(u'ProductName', u'PDSView 0.4.0-dev 2019'),
         StringStruct(u'ProductVersion', u'0,4,0,0')])
       ]), 
     VarFileInfo([VarStruct(u'Translation', [0, 1200])])
