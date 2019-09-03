@@ -25,7 +25,7 @@
 
   <body>
     <section name="Python Dependency Installation for Windows">
-      <p>This document describes how to install the Python dependencies for the Inspect Tool contained in the <i>${project.artifactId}</i> package on the Windows platform.
+      <p>This document describes how to install the Python dependencies for PDSView contained in the <i>${project.artifactId}</i> package on the Windows platform.
       </p>
 
       <subsection name="Dependencies">
