@@ -1121,11 +1121,11 @@ class MainWindow(QMainWindow):
             fname = full_path.split('\\')[-1]
         else:
             fname = full_path.split('/')[-1]
-        if not '.' in fname:
-            self.file_message_box("Missing file extension in: {}".format(fname))
+        if '.' not in fname:
+            self.file_message_box("Missing file extension in", fname)
             return 'problem with file'
         # get the extension
-        extension = fname.split('.')[1].upper()
+        extension = fname.split('.')[-1].upper()
 
         if extension == 'XML':
             # print('Full Path: '.format(full_path))
