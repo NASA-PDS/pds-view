@@ -162,7 +162,7 @@ class MainWindow(QMainWindow):
 
         self.logo = QLabel()
         try:
-            self.logo.setPixmap(QPixmap(resource_path("./Icons/PDS_Logo_2.png")))
+            self.logo.setPixmap(QPixmap(resource_path("./Icons/drop-target.png")))
         except:
             print('Could not read logo')
         self.setCentralWidget(self.logo)
@@ -694,6 +694,9 @@ class MainWindow(QMainWindow):
         self.initial_gray_scale_setting()
         self.setWindowTitle("PDSView")
         self.setWindowIcon(QIcon(resource_path("./Icons/MagGlass.png")))
+
+        # Start off with the open dialog
+        self.file_open()
 
     def close_app(self):
         sys.exit()
