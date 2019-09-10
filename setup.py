@@ -58,7 +58,7 @@ requirements = [
 
 setup(
     name='PDSView',
-    version='0.4.0-dev',
+    version='0.4.0',
     description="PDSView views (and inspects) PDS data",
     long_description=readme + '\n\n' + changes,
     author="Sean Hardman,Jim Hofman",
