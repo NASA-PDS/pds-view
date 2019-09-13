@@ -212,7 +212,7 @@ class Translate():
         # TODO "Strip double quotes from entries in dict.  - done
 
         loader = CachingFileLoader(resource_path("./templates"))
-        template = loader.load_template("InspectTemplate.vm")
+        template = loader.load_template("inspectTemplate.vm")
         map = {'label': self.labels, 'str': str, 'generate': self.generate, 'ptr_object_map': self.ptr_object_dict,
                'ptr_offset_map': self.ptr_offset_dict, 'object_placeholder': self.object_type}
 
