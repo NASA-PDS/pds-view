@@ -37,7 +37,7 @@ macOS
 
 Download and unpack ``PDSView-macOS.zip`` to extract the executable
 ``PDSView.app`` which you can drag to your ``/Applications`` folder or other
-convenient location. Note that because this is an unsigned_ program, you will
+convenient location. Note that because this is an unsigned program, you will
 need to control-click (⌃+click) or right-click its icon and choose "Open",
 followed by clicking the "Open" button, to start PDSView. The tool is known to
 work on the following versions of macOS:
@@ -99,7 +99,7 @@ For example, a Unix-like (including macOS-like) system could do the following::
     cd /tmp/mypthon
     bin/pip install matplotlib seaborn
     # == Download and extract PDSView ==
-    curl -L 'https://github.com/NASA-PDS-Incubator/pds-view/archive/v0.1-beta.tar.gz' | tar xzf -
+    curl -L 'https://github.com/NASA-PDSr/pds-view/archive/v0.1-beta.tar.gz' | tar xzf -
     cd pds-view-0.1-beta
     # == Install its dependencies ==
     ../bin/python setup.py develop
@@ -126,8 +126,15 @@ This product has not been translated into any other languages than US English.
 Contribute
 ==========
 
-• Issue Tracker: https://github.com/NASA-PDS-Incubator/pds-view/issues
-• Source Code: https://github.com/NASA-PDS-Incubator/pds-view
+Within the NASA Planetary Data System, we value the health of our community as much as the code. Towards that end, we ask that you read and practice what's described in these documents:
+
+• Our `contributor's guide`_ delineates the kinds of contributions we accept.
+• Our `code of conduct`_ outlines the standards of behavior we practice and expect by everyone who participates with our software.
+
+Meanwhile please check out:
+
+• Our `issue tracker`_ 
+• And the `source Code`_
 
 
 Support
@@ -141,4 +148,16 @@ License
 =======
 
 The project is licensed under the Apache License, version 2.  See the
-``LICENSE.txt`` file for details.
+``LICENSE.md`` file for details.
+
+
+.. _`contributor's guide`: https://github.com/NASA-PDS/.github/blob/main/CONTRIBUTING.md
+.. _`code of conduct`: https://github.com/NASA-PDS/.github/blob/main/CODE_OF_CONDUCT.md
+.. _`issue tracker`: https://github.com/NASA-PDS/pds-view/issues
+.. _`source code`: https://github.com/NASA-PDS/pds-view/
+.. _releases: https://github.com/NASA-PDS/pds-view/releases
+.. _`Python 2.7`: https://www.python.org/download/releases/2.7/
+.. _qt4: https://www.qt.io/
+.. _pyqt4: https://pypi.org/project/PyQt4/
+.. _`PDS4 Tools`: https://pds.nasa.gov/tools/about/
+

@@ -104,7 +104,7 @@ or
           <p>A README file directing the user to the available documentation for the project.
           </p>
         </li>
-        <li><b>LICENSE.txt</b><br/>
+        <li><b>LICENSE.md</b><br/>
           <p>The copyright notice from the <a href="http://www.caltech.edu/" target="_blank">California Institute of Technology</a> detailing the restrictions regarding the use and distribution of this software. Although the license is strictly worded, the software has been classified as Technology and Software Publicly Available (TSPA) and is available for <i>anyone</i> to download and use.
           </p>
         </li>
